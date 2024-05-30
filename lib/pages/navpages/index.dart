@@ -123,7 +123,7 @@ class _IndexState extends State<Index> {
                       backgroundColor: Colors.green,
                       textColor: Colors.white,
                       label: Text(
-                        'Ads',
+                        'Ads 📢',
                       ),
                       child: adsCouressel()),
 
