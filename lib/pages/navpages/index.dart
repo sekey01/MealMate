@@ -137,7 +137,7 @@ class _IndexState extends State<Index> {
                       Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Text(
-                          ' 🏪 Stores Near ',
+                          ' 🏪 Stores Near You ',
                           style: TextStyle(
                               color: Colors.black87,
                               fontSize: 15,
