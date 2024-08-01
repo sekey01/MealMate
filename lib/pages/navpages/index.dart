@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mealmate/components/detailedCard.dart';
+import 'package:mealmate/pages/detail&checkout/detail.dart';
 import 'package:mealmate/pages/navpages/cart.dart';
-import 'package:mealmate/pages/navpages/search.dart';
+import 'package:mealmate/pages/navpages/searchByCollection.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/adsCouressel.dart';
 import '../../components/card1.dart';
-import '../../components/horizontalCard.dart';
-import '../../components/verticalCard.dart';
+import '../../components/mainCards/horizontalCard.dart';
+import '../../components/mainCards/verticalCard.dart';
 import '../../models&ReadCollectionModel/ListFoodItemModel.dart';
 import '../../models&ReadCollectionModel/cartmodel.dart';
 
@@ -191,26 +191,30 @@ class _IndexState extends State<Index> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => Detail(
-                                                        detail: detailedCard(
-                                                      foodItem.imageUrl,
-                                                      foodItem.restaurant,
-                                                      foodItem.foodName,
-                                                      foodItem.price,
-                                                      foodItem.location,
-                                                      foodItem.vendorId,
-                                                      foodItem.time,
-                                                    ))));
+                                                builder: (context) =>
+                                                    DetailedCard(
+                                                        imgUrl:
+                                                            foodItem.imageUrl,
+                                                        restaurant:
+                                                            foodItem.restaurant,
+                                                        foodName:
+                                                            foodItem.foodName,
+                                                        price: foodItem.price,
+                                                        location:
+                                                            foodItem.location,
+                                                        vendorid:
+                                                            foodItem.vendorId,
+                                                        time: foodItem.time)));
                                       },
                                       child: verticalCard(
-                                        foodItem.imageUrl,
-                                        foodItem.restaurant,
-                                        foodItem.foodName,
-                                        foodItem.price,
-                                        foodItem.location,
-                                        foodItem.time,
-                                        foodItem.vendorId.toString(),
-                                      ),
+                                          foodItem.imageUrl,
+                                          foodItem.restaurant,
+                                          foodItem.foodName,
+                                          foodItem.price,
+                                          foodItem.location,
+                                          foodItem.time,
+                                          foodItem.vendorId.toString(),
+                                          foodItem.isAvailable),
                                     ),
                                   ));
                             },
@@ -291,16 +295,20 @@ class _IndexState extends State<Index> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => Detail(
-                                                        detail: detailedCard(
-                                                      foodItem.imageUrl,
-                                                      foodItem.restaurant,
-                                                      foodItem.foodName,
-                                                      foodItem.price,
-                                                      foodItem.location,
-                                                      foodItem.vendorId,
-                                                      foodItem.time,
-                                                    ))));
+                                                builder: (context) =>
+                                                    DetailedCard(
+                                                        imgUrl:
+                                                            foodItem.imageUrl,
+                                                        restaurant:
+                                                            foodItem.restaurant,
+                                                        foodName:
+                                                            foodItem.foodName,
+                                                        price: foodItem.price,
+                                                        location:
+                                                            foodItem.location,
+                                                        vendorid:
+                                                            foodItem.vendorId,
+                                                        time: foodItem.time)));
                                       },
                                       child: horizontalCard(
                                         foodItem.imageUrl,
