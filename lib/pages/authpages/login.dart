@@ -48,11 +48,13 @@ class _LoginState extends State<Login> {
                       style: TextStyle(
                           letterSpacing: 4,
                           fontSize: 20,
+                          fontWeight: FontWeight.bold,
                           color: Colors.black87),
                     ),
                     Text(
                       'Discover new amazing recipies',
-                      style: TextStyle(fontSize: 15, color: Colors.black87),
+                      style: TextStyle(
+                          fontSize: 15, color: Colors.deepOrangeAccent),
                     ),
                     SizedBox(
                       height: 20,
@@ -64,6 +66,7 @@ class _LoginState extends State<Login> {
                     Padding(
                       padding: EdgeInsets.all(0),
                       child: PhoneTextField(
+                        showCountryCodeAsIcon: true,
                         autovalidateMode: AutovalidateMode.disabled,
                         locale: const Locale('en'),
                         decoration: const InputDecoration(
@@ -79,10 +82,6 @@ class _LoginState extends State<Login> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(10.0)),
                             borderSide: BorderSide(),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.phone,
-                            color: Colors.black,
                           ),
                           labelText: "Phone number",
                           labelStyle: TextStyle(
@@ -112,7 +111,7 @@ class _LoginState extends State<Login> {
                           suffixIcon: Icon(Icons.search),
                           hintText: "Search country",
                         ),
-                        initialCountryCode: "AE",
+                        initialCountryCode: "GH",
                         onChanged: (phone) {
                           setState(() {
                             if (phone.isValidNumber())
@@ -146,20 +145,35 @@ class _LoginState extends State<Login> {
                             backgroundColor: Colors.deepOrangeAccent),
                         onPressed: () {
                           if (_isPhoneNumberValid) {
+                            /// BELLOW CODE STORES THE VALID NUMBER THE USER ENTERED AND SAVES IT TO LOCAL STORAGE
+                            ///
+                            /*
+                            setState(() {
+                              Provider.of<LocalStorageProvider>(context,
+                                      listen: false)
+                                  .StorePhoneNumber(
+                                      _phoneNumberController.text.toString());
+                            });*/
+
+                            /// AFTER THE NUMBER IS SAVED,WE PUSH TO THE OTP PAGE FOR VERIFICATION
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => verifyPhone(
+                                    builder: (context) => verifyOTP(
                                           phoneNumber: _phoneNumberController
                                               .text
                                               .trim(),
                                         )));
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Material(
-                                    color: Colors.red,
-                                    child: Center(
-                                        child: Text("Invalid Phone Number")))));
+                                content: Center(
+                                    child: Text(
+                              "Invalid Phone Number",
+                              style: TextStyle(
+                                  color: Colors.deepOrangeAccent,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600),
+                            ))));
                           }
 
                           // signIn();
@@ -183,7 +197,8 @@ class _LoginState extends State<Login> {
                       children: [
                         Text(
                           " Are you an Admin ?",
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: Colors.black, fontStyle: FontStyle.italic),
                         ),
                         GestureDetector(
                           onTap: () {

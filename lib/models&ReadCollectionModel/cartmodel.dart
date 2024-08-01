@@ -54,7 +54,7 @@ class CartModel extends ChangeNotifier {
   ///
   ///
   ///
-  int quantity = 0;
+  int quantity = 1;
   // getter for quantity
   int get getQuantity => quantity;
 
@@ -72,7 +72,7 @@ class CartModel extends ChangeNotifier {
 
   //function to decrease quantity
   void decrementQuantity() {
-    if (quantity > 0) {
+    if (quantity > 1) {
       quantity--;
     }
     notifyListeners();

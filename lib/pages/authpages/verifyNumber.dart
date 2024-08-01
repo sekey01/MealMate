@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:provider/provider.dart';
 
+import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../navpages/home.dart';
 
-class verifyPhone extends StatefulWidget {
-  const verifyPhone({super.key, required this.phoneNumber});
+class verifyOTP extends StatefulWidget {
+  const verifyOTP({super.key, required this.phoneNumber});
 
   final String phoneNumber;
 
   @override
-  State<verifyPhone> createState() => _verifyPhoneState();
+  State<verifyOTP> createState() => _verifyOTPState();
 }
 
-class _verifyPhoneState extends State<verifyPhone> {
+class _verifyOTPState extends State<verifyOTP> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<LocalStorageProvider>(context, listen: false)
+        .storePhoneNumber(widget.phoneNumber);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

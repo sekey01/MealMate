@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:mealmate/components/detailedCard.dart';
-import 'package:mealmate/components/verticalCard.dart';
+import 'package:mealmate/components/CustomLoading.dart';
+import 'package:mealmate/components/NoFoodFound.dart';
+import 'package:mealmate/components/mainCards/verticalCard.dart';
 import 'package:mealmate/pages/detail&checkout/detail.dart';
+import 'package:mealmate/pages/navpages/order.dart';
+import 'package:mealmate/pages/searchfooditem/searchFoodItem.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/userCollectionshow.dart';
@@ -18,7 +21,11 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  final TextEditingController textController = TextEditingController();
+//final TextEditingController searchController = TextEditingController();
+
+  /// THIS FUNCTION FETCHES THE FOOD ITEMS FROM THE COLLECTION SELECTED BY THE USER
+  ///
+  /// THE FUNCTION TAKES IN A COLLECTION AS A PARAMETER
   Future<List<FoodItem>> fetchFoodItems(String Collection) async {
     try {
       QuerySnapshot snapshot =
@@ -39,32 +46,66 @@ class _SearchState extends State<Search> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text('MealMate'),
+        title: Text('Search here'),
         titleTextStyle: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+            color: Colors.black,
+            fontWeight: FontWeight.normal,
             letterSpacing: 3,
-            fontSize: 17),
-        backgroundColor: Colors.deepOrange,
+            fontSize: 15),
+        backgroundColor: Colors.white,
+        actions: [
+          SizedBox(
+            width: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SearchFoodItem()));
+                },
+
+                ///ICON THAT TAKES YOU TO ORDER DETAILS PAGE
+                ///TO VIEW LIST OF ODERS AND REPORT ISSUES
+                icon: ImageIcon(
+                  AssetImage('assets/Icon/Search.png'),
+                  color: Colors.black,
+                  size: 20,
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => OrderList()));
+                  },
+                  icon: ImageIcon(
+                    AssetImage('assets/Icon/Order.png'),
+                    color: Colors.black,
+                    size: 20,
+                  ))
+            ],
+          ),
+        ],
       ),
       body: Column(
         children: [
-          Text(
-            'Tap to view collection items',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 13,
-                letterSpacing: 2,
-                color: Colors.black),
-          ),
-          SizedBox(height: 10),
+          // SizedBox(height: 10),
           Padding(
+            /// THIS IS WHERE THE FOOD COLLECTION ITMES ARE DISPLAYED ,
+            ///
+            /// THUS { FOODS, DRINKS , ELECTRONICS, CLOTHING, GROCERY }
             padding: const EdgeInsets.all(10.0),
             child: Container(
-              height: 60,
+              height: 100,
               width: double.infinity,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.deepOrangeAccent),
+                //border: Border.all(color: Colors.deepOrangeAccent),
                 color: Colors.transparent,
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -74,12 +115,15 @@ class _SearchState extends State<Search> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        /// The State is not rebuilding so i used the setstate method to rebuild the state
-                        setState(() {});
+                        /// SINCE THIS IS WHERE A ROW(LIST < FOOD, DRINKS, CLOTHING, ELECTRONICS >  OF COLLECTION IS DISPLAYED FOR USER TO SEARCH FOOD ITEMS
+                        /// I USED THE PROVIDER TO CHANGE THE INDEX OF THE COLLECTION TO READ
+                        ///
+                        ///
                         value.changeIndex(index);
+                        setState(() {});
                       },
-                      child:
-                          userCollectionItemsRow(value.collectionList[index]),
+                      child: userCollectionItemsRow(value.collectionList[index],
+                          value.collectionImageList[index]),
                     );
                   },
                   scrollDirection: Axis.horizontal,
@@ -96,15 +140,11 @@ class _SearchState extends State<Search> {
                       .collectionToRead),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return Center(child: CustomLoGoLoading());
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Center(
-                          child: Text(
-                        'No food items found.',
-                        style: TextStyle(color: Colors.black),
-                      ));
+                      return Center(child: noFoodFound());
                     } else {
                       return MasonryGridView.count(
                           itemCount: snapshot.data!.length,
@@ -118,15 +158,14 @@ class _SearchState extends State<Search> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Detail(
-                                            detail: detailedCard(
-                                                data.imageUrl,
-                                                data.restaurant,
-                                                data.foodName,
-                                                data.price,
-                                                data.location,
-                                                data.vendorId,
-                                                data.time))));
+                                        builder: (context) => DetailedCard(
+                                            imgUrl: data.imageUrl,
+                                            restaurant: data.restaurant,
+                                            foodName: data.foodName,
+                                            price: data.price,
+                                            location: data.location,
+                                            vendorid: data.vendorId,
+                                            time: data.time)));
                               },
                               child: verticalCard(
                                   data.imageUrl,
@@ -135,7 +174,8 @@ class _SearchState extends State<Search> {
                                   data.price,
                                   data.location,
                                   data.time,
-                                  data.vendorId.toString()),
+                                  data.vendorId.toString(),
+                                  data.isAvailable),
                             );
                           });
                     }

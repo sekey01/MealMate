@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../pages/detail&checkout/detail.dart';
-import 'detailedCard.dart';
+import '../../pages/detail&checkout/detail.dart';
 
 Column horizontalCard(
   String imgUrl,
@@ -21,9 +21,14 @@ Column horizontalCard(
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Detail(
-                          detail: detailedCard(imgUrl, restaurant, foodName,
-                              price, location, id, time))));
+                      builder: (context) => DetailedCard(
+                          imgUrl: imgUrl,
+                          restaurant: restaurant,
+                          foodName: foodName,
+                          price: price,
+                          location: location,
+                          vendorid: id,
+                          time: time)));
             },
             child: Padding(
                 padding: const EdgeInsets.all(2.0),
@@ -35,21 +40,35 @@ Column horizontalCard(
                       Container(
                         margin: EdgeInsets.all(2),
                         color: Colors.white,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(13),
-                          child: Image.network(
-                            imgUrl,
-                            fit: BoxFit.fill,
-                            height: 100,
-                            width: 100,
-                          ),
-                        ),
+                        child: imgUrl.isEmpty
+                            ? Center(
+                                child: Icon(
+                                  ///NO IMAGE ICON WHEN THE IMAGE URL IS EMPTY
+                                  ///
+                                  Icons.image_not_supported_outlined,
+                                  color: Colors.deepOrange,
+                                  size: 120,
+                                ),
+                              )
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(13),
+                                child: Image(
+                                  fit: BoxFit.fill,
+                                  image: NetworkImage(imgUrl),
+                                  height: 90,
+                                  width: 120,
+                                ),
+                              ),
+                      ),
+                      SizedBox(
+                        width: 10.w,
                       ),
                       Container(
                         color: Colors.white,
                         child: Column(
                           //Column to Shaow Name OF Restaurant,Food Name, and Price Of the Food
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             SizedBox(
                               height: 5,
@@ -59,10 +78,11 @@ Column horizontalCard(
                             Text(
                               restaurant,
                               style: TextStyle(
-                                  fontSize: 10,
-                                  letterSpacing: 1,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black),
+                                fontSize: 10,
+                                letterSpacing: 2,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black,
+                              ),
                             ),
                             SizedBox(
                               height: 5,
@@ -83,7 +103,7 @@ Column horizontalCard(
 
                             ///Row for price
                             Text(
-                              '₵ $price 0 ',
+                              'GHC ${price}0 ',
                               style: TextStyle(
                                   letterSpacing: 1,
                                   fontSize: 10,
@@ -123,6 +143,7 @@ Column horizontalCard(
                                 Text(
                                   time,
                                   style: TextStyle(
+                                      fontStyle: FontStyle.italic,
                                       fontSize: 10,
                                       //fontWeight: FontWeight.bold,
                                       color: Colors.black),

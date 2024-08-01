@@ -6,6 +6,7 @@ class UploadModel {
   final String location;
   final String time;
   final int vendorId;
+  final bool isAvailable;
 
   UploadModel({
     required this.imageUrl,
@@ -15,6 +16,7 @@ class UploadModel {
     required this.vendorId,
     required this.location,
     required this.time,
+    required this.isAvailable,
   });
 
   Map<String, dynamic> toMap() {
@@ -26,6 +28,7 @@ class UploadModel {
       'location': location,
       'time': time,
       'vendorId': vendorId,
+      'isActive': isAvailable,
     };
   }
 }

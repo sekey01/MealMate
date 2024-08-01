@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mealmate/components/card2.dart';
+import 'package:mealmate/components/mainCards/mealPayCard.dart';
 
 class OrderList extends StatefulWidget {
   const OrderList({super.key});
@@ -18,12 +18,12 @@ class _OrderListState extends State<OrderList> {
         centerTitle: true,
         title: const Text('Order List'),
         titleTextStyle: const TextStyle(
-          color: Colors.white,
+          color: Colors.deepOrangeAccent,
           fontWeight: FontWeight.bold,
           letterSpacing: 3,
           fontSize: 17,
         ),
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.white,
       ),
       body: Center(
         child: Column(
@@ -33,9 +33,36 @@ class _OrderListState extends State<OrderList> {
             SizedBox(
               height: 10,
             ),
-            initCard2(),
+            MatePayCard(
+                'Premium Card', 'XXXX-XXXX-XXXX-0123', " SEKEY PRINCE", "768"),
             SizedBox(height: 40),
-            Expanded(
+            Container(
+              child: Column(
+                children: [
+                  Text(
+                    'Order List',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Icon(Icons.book_outlined, size: 120, color: Colors.black),
+                  Text(
+                    'You have no orders yet',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            )
+            /* Expanded(
               child: ListView.builder(
                 itemCount: 9,
                 itemBuilder: (context, index) {
@@ -71,7 +98,7 @@ class _OrderListState extends State<OrderList> {
                   );
                 },
               ),
-            )
+            )*/
           ],
         ),
       ),

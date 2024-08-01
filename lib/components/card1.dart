@@ -1,5 +1,6 @@
 import 'package:another_carousel_pro/another_carousel_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mealmate/components/mealmate.dart';
 
 Widget initCard() {
@@ -27,30 +28,30 @@ Widget initCard() {
                   'Order from your favourite \n Restaurants and get it \n delivered to you quick',
                   style: TextStyle(
                       //fontWeight: FontWeight.bold,
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       color: Colors.black87),
                 )
               ],
             ),
             Container(
-              height: 150,
-              width: 100,
+              height: 150.h,
+              width: 100.w,
               child: AnotherCarousel(
                 images: [
                   Image(
                     image: AssetImage('assets/images/logo.png'),
-                    height: 200,
-                    width: 200,
+                    height: 200.h,
+                    width: 200.w,
                   ),
                   Image(
                     image: AssetImage('assets/images/delivery.jpg'),
-                    height: 160,
-                    width: 150,
+                    height: 160.h,
+                    width: 150.w,
                   ),
                   Image(
                     image: AssetImage('assets/images/delivery1.jpg'),
-                    height: 160,
-                    width: 150,
+                    height: 160.h,
+                    width: 150.w,
                   ),
                 ],
                 dotSize: 3.0,

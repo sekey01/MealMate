@@ -16,6 +16,14 @@ class userCollectionProvider extends ChangeNotifier {
     'Electronics 🚃',
     'Furniture 🪑',
   ];
+  final List<String> collectionImageList = [
+    'assets/Icon/Drinks.png',
+    'assets/Icon/Food.png',
+    'assets/Icon/Grocery.png',
+    'assets/Icon/Clothing.png',
+    'assets/Icon/Electronics.png',
+    'assets/Icon/Furniture.png',
+  ];
   int selectedIndex = 0;
 
   void changeIndex(int index) {

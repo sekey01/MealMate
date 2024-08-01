@@ -16,17 +16,19 @@ class _CartState extends State<Cart> {
   Widget build(BuildContext context) {
     return Consumer<CartModel>(
         builder: (context, value, child) => Scaffold(
+              backgroundColor: Colors.white,
               appBar: AppBar(
                 // automaticallyImplyLeading: false,
                 title: Text(
-                  'My Cart',
+                  'Cart',
                   style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 3),
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal,
+                      letterSpacing: 2),
                 ),
                 centerTitle: true,
-                backgroundColor: Colors.deepOrangeAccent,
+                backgroundColor: Colors.white,
                 actions: [
                   Badge(
                     backgroundColor: Colors.black,
@@ -40,7 +42,7 @@ class _CartState extends State<Cart> {
                     child: Icon(
                       size: 30,
                       Icons.shopping_cart_outlined,
-                      color: Colors.white,
+                      color: Colors.deepOrange,
                     ),
                   ),
                   SizedBox(
@@ -50,7 +52,6 @@ class _CartState extends State<Cart> {
               ),
 
               /// THE value  IN THE BUILDER IS WHAT I WILL USE AS REFERENCE TO CALL ALL THAT I WANT TO CALL ION THE THE CartModel()
-              backgroundColor: Colors.white30,
               body: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -89,7 +90,7 @@ class _CartState extends State<Cart> {
                 ),
                 child: Container(
                   margin: EdgeInsets.all(10),
-                  height: 100,
+                  height: 130,
                   width: double.infinity,
                   color: Colors.white,
                   child: Center(
@@ -101,7 +102,7 @@ class _CartState extends State<Cart> {
                         'Total Price: ${value.tPrice}0',
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: 20,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 3),
                       ),
@@ -118,9 +119,9 @@ class _CartState extends State<Cart> {
                         child: Text(
                           'CheckOut',
                           style: TextStyle(
-                            letterSpacing: 4,
+                            letterSpacing: 2,
                             color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.normal,
                           ),
                         ),
                       ),

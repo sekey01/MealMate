@@ -1,8 +1,9 @@
-import 'package:fluid_bottom_nav_bar/fluid_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:mealmate/pages/navpages/order.dart';
-import 'package:mealmate/pages/navpages/search.dart';
+import 'package:mealmate/pages/navpages/searchByCollection.dart';
+import 'package:provider/provider.dart';
 
+import '../../models&ReadCollectionModel/cartmodel.dart';
 import 'cart.dart';
 import 'index.dart';
 
@@ -26,27 +27,57 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey.shade200,
+        backgroundColor: Colors.white,
         body: _pages[_currentIndex],
-        bottomNavigationBar: FluidNavBar(
-          icons: [
-            FluidNavBarIcon(icon: Icons.home, extras: {"label": "Home"}),
-            FluidNavBarIcon(icon: Icons.search, extras: {"label": "Search"}),
-            FluidNavBarIcon(
-                icon: Icons.shopping_cart, extras: {"label": "Cart"}),
-            FluidNavBarIcon(
-                icon: Icons.list_alt, extras: {"label": "OrderList"}),
-          ],
-          onChange: (index) {
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.white,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.grey,
+          elevation: 1,
+          onTap: (index) {
             setState(() {
               _currentIndex = index;
             });
           },
-          style: FluidNavBarStyle(
-              barBackgroundColor: Colors.white,
-              iconBackgroundColor: Colors.deepOrangeAccent,
-              iconSelectedForegroundColor: Colors.white,
-              iconUnselectedForegroundColor: Colors.white),
+          currentIndex: _currentIndex,
+          items: [
+            BottomNavigationBarItem(
+                backgroundColor: Colors.white,
+                icon: ImageIcon(
+                  color: Colors.grey,
+                  AssetImage('assets/Icon/Home.png'),
+                ),
+                label: 'Home'),
+            BottomNavigationBarItem(
+                backgroundColor: Colors.white,
+                icon: ImageIcon(
+                  color: Colors.grey,
+                  AssetImage('assets/Icon/Search.png'),
+                ),
+                label: 'Search'),
+            BottomNavigationBarItem(
+                backgroundColor: Colors.white,
+                icon: Badge(
+                  backgroundColor: Colors.black,
+                  label: Consumer<CartModel>(
+                      builder: (context, value, child) => Text(
+                            value.cart.length.toString(),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal),
+                          )),
+                  child: ImageIcon(
+                      color: Colors.grey, AssetImage('assets/Icon/Cart.png')),
+                ),
+                label: 'Cart'),
+            BottomNavigationBarItem(
+                backgroundColor: Colors.white,
+                icon: ImageIcon(
+                    color: Colors.grey, AssetImage('assets/Icon/Orders.png')),
+                label: 'Orders'),
+          ],
         ));
   }
 }

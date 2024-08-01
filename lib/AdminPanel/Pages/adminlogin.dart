@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mealmate/AdminPanel/Pages/adminHome.dart';
+import 'package:mealmate/components/CustomLoading.dart';
 
 class AdminLogin extends StatefulWidget {
   const AdminLogin({super.key});
@@ -9,7 +11,65 @@ class AdminLogin extends StatefulWidget {
 }
 
 class _AdminLoginState extends State<AdminLogin> {
+  bool isLoading = false;
+
+  Future<void> adminSignIn() async {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter both email and password')),
+      );
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      // If we reach here, sign in was successful
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => adminHome()),
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      switch (e.code) {
+        case 'user-not-found':
+          errorMessage = 'No user found for that email.';
+          break;
+        case 'wrong-password':
+          errorMessage = 'Wrong password provided for that user.';
+          break;
+        case 'invalid-email':
+          errorMessage = 'The email address is badly formatted.';
+          break;
+        default:
+          errorMessage = 'An error occurred: ${e.message}';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage)),
+      );
+      print('Error during sign in: ${e.code} - ${e.message}');
+    } catch (e) {
+      print('Unexpected error during sign in: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An unexpected error occurred')),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,9 +85,14 @@ class _AdminLoginState extends State<AdminLogin> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image(
-                      image: AssetImage('assets/images/logo.png'),
-                      width: 170,
+                    Center(
+                      child: isLoading
+                          ? CustomLoGoLoading()
+                          : Image(
+                              image: AssetImage("assets/images/logo.png"),
+                              height: 150,
+                              width: 150,
+                            ),
                     ),
                     SizedBox(
                       height: 10,
@@ -47,6 +112,7 @@ class _AdminLoginState extends State<AdminLogin> {
                     Padding(
                       padding: EdgeInsets.all(10),
                       child: TextField(
+                        style: TextStyle(color: Colors.black),
                         controller: _emailController,
                         decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
@@ -70,7 +136,8 @@ class _AdminLoginState extends State<AdminLogin> {
                     Padding(
                       padding: EdgeInsets.all(10),
                       child: TextField(
-                        controller: _emailController,
+                        style: TextStyle(color: Colors.black),
+                        controller: _passwordController,
                         decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -97,12 +164,7 @@ class _AdminLoginState extends State<AdminLogin> {
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.deepOrangeAccent),
                         onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const adminHome()));
-
-                          // signIn();
+                          adminSignIn();
                         }, //_signInWithEmailAndPassword,
                         child: Text(
                           "Login",

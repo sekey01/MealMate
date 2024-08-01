@@ -6,6 +6,7 @@ class FoodItem {
   final String location;
   final int vendorId;
   final String time;
+  final bool isAvailable;
 
   FoodItem({
     required this.vendorId,
@@ -15,6 +16,7 @@ class FoodItem {
     required this.location,
     required this.time,
     required this.imageUrl,
+    this.isAvailable = true,
   });
 
   factory FoodItem.fromMap(Map<String, dynamic> data, String documentId) {
@@ -26,6 +28,7 @@ class FoodItem {
       price: data['price'] ?? 0,
       location: data['location'] ?? '',
       vendorId: data['vendorId'],
+      isAvailable: data['isActive'] ?? true,
     );
   }
 }

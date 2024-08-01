@@ -12,10 +12,11 @@ class MealMate extends StatelessWidget {
       padding: const EdgeInsets.all(4.0),
       child: Material(
         color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           RichText(
             text: const TextSpan(
-              text: 'Meal',
+              text: ' Meal',
               style: TextStyle(
                 letterSpacing: 3,
                 fontSize: 20,
@@ -26,7 +27,7 @@ class MealMate extends StatelessWidget {
           ),
           RichText(
             text: TextSpan(
-                text: 'Mate🍕',
+                text: 'Mate 🍕 ',
                 style: GoogleFonts.abel(
                   letterSpacing: 3,
                   fontSize: 25,

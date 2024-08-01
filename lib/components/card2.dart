@@ -24,7 +24,7 @@ Widget initCard2() {
               children: [
                 MealMate(),
                 Text(
-                  'Order List are available \n Evaluate your best Restaurant \n More amazing Offers to come ',
+                  'Order List are available \n Evaluate your best Restaurant \n Report all issues to us',
                   style: TextStyle(
                       //fontWeight: FontWeight.bold,
                       fontSize: 12,

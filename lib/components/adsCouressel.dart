@@ -5,17 +5,23 @@ Material adsCouressel() {
   return Material(
     borderRadius: BorderRadius.circular(10),
     color: Colors.white,
-    elevation: 7,
+    elevation: 0,
     shadowColor: Colors.red,
     child: Container(
-      height: 250,
+      height: 200,
       width: 300,
       child: AnotherCarousel(
-        boxFit: BoxFit.fill,
-        dotSize: 1.0,
+        animationDuration: Duration(seconds: 2),
+        boxFit: BoxFit.fitWidth,
+        dotSize: 0.5,
         dotHorizontalPadding: 1,
         indicatorBgPadding: 0,
         images: [
+          Image(
+            image: AssetImage('assets/images/MealmateDress.png'),
+            //height: 240,
+            //  width: double.infinity,
+          ),
           Image(
             image: AssetImage('assets/adsimages/ads1.png'),
             //height: 240,

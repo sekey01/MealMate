@@ -8,7 +8,7 @@ class AdminCollectionProvider extends ChangeNotifier {
   /// So that the user can select the collection they want to see to for easy search functionality in the user page
   /// Here we have a list of collections that the admin can select from,
   /// I used the value of COLLECTIONTOUPLOAD to get the collection the admin selected AND USE IT TO UPLOAD THE COLLECTION TO FIREBASE
-  String collectionToUpload = 'Please select a collection';
+  String collectionToUpload = 'Food 🍔';
   final List<String> collectionList = [
     'Food 🍔',
     'Drinks 🍷',
