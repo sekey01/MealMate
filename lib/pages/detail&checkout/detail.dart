@@ -358,7 +358,7 @@ class _DetailedCardState extends State<DetailedCard> {
                                                   GoogleMapController>?);
                                         },
                                         initialCameraPosition: CameraPosition(
-                                          bearing: 192.8334901395799,
+                                          bearing: 192.8334901395798,
                                           target: LatLng(
                                               Provider.of<LocationProvider>(
                                                       context,
