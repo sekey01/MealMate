@@ -40,8 +40,7 @@ class MyApp extends StatelessWidget {
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => CartModel()),
-          ChangeNotifierProvider(
-              create: (context) => AdminCollectionProvider()),
+          ChangeNotifierProvider(create: (context) => AdminCollectionProvider()),
           ChangeNotifierProvider(create: (context) => userCollectionProvider()),
           ChangeNotifierProvider(create: (context) => AdminId()),
           ChangeNotifierProvider(create: (context) => AdminFunctions()),
@@ -61,11 +60,14 @@ class MyApp extends StatelessWidget {
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
+
     );
   }
 }
 
+/*
 /// I USED THE CLASS BELLOW TO VERIFFY IF FIREBASE IS WORKING
+
 class MyHomePage extends StatelessWidget {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -93,4 +95,4 @@ class MyHomePage extends StatelessWidget {
       ),
     );
   }
-}
+}*/

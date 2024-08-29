@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class MealMate extends StatelessWidget {
   const MealMate({
@@ -28,7 +27,7 @@ class MealMate extends StatelessWidget {
           RichText(
             text: TextSpan(
                 text: 'Mate 🍕 ',
-                style: GoogleFonts.abel(
+                style: TextStyle(
                   letterSpacing: 3,
                   fontSize: 25,
                   color: Colors.deepOrangeAccent,

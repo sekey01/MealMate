@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mealmate/AdminPanel/Pages/adminlogin.dart';
+import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/pages/authpages/verifyNumber.dart';
 import 'package:phone_text_field/phone_text_field.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -15,6 +17,12 @@ class _LoginState extends State<Login> {
   bool _isPhoneNumberValid = false;
 
   @override
+  void initState() {
+    ///Provider.of<LocationProvider>(context).determinePosition();
+    // TODO: implement initState
+    super.initState();
+
+  }
   void dispose() {
     // Dispose of the controller when the widget is disposed
     _phoneNumberController.dispose();

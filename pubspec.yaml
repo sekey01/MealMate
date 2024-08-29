@@ -34,8 +34,6 @@ dependencies:
 
   cupertino_icons: ^1.0.6
   another_flutter_splash_screen: ^1.2.0
-  google_fonts: ^6.2.1
-  fluid_bottom_nav_bar: ^1.4.0
   another_carousel_pro: ^1.0.2
   provider: ^6.1.2
   badges: ^3.1.2
@@ -54,18 +52,19 @@ dependencies:
   card_loading: ^0.3.2
   shared_preferences: ^2.2.3
   firebase_auth: ^4.20.0
-  connectivity: ^3.0.6
+  connectivity_plus: ^3.0.6
   internet_connectivity_checker: ^1.0.2
   flutter_screenutil: ^5.9.3
   geolocator: ^12.0.0
   open_geocoder: ^0.0.1
-  flutter_geocoder: ^0.2.2-nullsafety
   geocoding: ^3.0.0
   location_geocoder: ^1.0.5
   google_maps_flutter: ^2.7.0
   lite_rolling_switch: ^1.0.1
 
 
+  path_provider: any
+  http: any
 dev_dependencies:
 
 flutter_launcher_icons:
@@ -76,6 +75,7 @@ flutter_launcher_icons:
     ios: true
     remove_alpha_ios: true
     image_path: "assets/Icon/appLogo.png"
+
 
 
 

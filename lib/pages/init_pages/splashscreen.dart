@@ -9,6 +9,7 @@ class SplashScreen extends StatelessWidget {
   });
 
   @override
+
   Widget build(BuildContext context) {
     return FlutterSplashScreen(
       duration: const Duration(seconds: 2),

@@ -33,7 +33,7 @@ class LocalStorageProvider extends ChangeNotifier {
 
   Future getUserName() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    userName = pref.getString('userName').toString() ?? 'Username';
+    userName = pref.getString('userName').toString();
     notifyListeners();
   }
 }

@@ -53,7 +53,7 @@ class SearchProvider extends ChangeNotifier {
       // Map the combined documents to FoodItem objects
       final combinedResults = combinedDocs
           .map((doc) =>
-              FoodItem.fromMap(doc.data() as Map<String, dynamic>, doc.id))
+              FoodItem.fromMap(doc.data(), doc.id))
           .toList();
 
       // For debugging

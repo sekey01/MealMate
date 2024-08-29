@@ -10,8 +10,8 @@ Material adsCouressel() {
     child: Container(
       height: 200,
       width: 300,
-      child: AnotherCarousel(
-        animationDuration: Duration(seconds: 2),
+      child:  AnotherCarousel(
+        animationDuration: Duration(seconds: 4),
         boxFit: BoxFit.fitWidth,
         dotSize: 0.5,
         dotHorizontalPadding: 1,

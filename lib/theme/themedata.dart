@@ -7,6 +7,7 @@ class AppTheme {
       fontFamily: 'Poppins',
       brightness: Brightness.light,
       colorScheme: const ColorScheme.light(
+
         onPrimary: Colors.black,
         onSecondary: Colors.white,
         primary: Colors.deepOrangeAccent,
@@ -20,7 +21,7 @@ class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData(
       fontFamily: 'Poppins',
-      brightness: Brightness.dark,
+      brightness: Brightness.light,
       colorScheme: const ColorScheme.dark(
         onPrimary: Colors.black,
         onSecondary: Colors.white,

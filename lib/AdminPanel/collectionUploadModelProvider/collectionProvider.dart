@@ -30,7 +30,7 @@ class AdminCollectionProvider extends ChangeNotifier {
     /// This is the collection the admin selected
     collectionToUpload = collectionList[index];
 
-    String selectedCollection = collectionList[index];
+    //String selectedCollection = collectionList[index];
     if (kDebugMode) {
       print(collectionToUpload);
     }

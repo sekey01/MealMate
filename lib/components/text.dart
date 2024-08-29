@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 Text bigText(String x) {
   return Text(x,
-      style: GoogleFonts.abel(
+      style: TextStyle(
         letterSpacing: 3,
         fontSize: 40,
         color: Colors.deepOrangeAccent,
@@ -13,7 +12,7 @@ Text bigText(String x) {
 
 Text midText(String x) {
   return Text(x,
-      style: GoogleFonts.abel(
+      style: TextStyle(
         letterSpacing: 3,
         fontSize: 30,
         color: Colors.deepOrangeAccent,
@@ -23,7 +22,7 @@ Text midText(String x) {
 
 Text smallText(String x) {
   return Text(x,
-      style: GoogleFonts.abel(
+      style: TextStyle(
         letterSpacing: 3,
         fontSize: 20,
         color: Colors.deepOrangeAccent,
@@ -33,7 +32,7 @@ Text smallText(String x) {
 
 Text blackBigText(String x) {
   return Text(x,
-      style: GoogleFonts.abel(
+      style: TextStyle(
         letterSpacing: 3,
         fontSize: 30,
         color: Colors.black87,
@@ -43,7 +42,7 @@ Text blackBigText(String x) {
 
 Text blackMidText(String x) {
   return Text(x,
-      style: GoogleFonts.aBeeZee(
+      style: TextStyle(
         letterSpacing: 3,
         fontSize: 20,
         color: Colors.black87,
@@ -53,7 +52,7 @@ Text blackMidText(String x) {
 
 Text blackSmallText(String x) {
   return Text(x,
-      style: GoogleFonts.aBeeZee(
+      style: TextStyle(
         letterSpacing: 2,
         fontSize: 25,
         color: Colors.black,

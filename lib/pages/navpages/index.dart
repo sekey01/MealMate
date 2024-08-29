@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mealmate/AdminPanel/Pages/IncomingOrders.dart';
+import 'package:mealmate/AdminPanel/components/adminHorizontalCard.dart';
 import 'package:mealmate/pages/detail&checkout/detail.dart';
 import 'package:mealmate/pages/navpages/cart.dart';
 import 'package:mealmate/pages/navpages/searchByCollection.dart';
@@ -40,6 +42,10 @@ class _IndexState extends State<Index> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ImageIcon(AssetImage('assets/Icon/profile.png'), color: Colors.black,),
+        ),
         automaticallyImplyLeading: false,
         centerTitle: true,
         actions: [
@@ -56,11 +62,10 @@ class _IndexState extends State<Index> {
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       )),
-              child: Icon(
-                size: 30,
-                Icons.shopping_cart_outlined,
-                color: Colors.white,
-              ),
+              child: ImageIcon(AssetImage(
+                'assets/Icon/Cart.png'
+              ), color: Colors.black
+            ),
             ),
           ),
           SizedBox(
@@ -69,11 +74,11 @@ class _IndexState extends State<Index> {
         ],
         title: Text('MealMate'),
         titleTextStyle: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.bold,
             letterSpacing: 3,
             fontSize: 17),
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.transparent,
       ),
       body: Center(
         child: SafeArea(
@@ -139,7 +144,7 @@ class _IndexState extends State<Index> {
                           ' 🏪 Stores Near You ',
                           style: TextStyle(
                               color: Colors.black87,
-                              fontSize: 15,
+                              fontSize: 10,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -155,7 +160,7 @@ class _IndexState extends State<Index> {
                           child: Text(
                             'see more',
                             style: TextStyle(
-                                fontSize: 15, color: Colors.deepOrangeAccent),
+                                fontSize: 10, color: Colors.deepOrangeAccent),
                           ),
                         ),
                       )
