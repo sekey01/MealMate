@@ -17,12 +17,7 @@ class _LoginState extends State<Login> {
   bool _isPhoneNumberValid = false;
 
   @override
-  void initState() {
-    ///Provider.of<LocationProvider>(context).determinePosition();
-    // TODO: implement initState
-    super.initState();
 
-  }
   void dispose() {
     // Dispose of the controller when the widget is disposed
     _phoneNumberController.dispose();
@@ -31,7 +26,7 @@ class _LoginState extends State<Login> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

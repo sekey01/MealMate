@@ -42,7 +42,9 @@ class AdminCollectionProvider extends ChangeNotifier {
   //
   // void switchColor() {
   //   if (unselectColor == Colors.white) {
-  //     unselectColor = Colors.deepOrangeAccent.shade200;
+  //     unselectColor = Colors.deepOrangeAccent
+
+
   //     selectColor = Colors.white;
   //   } else {
   //     unselectColor = Colors.white;

@@ -139,6 +139,13 @@ flutter:
      - assets/Icon/Cart.png
      - assets/Icon/profile.png
      - assets/images/MealmateDress.png
+     - assets/images/MMBoard.png
+     - assets/images/MMBoard1.png
+     - assets/Icon/yummy.png
+     - assets/Icon/coupon.png
+     - assets/Icon/version.png
+     - assets/Icon/transaction.png
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -21,12 +21,13 @@ class _verifyOTPState extends State<verifyOTP> {
     // TODO: implement initState
     super.initState();
     Provider.of<LocalStorageProvider>(context, listen: false)
-        .storePhoneNumber(widget.phoneNumber);
+        .storeNumber(widget.phoneNumber);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           title: Text('Verify Phone Number'),
         ),

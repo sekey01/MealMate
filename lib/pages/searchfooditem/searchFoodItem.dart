@@ -25,26 +25,26 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            /// Navigator.pop(context);
+            Navigator.pop(context);
           },
           icon: Icon(
-            Icons.location_on_outlined,
+            Icons.arrow_back_ios,
             size: 20,
-            color: Colors.deepOrangeAccent,
+            color: Colors.blueGrey,
           ),
         ),
         automaticallyImplyLeading: false,
-        centerTitle: false,
+        centerTitle: true,
         title: Text('search'),
         titleTextStyle: TextStyle(
-            color: Colors.black,
+            color: Colors.blueGrey,
             fontWeight: FontWeight.normal,
             letterSpacing: 2,
-            fontSize: 15.sp),
+            fontSize: 20.sp),
         backgroundColor: Colors.white,
       ),
       body: Padding(

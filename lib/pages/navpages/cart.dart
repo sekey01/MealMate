@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mealmate/components/cartlist.dart';
 import 'package:provider/provider.dart';
 
@@ -16,16 +17,16 @@ class _CartState extends State<Cart> {
   Widget build(BuildContext context) {
     return Consumer<CartModel>(
         builder: (context, value, child) => Scaffold(
-              backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               appBar: AppBar(
                 // automaticallyImplyLeading: false,
                 title: Text(
                   'Cart',
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.blueGrey,
                       fontSize: 20,
-                      fontWeight: FontWeight.normal,
-                      letterSpacing: 2),
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 3),
                 ),
                 centerTitle: true,
                 backgroundColor: Colors.white,
@@ -39,10 +40,10 @@ class _CartState extends State<Cart> {
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             )),
-                    child: Icon(
+                    child: ImageIcon(
+                      AssetImage('assets/Icon/Cart.png'),
                       size: 30,
-                      Icons.shopping_cart_outlined,
-                      color: Colors.deepOrange,
+                      color: Colors.blueGrey,
                     ),
                   ),
                   SizedBox(
@@ -90,7 +91,7 @@ class _CartState extends State<Cart> {
                 ),
                 child: Container(
                   margin: EdgeInsets.all(10),
-                  height: 130,
+                  height: 130.h,
                   width: double.infinity,
                   color: Colors.white,
                   child: Center(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/NoFoodFound.dart';
+import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/components/mainCards/verticalCard.dart';
 import 'package:mealmate/pages/detail&checkout/detail.dart';
 import 'package:mealmate/pages/navpages/order.dart';
@@ -43,15 +44,17 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text('Search here'),
+        title: Text('Search '),
         titleTextStyle: TextStyle(
-            color: Colors.black,
+            color: Colors.blueGrey,
             fontWeight: FontWeight.normal,
             letterSpacing: 3,
-            fontSize: 15),
+            fontSize: 20),
         backgroundColor: Colors.white,
         actions: [
           SizedBox(
@@ -155,7 +158,8 @@ class _SearchState extends State<Search> {
                             final data = snapshot.data![index];
                             return GestureDetector(
                               onTap: () {
-                                Navigator.push(
+
+                                data.isAvailable?Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => DetailedCard(
@@ -165,7 +169,7 @@ class _SearchState extends State<Search> {
                                             price: data.price,
                                             location: data.location,
                                             vendorid: data.vendorId,
-                                            time: data.time)));
+                                            time: data.time))): Notify(context, 'This item Is not Available Now', Colors.white);
                               },
                               child: verticalCard(
                                   data.imageUrl,

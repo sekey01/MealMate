@@ -2,15 +2,20 @@ import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart
 import 'package:flutter/material.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/pages/authpages/login.dart';
+import 'package:provider/provider.dart';
 
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({
-    super.key,
-  });
+import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
   @override
 
-  Widget build(BuildContext context) {
+
+  @override Widget build(BuildContext context) {
     return FlutterSplashScreen(
       duration: const Duration(seconds: 2),
       nextScreen: const Login(),

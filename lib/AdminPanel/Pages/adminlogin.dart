@@ -73,6 +73,7 @@ class _AdminLoginState extends State<AdminLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -118,19 +119,31 @@ class _AdminLoginState extends State<AdminLogin> {
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide:
-                                  BorderSide(color: Colors.deepOrangeAccent),
+                                  BorderSide(color: Colors.deepOrangeAccent
+
+
+),
                             ),
                             prefixIcon: Icon(
                                 Icons.supervised_user_circle_rounded,
-                                color: Colors.deepOrangeAccent),
+                                color: Colors.deepOrangeAccent
+
+
+),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide:
-                                  BorderSide(color: Colors.deepOrangeAccent),
+                                  BorderSide(color: Colors.deepOrangeAccent
+
+
+),
                             ),
                             hintText: "Restaurant ID / Email",
                             hintStyle:
-                                TextStyle(color: Colors.deepOrangeAccent)),
+                                TextStyle(color: Colors.deepOrangeAccent
+
+
+)),
                       ),
                     ),
                     Padding(
@@ -142,19 +155,31 @@ class _AdminLoginState extends State<AdminLogin> {
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide:
-                                  BorderSide(color: Colors.deepOrangeAccent),
+                                  BorderSide(color: Colors.deepOrangeAccent
+
+
+),
                             ),
                             prefixIcon: Icon(
                                 Icons.supervised_user_circle_rounded,
-                                color: Colors.deepOrangeAccent),
+                                color: Colors.deepOrangeAccent
+
+
+),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide:
-                                  BorderSide(color: Colors.deepOrangeAccent),
+                                  BorderSide(color: Colors.deepOrangeAccent
+
+
+),
                             ),
                             hintText: "Restaurant Key / Password",
                             hintStyle:
-                                TextStyle(color: Colors.deepOrangeAccent)),
+                                TextStyle(color: Colors.deepOrangeAccent
+
+
+)),
                       ),
                     ),
                     SizedBox(
@@ -162,7 +187,10 @@ class _AdminLoginState extends State<AdminLogin> {
                       height: 60,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepOrangeAccent),
+                            backgroundColor: Colors.deepOrangeAccent
+
+
+),
                         onPressed: () {
                           adminSignIn();
                         }, //_signInWithEmailAndPassword,
@@ -194,7 +222,10 @@ class _AdminLoginState extends State<AdminLogin> {
                             ' Click here',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.deepOrangeAccent,
+                              color: Colors.deepOrangeAccent
+
+
+,
                             ),
                           ),
                         ),

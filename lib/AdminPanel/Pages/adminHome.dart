@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/AdminFunctionsProvider.dart';
+import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
 import 'package:mealmate/AdminPanel/Pages/UploadModel.dart';
 import 'package:mealmate/AdminPanel/Pages/uploads.dart';
 import 'package:mealmate/AdminPanel/collectionUploadModelProvider/collectionProvider.dart';
@@ -19,7 +20,7 @@ import 'package:provider/provider.dart';
 import '../OtherDetails/ID.dart';
 import '../components/ChangeIDofAdmin.dart';
 import '../components/adminCollectionRow.dart';
-import 'IncomingOrders.dart';
+import 'IncomingOrdersPage.dart';
 
 class adminHome extends StatefulWidget {
   const adminHome({super.key});
@@ -126,13 +127,20 @@ class _adminHomeState extends State<adminHome> {
   @override
   initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      ///I CALLED THESE TWO FUNCTION JUST TO GET THE NUMBER OF INCOMING ORDERS
+      ///SO I USED THE WIDGET_BINDING , AND CALLED THE TWO FUNCTION FOR ONLY THIS PURPOSE ,
+      ///AND I USED THE ID SO THAT EVERYBODY'S NUMBER OF INCOMING ORDERS PARTICULATE TO THE ADMIN ID
+      ///
+      context.read<AdminId>().loadId();
+      Provider.of<IncomingOrdersProvider>(context).fetchOrders(Provider.of<AdminId>(context).id);
+    });
     // Call the loadId function from AdminId provider
-    context.read<AdminId>().loadId();
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -140,7 +148,7 @@ class _adminHomeState extends State<adminHome> {
             backgroundColor: Colors.green,
             textColor: Colors.white,
             label: Text(
-              "0",
+              Provider.of<IncomingOrdersProvider>(context).IncomingOrdersIndex.toString(),
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             child: IconButton(
@@ -150,7 +158,10 @@ class _adminHomeState extends State<adminHome> {
               },
               icon: ImageIcon(
                 AssetImage('assets/Icon/Orders.png'),
-                color: Colors.deepOrangeAccent,
+                color: Colors.blueGrey
+
+
+,
                 size: 40,
               ),
             ),
@@ -160,7 +171,7 @@ class _adminHomeState extends State<adminHome> {
         automaticallyImplyLeading: false,
         title: Text('Admin Panel'),
         titleTextStyle: TextStyle(
-            color: Colors.black,
+            color: Colors.blueGrey,
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
             letterSpacing: 2),
@@ -172,10 +183,10 @@ class _adminHomeState extends State<adminHome> {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Uploaded()));
             },
-            icon: Image(
-              image: AssetImage('assets/Icon/uploads.png'),
-              height: 30,
-              width: 30,
+            icon: ImageIcon(
+               AssetImage('assets/Icon/uploads.png'),
+              size: 30,
+              color: Colors.deepOrangeAccent,
             ),
           ),
           SizedBox(
@@ -203,11 +214,13 @@ class _adminHomeState extends State<adminHome> {
                 },
               );
             },
-            icon: Image(
-              image: AssetImage('assets/Icon/change.png'),
-              height: 30,
-              width: 30,
-              color: Colors.deepOrangeAccent,
+            icon: ImageIcon(
+               AssetImage('assets/Icon/change.png'),
+              size: 30,
+              color: Colors.blueGrey
+
+
+,
             ),
           ),
         ],
@@ -235,7 +248,10 @@ class _adminHomeState extends State<adminHome> {
                       }
                       return Text(
                         'locating you...',
-                        style: TextStyle(color: Colors.deepOrangeAccent),
+                        style: TextStyle(color: Colors.deepOrangeAccent
+
+
+),
                       );
                     }),
                 SizedBox(
@@ -412,7 +428,10 @@ class _adminHomeState extends State<adminHome> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
-                                        color: Colors.deepOrangeAccent),
+                                        color: Colors.deepOrangeAccent
+
+
+),
                                   ),
                                 ),
                                 validator: (value) {
@@ -445,7 +464,10 @@ class _adminHomeState extends State<adminHome> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
-                                        color: Colors.deepOrangeAccent),
+                                        color: Colors.deepOrangeAccent
+
+
+),
                                   ),
                                 ),
                                 validator: (value) {
@@ -478,7 +500,10 @@ class _adminHomeState extends State<adminHome> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
-                                        color: Colors.deepOrangeAccent),
+                                        color: Colors.deepOrangeAccent
+
+
+),
                                   ),
                                 ),
                                 validator: (value) {
@@ -511,7 +536,10 @@ class _adminHomeState extends State<adminHome> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
-                                        color: Colors.deepOrangeAccent),
+                                        color: Colors.deepOrangeAccent
+
+
+),
                                   ),
                                 ),
                                 validator: (value) {
@@ -543,7 +571,10 @@ class _adminHomeState extends State<adminHome> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
-                                        color: Colors.deepOrangeAccent),
+                                        color: Colors.deepOrangeAccent
+
+
+),
                                   ),
                                 ),
                                 validator: (value) {
@@ -607,7 +638,10 @@ class _adminHomeState extends State<adminHome> {
                       ? CustomLoGoLoading()
                       : ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.deepOrangeAccent),
+                              backgroundColor: Colors.deepOrangeAccent
+
+
+),
                           onPressed: () {
                             if (_formkey.currentState!.validate() &&
                                 _image?.path != null) {

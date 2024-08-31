@@ -27,14 +27,14 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: _pages[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.white,
           showSelectedLabels: true,
           showUnselectedLabels: true,
           selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.grey,
+          unselectedItemColor: Colors.blueGrey,
           elevation: 1,
           onTap: (index) {
             setState(() {
@@ -46,21 +46,21 @@ class _HomeState extends State<Home> {
             BottomNavigationBarItem(
                 backgroundColor: Colors.white,
                 icon: ImageIcon(
-                  color: Colors.grey,
+                  color: Colors.blueGrey,
                   AssetImage('assets/Icon/Home.png'),
                 ),
                 label: 'Home'),
             BottomNavigationBarItem(
                 backgroundColor: Colors.white,
                 icon: ImageIcon(
-                  color: Colors.grey,
+                  color: Colors.blueGrey,
                   AssetImage('assets/Icon/Search.png'),
                 ),
                 label: 'Search'),
             BottomNavigationBarItem(
                 backgroundColor: Colors.white,
                 icon: Badge(
-                  backgroundColor: Colors.black,
+                  backgroundColor: Colors.blueGrey,
                   label: Consumer<CartModel>(
                       builder: (context, value, child) => Text(
                             value.cart.length.toString(),
@@ -69,13 +69,13 @@ class _HomeState extends State<Home> {
                                 fontWeight: FontWeight.normal),
                           )),
                   child: ImageIcon(
-                      color: Colors.grey, AssetImage('assets/Icon/Cart.png')),
+                      color: Colors.blueGrey, AssetImage('assets/Icon/Cart.png')),
                 ),
                 label: 'Cart'),
             BottomNavigationBarItem(
                 backgroundColor: Colors.white,
                 icon: ImageIcon(
-                    color: Colors.grey, AssetImage('assets/Icon/Orders.png')),
+                    color: Colors.blueGrey, AssetImage('assets/Icon/Orders.png')),
                 label: 'Orders'),
           ],
         ));

@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static ThemeData get lightTheme {
-    // Define light theme colors, fonts, etc.
     return ThemeData(
       fontFamily: 'Poppins',
       brightness: Brightness.light,
       colorScheme: const ColorScheme.light(
-
-        onPrimary: Colors.black,
+        onPrimary: Colors.deepOrangeAccent,
         onSecondary: Colors.white,
         primary: Colors.deepOrangeAccent,
         secondary: Colors.white,
@@ -21,7 +19,7 @@ class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData(
       fontFamily: 'Poppins',
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
       colorScheme: const ColorScheme.dark(
         onPrimary: Colors.black,
         onSecondary: Colors.white,

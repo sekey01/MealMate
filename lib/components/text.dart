@@ -5,7 +5,10 @@ Text bigText(String x) {
       style: TextStyle(
         letterSpacing: 3,
         fontSize: 40,
-        color: Colors.deepOrangeAccent,
+        color: Colors.deepOrangeAccent
+
+
+,
         fontWeight: FontWeight.bold,
       ));
 }
@@ -15,7 +18,10 @@ Text midText(String x) {
       style: TextStyle(
         letterSpacing: 3,
         fontSize: 30,
-        color: Colors.deepOrangeAccent,
+        color: Colors.deepOrangeAccent
+
+
+,
         fontWeight: FontWeight.bold,
       ));
 }
@@ -25,7 +31,10 @@ Text smallText(String x) {
       style: TextStyle(
         letterSpacing: 3,
         fontSize: 20,
-        color: Colors.deepOrangeAccent,
+        color: Colors.deepOrangeAccent
+
+
+,
         fontWeight: FontWeight.bold,
       ));
 }

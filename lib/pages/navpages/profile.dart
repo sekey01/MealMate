@@ -8,25 +8,56 @@ class Profile extends StatefulWidget {
   Profile({super.key});
 
   @override
+
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
   final _usernameController = TextEditingController();
   @override
+  void initState() {
+    super.initState();
+    ///I CALLED THE getUsername() and getNumber() METHODS HERE SO THAT ALL THE NAME S WILL BE CALLED AND DISPLAYED IN THE PROFILE
+    ///PAGE PAGE TO PREVENT ANY FORM OF DELAY
+    ///I WRAPPED IT IN A "WidgetsBinding.instance.addPostFrameCallback()" in other for the function to be called when the the UI o the tree that contains the function is rendered since this is just
+    ///the initial phase of the TREE /APP and it needs to access the function from the inside
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final localStorageProvider = Provider.of<LocalStorageProvider>(context, listen: false);
+      localStorageProvider.getUsername();
+      localStorageProvider.getNumber();
+    });
+  }
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(onPressed: (){Navigator.pop(context);}, icon: Icon(Icons.arrow_back_ios, color: Colors.black,)),
+          title: Text('Account', style: TextStyle(color: Colors.black, letterSpacing: 3, fontWeight: FontWeight.bold),), centerTitle: true,
+          backgroundColor: Colors.white,
+          actions: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
+              child: Icon(Icons.qr_code_2_outlined, color: Colors.deepOrangeAccent,),
+            )
+          ],
+        ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(14.0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 //crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 50.h,
+
+                  CircleAvatar(radius: 60,
+                    backgroundColor: Colors.deepOrangeAccent,
+                    child: ImageIcon(
+                      color: Colors.white,
+                      size: 100,
+                      AssetImage('assets/Icon/yummy.png')
+                    ),
                   ),
                   Center(
                     child: Text(
@@ -36,7 +67,7 @@ class _ProfileState extends State<Profile> {
                       style: TextStyle(
                         letterSpacing: 1,
                         color: Colors.black,
-                        fontSize: 25,
+                        fontSize: 25.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -62,137 +93,54 @@ class _ProfileState extends State<Profile> {
                     width: 130,
                     height: 150,
                   )),
-                  Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.discount_outlined,
-                                size: 30,
-                                color: Colors.black,
-                              ),
-                              SizedBox(
-                                width: 40,
-                              ),
-                              Text(
-                                'Promo codes ',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ],
-                          ),
+                        ExpansionTile(
+                          title: Text('Promo Codes ', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, letterSpacing: 3,),),
+                          leading: ImageIcon(AssetImage('assets/Icon/coupon.png'),
+                            size: 30,color: Colors.deepOrangeAccent,),
+                          children: [
+                            ListTile(
+                              title: Text('No Coupon Available', style: TextStyle(color: Colors.deepOrangeAccent,),),
+                            )
+                          ],
                         ),
-                        SizedBox(
-                          height: 30,
+                        ExpansionTile(
+                          title: Text('Transactions ', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, letterSpacing: 3,),),
+                          leading: ImageIcon(AssetImage('assets/Icon/transaction.png'),
+                            size: 30,color: Colors.deepOrangeAccent,),
+                          children: [
+                            ListTile(
+                              title: Text('No recorded Transactions', style: TextStyle(color: Colors.deepOrangeAccent,),),
+                            )
+                          ],
                         ),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.payment_sharp,
-                                size: 30.sp,
-                                color: Colors.black,
-                              ),
-                              SizedBox(
-                                width: 40,
-                              ),
-                              Text(
-                                'Payment ',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ],
-                          ),
+                        ExpansionTile(
+                          title: Text('Logout ', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, letterSpacing: 3),),
+                          leading:Icon(Icons.login_outlined, color: Colors.deepOrangeAccent, size: 30,),
+                          children: [
+                            ListTile(
+                              title: Text('Are you sure ?', style: TextStyle(color: Colors.deepOrangeAccent,),),
+                            )
+                          ],
                         ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.error_outline_outlined,
-                                size: 30.sp,
-                                color: Colors.black,
-                              ),
-                              SizedBox(
-                                width: 40.w,
-                              ),
-                              Text(
-                                'About Us  ',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.contact_support_outlined,
-                                size: 30.sp,
-                                color: Colors.black,
-                              ),
-                              SizedBox(
-                                width: 40,
-                              ),
-                              Text(
-                                'Support',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.logout,
-                                size: 30.sp,
-                                color: Colors.black,
-                              ),
-                              SizedBox(
-                                width: 40,
-                              ),
-                              Text(
-                                'logout',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ],
-                          ),
+                        ExpansionTile(
+                          title: Text('Version ', style: TextStyle(color: Colors.blueGrey, letterSpacing: 3),),
+                          leading: ImageIcon(AssetImage('assets/Icon/version.png'),
+                            size: 30,color: Colors.deepOrangeAccent,),
+                          children: [
+                            ListTile(
+                              title: Text('Version 1.0.0', style: TextStyle(color: Colors.deepOrangeAccent,),),
+                            )
+                          ],
                         )
-                      ])
+                      ],
+
+                    ),
+                  )
                 ],
               ),
             ),
@@ -231,7 +179,7 @@ class _ProfileState extends State<Profile> {
                   );
                 });
           },
-          child: Icon(Icons.edit),
+          child: ImageIcon( AssetImage('assets/Icon/refresh.png'), size: 40, color: Colors.white,),
           backgroundColor: Colors.deepOrangeAccent,
         ));
   }

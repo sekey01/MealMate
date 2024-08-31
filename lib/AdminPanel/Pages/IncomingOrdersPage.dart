@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/ID.dart';
+import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/NoFoodFound.dart';
@@ -24,47 +25,24 @@ class _IncomingOrdersState extends State<IncomingOrders> {
   //@override
   final Completer<GoogleMapController> _Usercontroller = Completer<GoogleMapController>();
 
-  // Function to read all admin uploads based on the ID provided
-  Future<List<OrderInfo>> fetchOrders(id) async {
-    int retryCount = 3;
-    int attempt = 0;
-    while (attempt < retryCount) {
-      try {
-        QuerySnapshot snapshot = (await FirebaseFirestore.instance
-            .collection('OrdersCollection')
-            .where('vendorId', isEqualTo: id)
-            .get()) as QuerySnapshot<Object?>;
-        return snapshot.docs
-            .map((doc) =>
-                OrderInfo.fromMap(doc.data() as Map<String, dynamic>, doc.id))
-            .toList();
-      } on SocketException catch (e) {
-        attempt++;
-        if (attempt >= retryCount) {
-          print("Internet Problem: $e");
-          return <OrderInfo>[];
-        }
-        await Future.delayed(Duration(seconds: 2)); // wait before retrying
-      } catch (e) {
-        print("Error fetching food items: $e");
-        return <OrderInfo>[];
-      }
-    }
-    return <OrderInfo>[];
-  }
+
 
   @override
   Widget build(BuildContext context) {
     final adminId = Provider.of<AdminId>(context, listen: false).id;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(onPressed: (){
+          Navigator.pop(context);
+        }, icon: Icon(Icons.arrow_back_ios), color: Colors.blueGrey,),
         titleTextStyle: TextStyle(
           letterSpacing: 3,
           fontSize: 20,
         ),
-        backgroundColor: Colors.deepOrangeAccent.shade100,
+        backgroundColor: Colors.white,
         centerTitle: true,
         title: Consumer<AdminId>(
           builder: (context, value, child) {
@@ -84,14 +62,14 @@ class _IncomingOrdersState extends State<IncomingOrders> {
             onPressed: () {
               setState(() {}); // Refresh the page
             },
-            icon: Image(image: AssetImage('assets/Icon/refresh.png')),
+            icon: Image(image: AssetImage('assets/Icon/refresh.png'), color: Colors.blueGrey,),
           ),
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(4.0),
         child: FutureBuilder<List<OrderInfo>>(
-          future: fetchOrders(adminId),
+          future: Provider.of<IncomingOrdersProvider>(context, listen: false).fetchOrders(adminId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -108,7 +86,6 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final Orders = snapshot.data![index];
-
                   return Material(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,
@@ -151,7 +128,10 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                     return Text(snapshot.data.toString(),
                                         style: TextStyle(
                                             overflow: TextOverflow.ellipsis,
-                                            color: Colors.deepOrangeAccent,
+                                            color: Colors.deepOrangeAccent
+
+
+,
                                             fontSize: 10.sp));
                                   }
                                   return Text(
