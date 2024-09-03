@@ -14,6 +14,7 @@ import 'package:mealmate/AdminPanel/Pages/uploads.dart';
 import 'package:mealmate/AdminPanel/collectionUploadModelProvider/collectionProvider.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
+import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/components/card1.dart';
 import 'package:provider/provider.dart';
 
@@ -40,6 +41,8 @@ class _adminHomeState extends State<adminHome> {
   TextEditingController locationController = TextEditingController();
   File? _image;
   String imageUrl = '';
+  late int numberOfOrders ;
+
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
@@ -127,16 +130,18 @@ class _adminHomeState extends State<adminHome> {
   @override
   initState() {
     super.initState();
+    //Notify(context, 'Welcome', Colors.red);
+
     WidgetsBinding.instance.addPostFrameCallback((_){
-      ///I CALLED THESE TWO FUNCTION JUST TO GET THE NUMBER OF INCOMING ORDERS
-      ///SO I USED THE WIDGET_BINDING , AND CALLED THE TWO FUNCTION FOR ONLY THIS PURPOSE ,
-      ///AND I USED THE ID SO THAT EVERYBODY'S NUMBER OF INCOMING ORDERS PARTICULATE TO THE ADMIN ID
-      ///
-      context.read<AdminId>().loadId();
-      Provider.of<IncomingOrdersProvider>(context).fetchOrders(Provider.of<AdminId>(context).id);
+
+
+      Provider.of<AdminId>(context, listen: false).loadId();
+
+
     });
     // Call the loadId function from AdminId provider
   }
+
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,10 +152,43 @@ class _adminHomeState extends State<adminHome> {
           child: Badge(
             backgroundColor: Colors.green,
             textColor: Colors.white,
-            label: Text(
-              Provider.of<IncomingOrdersProvider>(context).IncomingOrdersIndex.toString(),
+            label: Provider.of<IncomingOrdersProvider>(context, listen: false).gotIncomingOrdersIndex ? Consumer<IncomingOrdersProvider>(builder: (context, value, child){
+               return StreamBuilder(
+              stream: value.fetchOrders( Provider.of<AdminId>(context, listen: false).adminID),
+                  builder: (context, snapshot) {
+
+                       if (snapshot.connectionState == ConnectionState.waiting) {
+                        // print(111111111111);
+                             return Center(
+                                   child: Text('Updating...'),);}
+
+                       else if(snapshot.hasData && snapshot.data != null){
+                       //  print(22222222222);
+
+                  numberOfOrders = snapshot.data!.length;
+                         return Text('${numberOfOrders.toString()}', style: TextStyle(fontWeight: FontWeight.bold),);
+
+                       }
+                       else if (snapshot.hasError) {
+                      //   print(333333333333);
+                             return Center(child: Text('refresh page'));}
+                       else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                       //  print(4444444444);
+                             return Center( child: Text('Empty',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)));
+                      }
+                      else {
+                      //  print(5555555555);
+                             return Text('0', style: TextStyle(fontWeight: FontWeight.bold),);
+              }
+
+            });}): Text('0')
+
+            /*Text(
+             Provider.of<IncomingOrdersProvider>(context, listen: false).IncomingOrdersIndex.toString(),
+
+              // You can now use the provider
               style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+            )*/,
             child: IconButton(
               onPressed: () {
                 Navigator.push(context,
@@ -172,7 +210,7 @@ class _adminHomeState extends State<adminHome> {
         title: Text('Admin Panel'),
         titleTextStyle: TextStyle(
             color: Colors.blueGrey,
-            fontSize: 20.sp,
+            fontSize: 20.spMin,
             fontWeight: FontWeight.bold,
             letterSpacing: 2),
         centerTitle: true,
@@ -185,7 +223,7 @@ class _adminHomeState extends State<adminHome> {
             },
             icon: ImageIcon(
                AssetImage('assets/Icon/uploads.png'),
-              size: 30,
+              size: 30.spMin,
               color: Colors.deepOrangeAccent,
             ),
           ),
@@ -232,7 +270,9 @@ class _adminHomeState extends State<adminHome> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                ///WELCOME TEXT
+                ///LOCATION DISPLAYED HERE
+                ///
+                ///
                 FutureBuilder(
                     future:
                         Provider.of<LocationProvider>(context, listen: false)
@@ -244,14 +284,11 @@ class _adminHomeState extends State<adminHome> {
                                 overflow: TextOverflow.ellipsis,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 10.sp));
+                                fontSize: 10.spMin));
                       }
                       return Text(
                         'locating you...',
-                        style: TextStyle(color: Colors.deepOrangeAccent
-
-
-),
+                        style: TextStyle(color: Colors.deepOrangeAccent,fontSize: 10.spMin, fontWeight: FontWeight.bold),
                       );
                     }),
                 SizedBox(
@@ -261,7 +298,7 @@ class _adminHomeState extends State<adminHome> {
                 ///TOGGLE BUTTON TO SHOW FOOD IS ONLINE
                 LiteRollingSwitch(
                   //initial value
-                  value: true,
+                  value: false,
                   width: 200.w,
                   textOn: 'Online',
                   textOnColor: Colors.white,
@@ -273,9 +310,11 @@ class _adminHomeState extends State<adminHome> {
                   iconOff: Icons.remove_circle_outline,
                   textSize: 20.0,
                   onChanged: (bool state) {
-                    print(Provider.of<AdminId>(context, listen: false).id);
+                  /// print(Provider.of<AdminId>(context, listen: false).id);
 
                     setState(() {
+                    //  Provider.of<IncomingOrdersProvider>(context, listen: false).fetchOrders(Provider.of<AdminId>(context).id);
+
                       Provider.of<AdminFunctions>(context, listen: false)
                           .Switch(
                               context,
@@ -283,10 +322,11 @@ class _adminHomeState extends State<adminHome> {
                               state);
                     });
 
-                    //Use it to manage the different states
-                    print('Current State of SWITCH IS: $state');
+                   ///Use it to manage the different states
+                   //print('Current State of SWITCH IS: $state');
                   },
-                  onTap: () {},
+                  onTap: () {
+                  },
                   onDoubleTap: () {},
                   onSwipe: () {},
                 ),
@@ -295,7 +335,7 @@ class _adminHomeState extends State<adminHome> {
                 ),
                 Text(
                   'Upload Food Items Here',
-                  style: TextStyle(fontSize: 15.sp, color: Colors.black),
+                  style: TextStyle(fontSize: 15.sp, color: Colors.blueGrey),
                 ),
 
                 _isLoading ? CustomLoGoLoading() : initCard(),
@@ -311,8 +351,8 @@ class _adminHomeState extends State<adminHome> {
                 ),
                 Text('Please Select Collection bellow to Upload Product',
                     style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.black,
+                        fontSize: 10.sp,
+                        color: Colors.blueGrey,
                         fontWeight: FontWeight.bold)),
 
                 ///COLLECTION FOR THE TYPE OF PRODUCT TO BE UPLOADED

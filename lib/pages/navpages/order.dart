@@ -18,10 +18,10 @@ class _OrderListState extends State<OrderList> {
         centerTitle: true,
         title: const Text('Order List'),
         titleTextStyle: const TextStyle(
-          color: Colors.deepOrangeAccent,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 3,
-          fontSize: 17,
+            color: Colors.blueGrey,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 3
         ),
         backgroundColor: Colors.white,
       ),

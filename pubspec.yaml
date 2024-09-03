@@ -145,6 +145,7 @@ flutter:
      - assets/Icon/coupon.png
      - assets/Icon/version.png
      - assets/Icon/transaction.png
+     - assets/Icon/loading.gif
 
 
 

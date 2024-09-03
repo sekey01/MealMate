@@ -56,8 +56,8 @@ class _IndexState extends State<Index> {
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> Profile()));
               },
               child: CircleAvatar(
-                  backgroundColor: Colors.black,
-                  child: ImageIcon(AssetImage('assets/Icon/profile.png'), color: Colors.white, ))),
+                  backgroundColor: Colors.blueGrey,
+                  child: ImageIcon(AssetImage('assets/Icon/profile.png'), color: Colors.white, size: 20.spMin,))),
         ),
         automaticallyImplyLeading: false,
         centerTitle: true,
@@ -77,7 +77,7 @@ class _IndexState extends State<Index> {
                       )),
               child: ImageIcon(AssetImage(
                 'assets/Icon/Cart.png'
-              ), color: Colors.blueGrey,size: 25.sp,
+              ), color: Colors.blueGrey,size: 30.spMin,
             ),
             ),
           ),
@@ -87,10 +87,10 @@ class _IndexState extends State<Index> {
         ],
         title: Text('MealMate'),
         titleTextStyle: TextStyle(
-            color: Colors.blueGrey,
+            color: Colors.black,
             fontWeight: FontWeight.bold,
             letterSpacing: 3,
-            fontSize: 20.sp),
+            fontSize: 20.spMin),
         backgroundColor: Colors.transparent,
       ),
       body: Center(
@@ -111,7 +111,7 @@ class _IndexState extends State<Index> {
                                   overflow: TextOverflow.ellipsis,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 10.sp));
+                                  fontSize: 10.spMin));
                         }
                         return Text(
                           'locating you...',
@@ -134,19 +134,19 @@ class _IndexState extends State<Index> {
                           Text(
                             'LETS EXPLORE  ',
                             style: TextStyle(
-                              fontSize: 20.sp,
+                              fontSize: 20.spMin,
                               fontWeight: FontWeight.w800,
                               letterSpacing: 2,
-                              color: Colors.blueGrey,
+                              color: Colors.black,
                             ),
                           ),
                           Text(
                             'More Delicious Foods 😋  ',
                             style: TextStyle(
-                              fontSize: 15.sp,
+                              fontSize: 15.spMin,
                               fontWeight: FontWeight.w700,
                               letterSpacing: 2,
-                              color: Colors.deepOrange,
+                              color: Colors.blueGrey,
                             ),
                           ),
                         ],
@@ -170,7 +170,7 @@ class _IndexState extends State<Index> {
                       child: adsCouressel()),
 
                   SizedBox(
-                    height: 20,
+                    height: 20.h,
                   ),
 
                   Row(
@@ -182,7 +182,7 @@ class _IndexState extends State<Index> {
                           ' 🏪 Stores Near You ',
                           style: TextStyle(
                               color: Colors.blueGrey,
-                              fontSize: 10,
+                              fontSize: 10.spMin,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -198,7 +198,7 @@ class _IndexState extends State<Index> {
                           child: Text(
                             'see more',
                             style: TextStyle(
-                                fontSize: 10, color: Colors.deepOrangeAccent),
+                                fontSize: 10.spMin, color: Colors.deepOrangeAccent),
                           ),
                         ),
                       )
@@ -207,7 +207,7 @@ class _IndexState extends State<Index> {
                   Container(
                     color: Colors.white,
                     width: double.infinity,
-                    height: 200,
+                    height: 200.h,
                     child: FutureBuilder<List<FoodItem>>(
                       future: fetchFoodItems('Food 🍔'),
                       builder: (context, snapshot) {
@@ -266,7 +266,7 @@ class _IndexState extends State<Index> {
                     ),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 30.h,
                   ),
 
                   Padding(padding: EdgeInsets.all(8), child: Image(image: AssetImage('assets/images/MMBoard1.png')),),
@@ -280,7 +280,7 @@ class _IndexState extends State<Index> {
                           '   Drinks 🍹🍷 ',
                           style: TextStyle(
                               color: Colors.blueGrey,
-                              fontSize: 10.sp,
+                              fontSize: 10.spMin,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -296,7 +296,7 @@ class _IndexState extends State<Index> {
                           child: Text(
                             'see more',
                             style: TextStyle(
-                                fontSize: 10.sp, color: Colors.deepOrangeAccent),
+                                fontSize: 10.spMin, color: Colors.deepOrangeAccent),
                           ),
                         ),
                       )
@@ -322,7 +322,7 @@ class _IndexState extends State<Index> {
                   Container(
                     color: Colors.white,
                     width: double.infinity,
-                    height: 200,
+                    height: 200.h,
                     child: FutureBuilder<List<FoodItem>>(
                       future: fetchFoodItems('Drinks 🍷'),
                       builder: (context, snapshot) {

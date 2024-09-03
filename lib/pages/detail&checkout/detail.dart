@@ -437,29 +437,25 @@ class _DetailedCardState extends State<DetailedCard> {
                             OrderInfo(
                               time: time,
                               foodName: widget.foodName,
-                              quantity:
-                                  Provider.of<CartModel>(context, listen: false)
-                                      .getQuantity,
+                              quantity: Provider.of<CartModel>(context, listen: false).getQuantity,
                               price: widget.price,
                               message: messageController.text.toString(),
-                              Latitude: Provider.of<LocationProvider>(context,
-                                      listen: false)
-                                  .Lat,
-                              Longitude: Provider.of<LocationProvider>(context,
-                                      listen: false)
-                                  .Long,
-                              phoneNumber: Provider.of<LocalStorageProvider>(
-                                      context,
-                                      listen: false)
-                                  .phoneNumber,
+                              Latitude: Provider.of<LocationProvider>(context, listen: false).Lat,
+                              Longitude: Provider.of<LocationProvider>(context, listen: false).Long,
+                              phoneNumber: Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber,
                               vendorId: widget.vendorid,
+                              served: false,
+                              courier : false,
+                              delivered: false,
+
+
                             ),
                           );
                         },
                         child: Text(
                           'CheckOut',
                           style:
-                              TextStyle(color: Colors.white, fontSize: 20.sp),
+                              TextStyle(color: Colors.white, fontSize: 20.sp , fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],

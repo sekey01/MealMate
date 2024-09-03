@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mealmate/AdminPanel/components/adminHorizontalCard.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/NoFoodFound.dart';
 import 'package:mealmate/components/Notify.dart';
@@ -54,7 +56,7 @@ class _SearchState extends State<Search> {
             color: Colors.blueGrey,
             fontWeight: FontWeight.normal,
             letterSpacing: 3,
-            fontSize: 20),
+            fontSize: 20.spMin),
         backgroundColor: Colors.white,
         actions: [
           SizedBox(

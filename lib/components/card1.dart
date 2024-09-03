@@ -28,7 +28,7 @@ Widget initCard() {
                   'Order from your favourite \n Restaurants and get it \n delivered to you quick',
                   style: TextStyle(
                       //fontWeight: FontWeight.bold,
-                      fontSize: 12.sp,
+                      fontSize: 12.spMin,
                       color: Colors.black87),
                 )
               ],

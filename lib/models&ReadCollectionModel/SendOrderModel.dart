@@ -8,6 +8,10 @@ class OrderInfo {
   final int quantity;
   final String message;
   final DateTime time;
+  final bool delivered;
+  final bool courier;
+  final bool served;
+
 
   OrderInfo({
     required this.vendorId,
@@ -19,6 +23,9 @@ class OrderInfo {
     required this.quantity,
     required this.message,
     required this.time,
+    required this.served,
+    required this.courier,
+    required this.delivered,
   });
 
   Map<String, dynamic> toMap() {
@@ -30,9 +37,11 @@ class OrderInfo {
       'Latitude': Latitude,
       'Longitude': Longitude,
       'quantity': quantity,
-      'others':
-          message, // 'others' is a new field that was added to the OrderInfo model
+      'others': message, // 'others' is a new field that was added to the OrderInfo model
       'time': time,
+      'served': served,
+      'courier' : courier,
+      'delivered': delivered,
     };
   }
 
@@ -47,6 +56,9 @@ class OrderInfo {
       quantity: data['quantity'],
       message: data['others'],
       time: data['time'].toDate(),
+      served: data['served']?? false,
+      courier: data['courier']?? false,
+      delivered: data['delivered']?? false,
     );
   }
 }

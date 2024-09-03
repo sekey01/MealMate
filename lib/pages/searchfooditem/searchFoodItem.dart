@@ -33,7 +33,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
           },
           icon: Icon(
             Icons.arrow_back_ios,
-            size: 20,
+            size: 20.spMin,
             color: Colors.blueGrey,
           ),
         ),
@@ -44,7 +44,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
             color: Colors.blueGrey,
             fontWeight: FontWeight.normal,
             letterSpacing: 2,
-            fontSize: 20.sp),
+            fontSize: 20.spMin),
         backgroundColor: Colors.white,
       ),
       body: Padding(

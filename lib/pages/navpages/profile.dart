@@ -33,7 +33,7 @@ class _ProfileState extends State<Profile> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           leading: IconButton(onPressed: (){Navigator.pop(context);}, icon: Icon(Icons.arrow_back_ios, color: Colors.black,)),
-          title: Text('Account', style: TextStyle(color: Colors.black, letterSpacing: 3, fontWeight: FontWeight.bold),), centerTitle: true,
+          title: Text('Account', style: TextStyle(color: Colors.blueGrey, letterSpacing: 3, fontWeight: FontWeight.bold),), centerTitle: true,
           backgroundColor: Colors.white,
           actions: [
             Padding(

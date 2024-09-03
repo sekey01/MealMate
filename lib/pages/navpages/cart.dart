@@ -52,7 +52,9 @@ class _CartState extends State<Cart> {
                 ],
               ),
 
-              /// THE value  IN THE BUILDER IS WHAT I WILL USE AS REFERENCE TO CALL ALL THAT I WANT TO CALL ION THE THE CartModel()
+          /// THE value  IN THE BUILDER IS WHAT I WILL USE AS REFERENCE TO CALL ALL THAT I WANT TO CALL ION THE THE CartModel()
+          ///
+          ///
               body: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),

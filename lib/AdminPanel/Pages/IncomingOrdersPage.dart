@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/ID.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
@@ -22,7 +24,7 @@ class IncomingOrders extends StatefulWidget {
 }
 
 class _IncomingOrdersState extends State<IncomingOrders> {
-  //@override
+  @override
   final Completer<GoogleMapController> _Usercontroller = Completer<GoogleMapController>();
 
 
@@ -68,8 +70,8 @@ class _IncomingOrdersState extends State<IncomingOrders> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(4.0),
-        child: FutureBuilder<List<OrderInfo>>(
-          future: Provider.of<IncomingOrdersProvider>(context, listen: false).fetchOrders(adminId),
+        child: StreamBuilder<List<OrderInfo>>(
+          stream: Provider.of<IncomingOrdersProvider>(context, listen: false).fetchOrders(adminId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -83,132 +85,207 @@ class _IncomingOrdersState extends State<IncomingOrders> {
               );
             } else {
               return ListView.builder(
+
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final Orders = snapshot.data![index];
-                  return Material(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    shadowColor: Colors.deepOrange,
-                    elevation: 4,
+                  return Badge(
+                    alignment: Alignment.topCenter,
+                    backgroundColor: Colors.red,
+                    label: Text('Incomplete Order', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ExpansionTile(
-                        shape: Border.all(color: Colors.black),
-                        textColor: Colors.black,
-                        collapsedBackgroundColor: Colors.deepOrange.shade100,
-                        collapsedTextColor: Colors.black,
-                        backgroundColor: Colors.white,
-                        trailing: Text(
-                          "Quantity Ordered: ${Orders.quantity}",
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
-                        title: Text(
-                          ' ${Orders.foodName} ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
-                        ),
-                        subtitle: Text(
-                          '${Orders.time}',
-                          style: TextStyle(
-                              letterSpacing: 2,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 14.sp),
-                        ),
-                        children: <Widget>[
-                          ListTile(
-                            title: FutureBuilder(
-                                future: Provider.of<LocationProvider>(context,
-                                        listen: false)
-                                    .determinePosition(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    return Text(snapshot.data.toString(),
-                                        style: TextStyle(
-                                            overflow: TextOverflow.ellipsis,
-                                            color: Colors.deepOrangeAccent
-
-
-,
-                                            fontSize: 10.sp));
-                                  }
-                                  return Text(
-                                    'Getting location of buyer...',
-                                    style: TextStyle(color: Colors.black),
-                                  );
-                                }),
-                          ),
-                          ListTile(
-                            leading: Text(
-                                'Location : ${LatLng(Orders.Latitude, Orders.Longitude)}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.bold,
-                                )),
+                      padding: const EdgeInsets.all(4.0),
+                      child: Material(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Orders.served ? Colors.green : Colors.red,
+                        shadowColor: Colors.green,
+                        elevation: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: ExpansionTile(
+                    
+                            shape: Border.all(color: Colors.black),
+                            textColor: Colors.black,
+                            collapsedBackgroundColor: Colors.white,
+                            collapsedTextColor: Colors.black,
+                            backgroundColor: Colors.white,
                             trailing: Text(
-                              '${Orders.vendorId}',
+                              "Quantity: ${Orders.quantity}",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15.sp,
-                                  color: Colors.black),
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold
+                              ),
                             ),
-                          ),
-                          ListTile(
-                            leading: Icon(
-                              Icons.call,
-                              color: Colors.black,
-                            ),
-                            titleTextStyle:
-                                TextStyle(fontWeight: FontWeight.bold),
                             title: Text(
-                              '${Orders.phoneNumber}',
-                              style: TextStyle(color: Colors.black),
+                              ' ${Orders.foodName} ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 10.spMin),
                             ),
                             subtitle: Text(
-                              '${Orders.message}',
+                              '${Orders.time}',
                               style: TextStyle(
-                                  color: Colors.black, fontSize: 10.sp),
+                                  letterSpacing: 2,
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 10.spMin),
                             ),
-                            trailing: Text(
-                              'Total Price: GHC${Orders.price}',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Container(
-                              height: 200,
-                              width: double.infinity,
-                              child: GoogleMap(
-                                liteModeEnabled: true,
-                                compassEnabled: true,
-                                mapToolbarEnabled: true,
-                                padding: EdgeInsets.all(12),
-                                scrollGesturesEnabled: true,
-                                zoomControlsEnabled: true,
-                                myLocationEnabled: true,
-                                myLocationButtonEnabled: true,
-                                mapType: MapType.normal,
-                                onMapCreated: (GoogleMapController controller) {
-                                  _Usercontroller.complete(_Usercontroller
-                                      as FutureOr<GoogleMapController>?);
-                                },
-                                gestureRecognizers: Set(),
-                                initialCameraPosition: CameraPosition(
-                                  bearing: 192.8334901395799,
-                                  target: LatLng(
-                                    Orders.Latitude,
-                                    Orders.Longitude,
-                                  ),
-                                  tilt: 9.440717697143555,
-                                  zoom: 11.151926040649414,
+                            children: <Widget>[
+                              ListTile(
+                                title: FutureBuilder(
+                                    future: Provider.of<LocationProvider>(context,
+                                            listen: false)
+                                        .getAddressFromLatLng(Orders.Latitude, Orders.Longitude),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                    
+                                        return Text(snapshot.data.toString(),
+                                            style: TextStyle(
+                                                overflow: TextOverflow.ellipsis,
+                                                color: Colors.deepOrangeAccent
+                    
+                    
+                      ,
+                                                fontSize: 10.sp));
+                                      }
+                                      return Text(
+                                        'Getting location of buyer...',
+                                        style: TextStyle(color: Colors.blueGrey, fontSize: 10.sp),
+                                      );
+                                    }),
+                              ),
+                              ListTile(
+                                leading: Text(
+                                    'Comment : ${Orders.message}',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 10.spMin,
+                                     // fontWeight: FontWeight.bold,
+                                    )),
+                                trailing: Text(
+                                  '${Orders.vendorId}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10.sp,
+                                      color: Colors.black),
                                 ),
-                              ))
-                        ],
+                              ),
+                              ListTile(
+                                leading: ImageIcon(AssetImage('assets/Icon/profile.png')),
+                                titleTextStyle:
+                                    TextStyle(fontWeight: FontWeight.bold),
+                                title: Text(
+                                  '${Orders.phoneNumber}',
+                                  style: TextStyle(color: Colors.black, fontSize: 10.spMin, ),
+                                ),
+                                subtitle: Text(
+                                  '${Orders.message}',
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 10.spMin),
+                                ),
+                                trailing: Text(
+                                  'Total Price: GHC${Orders.price}',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 10.spMin,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              ///GOOGLE MAP HERE 
+                              ///
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Container(
+                                    height: 250.spMin,
+                                    width: double.infinity,
+                                    child: GoogleMap(
+                                      //liteModeEnabled: true,
+                                      compassEnabled: true,
+                                      mapToolbarEnabled: true,
+                                      padding: EdgeInsets.all(12),
+                                      scrollGesturesEnabled: true,
+                                      zoomControlsEnabled: true,
+                                      myLocationEnabled: true,
+                                      myLocationButtonEnabled: true,
+                                      mapType: MapType.terrain,
+                                      onMapCreated: (GoogleMapController controller) {
+                                        _Usercontroller.complete(_Usercontroller
+                                            as FutureOr<GoogleMapController>?);
+                                      },
+                                      gestureRecognizers: Set(),
+                                      initialCameraPosition: CameraPosition(
+                                        bearing: 192.8334901395799,
+                                        target: LatLng(
+                                          Orders.Latitude,
+                                          Orders.Longitude,
+                                        ),
+                                        tilt: 9.440717697143555,
+                                        zoom: 11.151926040649414,
+                                      ),
+                                    )),
+                              ),
+                    SizedBox(height: 10,),
+                    
+                    /// ROW FOR SERVED AND COURIER
+                              ///
+                    
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                    
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                        LiteRollingSwitch(
+                          //initial value
+                          value: false,
+                          width: 120.spMin,
+                          textOn: 'Served',
+                          textOnColor: Colors.white,
+                          textOff: 'Not-Served',
+                          textOffColor: Colors.white,
+                          colorOn: CupertinoColors.activeGreen,
+                          colorOff: Colors.redAccent,
+                          iconOn: Icons.done,
+                          iconOff: Icons.remove_circle_outline,
+                          textSize: 8.0,
+                          onChanged: (bool state) {
+                            print('Served');
+                    
+                            ///Use it to manage the different states
+                            //print('Current State of SWITCH IS: $state');
+                          },
+                          onTap: () {
+                          },
+                          onDoubleTap: () {},
+                          onSwipe: () {},
+                        ), LiteRollingSwitch(
+                          //initial value
+                          value: false,
+                          width: 120.spMin,
+                          textOn: 'Courier',
+                          textOnColor: Colors.white,
+                          textOff: 'N-Courier',
+                          textOffColor: Colors.white,
+                          colorOn: CupertinoColors.activeGreen,
+                          colorOff: Colors.redAccent,
+                          iconOn: Icons.done,
+                          iconOff: Icons.remove_circle_outline,
+                          textSize: 8.0,
+                          onChanged: (bool state) {
+                            print('Given to Courier');
+                    
+                            ///Use it to manage the different states
+                            //print('Current State of SWITCH IS: $state');
+                          },
+                          onTap: () {
+                          },
+                          onDoubleTap: () {},
+                          onSwipe: () {},
+                        ),
+                      ],),
+                    ),
+                    
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   );
