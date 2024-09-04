@@ -14,7 +14,6 @@ import 'package:mealmate/AdminPanel/Pages/uploads.dart';
 import 'package:mealmate/AdminPanel/collectionUploadModelProvider/collectionProvider.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
-import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/components/card1.dart';
 import 'package:provider/provider.dart';
 
@@ -316,7 +315,7 @@ class _adminHomeState extends State<adminHome> {
                     //  Provider.of<IncomingOrdersProvider>(context, listen: false).fetchOrders(Provider.of<AdminId>(context).id);
 
                       Provider.of<AdminFunctions>(context, listen: false)
-                          .Switch(
+                          .SwitchOnline(
                               context,
                               Provider.of<AdminId>(context, listen: false).id,
                               state);

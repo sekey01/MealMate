@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mealmate/AdminPanel/Pages/adminHome.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 
+import '../../components/Notify.dart';
+
 class AdminLogin extends StatefulWidget {
   const AdminLogin({super.key});
 
@@ -15,9 +17,7 @@ class _AdminLoginState extends State<AdminLogin> {
 
   Future<void> adminSignIn() async {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter both email and password')),
-      );
+      Notify(context, 'Please fill All fields', Colors.white);
       return;
     }
 
@@ -49,11 +49,9 @@ class _AdminLoginState extends State<AdminLogin> {
           errorMessage = 'The email address is badly formatted.';
           break;
         default:
-          errorMessage = 'An error occurred: ${e.message}';
+          errorMessage = 'Check your Internet Connection';
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
-      );
+     Notify(context, errorMessage, Colors.white);
       print('Error during sign in: ${e.code} - ${e.message}');
     } catch (e) {
       print('Unexpected error during sign in: $e');
@@ -79,7 +77,7 @@ class _AdminLoginState extends State<AdminLogin> {
           child: Column(
             children: [
               SizedBox(
-                height: 20,
+                height: 40,
               ),
               Padding(
                 padding: EdgeInsets.all(25),

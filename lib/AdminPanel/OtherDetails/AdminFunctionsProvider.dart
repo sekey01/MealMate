@@ -20,7 +20,7 @@ class AdminFunctions extends ChangeNotifier {
         await doc.reference.delete();
       }
 
-      print('Document(s) Updated successfully');
+      print('isOnline Updated successfully');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         elevation: 20,
         content: Center(
@@ -37,7 +37,10 @@ class AdminFunctions extends ChangeNotifier {
     }
   }
 
-  Future<void> Switch(BuildContext context, int id, bool isActive) async {
+
+  ///THIS FUNCTION TOGGLES THE ADMINS ALL PRODUCTS ONLINE AND OFFLINE
+
+  Future<void> SwitchOnline(BuildContext context, int id, bool isActive) async {
     final CollectionReference collectionRef = FirebaseFirestore.instance.collection(
         '${Provider.of<AdminCollectionProvider>(context, listen: false).collectionToUpload}');
 
@@ -67,6 +70,69 @@ class AdminFunctions extends ChangeNotifier {
       ));
     } catch (e) {
       print('Error deleting document(s): $e');
+    }
+  }
+
+
+  /// THIS FUNCTION SWITCH THE SERVED TO TRUE
+
+  Future<void> switchServedFood(BuildContext context, int id, String phoneNumber, bool isServed, DateTime time) async {
+    final CollectionReference collectionRef = FirebaseFirestore.instance.collection('OrdersCollection');
+
+    try {
+      // First, get the documents that match the criteria
+      QuerySnapshot querySnapshot = await collectionRef
+          .where('vendorId', isEqualTo: id)
+          .where('phoneNumber', isEqualTo: phoneNumber)
+           .where('time', isEqualTo: time)
+          .get();
+
+      // Check if any documents were found
+      if (querySnapshot.docs.isEmpty) {
+        print('No matching documents found');
+        return;
+      }
+
+      // Update each matching document
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        await doc.reference.update({'served': isServed});
+      }
+
+      print('isServed updated successfully');
+    } catch (e) {
+      print('Error updating document(s): $e');
+      // You might want to show an error message to the user here
+    }
+  }
+
+
+
+  Future<void> switchCourier(BuildContext context, int id, String phoneNumber, bool isCourier, DateTime time) async {
+    final CollectionReference collectionRef = FirebaseFirestore.instance.collection('OrdersCollection');
+
+    try {
+      // First, get the documents that match the criteria
+      QuerySnapshot querySnapshot = await collectionRef
+          .where('vendorId', isEqualTo: id)
+          .where('phoneNumber', isEqualTo: phoneNumber)
+          .where('time', isEqualTo: time)
+          .get();
+
+      // Check if any documents were found
+      if (querySnapshot.docs.isEmpty) {
+        print('No matching documents found');
+        return;
+      }
+
+      // Update each matching document
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        await doc.reference.update({'courier': isCourier});
+      }
+
+      print('isCourier updated successfully');
+    } catch (e) {
+      print('Error updating document(s): $e');
+      // You might want to show an error message to the user here
     }
   }
 

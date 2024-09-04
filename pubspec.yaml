@@ -138,6 +138,10 @@ flutter:
      - assets/Icon/Search.png
      - assets/Icon/Cart.png
      - assets/Icon/profile.png
+     - assets/Icon/courier.png
+     - assets/Icon/orderComplete.png
+     - assets/Icon/orderReceived.png
+     - assets/Icon/orderServed.png
      - assets/images/MealmateDress.png
      - assets/images/MMBoard.png
      - assets/images/MMBoard1.png

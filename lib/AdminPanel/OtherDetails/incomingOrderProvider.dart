@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:mealmate/AdminPanel/Pages/IncomingOrdersPage.dart';
 
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
 
@@ -26,8 +25,9 @@ late bool gotIncomingOrdersIndex = false ;
             .toList();
 
         yield orders;
+        await Future.delayed(Duration(seconds: 30));
         gotIncomingOrdersIndex = true;
-        await Future.delayed(Duration(seconds: 2));
+
         notifyListeners();
 
       } on SocketException catch (e) {

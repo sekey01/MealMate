@@ -455,7 +455,7 @@ class _DetailedCardState extends State<DetailedCard> {
                         child: Text(
                           'CheckOut',
                           style:
-                              TextStyle(color: Colors.white, fontSize: 20.sp , fontWeight: FontWeight.bold),
+                              TextStyle(color: Colors.white, fontSize: 20.spMin , fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],

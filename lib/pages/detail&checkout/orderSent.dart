@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mealmate/pages/detail&checkout/track_Order.dart';
 
 class OrderSent extends StatefulWidget {
   const OrderSent({super.key});
@@ -15,40 +16,32 @@ class _OrderSentState extends State<OrderSent> {
       body: Center(
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(18.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: 20,
-                ),
+
+                Padding(padding: EdgeInsets.all(18),
+                child: Image(image: AssetImage('assets/images/logo.png'), height: 150,width: 150,),),
                 Padding(
                   padding: EdgeInsets.all(0),
                   child: Text(
                     'Order Sent ',
                     style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 25,
                         color: Colors.black,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
+                SizedBox(height: 30,),
                 Padding(
-                  padding: const EdgeInsets.all(68.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image(
-                          image: AssetImage('assets/Icon/paymentdone.png'))),
+                          image: AssetImage('assets/images/delivery.jpg'), height: 100,)),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(1),
-                  child: Text(
-                    " Payment Successful",
-                    style: TextStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.sp),
-                  ),
-                ),
+
                 SizedBox(
                   height: 30,
                 ),
@@ -57,7 +50,7 @@ class _OrderSentState extends State<OrderSent> {
                   child: Text(
                     " Your Order will Arrive Soon..",
                     style: TextStyle(
-                        color: Colors.deepOrange,
+                        color: Colors.green,
                         fontWeight: FontWeight.bold,
                         fontSize: 15.sp),
                   ),
@@ -70,13 +63,15 @@ class _OrderSentState extends State<OrderSent> {
                   color: Colors.white,
                   elevation: 3,
                   child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> TrackOrder()));
+                      },
                       child: Text(
                         'Track Order',
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize: 20),
+                            fontSize: 15.spMin),
                       )),
                 )
               ],

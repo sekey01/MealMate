@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
+import 'package:mealmate/AdminPanel/OtherDetails/AdminFunctionsProvider.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/ID.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
@@ -91,13 +90,13 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                   final Orders = snapshot.data![index];
                   return Badge(
                     alignment: Alignment.topCenter,
-                    backgroundColor: Colors.red,
-                    label: Text('Incomplete Order', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                    backgroundColor: Orders.delivered?Colors.green:Colors.red,
+                    label: Text(Orders.delivered?' Order Completed': 'Incomplete Order', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Material(
                         borderRadius: BorderRadius.circular(10),
-                        color: Orders.served ? Colors.green : Colors.red,
+                        color: Orders.delivered ? Colors.green : Colors.red,
                         shadowColor: Colors.green,
                         elevation: 2,
                         child: Padding(
@@ -235,7 +234,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                         children: [
                         LiteRollingSwitch(
                           //initial value
-                          value: false,
+                          value: Orders.served,
                           width: 120.spMin,
                           textOn: 'Served',
                           textOnColor: Colors.white,
@@ -248,7 +247,9 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                           textSize: 8.0,
                           onChanged: (bool state) {
                             print('Served');
-                    
+                            Provider.of<AdminFunctions>(context, listen: false).switchServedFood(context,Orders.vendorId , Orders.phoneNumber, state, Orders.time);
+                 //   print(Orders.vendorId);
+                 //   print(Orders.phoneNumber);
                             ///Use it to manage the different states
                             //print('Current State of SWITCH IS: $state');
                           },
@@ -258,7 +259,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                           onSwipe: () {},
                         ), LiteRollingSwitch(
                           //initial value
-                          value: false,
+                          value: Orders.courier,
                           width: 120.spMin,
                           textOn: 'Courier',
                           textOnColor: Colors.white,
@@ -271,7 +272,8 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                           textSize: 8.0,
                           onChanged: (bool state) {
                             print('Given to Courier');
-                    
+                            Provider.of<AdminFunctions>(context, listen: false).switchCourier(context,Orders.vendorId , Orders.phoneNumber, state, Orders.time);
+
                             ///Use it to manage the different states
                             //print('Current State of SWITCH IS: $state');
                           },
