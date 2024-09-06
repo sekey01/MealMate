@@ -52,8 +52,7 @@ dependencies:
   card_loading: ^0.3.2
   shared_preferences: ^2.2.3
   firebase_auth: ^4.20.0
-  connectivity_plus: ^3.0.6
-  internet_connectivity_checker: ^1.0.2
+  internet_connection_checker: ^2.0.0
   flutter_screenutil: ^5.9.3
   geolocator: ^12.0.0
   open_geocoder: ^0.0.1
@@ -103,17 +102,11 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/images/sp1.png
-     - assets/images/illustration1.jpg
      - assets/images/logo.png
-     - assets/images/user.jpg
-     - assets/images/google.jpg
-     - assets/images/food.jpg
+     - assets/images/mealmate.png
      - assets/images/delivery.jpg
      - assets/images/delivery1.jpg
-     - assets/images/food1.jpg
-     - assets/images/food2.webp
-     - assets/images/food3.webp
+     - assets/images/google.jpg
      - assets/adsimages/ads1.png
      - assets/adsimages/ads2.png
      - assets/adsimages/ads3.png
@@ -149,7 +142,14 @@ flutter:
      - assets/Icon/coupon.png
      - assets/Icon/version.png
      - assets/Icon/transaction.png
+     - assets/Icon/filter.png
      - assets/Icon/loading.gif
+     - assets/Icon/notification.png
+     - assets/Announcements/An_Feedback.png
+     - assets/Announcements/An_Jollof.png
+     - assets/Announcements/An_Location.png
+     - assets/Announcements/An_Pizza.png
+     - assets/Announcements/An_Grocery.png
 
 
 

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,10 +11,12 @@ import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/AdminFunctionsProvider.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
 import 'package:mealmate/AdminPanel/Pages/UploadModel.dart';
+import 'package:mealmate/AdminPanel/Pages/adminNotificationPage.dart';
 import 'package:mealmate/AdminPanel/Pages/uploads.dart';
 import 'package:mealmate/AdminPanel/collectionUploadModelProvider/collectionProvider.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
+import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/components/card1.dart';
 import 'package:provider/provider.dart';
 
@@ -146,6 +149,7 @@ class _adminHomeState extends State<adminHome> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        elevation: 3,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Badge(
@@ -159,7 +163,7 @@ class _adminHomeState extends State<adminHome> {
                        if (snapshot.connectionState == ConnectionState.waiting) {
                         // print(111111111111);
                              return Center(
-                                   child: Text('Updating...'),);}
+                                   child: Text('  . . .  ',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),);}
 
                        else if(snapshot.hasData && snapshot.data != null){
                        //  print(22222222222);
@@ -195,21 +199,25 @@ class _adminHomeState extends State<adminHome> {
               },
               icon: ImageIcon(
                 AssetImage('assets/Icon/Orders.png'),
-                color: Colors.blueGrey
-
-
-,
+                color: Colors.blueGrey,
                 size: 40,
               ),
             ),
           ),
         ),
-        backgroundColor: Colors.white70,
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
-        title: Text('Admin Panel'),
+        title: RichText(text: TextSpan(
+            children: [
+              TextSpan(text: "Admin", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold)),
+              TextSpan(text: "Panel", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,)),
+
+
+            ]
+        )),
         titleTextStyle: TextStyle(
             color: Colors.blueGrey,
-            fontSize: 20.spMin,
+            fontSize: 20.sp,
             fontWeight: FontWeight.bold,
             letterSpacing: 2),
         centerTitle: true,
@@ -221,13 +229,34 @@ class _adminHomeState extends State<adminHome> {
                   context, MaterialPageRoute(builder: (context) => Uploaded()));
             },
             icon: ImageIcon(
-               AssetImage('assets/Icon/uploads.png'),
-              size: 30.spMin,
+              AssetImage('assets/Icon/uploads.png'),
+              size: 25.sp,
               color: Colors.deepOrangeAccent,
             ),
           ),
           SizedBox(
-            width: 5.w,
+            width: 2.w,
+          ),
+          /// THIS IS NOTIFICATION TO ALL ADMINS
+          ///
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => AdminNotice()));
+              },
+              icon: Badge(
+                backgroundColor: Colors.green,
+                label: Text('1', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                child: ImageIcon(
+                   AssetImage('assets/Icon/notification.png'),
+                  size: 25.sp,
+                  color: Colors.deepOrangeAccent,
+                ),
+              ),
+            ),
+          
+          SizedBox(
+            width:2.w,
           ),
 
           ///ICON BUTTON CHANGE THE ID OF ADMIN
@@ -253,7 +282,7 @@ class _adminHomeState extends State<adminHome> {
             },
             icon: ImageIcon(
                AssetImage('assets/Icon/change.png'),
-              size: 30,
+              size: 25.spMin,
               color: Colors.blueGrey
 
 
@@ -269,6 +298,7 @@ class _adminHomeState extends State<adminHome> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
+                SizedBox(height: 30.h,),
                 ///LOCATION DISPLAYED HERE
                 ///
                 ///
@@ -291,7 +321,7 @@ class _adminHomeState extends State<adminHome> {
                       );
                     }),
                 SizedBox(
-                  height: 15,
+                  height: 30.h,
                 ),
 
                 ///TOGGLE BUTTON TO SHOW FOOD IS ONLINE
@@ -330,7 +360,7 @@ class _adminHomeState extends State<adminHome> {
                   onSwipe: () {},
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 30.h,
                 ),
                 Text(
                   'Upload Food Items Here',
@@ -399,7 +429,7 @@ class _adminHomeState extends State<adminHome> {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 30.h,
                 ),
 
                 ///PICK YOUR IMAGE OF FOOD HERE
@@ -431,8 +461,8 @@ class _adminHomeState extends State<adminHome> {
                             : Image(
                                 image:
                                     AssetImage('assets/Icon/selectImage.png'),
-                                height: 200,
-                                width: 200,
+                                height: 150.h,
+                                width: 150.h,
                               ),
                       ),
                     ),
@@ -448,6 +478,7 @@ class _adminHomeState extends State<adminHome> {
                         key: _formkey,
                         child: Column(
                           children: [
+                            SizedBox(height: 20.h,),
                             ///TEXTFIELD FOR MERCHANT ID
                             Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -482,7 +513,7 @@ class _adminHomeState extends State<adminHome> {
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 20.h,
                             ),
 
                             ///TEXTFIELD FOR RESTAURANT NAME
@@ -518,7 +549,7 @@ class _adminHomeState extends State<adminHome> {
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 20.h,
                             ),
 
                             ///TEXTFIELD FOR TIME
@@ -554,7 +585,7 @@ class _adminHomeState extends State<adminHome> {
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 20.h,
                             ),
 
                             ///TEXTFIELD FOR LOCATION
@@ -590,7 +621,7 @@ class _adminHomeState extends State<adminHome> {
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 20.h,
                             ),
 
                             ///TEXTFIELD FOR FOODNAME
@@ -625,7 +656,7 @@ class _adminHomeState extends State<adminHome> {
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 20.h,
                             ),
 
                             ///TEXTFIELD FOR PRICE
@@ -656,7 +687,7 @@ class _adminHomeState extends State<adminHome> {
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 20.h,
                             ),
                           ],
                         ),
@@ -666,35 +697,37 @@ class _adminHomeState extends State<adminHome> {
                 ),
 
                 SizedBox(
-                  height: 20,
+                  height: 20.h,
                 ),
 
                 ///UPLOAD FUNCTION FOR ADMIN
                 SizedBox(
-                  width: 200,
-                  height: 50,
+                  width: 200.w,
+                  height: 50.h,
                   child: _isLoading
                       ? CustomLoGoLoading()
                       : ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.deepOrangeAccent
-
-
-),
+                          ),
                           onPressed: () {
                             if (_formkey.currentState!.validate() &&
                                 _image?.path != null) {
                               uploadFood(UploadModel(
+                                  latitude : Provider.of<LocationProvider>(context,listen: false).Lat.toDouble(),
+                                longitude: Provider.of<LocationProvider>(context,listen: false).Long.toDouble() ,
                                   isAvailable: true,
                                   imageUrl: imageUrl,
-                                  restaurant: restaurantController.text.trim(),
-                                  foodName: foodNameController.text.trim(),
+                                  restaurant: restaurantController.text.toLowerCase().trim(),
+                                  foodName: foodNameController.text.toLowerCase().trim(),
                                   price:
                                       double.parse(priceController.text.trim()),
-                                  location: locationController.text.trim(),
+                                  location: locationController.text.toLowerCase().trim(),
                                   time: timeController.text.trim(),
                                   vendorId:
-                                      int.parse(idController.text.trim())));
+                                      int.parse(idController.text.trim()),
+
+                              ));
 
                               //clearing the text fields
                               idController.clear();
@@ -707,18 +740,7 @@ class _adminHomeState extends State<adminHome> {
                                 _image = null;
                               });
                             } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                elevation: 20,
-                                content: Center(
-                                  child: Text(
-                                    'Please Fill All Fields and Select Image',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                ),
-                                backgroundColor: Colors.red.withOpacity(0.5),
-                              ));
+                             Notify(context, 'Please pick an image and fill all fields ', Colors.red);
                             }
                           },
                           child: Text(

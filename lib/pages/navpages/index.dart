@@ -1,13 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mealmate/AdminPanel/Pages/IncomingOrdersPage.dart';
+import 'package:mealmate/AdminPanel/Pages/adminHome.dart';
 import 'package:mealmate/AdminPanel/components/adminHorizontalCard.dart';
+import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/pages/detail&checkout/detail.dart';
 import 'package:mealmate/pages/navpages/cart.dart';
 import 'package:mealmate/pages/navpages/profile.dart';
 import 'package:mealmate/pages/navpages/searchByCollection.dart';
+import 'package:mealmate/pages/searchfooditem/searchFoodItem.dart';
 import 'package:provider/provider.dart';
 
 import '../../UserLocation/LocationProvider.dart';
@@ -17,6 +21,7 @@ import '../../components/mainCards/horizontalCard.dart';
 import '../../components/mainCards/verticalCard.dart';
 import '../../models&ReadCollectionModel/ListFoodItemModel.dart';
 import '../../models&ReadCollectionModel/cartmodel.dart';
+import 'notifications.dart';
 
 class Index extends StatefulWidget {
   const Index({super.key});
@@ -49,6 +54,7 @@ class _IndexState extends State<Index> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        elevation: 3,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
@@ -56,40 +62,54 @@ class _IndexState extends State<Index> {
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> Profile()));
               },
               child: CircleAvatar(
-                  backgroundColor: Colors.blueGrey,
-                  child: ImageIcon(AssetImage('assets/Icon/profile.png'), color: Colors.white, size: 20.spMin,))),
+                radius: 10,
+                  backgroundImage: AssetImage('assets/Icon/profile.png'),
+                  )),
         ),
         automaticallyImplyLeading: false,
         centerTitle: true,
         actions: [
+
+          SizedBox(
+            width: 20.w,
+          ),
           GestureDetector(
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Cart()));
+                  context, MaterialPageRoute(builder: (context) => Notice()));
             },
             child: Badge(
-              backgroundColor: Colors.black,
-              label: Consumer<CartModel>(
+              backgroundColor: Colors.blueGrey,
+              label: Consumer<LocalStorageProvider>(
                   builder: (context, value, child) => Text(
-                        value.cart.length.toString(),
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      )),
+                    value.notificationLength.toString(),
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  )),
               child: ImageIcon(AssetImage(
-                'assets/Icon/Cart.png'
+                  'assets/Icon/notification.png'
               ), color: Colors.blueGrey,size: 30.spMin,
-            ),
+              ),
             ),
           ),
+
+
           SizedBox(
-            width: 40.w,
+            width: 30.w,
           ),
         ],
-        title: Text('MealMate'),
+        title: RichText(text: TextSpan(
+          children: [
+            TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
+            TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
+
+
+          ]
+        )),
         titleTextStyle: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
-            letterSpacing: 3,
+            letterSpacing: 1,
             fontSize: 20.spMin),
         backgroundColor: Colors.transparent,
       ),
@@ -100,29 +120,91 @@ class _IndexState extends State<Index> {
               padding: const EdgeInsets.all(6.0),
               child: Column(
                 children: [
+SizedBox(height: 30.spMin,),
+
+                  ///LOCATION DISPLAYED HERE
+                  ///
                   Padding(padding: EdgeInsets.all(3), child:     FutureBuilder(
                       future:
                       Provider.of<LocationProvider>(context, listen: false)
                           .determinePosition(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return Text(snapshot.data.toString(),
-                              style: TextStyle(
-                                  overflow: TextOverflow.ellipsis,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 10.spMin));
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Icon(Icons.location_on_outlined, size: 20,color: Colors.blueGrey,),
+                              Text(snapshot.data.toString(),
+                                  style: TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10.spMin)),
+                            ],
+                          );
                         }
                         return Text(
                           'locating you...',
                           style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.normal),
                         );
                       }),),
-                  SizedBox(height: 20,),
+
+
+                  SizedBox(height: 20.h,),
+                  /// SEARCH BAR HERE
+                  ///
+
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextField(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchFoodItem()));
+                      },
+                      style: TextStyle(color: Colors.deepOrange),
+                      decoration: InputDecoration(
+                        hintText: 'FoodName or Restaurant',
+                        fillColor: Colors.grey.shade300,
+                        filled: true,
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Colors.blueGrey,
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                          },
+                          icon: ImageIcon(AssetImage('assets/Icon/filter.png'), color: Colors.blueGrey,),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                            style: BorderStyle.none,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+
+                          ///borderSide: BorderSide(color: Colors.red),
+                        ),
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 15,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.blueGrey,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                 /*       label: Text('Foodnameee and Restaurant'),
+                        labelStyle: TextStyle(color: Colors.grey, fontSize: 10),*/
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 30.h,),
                   ///CARD SHOWING THE INTRODUCTION OF THE APP AND COUROSEL OF IMAGES
                   initCard(),
                   SizedBox(
-                    height: 20.h,
+                    height: 30.h,
                   ),
                   Wrap(children: [
                     Padding(
@@ -154,11 +236,11 @@ class _IndexState extends State<Index> {
                     ),
                   ]),
                   SizedBox(
-                    height: 20.h,
+                    height: 10.h,
                   ),
-                  Padding(padding: EdgeInsets.all(10), child: Image(image: AssetImage('assets/images/MMBoard.png')),),
+                  Padding(padding: EdgeInsets.all(1), child: Image(image: AssetImage('assets/Announcements/An_Jollof.png'),height: 200.h,),),
                   SizedBox(
-                    height: 40.h,
+                    height: 30.h,
                   ),
                   ///COURRESSEL  FOR ADS
                   Badge(
@@ -170,7 +252,16 @@ class _IndexState extends State<Index> {
                       child: adsCouressel()),
 
                   SizedBox(
-                    height: 20.h,
+                    height: 30.h,
+                  ),
+
+                  Padding(padding: EdgeInsets.all(1),
+                      child: Image(image: AssetImage('assets/Announcements/An_Grocery.png'))
+
+
+                  ),
+                  SizedBox(
+                    height: 30.h,
                   ),
 
                   Row(
@@ -203,6 +294,9 @@ class _IndexState extends State<Index> {
                         ),
                       )
                     ],
+                  ),
+                  SizedBox(
+                    height: 30.h,
                   ),
                   Container(
                     color: Colors.white,
@@ -246,7 +340,10 @@ class _IndexState extends State<Index> {
                                                           foodItem.location,
                                                       vendorid:
                                                           foodItem.vendorId,
-                                                      time: foodItem.time))) :  Notify(context, 'This item is not Avable now', Colors.white) ;
+                                                      time: foodItem.time,
+                                                  latitude: foodItem.latitude,
+                                                    longitude: foodItem.longitude,
+                                                  ))) :  Notify(context, 'This item is not Avable now', Colors.red) ;
                                     },
                                     child: verticalCard(
                                         foodItem.imageUrl,
@@ -269,7 +366,14 @@ class _IndexState extends State<Index> {
                     height: 30.h,
                   ),
 
-                  Padding(padding: EdgeInsets.all(8), child: Image(image: AssetImage('assets/images/MMBoard1.png')),),
+                  Padding(padding: EdgeInsets.all(1),
+                      child: Image(image: AssetImage('assets/Announcements/An_Feedback.png'))
+
+
+                      ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -352,6 +456,7 @@ class _IndexState extends State<Index> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     DetailedCard(
+
                                                         imgUrl:
                                                             foodItem.imageUrl,
                                                         restaurant:
@@ -363,7 +468,10 @@ class _IndexState extends State<Index> {
                                                             foodItem.location,
                                                         vendorid:
                                                             foodItem.vendorId,
-                                                        time: foodItem.time))):Notify(context, 'This item is not Available now', Colors.white);
+                                                        time: foodItem.time,
+                                                    latitude: foodItem.latitude,
+                                                      longitude: foodItem.longitude,
+                                                    ))):Notify(context, 'This item is not Available now', Colors.red);
                                       },
                                       child: verticalCard(
                                         foodItem.imageUrl,
@@ -384,6 +492,8 @@ class _IndexState extends State<Index> {
                       },
                     ),
                   ),
+
+
                 ],
               ),
             ),

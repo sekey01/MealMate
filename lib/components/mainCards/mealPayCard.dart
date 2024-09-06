@@ -66,7 +66,7 @@ Widget MatePayCard(
                       color: Colors.black),
                 ),
                 SizedBox(
-                  height: 5,
+                  height: 5.h,
                 ),
                 Text(
                   CardNumber,
@@ -76,7 +76,7 @@ Widget MatePayCard(
                       color: Colors.black),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 20.h,
                 ),
                 Text(
                   'VALID THRU ',
@@ -100,7 +100,7 @@ Widget MatePayCard(
                       color: Colors.black87),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 )
               ],
             ),

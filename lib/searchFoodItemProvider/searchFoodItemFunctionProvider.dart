@@ -26,18 +26,18 @@ class SearchProvider extends ChangeNotifier {
       final results = await Future.wait([
         FirebaseFirestore.instance
             .collection(_foodCollection)
-            .where('foodName', isGreaterThanOrEqualTo: _searchItem)
-            .where('foodName', isLessThan: _searchItem + 'z')
+            .where('foodName', isGreaterThanOrEqualTo: _searchItem.toLowerCase())
+            .where('foodName', isLessThan: _searchItem.toLowerCase() + 'z')
             .get(),
         FirebaseFirestore.instance
             .collection(_drinksCollection)
-            .where('foodName', isGreaterThanOrEqualTo: _searchItem)
-            .where('foodName', isLessThan: _searchItem + 'z')
+            .where('foodName', isGreaterThanOrEqualTo: _searchItem.toLowerCase())
+            .where('foodName', isLessThan: _searchItem.toLowerCase() + 'z')
             .get(),
         FirebaseFirestore.instance
             .collection(_groceryCollection)
-            .where('foodName', isGreaterThanOrEqualTo: _searchItem)
-            .where('foodName', isLessThan: _searchItem + 'z')
+            .where('foodName', isGreaterThanOrEqualTo: _searchItem.toLowerCase())
+            .where('foodName', isLessThan: _searchItem.toLowerCase() + 'z')
             .get(),
       ]);
 
@@ -57,7 +57,7 @@ class SearchProvider extends ChangeNotifier {
           .toList();
 
       // For debugging
-      print('Search results: ${combinedResults.length} items found');
+     // print('Search results: ${combinedResults.length} items found');
       for (final foodItem in combinedResults) {
         print(foodItem.foodName);
       }

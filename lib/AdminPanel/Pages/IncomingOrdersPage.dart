@@ -12,7 +12,6 @@ import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/NoFoodFound.dart';
 import 'package:provider/provider.dart';
-
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
 
 class IncomingOrders extends StatefulWidget {
@@ -23,10 +22,7 @@ class IncomingOrders extends StatefulWidget {
 }
 
 class _IncomingOrdersState extends State<IncomingOrders> {
-  @override
   final Completer<GoogleMapController> _Usercontroller = Completer<GoogleMapController>();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +31,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        elevation: 3,
         automaticallyImplyLeading: false,
         leading: IconButton(onPressed: (){
           Navigator.pop(context);
@@ -63,12 +60,12 @@ class _IncomingOrdersState extends State<IncomingOrders> {
             onPressed: () {
               setState(() {}); // Refresh the page
             },
-            icon: Image(image: AssetImage('assets/Icon/refresh.png'), color: Colors.blueGrey,),
+            icon: ImageIcon(AssetImage('assets/Icon/refresh.png'), color: Colors.blueGrey,size:30,),
           ),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(4.0),
+        padding: const EdgeInsets.all(8.0),
         child: StreamBuilder<List<OrderInfo>>(
           stream: Provider.of<IncomingOrdersProvider>(context, listen: false).fetchOrders(adminId),
           builder: (context, snapshot) {
@@ -77,14 +74,13 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                 child: CustomLoGoLoading(),
               );
             } else if (snapshot.hasError) {
-              return Center(child: Text('Error: Try again later'));
+              return Center(child: Center(child: Text('Error: Try again later')));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return Center(
                 child: noFoodFound(),
               );
             } else {
               return ListView.builder(
-
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final Orders = snapshot.data![index];
@@ -102,7 +98,6 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: ExpansionTile(
-                    
                             shape: Border.all(color: Colors.black),
                             textColor: Colors.black,
                             collapsedBackgroundColor: Colors.white,
@@ -196,6 +191,14 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                     height: 250.spMin,
                                     width: double.infinity,
                                     child: GoogleMap(
+                                      markers: {
+                                        Marker(
+                                            markerId: MarkerId('User'),
+                                            visible: true,
+                                            position: LatLng(
+                                                Orders.Latitude, Orders.Longitude
+                                                ))
+                                      },
                                       //liteModeEnabled: true,
                                       compassEnabled: true,
                                       mapToolbarEnabled: true,
@@ -204,7 +207,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                       zoomControlsEnabled: true,
                                       myLocationEnabled: true,
                                       myLocationButtonEnabled: true,
-                                      mapType: MapType.terrain,
+                                      mapType: MapType.normal,
                                       onMapCreated: (GoogleMapController controller) {
                                         _Usercontroller.complete(_Usercontroller
                                             as FutureOr<GoogleMapController>?);

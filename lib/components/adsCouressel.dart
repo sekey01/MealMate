@@ -23,7 +23,7 @@ Container adsCouressel() {
           //  width: double.infinity,
         ),
         Image(
-          image: AssetImage('assets/images/MMBoard1.png'),
+          image: AssetImage('assets/Announcements/An_Feedback.png'),
           height: 240,
           width: 200,
         ),
@@ -38,7 +38,7 @@ Container adsCouressel() {
           width: 200,
         ),
         Image(
-          image: AssetImage('assets/images/MMBoard.png'),
+          image: AssetImage('assets/Announcements/An_Grocery.png'),
           height: 240,
           width: 200,
         ),

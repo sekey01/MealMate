@@ -3,13 +3,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mealmate/components/CustomLoading.dart';
+import 'package:mealmate/components/Notify.dart';
 import 'package:provider/provider.dart';
 
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
 
 class TrackOrder extends StatefulWidget {
-  const TrackOrder({super.key});
+  final int vendorId;
+  final DateTime time;
+  const TrackOrder({super.key,required this.vendorId,required this.time} );
 
   @override
   State<TrackOrder> createState() => _TrackOrderState();
@@ -17,11 +21,19 @@ class TrackOrder extends StatefulWidget {
 
 class _TrackOrderState extends State<TrackOrder> {
 
-  Stream<OrderInfo> trackOrder(int id, String phoneNumber) {
+  Stream<int> countdownTimer(int start) async* {
+    for (int i = start; i >= 0; i--) {
+      await Future.delayed(Duration(seconds: 1));
+      yield i;
+    }
+  }
+
+  Stream<OrderInfo> trackOrder(int id, String phoneNumber, DateTime time) {
     return FirebaseFirestore.instance
         .collection('OrdersCollection')
         .where('vendorId', isEqualTo: id)
         .where('phoneNumber', isEqualTo: phoneNumber)
+        .where('time', isEqualTo: time )
     ///token id is the Id given to every user when he or she signs up or logs in
     ///
         //.Where('tokenid',isEqualTo: tokenid)
@@ -44,7 +56,7 @@ class _TrackOrderState extends State<TrackOrder> {
 
 /// THIS CHANGES TOGGLES THE BOOL OF DELIVERED TO TRUE AND CHANGES THE INCOMPLETE ORDER FROM THE ADMIN TO TRUE AND ALERTS THE ADMIN THAT THE BUYER HAS RECEIVED
   /// THE FOOD OR ITEM 😊😊😊😊😊😊😊😊😊
-  Future<void> switchDelivered(BuildContext context, int id, String phoneNumber, bool isDelivered, ) async {
+  Future<void> switchDelivered(BuildContext context, int id, String phoneNumber, bool isDelivered,DateTime time ) async {
     final CollectionReference collectionRef = FirebaseFirestore.instance.collection('OrdersCollection');
 
     try {
@@ -52,6 +64,7 @@ class _TrackOrderState extends State<TrackOrder> {
       QuerySnapshot querySnapshot = await collectionRef
           .where('vendorId', isEqualTo: id)
           .where('phoneNumber', isEqualTo: phoneNumber)
+      .where('time', isEqualTo:time )
           .get();
 
       // Check if any documents were found
@@ -88,8 +101,8 @@ class _TrackOrderState extends State<TrackOrder> {
           ///
           ///
           ///
-            stream: trackOrder(54348,Provider.of<LocalStorageProvider>(context, listen: false)
-                .phoneNumber),
+            stream: trackOrder(widget.vendorId,Provider.of<LocalStorageProvider>(context, listen: false)
+                .phoneNumber, widget.time),
             builder: (context, snapshot){
           if(snapshot.connectionState == ConnectionState.waiting )
           { return Center(child: Text('Collecting Updates...', style: TextStyle(color: Colors.deepOrangeAccent, fontWeight: FontWeight.bold, fontSize: 20),));
@@ -106,12 +119,50 @@ final Order = snapshot.data;
           return Center(
 
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
 Text('Order progress...', style: TextStyle(color: Colors.blueGrey, fontSize: 25, fontWeight: FontWeight.bold),),
+
+              ///TIMER
+            /*  Padding(padding: EdgeInsets.all(16), child: CustomLoGoLoading(),),
+
+              StreamBuilder<int>(
+                stream: countdownTimer(60), // Countdown from 60 seconds
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Text(
+                      'Starting...',
+                      style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+                    );
+                  } else if (snapshot.hasData) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: RichText(text: TextSpan(
+                          children: [
+                            TextSpan(text: "Order will be received in r", style: TextStyle(color: Colors.black, fontSize: 10.sp,)),
+                            TextSpan(text: "${snapshot.data} seconds , ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,)),
+                            TextSpan(text: "if the Order Served is not ticked green", style: TextStyle(color: Colors.black, fontSize: 10.sp,)),
+
+
+                          ]
+                      )),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text(
+                      'Error: ${snapshot.error}',
+                      style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+                    );
+                  } else {
+                    return Text(
+                      'Done!',
+                      style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+                    );
+                  }
+                },
+              ),*/
               /// ORDER RECEIVED
               Padding(padding: EdgeInsets.all(8),
-              child: ImageIcon(AssetImage(('assets/Icon/orderReceived.png'),), size: 60,color: Colors.green,),
+              child: ImageIcon(AssetImage(('assets/Icon/orderReceived.png'),), size: 80,color: Colors.green,),
               ),
               Text('Order Sent', style: TextStyle(color: Colors.green, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
  SizedBox(height: 10.h,),
@@ -120,33 +171,36 @@ Text('Order progress...', style: TextStyle(color: Colors.blueGrey, fontSize: 25,
 
               ///ORDER SERVED
               Padding(padding: EdgeInsets.all(8),
-                child: ImageIcon(AssetImage(('assets/Icon/orderServed.png'),), size: 60,color:Order!.served?Colors.green: Colors.red,),
+                child: ImageIcon(AssetImage(('assets/Icon/orderServed.png'),), size: Order!.served?80:30,color:Order!.served?Colors.green: Colors.grey,),
               ),
-              Text('Order Served', style: TextStyle(color: Order.served?Colors.green: Colors.red, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
+              Text('Order Served', style: TextStyle(color: Order.served?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
               SizedBox(height: 10.h,),
-              Icon(Icons.arrow_downward, color: Order.served?Colors.green: Colors.red,),
+              Icon(Icons.arrow_downward, color: Order.served?Colors.green: Colors.grey,),
              // SizedBox(height: 10.h,),
 
              /// ORDER GIVEN TO COURIER
               Padding(padding: EdgeInsets.all(8),
-                child: ImageIcon(AssetImage(('assets/Icon/courier.png'),), size: 60,color:Order.courier?Colors.green: Colors.red,),
+                child: ImageIcon(AssetImage(('assets/Icon/courier.png'),), size: Order!.courier?80:30,color:Order.courier?Colors.green: Colors.grey,),
               ),
-              Text(' Courier almost at your location', style: TextStyle(color: Order.courier?Colors.green: Colors.red, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
+              Text(' Courier almost at your location', style: TextStyle(color: Order.courier?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
               SizedBox(height: 10.h,),
-              Icon(Icons.arrow_downward, color: Order.courier?Colors.green: Colors.red,),
+              Icon(Icons.arrow_downward, color: Order.courier?Colors.green: Colors.grey,),
               //SizedBox(height: 10.h,),
 
               /// ORDER COMPLETE
               Padding(padding: EdgeInsets.all(8),
-                child: ImageIcon(AssetImage(('assets/Icon/orderComplete.png'),), size: 70,color: Order.delivered?Colors.green: Colors.red,),
+                child: ImageIcon(AssetImage(('assets/Icon/orderComplete.png'),), size: Order!.delivered?80:30,color: Order.delivered?Colors.green: Colors.grey,),
               ),
-              Text(' Delivered ', style: TextStyle(color: Order.delivered?Colors.green: Colors.red, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
-              SizedBox(height: 10.h,),
+              Text(' Order Delivered ', style: TextStyle(color: Order.delivered?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
+              SizedBox(height: 20.h,),
+
+
 
 Material(  borderRadius: BorderRadius.circular(10),
-    color: Colors.white,
+    color: Colors.deepOrangeAccent,
     elevation: 3,
     child: TextButton(onPressed: (){
+
 
       ///
       ///
@@ -155,10 +209,12 @@ Material(  borderRadius: BorderRadius.circular(10),
       ///
       ///
       ///
-      switchDelivered(context, 54348,Provider.of<LocalStorageProvider>(context, listen: false)
-          .phoneNumber,true );
+     /* switchDelivered(context, widget.vendorId,Provider.of<LocalStorageProvider>(context, listen: false)
+          .phoneNumber,true,widget.time);*/
+      Notify(context, 'Thanks for Using MealMate 😊', Colors.green);
 
-    }, child: Text('Done', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold,letterSpacing: 3),)))
+
+    }, child: Text('Received', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,letterSpacing: 3),)))
 
 
 

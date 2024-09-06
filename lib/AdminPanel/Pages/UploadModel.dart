@@ -1,3 +1,5 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 class UploadModel {
   final String imageUrl;
   final String restaurant;
@@ -7,8 +9,10 @@ class UploadModel {
   final String time;
   final int vendorId;
   final bool isAvailable;
+  final double latitude;
+  final double longitude;
 
-  UploadModel({
+  UploadModel(  {
     required this.imageUrl,
     required this.restaurant,
     required this.foodName,
@@ -17,6 +21,9 @@ class UploadModel {
     required this.location,
     required this.time,
     required this.isAvailable,
+    required this.latitude,
+    required this.longitude
+
   });
 
   Map<String, dynamic> toMap() {
@@ -29,6 +36,9 @@ class UploadModel {
       'time': time,
       'vendorId': vendorId,
       'isActive': isAvailable,
+      'latitude' : latitude?? 0,
+
+      'longitude': longitude?? 0,
     };
   }
 }

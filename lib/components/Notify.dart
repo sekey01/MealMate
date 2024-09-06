@@ -7,10 +7,10 @@ void Notify(BuildContext context, String text, Color color) {
       content: Center(
         child: Text(
           text,
-          style: TextStyle(color: color, fontSize: 15, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold,),
         ),
       ),
-      backgroundColor: Colors.red.withOpacity(0.5),
+      backgroundColor: color.withOpacity(0.5),
     ),
   );
 }

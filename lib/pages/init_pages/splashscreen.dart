@@ -22,21 +22,23 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.white,
       splashScreenBody: Center(
           child: Padding(
-        padding: const EdgeInsets.all(48.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(child: Image(image: AssetImage('assets/images/logo.png'))),
-            SizedBox(
-              height: 50,
-            ),
-            Center(
-              child: CustomLoGoLoading(),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-          ],
+        padding: const EdgeInsets.all(80.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(child: Image(image: AssetImage('assets/images/logo.png'))),
+              SizedBox(
+                height: 50,
+              ),
+              Center(
+                child: CustomLoGoLoading(),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
         ),
       )),
     );

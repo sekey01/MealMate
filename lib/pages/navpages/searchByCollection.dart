@@ -171,7 +171,10 @@ class _SearchState extends State<Search> {
                                             price: data.price,
                                             location: data.location,
                                             vendorid: data.vendorId,
-                                            time: data.time))): Notify(context, 'This item Is not Available Now', Colors.white);
+                                            time: data.time,
+                                        latitude: data.latitude,
+                                          longitude: data.longitude,
+                                        ))): Notify(context, 'This item Is not Available Now', Colors.red);
                               },
                               child: verticalCard(
                                   data.imageUrl,

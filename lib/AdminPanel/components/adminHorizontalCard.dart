@@ -39,7 +39,7 @@ ListView adminHorizontalCard(String imgUrl, String restaurant, String location,
                               ///
                               Icons.image_not_supported_outlined,
                               color: Colors.deepOrange,
-                              size: 120.sp,
+                              size: 100.sp,
                             ),
                           )
                         : ClipRRect(
@@ -47,7 +47,7 @@ ListView adminHorizontalCard(String imgUrl, String restaurant, String location,
                             child: Image(
                               fit: BoxFit.fill,
                               image: NetworkImage(imgUrl),
-                              height: 150.h,
+                              height: 100.h,
                               width: 150.w,
                             ),
                           ),
@@ -57,7 +57,7 @@ ListView adminHorizontalCard(String imgUrl, String restaurant, String location,
                   width: 20.w,
                 ),
                 Container(
-                  height: 200,
+                  height: 200.h,
                   color: Colors.white,
                   child: Column(
                     //Column to Shaow Name OF Restaurant,Food Name, and Price Of the Food
@@ -70,7 +70,7 @@ ListView adminHorizontalCard(String imgUrl, String restaurant, String location,
                       Text(
                         restaurant,
                         style: TextStyle(
-                            fontSize: 10,
+                            fontSize: 10.sp,
                             letterSpacing: 1,
                             fontWeight: FontWeight.w700,
                             color: Colors.black),
@@ -84,7 +84,7 @@ ListView adminHorizontalCard(String imgUrl, String restaurant, String location,
                         foodName,
                         style: TextStyle(
                             letterSpacing: 1,
-                            fontSize: 10,
+                            fontSize: 10.sp,
                             fontWeight: FontWeight.bold,
                             color: Colors.deepOrangeAccent),
                       ),
@@ -97,12 +97,12 @@ ListView adminHorizontalCard(String imgUrl, String restaurant, String location,
                         '₵ $price 0 ',
                         style: TextStyle(
                             letterSpacing: 1,
-                            fontSize: 10,
+                            fontSize: 10.sp,
                             fontWeight: FontWeight.w700,
                             color: Colors.black87),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 10.h,
                       ),
 
                       ///Row for location
@@ -110,11 +110,11 @@ ListView adminHorizontalCard(String imgUrl, String restaurant, String location,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Icon(Icons.location_on_outlined,
-                              color: Colors.deepOrangeAccent, size: 10),
+                              color: Colors.deepOrangeAccent, size: 10.sp),
                           Text(
                             location,
                             style: TextStyle(
-                                fontSize: 8,
+                                fontSize: 8.sp,
                                 //fontWeight: FontWeight.bold,
                                 color: Colors.deepOrangeAccent),
                           ),
@@ -130,26 +130,26 @@ ListView adminHorizontalCard(String imgUrl, String restaurant, String location,
                           Text(
                             time,
                             style: TextStyle(
-                                fontSize: 8,
+                                fontSize: 8.sp,
                                 //fontWeight: FontWeight.bold,
                                 color: Colors.black),
                           ),
                           SizedBox(
-                            width: 10,
+                            width: 10.h,
                           ),
                           Icon(Icons.payment_outlined,
-                              color: Colors.black, size: 10),
+                              color: Colors.black, size: 10.sp),
                           Text(
                             '  $id',
                             style: TextStyle(
-                                fontSize: 8,
+                                fontSize: 8.sp,
                                 //fontWeight: FontWeight.bold,
                                 color: Colors.black),
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: 25,
+                        height: 25.h,
                       ),
 
                       ///THE BUTTON THAT DELETES THE FOOD ITEM
@@ -165,7 +165,7 @@ ListView adminHorizontalCard(String imgUrl, String restaurant, String location,
                                         ' Are you sure you want to delete this food ?',
                                     content: Center(
                                       child: CardLoading(
-                                          height: 20,
+                                          height: 20.h,
                                           child: Consumer<AdminFunctions>(
                                             builder: (context, value, child) =>
                                                 TextButton(
@@ -186,7 +186,7 @@ ListView adminHorizontalCard(String imgUrl, String restaurant, String location,
                                 .show();
                           },
                           child: Text(
-                            'Delete',
+                            'Remove',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.deepOrangeAccent),

@@ -57,7 +57,7 @@ class _SignUpState extends State<SignUp> {
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(color: Colors.deepOrangeAccent),
                     ),
-                    hintText: " Password ",
+                    hintText: "  ",
                     hintStyle: TextStyle(color: Colors.deepOrangeAccent)),
                 obscureText: true,
               ),

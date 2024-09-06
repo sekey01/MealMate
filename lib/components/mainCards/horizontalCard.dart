@@ -11,6 +11,8 @@ Column horizontalCard(
   String location,
   String time,
   int id,
+    double latitude,
+    double longitude,
 ) {
   return Column(
     children: [
@@ -28,7 +30,12 @@ Column horizontalCard(
                           price: price,
                           location: location,
                           vendorid: id,
-                          time: time)));
+                          time: time,
+                        latitude:latitude ,
+                        longitude: longitude,
+
+
+                      )));
             },
             child: Padding(
                 padding: const EdgeInsets.all(2.0),

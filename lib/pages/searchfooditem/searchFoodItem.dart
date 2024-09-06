@@ -59,7 +59,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                 style: TextStyle(color: Colors.deepOrange),
                 decoration: InputDecoration(
                   hintText: 'FoodName or Restaurant',
-                  fillColor: Colors.white,
+                  fillColor: Colors.grey.shade200,
                   filled: true,
                   prefixIcon: Icon(
                     Icons.filter_alt_outlined,
@@ -79,13 +79,13 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                       color: Colors.deepOrangeAccent,
                       style: BorderStyle.none,
                     ),
-                    borderRadius: BorderRadius.circular(40),
+                    borderRadius: BorderRadius.circular(10),
 
                     ///borderSide: BorderSide(color: Colors.red),
                   ),
                   hintStyle: TextStyle(
                     color: Colors.grey,
-                    fontSize: 10,
+                    fontSize: 10.sp,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -151,7 +151,10 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                                               price: foodItem.price,
                                               location: foodItem.location,
                                               vendorid: foodItem.vendorId,
-                                              time: foodItem.time)));
+                                              time: foodItem.time,
+                                            latitude: foodItem.latitude,
+                                            longitude: foodItem.longitude,
+                                          )));
                                 },
                                 child: horizontalCard(
                                   foodItem.imageUrl,
@@ -161,6 +164,8 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                                   foodItem.location,
                                   foodItem.time,
                                   foodItem.vendorId,
+                                  foodItem.latitude,
+                                  foodItem.longitude
                                 ),
                               ),
                             ));

@@ -34,7 +34,7 @@ class _OrderListState extends State<OrderList> {
               height: 10,
             ),
             MatePayCard(
-                'Premium Card', 'XXXX-XXXX-XXXX-0123', " SEKEY PRINCE", "768"),
+                'Coming Soon', 'XXXX-XXXX-XXXX-0123', " SEKEY PRINCE", "768"),
             SizedBox(height: 40),
             Container(
               child: Column(
@@ -52,7 +52,7 @@ class _OrderListState extends State<OrderList> {
                   ),
                   Icon(Icons.book_outlined, size: 120, color: Colors.black),
                   Text(
-                    'You have no orders yet',
+                    'You have no recorded orders yet',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15,

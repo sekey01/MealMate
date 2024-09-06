@@ -7,8 +7,10 @@ class FoodItem {
   final int vendorId;
   final String time;
   final bool isAvailable;
+  final double latitude;
+  final double longitude;
 
-  FoodItem({
+  FoodItem( {
     required this.vendorId,
     required this.restaurant,
     required this.foodName,
@@ -17,6 +19,8 @@ class FoodItem {
     required this.time,
     required this.imageUrl,
     this.isAvailable = true,
+    required this.latitude,
+    required this.longitude,
   });
 
   factory FoodItem.fromMap(Map<String, dynamic> data, String documentId) {
@@ -29,6 +33,8 @@ class FoodItem {
       location: data['location'] ?? '',
       vendorId: data['vendorId'],
       isAvailable: data['isActive'] ?? true,
+      latitude: data['latitude'] ?? 0,
+      longitude: data['longitude']??0,
     );
   }
 }

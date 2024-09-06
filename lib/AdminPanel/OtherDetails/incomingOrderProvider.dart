@@ -18,6 +18,7 @@ late bool gotIncomingOrdersIndex = false ;
         QuerySnapshot snapshot = (await FirebaseFirestore.instance
             .collection('OrdersCollection')
             .where('vendorId', isEqualTo: id)
+
             .get()) as QuerySnapshot<Object?>;
         List<OrderInfo> orders = snapshot.docs
             .map((doc) =>
@@ -30,7 +31,7 @@ late bool gotIncomingOrdersIndex = false ;
 
         notifyListeners();
 
-      } on SocketException catch (e) {
+      } on SocketException {
         attempt++;
         if (attempt >= retryCount) {
          // print("Internet Problem: $e");

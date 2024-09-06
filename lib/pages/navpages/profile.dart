@@ -14,6 +14,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final _usernameController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -51,136 +52,214 @@ class _ProfileState extends State<Profile> {
                 //crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  CircleAvatar(radius: 60,
-                    backgroundColor: Colors.deepOrangeAccent,
-                    child: ImageIcon(
-                      color: Colors.white,
-                      size: 100,
-                      AssetImage('assets/Icon/yummy.png')
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      Provider.of<LocalStorageProvider>(context, listen: false)
-                          .userName
-                          .toString(),
-                      style: TextStyle(
-                        letterSpacing: 1,
-                        color: Colors.black,
-                        fontSize: 25.sp,
-                        fontWeight: FontWeight.bold,
+
+                     Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircleAvatar(radius: 60,
+                        backgroundColor: Colors.deepOrangeAccent,
+                        child: ImageIcon(
+                          color: Colors.white,
+                          size: 100,
+                          AssetImage('assets/Icon/yummy.png')
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Text(
-                    Provider.of<LocalStorageProvider>(context, listen: false)
-                        .phoneNumber,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  ClipRRect(
-                      child: Image(
-                    image: AssetImage('assets/images/notFound.jpg'),
-                    width: 130,
-                    height: 150,
-                  )),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ExpansionTile(
-                          title: Text('Promo Codes ', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, letterSpacing: 3,),),
-                          leading: ImageIcon(AssetImage('assets/Icon/coupon.png'),
-                            size: 30,color: Colors.deepOrangeAccent,),
-                          children: [
-                            ListTile(
-                              title: Text('No Coupon Available', style: TextStyle(color: Colors.deepOrangeAccent,),),
-                            )
-                          ],
-                        ),
-                        ExpansionTile(
-                          title: Text('Transactions ', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, letterSpacing: 3,),),
-                          leading: ImageIcon(AssetImage('assets/Icon/transaction.png'),
-                            size: 30,color: Colors.deepOrangeAccent,),
-                          children: [
-                            ListTile(
-                              title: Text('No recorded Transactions', style: TextStyle(color: Colors.deepOrangeAccent,),),
-                            )
-                          ],
-                        ),
-                        ExpansionTile(
-                          title: Text('Logout ', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, letterSpacing: 3),),
-                          leading:Icon(Icons.login_outlined, color: Colors.deepOrangeAccent, size: 30,),
-                          children: [
-                            ListTile(
-                              title: Text('Are you sure ?', style: TextStyle(color: Colors.deepOrangeAccent,),),
-                            )
-                          ],
-                        ),
-                        ExpansionTile(
-                          title: Text('Version ', style: TextStyle(color: Colors.blueGrey, letterSpacing: 3),),
-                          leading: ImageIcon(AssetImage('assets/Icon/version.png'),
-                            size: 30,color: Colors.deepOrangeAccent,),
-                          children: [
-                            ListTile(
-                              title: Text('Version 1.0.0', style: TextStyle(color: Colors.deepOrangeAccent,),),
-                            )
-                          ],
-                        )
-                      ],
 
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showModalBottomSheet(
-                backgroundColor: Colors.white,
-                isDismissible: true,
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                    height: 400.h,
-                    child: Padding(
+
+
+                  Center(
+                    child:  Padding(
                       padding: const EdgeInsets.all(8.0),
+                      child: FutureBuilder(
+                          future: Provider.of<LocalStorageProvider>(context, listen: false).getUsername() ,
+                          builder: (context, snapshot){
+                            if(snapshot.hasData){
+                              return Text(snapshot.data.toString(),  style: TextStyle(
+                                letterSpacing: 1,
+                                color: Colors.black,
+                                fontSize: 25.sp,
+                                fontWeight: FontWeight.bold,
+                              ),);
+                            }else{
+                              return Text(' Username ', style: TextStyle(
+                                letterSpacing: 1,
+                                color: Colors.black,
+                                fontSize: 25.sp,
+                                fontWeight: FontWeight.bold,
+                              ),);
+                            }
+                          }),
+                    )
+
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  FutureBuilder(
+                      future: Provider.of<LocalStorageProvider>(context, listen: false).getNumber() ,
+                      builder: (context, snapshot){
+                    if(snapshot.hasData){
+                      return Text(snapshot.data.toString(),  style: TextStyle(
+                        letterSpacing: 1,
+                        color: Colors.black,
+                        fontSize: 15.sp,
+                      ),
+                      );
+                    }else{
+                      return Text('+233 XX - XXX - XXXX ',  style: TextStyle(
+                        letterSpacing: 1,
+                        color: Colors.black,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.bold,
+                      ),);
+                    }
+                  }),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+           GestureDetector(
+             onTap: (){
+               showModalBottomSheet(
+                 isScrollControlled: true,
+                   backgroundColor: Colors.white,
+                   isDismissible: true,
+                   context: context,
+                   builder: (BuildContext context)
+               {
+                 return Container(
+                   height: 600.h,
+                   child: SingleChildScrollView(
+                     child: Column(
+                       children: [
+                      Padding(padding: EdgeInsets.all(8),
+                        child: Image(image: AssetImage('assets/images/logo.png'), height: 150, width: 150,),
+                      ),
+                      Padding(padding: EdgeInsets.all(8),
                       child: TextField(
                         controller: _usernameController,
                         decoration: InputDecoration(
                             hintText: 'Change Username',
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(25.sp),
+                                borderRadius: BorderRadius.circular(10.sp),
                                 borderSide: BorderSide(color: Colors.grey)),
                             fillColor: Colors.grey,
                             filled: true),
                         onSubmitted: (value) {
                           setState(() {
                             Provider.of<LocalStorageProvider>(context,
-                                    listen: false)
+                                listen: false)
                                 .storeUsername(_usernameController.text);
                           });
                           _usernameController.clear();
                         },
                       ),
-                    ),
-                  );
-                });
-          },
-          child: ImageIcon( AssetImage('assets/Icon/refresh.png'), size: 40, color: Colors.white,),
-          backgroundColor: Colors.deepOrangeAccent,
-        ));
+                      ),
+                         Padding(padding: EdgeInsets.all(8),
+                           child: TextField(
+                             controller: _phoneNumberController,
+                             decoration: InputDecoration(
+                                 hintText: 'Change Telephone Number',
+                                 border: OutlineInputBorder(
+                                     borderRadius: BorderRadius.circular(10.sp),
+                                     borderSide: BorderSide(color: Colors.grey)),
+                                 fillColor: Colors.grey,
+                                 filled: true),
+                             onSubmitted: (value) {
+                               setState(() {
+                                 Provider.of<LocalStorageProvider>(context,
+                                     listen: false)
+                                     .storeNumber(_phoneNumberController.text);
+                               });
+                               _phoneNumberController.clear();
+                             },
+                           ),
+                         ),
+                         SizedBox(height: 80.h,)
+                       ],
+                     ),
+                   ),
+                 );
+               });
+             },
+
+             ///EDIT PROFILE
+             ///
+             ///
+             child:  Badge(
+               backgroundColor: Colors.white70,
+               alignment: Alignment.bottomRight,
+               label: Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: [
+                   Icon(Icons.edit, size: 18,color: Colors.blueGrey,),
+                   SizedBox(
+                     width: 10.w,
+                   ),                  Text('Edit profile',  style: TextStyle(
+                     letterSpacing: 1,
+                     color: Colors.black,
+                     fontSize: 10.sp,
+                   ),),
+                 ],
+               ),),
+           ),
+
+
+                  ClipRRect(
+                      child: Image(
+                    image: AssetImage('assets/images/notFound.jpg'),
+                    width: 130,
+                    height: 150,
+                  )),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ExpansionTile(
+                        title: Text('Promo Codes ', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, letterSpacing:  1,),),
+                        //leading: ImageIcon(AssetImage('assets/Icon/coupon.png'),
+                        //  size: 30,color: Colors.deepOrangeAccent,),
+                        children: [
+                          ListTile(
+                            title: Text('No promo available', style: TextStyle(color: Colors.blueGrey,fontSize: 15.spMax),),
+                          )
+                        ],
+                      ),
+                      ExpansionTile(
+                        title: Text('Transactions ', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, letterSpacing: 1,),),
+                       // leading: ImageIcon(AssetImage('assets/Icon/transaction.png'),
+                         // size: 30,color: Colors.deepOrangeAccent,),
+                        children: [
+                          ListTile(
+                            title: Text('No recorded Transactions', style: TextStyle(color: Colors.blueGrey,fontSize: 15.spMax),),
+                          )
+                        ],
+                      ),
+                      ExpansionTile(
+                        title: Text('Logout ', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, letterSpacing: 1),),
+                        //leading:Icon(Icons.login_outlined, color: Colors.deepOrangeAccent, size: 30,),
+                        children: [
+                          ListTile(
+                            title: Text('Buy something before logging out 😊', style: TextStyle(color: Colors.blueGrey,fontSize: 15.spMax),),
+                          )
+                        ],
+                      ),
+                      ExpansionTile(
+                        title: Text('Version ', style: TextStyle(color: Colors.blueGrey, letterSpacing: 1),),
+                        //leading: ImageIcon(AssetImage('assets/Icon/version.png'),
+                         // size: 30,color: Colors.deepOrangeAccent,),
+                        children: [
+                          ListTile(
+                            title: Text('Version 1.0.0', style: TextStyle(color: Colors.black,fontSize: 10.spMax),),
+                          )
+                        ],
+                      )
+                    ],
+
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+       );
   }
 }

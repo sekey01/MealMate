@@ -4,6 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 
 class LocalStorageProvider extends ChangeNotifier {
+  /// Just making use of this Provider to get the upgdated value for the notification page
+  int notificationLength = 1;
+///
+
   String phoneNumber = '';
   String userName = '';
   Future<void> storeNumber(String newValue) async {
@@ -33,7 +37,7 @@ class LocalStorageProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> getNumber() async {
+  Future <String> getNumber() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
       final filepath = '${directory.path}/phoneNumber.txt';
@@ -43,16 +47,17 @@ class LocalStorageProvider extends ChangeNotifier {
       if (await file.exists()) {
         // Read the contents of the file
         String contents = await file.readAsString();
-        phoneNumber = contents; // Parse the contents to an integer
+        phoneNumber = contents;// Parse the contents to an integer
+        return phoneNumber.toString();
       } else {
-        phoneNumber = '+233 XX XXX XXXX '; // Default value if the file doesn't exist
+       return  phoneNumber = '+233 XX XXX XXXX '; // Default value if the file doesn't exist
       }
 
       // Notify listeners of the change
       notifyListeners();
     } catch (e) {
       // Handle any exceptions
-      print("Error loading number: $e");
+    return 'Username';
       // You can throw the error or handle it as needed
     }
   }
@@ -87,7 +92,7 @@ class LocalStorageProvider extends ChangeNotifier {
   }
 
 
-  Future <void>getUsername() async {
+  Future <String>getUsername() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
       final filepath = '${directory.path}/Username.txt';
@@ -98,14 +103,17 @@ class LocalStorageProvider extends ChangeNotifier {
         // Read the contents of the file
         String contents = await file.readAsString();
         userName = contents; // Parse the contents to an integer
+
+          return userName;
       } else {
-        userName = 'Username'; // Default value if the file doesn't exist
+      return userName = 'Username'; // Default value if the file doesn't exist
       }
 
       // Notify listeners of the change
       notifyListeners();
     } catch (e) {
       // Handle any exceptions
+      return 'Username';
       print("Error loading Username: $e");
       // You can throw the error or handle it as needed
     }

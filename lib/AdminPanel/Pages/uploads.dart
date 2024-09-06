@@ -31,13 +31,15 @@ class _UploadedState extends State<Uploaded> {
   bool NoInternet = false;
 
   ///FUNCTION TO READ ALL ADMIN UPLOADS BASE ON THE ID PROVIDED
-  Future<List<FoodItem>> fetchFoodItems(String collection) async {
+  Future<List<FoodItem>> fetchFoodItems(String collection, int id) async {
     int retryCount = 3;
     int attempt = 0;
     while (attempt < retryCount) {
       try {
         QuerySnapshot snapshot =
-            await FirebaseFirestore.instance.collection(collection).get();
+            await FirebaseFirestore.instance.collection(collection)
+                .where('vendorId', isEqualTo:id )
+                .get();
         return snapshot.docs
             .map((doc) =>
                 FoodItem.fromMap(doc.data() as Map<String, dynamic>, doc.id))
@@ -54,6 +56,7 @@ class _UploadedState extends State<Uploaded> {
         return [];
       }
     }
+    print('noooooooooooooo');
     return [];
   }
 
@@ -62,12 +65,17 @@ class _UploadedState extends State<Uploaded> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        elevation: 3,
+        automaticallyImplyLeading: false,
+        leading:IconButton(onPressed: (){
+          Navigator.pop(context);
+        }, icon: Icon(Icons.arrow_back_ios), color: Colors.blueGrey,),
         titleTextStyle: TextStyle(
           letterSpacing: 3,
           color: Colors.white,
           fontSize: 20,
         ),
-        backgroundColor: Colors.deepOrange.shade200,
+        backgroundColor: Colors.white,
 
         /// automaticallyImplyLeading: false,
         centerTitle: true,
@@ -75,7 +83,7 @@ class _UploadedState extends State<Uploaded> {
           return Center(
             child: Text(
               'ID: ${value.id}',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.blueGrey),
             ),
           );
         }),
@@ -87,6 +95,7 @@ class _UploadedState extends State<Uploaded> {
               icon: ImageIcon(
                 AssetImage('assets/Icon/refresh.png'),
                 size: 35.sp,
+                color: Colors.blueGrey,
               ))
         ],
       ),
@@ -102,42 +111,22 @@ class _UploadedState extends State<Uploaded> {
                 child: FutureBuilder<List<FoodItem>>(
                   future: fetchFoodItems(
                     Provider.of<AdminCollectionProvider>(context)
-                        .collectionToUpload,
+                        .collectionToUpload, Provider.of<AdminId>(context, listen: false).id
                   ),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CustomLoGoLoading());
                     } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: Try Again later'));
+                      return Center(child: Text('Error: Try Again later', style: TextStyle(color: Colors.deepOrangeAccent),));
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                       return Center(child: noFoodFound());
                     } else {
-                      final adminId =
-                          Provider.of<AdminId>(context, listen: false).id;
-                      final adminUploads = snapshot.data!
-                          .where((adminUploads) =>
-                              adminUploads.vendorId == adminId)
-                          .toList();
-
-                      if (adminUploads.isEmpty) {
-                        return Center(
-                            child: Text(
-                          'No uploads found for this Admin ID',
-                          style: TextStyle(
-                              color: Colors.redAccent,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10),
-                        ));
-                      }
-
                       return ListView.builder(
-                        itemCount: adminUploads.length,
+                        itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          final upload = adminUploads[index];
-                          return Material(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.grey,
-                            elevation: 3,
+                          final upload = snapshot.data![index];
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: adminHorizontalCard(
                               upload.imageUrl,
                               upload.restaurant,

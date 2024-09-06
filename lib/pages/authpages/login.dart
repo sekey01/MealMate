@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mealmate/AdminPanel/Pages/adminlogin.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
+import 'package:mealmate/pages/authpages/signup.dart';
 import 'package:mealmate/pages/authpages/verifyNumber.dart';
 import 'package:phone_text_field/phone_text_field.dart';
 import 'package:provider/provider.dart';
@@ -142,7 +144,7 @@ class _LoginState extends State<Login> {
                     ),
                     SizedBox(
                       width: double.infinity,
-                      height: 60,
+                      height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.deepOrangeAccent),
@@ -174,7 +176,7 @@ class _LoginState extends State<Login> {
                               "Invalid Phone Number",
                               style: TextStyle(
                                   color: Colors.deepOrangeAccent,
-                                  fontSize: 20,
+                                  fontSize: 20.sp,
                                   fontWeight: FontWeight.w600),
                             ))));
                           }
@@ -187,21 +189,21 @@ class _LoginState extends State<Login> {
                             letterSpacing: 2,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                            fontSize: 15.sp,
                           ),
                         ),
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 20.h,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          " Are you an Admin ?",
+                          " Are you an Admin ?  ",
                           style: TextStyle(
-                              color: Colors.black, fontStyle: FontStyle.italic),
+                              color: Colors.black, fontStyle: FontStyle.italic, fontSize: 12.sp),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -220,6 +222,7 @@ class _LoginState extends State<Login> {
                         ),
                       ],
                     ),
+
                   ],
                 ),
               ),

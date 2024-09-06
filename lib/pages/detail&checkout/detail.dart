@@ -22,6 +22,10 @@ class DetailedCard extends StatefulWidget {
   final String location;
   final int vendorid;
   final String time;
+  final double latitude;
+  final double longitude;
+
+
 
   DetailedCard({
     required this.imgUrl,
@@ -31,6 +35,9 @@ class DetailedCard extends StatefulWidget {
     required this.location,
     required this.vendorid,
     required this.time,
+    required this.latitude,
+    required this.longitude
+
   });
 
   @override
@@ -336,14 +343,8 @@ class _DetailedCardState extends State<DetailedCard> {
                                               markerId: MarkerId('User'),
                                               visible: true,
                                               position: LatLng(
-                                                  Provider.of<LocationProvider>(
-                                                          context,
-                                                          listen: false)
-                                                      .Lat,
-                                                  Provider.of<LocationProvider>(
-                                                          context,
-                                                          listen: false)
-                                                      .Long))
+                                                  widget.latitude,
+                                                  widget.longitude))
                                         },
                                         circles: Set(),
                                         mapToolbarEnabled: true,
@@ -422,12 +423,7 @@ class _DetailedCardState extends State<DetailedCard> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => OrderSent(),
-                            ),
-                          );
+
 
                           DateTime time = DateTime.now();
                           print(time);
@@ -447,8 +443,13 @@ class _DetailedCardState extends State<DetailedCard> {
                               served: false,
                               courier : false,
                               delivered: false,
+                            ),
+                          );
 
-
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OrderSent(vendorId: widget.vendorid,time: time,),
                             ),
                           );
                         },
