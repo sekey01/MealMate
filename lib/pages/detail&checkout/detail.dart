@@ -244,7 +244,7 @@ class _DetailedCardState extends State<DetailedCard> {
                 },
                 child: Text(
                   'Add to Cart',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -344,7 +344,7 @@ class _DetailedCardState extends State<DetailedCard> {
                                               visible: true,
                                               position: LatLng(
                                                   widget.latitude,
-                                                  widget.longitude))
+                                                  widget.longitude)), 
                                         },
                                         circles: Set(),
                                         mapToolbarEnabled: true,
@@ -449,7 +449,7 @@ class _DetailedCardState extends State<DetailedCard> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => OrderSent(vendorId: widget.vendorid,time: time,),
+                              builder: (context) => OrderSent(vendorId: widget.vendorid,time: time, restaurant: widget.restaurant,),
                             ),
                           );
                         },

@@ -5,7 +5,8 @@ import 'package:mealmate/pages/detail&checkout/track_Order.dart';
 class OrderSent extends StatefulWidget {
   final int vendorId;
   final DateTime time;
-  const OrderSent({super.key, required this.vendorId, required this.time} );
+  final String restaurant;
+  const OrderSent({super.key, required this.vendorId, required this.time, required this.restaurant} );
 
   @override
   State<OrderSent> createState() => _OrderSentState();
@@ -66,7 +67,7 @@ class _OrderSentState extends State<OrderSent> {
                   elevation: 3,
                   child: TextButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> TrackOrder(vendorId: widget.vendorId,time: widget.time, )));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> TrackOrder(vendorId: widget.vendorId,time: widget.time, restaurant: widget.restaurant,)));
                       },
                       child: Text(
                         'Track Order',

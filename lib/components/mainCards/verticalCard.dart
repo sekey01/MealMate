@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 Material verticalCard(
   String imgUrl,
@@ -16,7 +18,7 @@ Material verticalCard(
     color: Colors.black,
     elevation: 3,
     child: Container(
-      height: 220,
+      height: 220.h,
       color: Colors.white,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -38,8 +40,8 @@ Material verticalCard(
               ),
               child: Container(
                 color: Colors.white,
-                height: 100,
-                width: 180,
+                height: 100.h,
+                width: 180.h,
                 margin: EdgeInsets.all(5),
                 //margin: EdgeInsets.fromLTRB(0, 1, 0, 1),
                 child: imgUrl.isEmpty
@@ -57,8 +59,8 @@ Material verticalCard(
                         child: Image(
                           fit: BoxFit.fill,
                           image: NetworkImage(imgUrl),
-                          height: 90,
-                          width: 120,
+                          height: 90.h,
+                          width: 120.w,
                         ),
                       ),
               ),
@@ -71,7 +73,7 @@ Material verticalCard(
             ///NAME OF RESTAURANT
             '$restaurant',
             style: TextStyle(
-                fontSize: 9,
+                fontSize: 9.sp,
                 letterSpacing: 1,
                 fontWeight: FontWeight.w600,
                 color: Colors.black),
@@ -85,13 +87,15 @@ Material verticalCard(
                 //fontWeight: FontWeight.w600,
                 color: Colors.black),
           ),
+///PRICE OF FOD
+    RichText(text: TextSpan(
+        children: [
+          TextSpan(text: "GHC  ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 10.sp, fontWeight: FontWeight.normal)),
+          TextSpan(text: '$price '+'0', style: TextStyle(color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.bold)),
 
-          Text(
-            ///PRICE OF FOOD
-            'GHC $price 0',
-            style: TextStyle(
-                fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black),
-          ),
+
+        ]
+    )),
 
           //Row for location
           Row(
@@ -100,25 +104,25 @@ Material verticalCard(
               Icon(
                 Icons.location_on,
                 color: Colors.deepOrangeAccent,
-                size: 10,
+                size: 10.h,
               ),
               Text(
                 ///LOCATION OF RESTAURANT
                 ' $location ',
                 style: TextStyle(
                     color: Colors.deepOrangeAccent,
-                    fontSize: 10,
+                    fontSize: 10.sp,
                     overflow: TextOverflow.ellipsis,
                     letterSpacing: 1),
               ),
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ///
               Icon(
-                size: 13,
+                size: 13.sp,
                 Icons.timelapse_rounded,
                 color: Colors.deepOrange,
               ),
@@ -129,7 +133,7 @@ Material verticalCard(
                       fontWeight: FontWeight.bold)),
 
               Icon(
-                size: 13,
+                size: 13.sp,
                 Icons.payments_outlined,
                 color: Colors.deepOrange,
               ),
@@ -138,7 +142,7 @@ Material verticalCard(
                 ///
                 ' $vendorId',
                 style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 10.sp,
                     color: Colors.black,
                     fontWeight: FontWeight.bold),
               ),

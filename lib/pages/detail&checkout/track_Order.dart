@@ -1,11 +1,15 @@
 
+import 'package:card_loading/card_loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mealmate/Local_Storage/Locall_Storage_Provider/storeOrderModel.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/Notify.dart';
+import 'package:mealmate/pages/navpages/home.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
@@ -13,7 +17,8 @@ import '../../models&ReadCollectionModel/SendOrderModel.dart';
 class TrackOrder extends StatefulWidget {
   final int vendorId;
   final DateTime time;
-  const TrackOrder({super.key,required this.vendorId,required this.time} );
+  final String restaurant;
+  const TrackOrder({super.key,required this.vendorId,required this.time, required this.restaurant} );
 
   @override
   State<TrackOrder> createState() => _TrackOrderState();
@@ -45,6 +50,7 @@ class _TrackOrderState extends State<TrackOrder> {
         return OrderInfo.fromMap(doc.data(), doc.id);
       } else {
         throw Exception("No matching order found");
+
       }
     })
         .handleError((error) {
@@ -212,6 +218,37 @@ Material(  borderRadius: BorderRadius.circular(10),
      /* switchDelivered(context, widget.vendorId,Provider.of<LocalStorageProvider>(context, listen: false)
           .phoneNumber,true,widget.time);*/
       Notify(context, 'Thanks for Using MealMate 😊', Colors.green);
+
+      Alert(
+        context: context,
+        style: AlertStyle(
+          backgroundColor: Colors.deepOrangeAccent,
+          alertPadding: EdgeInsets.all(88),
+          isButtonVisible: true,
+          descStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontSize: 15.sp,
+          ),
+        ),
+        desc: "Do you want to store order ? ",
+        buttons: [
+          DialogButton(
+            child: Text('Yes', style: TextStyle(color: Colors.deepOrangeAccent,fontWeight: FontWeight.bold),),
+            onPressed: () {
+             // print(DateTime.timestamp());
+              Provider.of<LocalStorageProvider>(context,listen: false).addOrder( StoreOrderLocally(id:widget.restaurant , item: Order.foodName, price: Order.price,time: DateTime.timestamp().toString()));
+              Navigator.pop(context);
+              Navigator.pop(context);
+              Navigator.pop(context);
+
+
+              // print('DATA STORED');
+            },
+            width: 100.w,
+          ),
+        ],
+      ).show();
 
 
     }, child: Text('Received', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,letterSpacing: 3),)))

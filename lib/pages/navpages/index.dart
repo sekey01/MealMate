@@ -6,6 +6,7 @@ import 'package:mealmate/AdminPanel/Pages/IncomingOrdersPage.dart';
 import 'package:mealmate/AdminPanel/Pages/adminHome.dart';
 import 'package:mealmate/AdminPanel/components/adminHorizontalCard.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import 'package:mealmate/components/NoInternet.dart';
 import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/pages/detail&checkout/detail.dart';
 import 'package:mealmate/pages/navpages/cart.dart';
@@ -22,6 +23,8 @@ import '../../components/mainCards/verticalCard.dart';
 import '../../models&ReadCollectionModel/ListFoodItemModel.dart';
 import '../../models&ReadCollectionModel/cartmodel.dart';
 import 'notifications.dart';
+import 'package:mealmate/components/CustomLoading.dart';
+
 
 class Index extends StatefulWidget {
   const Index({super.key});
@@ -49,12 +52,27 @@ class _IndexState extends State<Index> {
   }
 
   final textController = TextEditingController();
+  bool _hasInternet = true;
   @override
+  void initState() {
+    super.initState();
+    // Start listening to the internet connection status
+    InternetConnectionChecker().onStatusChange.listen((status) {
+      setState(() {
+        _hasInternet = status == InternetConnectionStatus.connected;
+      });
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        elevation: 3,
+        ///APP BAR BACKGROUND
+        backgroundColor: Colors.white,
+       // elevation: 4,
+        automaticallyImplyLeading: false,
+
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
@@ -66,25 +84,27 @@ class _IndexState extends State<Index> {
                   backgroundImage: AssetImage('assets/Icon/profile.png'),
                   )),
         ),
-        automaticallyImplyLeading: false,
         centerTitle: true,
         actions: [
 
           SizedBox(
             width: 20.w,
           ),
+
+          ///NOTIFICATION HERE
+          ///
           GestureDetector(
             onTap: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Notice()));
             },
             child: Badge(
-              backgroundColor: Colors.blueGrey,
+              backgroundColor: Colors.green,
               label: Consumer<LocalStorageProvider>(
                   builder: (context, value, child) => Text(
                     value.notificationLength.toString(),
                     style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   )),
               child: ImageIcon(AssetImage(
                   'assets/Icon/notification.png'
@@ -111,7 +131,7 @@ class _IndexState extends State<Index> {
             fontWeight: FontWeight.bold,
             letterSpacing: 1,
             fontSize: 20.spMin),
-        backgroundColor: Colors.transparent,
+
       ),
       body: Center(
         child: SafeArea(
@@ -203,6 +223,9 @@ SizedBox(height: 30.spMin,),
                   SizedBox(height: 30.h,),
                   ///CARD SHOWING THE INTRODUCTION OF THE APP AND COUROSEL OF IMAGES
                   initCard(),
+
+                  ///
+                  ///
                   SizedBox(
                     height: 30.h,
                   ),
@@ -250,6 +273,9 @@ SizedBox(height: 30.spMin,),
                         'Ads 📢',
                       ),
                       child: adsCouressel()),
+                  ///
+                  ///
+                  ///
 
                   SizedBox(
                     height: 30.h,
@@ -298,7 +324,15 @@ SizedBox(height: 30.spMin,),
                   SizedBox(
                     height: 30.h,
                   ),
-                  Container(
+
+
+                  ///CONTAINER OF HRORINZAOL LIST OF FOODS
+                  ///
+                  ///
+                  ///
+                  ///
+
+                  _hasInternet?Container(
                     color: Colors.white,
                     width: double.infinity,
                     height: 200.h,
@@ -307,7 +341,7 @@ SizedBox(height: 30.spMin,),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                          return Center(child: Center(child:  CustomLoGoLoading()));
                         } else if (snapshot.hasError) {
                           return Center(
                               child: Text('Error: ${snapshot.error}'));
@@ -354,14 +388,14 @@ SizedBox(height: 30.spMin,),
                                         foodItem.time,
                                         foodItem.vendorId.toString(),
                                         foodItem.isAvailable),
-                                  ));
+                                  )) ;
                             },
                             scrollDirection: Axis.horizontal,
                           );
                         }
                       },
                     ),
-                  ),
+                  ) : NoInternetConnection(),
                   SizedBox(
                     height: 30.h,
                   ),
@@ -411,19 +445,12 @@ SizedBox(height: 30.spMin,),
 
 
 
-
-
-
-
-
-
-
                   ///CONTAINER OF HRORINZAOL LIST OF DRINKS
                   ///
                   ///
                   ///
                   ///
-                  Container(
+                 _hasInternet? Container(
                     color: Colors.white,
                     width: double.infinity,
                     height: 200.h,
@@ -432,7 +459,7 @@ SizedBox(height: 30.spMin,),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                          return Center(child: Center(child:  CustomLoGoLoading()));
                         } else if (snapshot.hasError) {
                           return Center(
                               child: Text('Error: ${snapshot.error}'));
@@ -491,7 +518,7 @@ SizedBox(height: 30.spMin,),
                         }
                       },
                     ),
-                  ),
+                  ) : Center(child: NoInternetConnection(),),
 
 
                 ],

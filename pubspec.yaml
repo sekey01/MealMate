@@ -124,6 +124,7 @@ flutter:
      - assets/Icon/Order.png
      - assets/Icon/Orders.png
      - assets/Icon/uploads.png
+     - assets/Icon/no-connection.png
      - assets/Icon/selectImage.png
      - assets/Icon/alert.png
      - assets/Icon/refresh.png

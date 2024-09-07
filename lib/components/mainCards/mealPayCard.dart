@@ -7,7 +7,7 @@ Widget MatePayCard(
   String Premium,
   String CardNumber,
   String CardHolderName,
-  String CVV,
+  String ID,
 ) {
   return Padding(
     padding: const EdgeInsets.all(4.0),
@@ -27,7 +27,7 @@ Widget MatePayCard(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-                height: 130.h,
+                height: 150.h,
                 width: 110.w,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -41,16 +41,9 @@ Widget MatePayCard(
                       ),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 10.h,
                     ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(70)),
-                      child: Image(
-                        image: AssetImage('assets/Icon/radio-waves.png'),
-                        height: 50.h,
-                        width: 50.w,
-                      ),
-                    ),
+                   ImageIcon(AssetImage('assets/Icon/radio-waves.png',), size: 50, color: Colors.red,),
                   ],
                 )),
             Column(
@@ -69,7 +62,7 @@ Widget MatePayCard(
                   height: 5.h,
                 ),
                 Text(
-                  CardNumber,
+                  'Promo Code :'+"$CardNumber",
                   style: TextStyle(
                       //fontWeight: FontWeight.bold,
                       fontSize: 18.sp,
@@ -93,7 +86,7 @@ Widget MatePayCard(
                       color: Colors.black),
                 ),
                 Text(
-                  "CCV : $CVV",
+                  "ACC ID : $ID",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,

@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:mealmate/Local_Storage/Locall_Storage_Provider/storeOrderModel.dart';
 import 'package:path_provider/path_provider.dart';
 
 class LocalStorageProvider extends ChangeNotifier {
@@ -119,4 +121,48 @@ class LocalStorageProvider extends ChangeNotifier {
     }
   }
 
-}
+
+
+
+   String fileName = 'orders.json';
+
+   Future<String> get _localPath async {
+         final directory = await getApplicationDocumentsDirectory();
+         return directory.path;
+  }
+
+   Future<File> get _localFile async {
+         final path = await _localPath;
+         return File('$path/$fileName');
+  }
+
+   Future<void> saveOrders(List<StoreOrderLocally> storeOrders) async {
+         final file = await _localFile;
+         if (!await file.exists()) {
+           await file.create(
+               recursive: true); // Create the file if it doesn't exist
+         }
+         final data = storeOrders.map((order) => order.toJson()).toList();
+  await file.writeAsString(json.encode(data));
+  }
+
+   Future<List<StoreOrderLocally>> loadOrders() async {
+  try {
+        final file = await _localFile;
+        final contents = await file.readAsString();
+        final data = json.decode(contents) as List;
+              return data.map((item) => StoreOrderLocally.fromJson(item)).toList();
+     } catch (e) {
+  // If encountering an error, return an empty list
+  return [];
+            }
+  }
+
+   Future<void> addOrder(StoreOrderLocally storeOrders) async {
+            final orders = await loadOrders();
+                  orders.add(storeOrders);
+  await saveOrders(orders);
+  }
+  }
+
+

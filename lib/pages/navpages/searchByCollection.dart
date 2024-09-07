@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mealmate/AdminPanel/components/adminHorizontalCard.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/NoFoodFound.dart';
+import 'package:mealmate/components/NoInternet.dart';
 import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/components/mainCards/verticalCard.dart';
 import 'package:mealmate/pages/detail&checkout/detail.dart';
@@ -43,7 +45,19 @@ class _SearchState extends State<Search> {
     }
   }
 
+
+  ///CHECK FOR INTERNET UPON INIT
+bool _hasInternet = true;
   @override
+  void initState() {
+    super.initState();
+    // Start listening to the internet connection status
+    InternetConnectionChecker().onStatusChange.listen((status) {
+      setState(() {
+        _hasInternet = status == InternetConnectionStatus.connected;
+      });
+    });
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -137,7 +151,7 @@ class _SearchState extends State<Search> {
               }),
             ),
           ),
-          Expanded(
+         _hasInternet ?Expanded(
               child: FutureBuilder<List<FoodItem>>(
                   future: fetchFoodItems(Provider.of<userCollectionProvider>(
                           context,
@@ -188,7 +202,7 @@ class _SearchState extends State<Search> {
                             );
                           });
                     }
-                  }))
+                  })) : Center(child: NoInternetConnection(),)
         ],
       ),
     );

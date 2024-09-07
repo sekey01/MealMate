@@ -75,7 +75,7 @@ class _HomeState extends State<Home> {
             BottomNavigationBarItem(
                 backgroundColor: Colors.white,
                 icon: ImageIcon(
-                    color: Colors.blueGrey, AssetImage('assets/Icon/Orders.png')),
+                    color: Colors.blueGrey, AssetImage('assets/Icon/Order.png')),
                 label: 'Orders'),
           ],
         ));
