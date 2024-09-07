@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mealmate/components/Notify.dart';
 import 'package:provider/provider.dart';
 
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
@@ -151,6 +152,8 @@ class _ProfileState extends State<Profile> {
                                 .storeUsername(_usernameController.text);
                           });
                           _usernameController.clear();
+                          Notify(context, 'username saved', Colors.green);
+
                         },
                       ),
                       ),
@@ -171,6 +174,8 @@ class _ProfileState extends State<Profile> {
                                      .storeNumber(_phoneNumberController.text);
                                });
                                _phoneNumberController.clear();
+                               Notify(context, 'phone number saved', Colors.green);
+
                              },
                            ),
                          ),
