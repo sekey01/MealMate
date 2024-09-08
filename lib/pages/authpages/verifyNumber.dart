@@ -29,6 +29,7 @@ class _verifyOTPState extends State<verifyOTP> {
     return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           title: Text('Verify Phone Number'),
         ),
         body: SafeArea(

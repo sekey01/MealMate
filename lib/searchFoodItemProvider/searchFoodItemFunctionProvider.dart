@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../models&ReadCollectionModel/ListFoodItemModel.dart';
 
 class SearchProvider extends ChangeNotifier {
-  String _searchItem = 'Fufu and Fish';
+  String _searchItem = '';
   String _foodCollection = 'Food 🍔';
   String _drinksCollection = 'Drinks 🍷';
   String _groceryCollection = 'Grocery 🛒';
