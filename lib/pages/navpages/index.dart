@@ -159,7 +159,7 @@ SizedBox(height: 30.spMin,),
                                       overflow: TextOverflow.ellipsis,
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 10.spMin)),
+                                      fontSize: 10.sp)),
                             ],
                           );
                         }
