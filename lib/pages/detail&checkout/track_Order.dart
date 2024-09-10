@@ -177,7 +177,7 @@ Text('Order progress...', style: TextStyle(color: Colors.blueGrey, fontSize: 25,
 
               ///ORDER SERVED
               Padding(padding: EdgeInsets.all(8),
-                child: ImageIcon(AssetImage(('assets/Icon/orderServed.png'),), size: Order!.served?80:30,color:Order!.served?Colors.green: Colors.grey,),
+                child: ImageIcon(AssetImage(('assets/Icon/orderServed.png'),), size: Order!.served?80:30,color:Order.served?Colors.green: Colors.grey,),
               ),
               Text('Order Served', style: TextStyle(color: Order.served?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
               SizedBox(height: 10.h,),
@@ -186,7 +186,7 @@ Text('Order progress...', style: TextStyle(color: Colors.blueGrey, fontSize: 25,
 
              /// ORDER GIVEN TO COURIER
               Padding(padding: EdgeInsets.all(8),
-                child: ImageIcon(AssetImage(('assets/Icon/courier.png'),), size: Order!.courier?80:30,color:Order.courier?Colors.green: Colors.grey,),
+                child: ImageIcon(AssetImage(('assets/Icon/courier.png'),), size: Order.courier?80:30,color:Order.courier?Colors.green: Colors.grey,),
               ),
               Text(' Courier almost at your location', style: TextStyle(color: Order.courier?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
               SizedBox(height: 10.h,),
@@ -195,7 +195,7 @@ Text('Order progress...', style: TextStyle(color: Colors.blueGrey, fontSize: 25,
 
               /// ORDER COMPLETE
               Padding(padding: EdgeInsets.all(8),
-                child: ImageIcon(AssetImage(('assets/Icon/orderComplete.png'),), size: Order!.delivered?80:30,color: Order.delivered?Colors.green: Colors.grey,),
+                child: ImageIcon(AssetImage(('assets/Icon/orderComplete.png'),), size: Order.delivered?80:30,color: Order.delivered?Colors.green: Colors.grey,),
               ),
               Text(' Order Delivered ', style: TextStyle(color: Order.delivered?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
               SizedBox(height: 20.h,),

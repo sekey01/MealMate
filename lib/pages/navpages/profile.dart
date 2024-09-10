@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/pages/navpages/edit_profile.dart';
 import 'package:provider/provider.dart';
 
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import '../authpages/login.dart';
 
 class Profile extends StatefulWidget {
   Profile({super.key});
@@ -53,7 +56,24 @@ class _ProfileState extends State<Profile> {
                 children: [
 
 
-                     Padding(
+                  /// IMAGE DISPLAYED HERE
+                  ///
+                  ///
+                  ///
+
+                  FutureBuilder(
+                      future: Provider.of<LocalStorageProvider>(context, listen: false).getImageUrl() ,
+                      builder: (context, snapshot){
+                        if(snapshot.hasData){
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CircleAvatar(radius: 60,
+                              backgroundColor: Colors.deepOrangeAccent,
+                              child: ClipRRect(child: Image(image: NetworkImage(snapshot.data.toString()), fit: BoxFit.fill,), borderRadius: BorderRadius.circular(50.sp),),
+                            ),
+                          );
+                        }else{
+                          return   Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CircleAvatar(radius: 60,
                         backgroundColor: Colors.deepOrangeAccent,
@@ -63,10 +83,46 @@ class _ProfileState extends State<Profile> {
                           AssetImage('assets/Icon/yummy.png')
                         ),
                       ),
-                    ),
+                    );
+                        }
+                      }),
 
 
 
+                  SizedBox(
+                    height: 10.h,
+                  ),
+
+                  ///EMAIL DISPLAYED HERE
+                  ///
+                  ///
+                  ///
+                  FutureBuilder(
+                      future: Provider.of<LocalStorageProvider>(context, listen: false).getEmail() ,
+                      builder: (context, snapshot){
+                        if(snapshot.hasData){
+                          return Text(snapshot.data.toString(),  style: TextStyle(
+                            letterSpacing: 1,
+                            color: Colors.black,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold
+                          ),
+                          );
+                        }else{
+                          return Text('useremail@gmail.com',  style: TextStyle(
+                            letterSpacing: 1,
+                            color: Colors.black,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold,
+                          ),);
+                        }
+                      }),
+
+
+                  /// USER NAME DISPLAYED HERE
+                  ///
+                  ///
+                  ///
                   Center(
                     child:  Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -92,9 +148,18 @@ class _ProfileState extends State<Profile> {
                     )
 
                   ),
+
+
+
+
                   SizedBox(
                     height: 10.h,
                   ),
+
+                  ///  TELEPHONE NUMBER HERE
+                  ///
+                  ///
+                  ///
                   FutureBuilder(
                       future: Provider.of<LocalStorageProvider>(context, listen: false).getNumber() ,
                       builder: (context, snapshot){
@@ -117,12 +182,17 @@ class _ProfileState extends State<Profile> {
                   SizedBox(
                     height: 20.h,
                   ),
+
+
+
+
            GestureDetector(
              onTap: (){
              Navigator.push(context, MaterialPageRoute(builder: (context)=> EditProfile()));
              },
 
-             ///EDIT PROFILE
+             ///EDIT PROFILE BUTTON HERE
+             ///
              ///
              ///
              child:  Badge(
@@ -178,7 +248,14 @@ class _ProfileState extends State<Profile> {
                         //leading:Icon(Icons.login_outlined, color: Colors.deepOrangeAccent, size: 30,),
                         children: [
                           ListTile(
-                            title: Text('Buy something before logging out 😊', style: TextStyle(color: Colors.blueGrey,fontSize: 15.spMax),),
+                            title: Text('Buy something before logging out 😊', style: TextStyle(color: Colors.blueGrey,fontSize: 10.sp),),
+                            subtitle: TextButton(onPressed: () async{
+                              final GoogleSignIn _googleSignIn = GoogleSignIn();
+                              await _googleSignIn.signOut();
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login()));
+                              Notify(context, 'Logout Successfully', Colors.green);
+
+                            }, child: Text('Logout', style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold,fontSize: 15.sp),)),
                           )
                         ],
                       ),

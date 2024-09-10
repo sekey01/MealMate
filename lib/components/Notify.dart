@@ -10,7 +10,7 @@ void Notify(BuildContext context, String text, Color color) {
           style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold,),
         ),
       ),
-      backgroundColor: color.withOpacity(0.5),
+      backgroundColor: color,
     ),
   );
 }

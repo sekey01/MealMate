@@ -10,8 +10,11 @@ class LocalStorageProvider extends ChangeNotifier {
   int notificationLength = 1;
 ///
 
-  String phoneNumber = '';
-  String userName = '';
+  String phoneNumber = '' ;
+  String userName = '' ;
+  String  email = '' ;
+  String imageUrl = '' ;
+
   Future<void> storeNumber(String newValue) async {
     try {
       final directory = await getApplicationDocumentsDirectory();
@@ -49,17 +52,18 @@ class LocalStorageProvider extends ChangeNotifier {
       if (await file.exists()) {
         // Read the contents of the file
         String contents = await file.readAsString();
-        phoneNumber = contents;// Parse the contents to an integer
+        notifyListeners();
+        phoneNumber = contents;// Par// se the contents to an integer
         return phoneNumber.toString();
+
       } else {
        return  phoneNumber = '+233 XX XXX XXXX '; // Default value if the file doesn't exist
       }
 
-      // Notify listeners of the change
-      notifyListeners();
+
     } catch (e) {
       // Handle any exceptions
-    return 'Username';
+    return '+233 XX XXX XXXX';
       // You can throw the error or handle it as needed
     }
   }
@@ -105,6 +109,7 @@ class LocalStorageProvider extends ChangeNotifier {
         // Read the contents of the file
         String contents = await file.readAsString();
         userName = contents; // Parse the contents to an integer
+        notifyListeners();
 
           return userName;
       } else {
@@ -112,17 +117,149 @@ class LocalStorageProvider extends ChangeNotifier {
       }
 
       // Notify listeners of the change
-      notifyListeners();
     } catch (e) {
       // Handle any exceptions
       return 'Username';
-      print("Error loading Username: $e");
+      //print("Error loading Username: $e");
+      // You can throw the error or handle it as needed
+    }
+  }
+
+/// STORE EMAIL HERE
+  ///
+  Future<void> storeEmail(String newValue) async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final filepath = '${directory.path}/email.txt';
+      final file = File(filepath);
+
+      // Check if the file exists
+      if (!await file.exists()) {
+        await file.create(
+            recursive: true); // Create the file if it doesn't exist
+      }
+
+      // Write the new value to the file
+      await file.writeAsString(newValue);
+
+      // Update the telephone Number
+      email = newValue;
+
+      // Notify listeners of the change
+      notifyListeners();
+    } catch (e) {
+      // Handle any exceptions
+      //print("Error changing email: $e");
+      // You can throw the error or handle it as needed
+    }
+  }
+
+  ///GET EMAIL HERE
+  ///
+  Future <String>getEmail() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final filepath = '${directory.path}/email.txt';
+      final file = File(filepath);
+
+      // Check if the file exists
+      if (await file.exists()) {
+        // Read the contents of the file
+        String contents = await file.readAsString();
+        email = contents; // Parse the contents to an integer
+        notifyListeners();
+
+        return email;
+      } else {
+        return email = ' mealmate@gmail.com'; // Default value if the file doesn't exist
+      }
+
+    } catch (e) {
+      // Handle any exceptions
+      return '@username';
+     // print("Error loading Username: $e");
       // You can throw the error or handle it as needed
     }
   }
 
 
 
+/// STORE IMAGE URL HERE
+  ///
+  ///
+
+  Future<void> storeImageUrl(String newValue) async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final filepath = '${directory.path}/imageUrl.txt';
+      final file = File(filepath);
+
+      // Check if the file exists
+      if (!await file.exists()) {
+        await file.create(
+            recursive: true); // Create the file if it doesn't exist
+      }
+
+      // Write the new value to the file
+      await file.writeAsString(newValue);
+
+      // Update the telephone Number
+      imageUrl = newValue;
+
+      // Notify listeners of the change
+      notifyListeners();
+    } catch (e) {
+      // Handle any exceptions
+      print("Error changing imageUrl: $e");
+      // You can throw the error or handle it as needed
+    }
+  }
+
+  ///GET IMAGE HERE
+  ///
+  Future <String>getImageUrl() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final filepath = '${directory.path}/imageUrl.txt';
+      final file = File(filepath);
+
+      // Check if the file exists
+      if (await file.exists()) {
+        // Read the contents of the file
+        String contents = await file.readAsString();
+        imageUrl = contents; // Parse the contents to an integer
+
+        return imageUrl;
+      } else {
+        return imageUrl = ' https://th.bing.com/th/id/OIP.8S8nd0rgWBcDRTr1MfPoOQHaHa?w=180&h=180&c=7&r=0&o=5&pid=1.7'; // Default value if the file doesn't exist
+      }
+
+
+    } catch (e) {
+      // Handle any exceptions
+      return 'https://th.bing.com/th/id/OIP.8S8nd0rgWBcDRTr1MfPoOQHaHa?w=180&h=180&c=7&r=0&o=5&pid=1.7';
+     // print("Error loading Username: $e");
+      // You can throw the error or handle it as needed
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  ///  LOCAL STORAGE TO STORE ORDERS
 
    String fileName = 'orders.json';
 
@@ -163,6 +300,15 @@ class LocalStorageProvider extends ChangeNotifier {
                   orders.add(storeOrders);
   await saveOrders(orders);
   }
+
+  Future<void> deleteAllOrders() async {
+    final file = await _localFile;
+    if (await file.exists()) {
+      await file.delete(); // Delete the file
+    }
+  }
+
+
   }
 
 

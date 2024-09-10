@@ -41,14 +41,32 @@ class _OrderListState extends State<OrderList> {
             MatePayCard(
                 'Coming Soon', 'XXX - 0123', Provider.of<LocalStorageProvider>(context, listen: true).userName,Provider.of<LocalStorageProvider>(context, listen: true).phoneNumber.toString()),
             SizedBox(height: 40),
-            RichText(text: TextSpan(
-                children: [
-                  TextSpan(text: " Order ", style: TextStyle(color: Colors.black, fontSize: 20.spMin,)),
-                  TextSpan(text: " History", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin,)),
 
 
-                ]
-            )),
+///ROW FOR 'ORDER HISTORY' AND 'DELETE ALL' BUTTON
+            ///
+            ///
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                RichText(text: TextSpan(
+                    children: [
+                      TextSpan(text: " Order ", style: TextStyle(color: Colors.black, fontSize: 20.spMin,)),
+                      TextSpan(text: " History", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin,)),
+
+
+                    ]
+                )),
+
+
+                TextButton(onPressed: (){
+                  setState(() {
+                    Provider.of<LocalStorageProvider>(context,listen: false).deleteAllOrders();
+
+                  });
+                }, child: Text('Delete all', style: TextStyle(fontSize: 15.sp),))
+              ],
+            ),
 
 
              ///BELLOW IS THE LIST OF ORDERS
