@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mealmate/AdminPanel/components/adminHorizontalCard.dart';
-import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import 'package:mealmate/Notification/notification_Provider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:provider/provider.dart';
 
@@ -16,25 +15,7 @@ class AdminNotice extends StatefulWidget {
 
 class _AdminNoticeState extends State<AdminNotice> {
 
-  Future<List<Notification>> getNotifications() async {
-    try {
-      QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('AdminNotifications')
-      //.orderBy('timestamp', descending: true)
-          .get();
 
-      List<Notification> notifications = snapshot.docs
-          .map((doc) => Notification.fromFirestore(doc))
-          .toList();
-
-    //  Provider.of<LocalStorageProvider>(context, listen: false).notificationLength = notifications.length;
-
-      return notifications;
-    } catch (e) {
-      print(e.toString());
-      return [];
-    }
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +31,7 @@ class _AdminNoticeState extends State<AdminNotice> {
         title: Text('Admin Notifications', style: TextStyle(fontSize: 20.sp, color: Colors.blueGrey, fontWeight: FontWeight.bold),),
         centerTitle: true,
       ),
-      body: FutureBuilder(future: getNotifications(),
+      body: FutureBuilder(future: Provider.of<NotificationProvider>(context,listen: false).getAdminNotifications(),
           builder: (context, snapshot){
             if(snapshot.connectionState == ConnectionState.waiting){
               return Center(child: CustomLoGoLoading());
@@ -61,7 +42,7 @@ class _AdminNoticeState extends State<AdminNotice> {
                 itemBuilder: (context, index) {
                   final notice = snapshot.data![index];
                   return ListTile(
-                    leading: Text('message:', style: TextStyle(color: Colors.black, fontSize: 10.spMin,fontWeight: FontWeight.bold)),
+                    leading: Text(notice.time, style: TextStyle(color: Colors.black, fontSize: 10.spMin,fontWeight: FontWeight.bold)),
                     title: RichText(text: TextSpan(
                         children: [
                           TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 15.spMin, fontWeight: FontWeight.bold)),
@@ -70,7 +51,7 @@ class _AdminNoticeState extends State<AdminNotice> {
 
                         ]
                     )),
-                    subtitle: Text(notice.message, style: TextStyle(color: Colors.black, fontSize: 15.sp)),
+                    subtitle: Text(notice.notification, style: TextStyle(color: Colors.black, fontSize: 15.sp)),
                   );
                 },
               );
@@ -85,19 +66,3 @@ class _AdminNoticeState extends State<AdminNotice> {
 }
 
 
-class Notification {
-  final String message;
-  //final DateTime timestamp;
-
-  Notification({required this.message,
-    //required this.timestamp
-  });
-
-  factory Notification.fromFirestore(DocumentSnapshot doc) {
-    Map data = doc.data() as Map<String, dynamic>;
-    return Notification(
-      message: data['notification'] ?? '',
-      //timestamp: (data['timestamp'] as Timestamp).toDate(),
-    );
-  }
-}

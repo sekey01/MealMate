@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:card_loading/card_loading.dart';
 import 'package:flutter/material.dart';
@@ -41,10 +42,16 @@ class DetailedCard extends StatefulWidget {
   });
 
   @override
+
+
+
   _DetailedCardState createState() => _DetailedCardState();
 }
 
 class _DetailedCardState extends State<DetailedCard> {
+
+
+
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
   double tPrice = 0.0;
@@ -54,10 +61,12 @@ class _DetailedCardState extends State<DetailedCard> {
   void initState() {
     super.initState();
     tPrice = widget.price;
+
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
@@ -66,14 +75,14 @@ class _DetailedCardState extends State<DetailedCard> {
           children: [
             Container(
               color: Colors.white,
-              height: 280,
-              width: 350,
+              height: 280.h,
+              width: 350.h,
               child: widget.imgUrl.isEmpty
                   ? Center(
                       child: Icon(
                         Icons.image_not_supported_outlined,
                         color: Colors.deepOrange,
-                        size: 120,
+                        size: 120.sp,
                       ),
                     )
                   : ClipRRect(
@@ -115,7 +124,7 @@ class _DetailedCardState extends State<DetailedCard> {
                 color: Colors.deepOrangeAccent,
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 10.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -126,22 +135,22 @@ class _DetailedCardState extends State<DetailedCard> {
                       Icons.location_on,
                       color: Colors.deepOrangeAccent,
                     ),
-                    SizedBox(width: 10),
+                    SizedBox(width: 10.h),
                     Text(
                       widget.location,
                       style: TextStyle(
                         color: Colors.deepOrangeAccent,
-                        fontSize: 15,
+                        fontSize: 15.sp,
                         overflow: TextOverflow.ellipsis,
                         letterSpacing: 3,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 10.h),
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -182,7 +191,7 @@ class _DetailedCardState extends State<DetailedCard> {
                 ),
               ],
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 10.h),
             Consumer<CartModel>(
               builder: (context, CartModel, child) {
                 tPrice = CartModel.getQuantity * widget.price;
@@ -248,7 +257,7 @@ class _DetailedCardState extends State<DetailedCard> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Consumer<CartModel>(
               builder: (context, value, child) => Container(
                 margin: EdgeInsets.all(10),
@@ -258,6 +267,10 @@ class _DetailedCardState extends State<DetailedCard> {
                   child: Column(
                     children: [
                       SizedBox(height: 5),
+
+                      ///INCREMENT AND DECREEMENT BUTTONS
+                      ///
+                      ///
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -287,7 +300,7 @@ class _DetailedCardState extends State<DetailedCard> {
                             child: Text(
                               value.getQuantity.toString(),
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 20.sp,
                                 letterSpacing: 3,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
@@ -306,7 +319,7 @@ class _DetailedCardState extends State<DetailedCard> {
                               child: Text(
                                 '  +  ',
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 20.sp,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
@@ -315,12 +328,16 @@ class _DetailedCardState extends State<DetailedCard> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: 15.h),
+                      ///MAP
+                      ///
+                      ///
                       Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Material(
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.white,
+                          ///MAP CONATAINER
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
@@ -329,6 +346,9 @@ class _DetailedCardState extends State<DetailedCard> {
                                     style: BorderStyle.solid)),
                             height: 260,
                             width: double.infinity,
+
+                            ///MAP HERE
+                            ///
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: FutureBuilder(
@@ -382,9 +402,32 @@ class _DetailedCardState extends State<DetailedCard> {
                                     );
                                   }),
                             ),
+
                           ),
                         ),
                       ),
+                   /*   Padding(padding: EdgeInsets.all(8),
+                        child: Builder(builder: (context) {
+                          Provider.of<LocationProvider>(context,listen: false).calculateDistance(
+                              LatLng(widget.latitude,widget.longitude),
+                              LatLng(Provider.of<LocationProvider>(context).Lat, Provider.of<LocationProvider>(context).Lat)
+                          );
+                          return Text('data',style: TextStyle(color: Colors.black),);
+                        },
+
+                        )
+                      ),*/
+                      /// TEXTFIELDFOR USER TO ENTER EXTRA INFORMATION
+                      ///
+                      ///
+                      ///
+                      Padding(padding: EdgeInsets.all(8),
+                        child: Text('Note:  Always make sure the map loads before you Order; '
+                            'Tap on the Red Marker  on the Map to see the distance between you the the vendor is less than 15 Km before ordering ...',
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            color: Colors.black
+                          ),),),
                       Padding(
                         padding: const EdgeInsets.all(18.0),
                         child: TextField(
@@ -395,10 +438,10 @@ class _DetailedCardState extends State<DetailedCard> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.grey.shade200,
-                            hintText: 'Enter phone number & other details... ',
+                            hintText: 'Enter phone number and important details here... ',
                             hintStyle: TextStyle(
                               color: Colors.black,
-                              fontSize: 15.sp,
+                              fontSize: 11.sp,
                             ),
                             border: OutlineInputBorder(
                               borderSide: BorderSide(),
@@ -413,7 +456,7 @@ class _DetailedCardState extends State<DetailedCard> {
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: 15.h),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           elevation: 3,

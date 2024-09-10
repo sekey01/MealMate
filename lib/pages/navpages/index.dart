@@ -2,14 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:mealmate/AdminPanel/Pages/IncomingOrdersPage.dart';
-import 'package:mealmate/AdminPanel/Pages/adminHome.dart';
-import 'package:mealmate/AdminPanel/components/adminHorizontalCard.dart';
-import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+
+import 'package:mealmate/Notification/notification_Provider.dart';
 import 'package:mealmate/components/NoInternet.dart';
 import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/pages/detail&checkout/detail.dart';
-import 'package:mealmate/pages/navpages/cart.dart';
 import 'package:mealmate/pages/navpages/profile.dart';
 import 'package:mealmate/pages/navpages/searchByCollection.dart';
 import 'package:mealmate/pages/searchfooditem/searchFoodItem.dart';
@@ -18,10 +15,8 @@ import 'package:provider/provider.dart';
 import '../../UserLocation/LocationProvider.dart';
 import '../../components/adsCouressel.dart';
 import '../../components/card1.dart';
-import '../../components/mainCards/horizontalCard.dart';
 import '../../components/mainCards/verticalCard.dart';
 import '../../models&ReadCollectionModel/ListFoodItemModel.dart';
-import '../../models&ReadCollectionModel/cartmodel.dart';
 import 'notifications.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 
@@ -100,12 +95,17 @@ class _IndexState extends State<Index> {
             },
             child: Badge(
               backgroundColor: Colors.green,
-              label: Consumer<LocalStorageProvider>(
-                  builder: (context, value, child) => Text(
-                    value.notificationLength.toString(),
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  )),
+              label: Consumer<NotificationProvider>(
+                  builder: (context, value, child)
+                  {
+                   value.getUserNotifications();
+
+                    return  Text(
+                          value.userNotificationLength.toString(),
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        );
+                      }),
               child: ImageIcon(AssetImage(
                   'assets/Icon/notification.png'
               ), color: Colors.blueGrey,size: 30.spMin,
@@ -140,7 +140,7 @@ class _IndexState extends State<Index> {
               padding: const EdgeInsets.all(6.0),
               child: Column(
                 children: [
-SizedBox(height: 30.spMin,),
+SizedBox(height: 30.h,),
 
                   ///LOCATION DISPLAYED HERE
                   ///
@@ -153,7 +153,7 @@ SizedBox(height: 30.spMin,),
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Icon(Icons.location_on_outlined, size: 20,color: Colors.blueGrey,),
+                              Icon(Icons.location_on_outlined, size: 20.sp,color: Colors.blueGrey,),
                               Text(snapshot.data.toString(),
                                   style: TextStyle(
                                       overflow: TextOverflow.ellipsis,

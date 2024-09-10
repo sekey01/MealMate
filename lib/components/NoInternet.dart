@@ -8,12 +8,12 @@ Widget NoInternetConnection() {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(child: ImageIcon(AssetImage('assets/Icon/no-connection.png'), color: Colors.black, size: 100,)),
+          Center(child: ImageIcon(AssetImage('assets/Icon/no-connection.png'), color: Colors.red, size: 100,)),
           SizedBox(height: 20.h,),
           RichText(text: TextSpan(
               children: [
-                TextSpan(text: "Internet Connection ", style: TextStyle(color: Colors.red, fontSize: 10.sp, fontWeight: FontWeight.normal)),
-                TextSpan(text: 'Unstable', style: TextStyle(color: Colors.red, fontSize: 10.sp, fontWeight: FontWeight.normal)),
+                TextSpan(text: "Internet Connection ", style: TextStyle(color: Colors.red, fontSize: 15.sp, fontWeight: FontWeight.normal)),
+                TextSpan(text: 'Unstable', style: TextStyle(color: Colors.red, fontSize: 15.sp, fontWeight: FontWeight.normal)),
 
 
               ]

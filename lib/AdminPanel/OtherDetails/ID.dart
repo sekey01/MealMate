@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
 class AdminId extends ChangeNotifier {
-  late int adminID;
+   int adminID = 0 ;
 
   get id => adminID; // Use camelCase for variable names
+
+
 
   Future<void> changeId(int newValue) async {
     try {
@@ -58,4 +60,6 @@ class AdminId extends ChangeNotifier {
       // You can throw the error or handle it as needed
     }
   }
+
+
 }

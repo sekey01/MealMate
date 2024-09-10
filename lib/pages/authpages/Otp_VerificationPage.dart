@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 
@@ -7,9 +8,10 @@ import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../navpages/home.dart';
 
 class verifyOTP extends StatefulWidget {
-  const verifyOTP({super.key, required this.phoneNumber});
+  const verifyOTP({super.key, required this.phoneNumber, required this.verificationId});
 
   final String phoneNumber;
+  final  String verificationId;
 
   @override
   State<verifyOTP> createState() => _verifyOTPState();
@@ -48,31 +50,18 @@ class _verifyOTPState extends State<verifyOTP> {
                       width: 170,
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 10.h,
                     ),
-                    Center(
-                      child: Text(
-                        'We have sent an OTP to your phone ',
-                        style: TextStyle(
-                            fontSize: 15,
-                            letterSpacing: 1,
-                            color: Colors.black87,
-                            fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                    Center(
-                      child: Text(
-                        widget.phoneNumber,
-                        style: TextStyle(
-                          fontSize: 20,
-                          letterSpacing: 2,
-                          color: Colors.black87,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                    RichText(text: TextSpan(
+                        children: [
+                          TextSpan(text: "OTP sent to : ", style: TextStyle(color: Colors.black,)),
+                          TextSpan(text: '${widget.phoneNumber.toString()}', style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp, fontWeight: FontWeight.bold)),
+
+
+                        ]
+                    )),
                     SizedBox(
-                      height: 20,
+                      height: 20.h,
                     ),
                     Padding(
                       padding: EdgeInsets.all(10),
@@ -111,14 +100,9 @@ class _verifyOTPState extends State<verifyOTP> {
                     ),
                     TextButton(
                       onPressed: () {
-                        // Perform sign-in operation
-                        // Navigator.of(context).pushReplacement(
-                        //   MaterialPageRoute(
-                        //     builder: (context) => Index(),
-                        //   ),
-                        // );
+   Navigator.pop(context);
                       },
-                      child: Text('Resend OTP'),
+                      child: Text('Resend OTP',style: TextStyle(color: Colors.deepOrangeAccent, fontWeight: FontWeight.bold),),
                     )
                   ]))
         ]))));

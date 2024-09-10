@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mealmate/components/Notify.dart';
+import 'package:mealmate/pages/navpages/edit_profile.dart';
 import 'package:provider/provider.dart';
 
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
@@ -14,8 +14,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  final _usernameController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -120,71 +119,7 @@ class _ProfileState extends State<Profile> {
                   ),
            GestureDetector(
              onTap: (){
-               showModalBottomSheet(
-                 isScrollControlled: true,
-                   backgroundColor: Colors.white,
-                   isDismissible: true,
-                   context: context,
-                   builder: (BuildContext context)
-               {
-                 return Container(
-                   height: 600.h,
-                   child: SingleChildScrollView(
-                     child: Column(
-                       children: [
-                      Padding(padding: EdgeInsets.all(8),
-                        child: Image(image: AssetImage('assets/images/logo.png'), height: 150, width: 150,),
-                      ),
-                      Padding(padding: EdgeInsets.all(8),
-                      child: TextField(
-                        controller: _usernameController,
-                        decoration: InputDecoration(
-                            hintText: 'Change Username',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.sp),
-                                borderSide: BorderSide(color: Colors.grey)),
-                            fillColor: Colors.grey,
-                            filled: true),
-                        onSubmitted: (value) {
-                          setState(() {
-                            Provider.of<LocalStorageProvider>(context,
-                                listen: false)
-                                .storeUsername(_usernameController.text);
-                          });
-                          _usernameController.clear();
-                          Notify(context, 'username saved', Colors.green);
-
-                        },
-                      ),
-                      ),
-                         Padding(padding: EdgeInsets.all(8),
-                           child: TextField(
-                             controller: _phoneNumberController,
-                             decoration: InputDecoration(
-                                 hintText: 'Change Telephone Number',
-                                 border: OutlineInputBorder(
-                                     borderRadius: BorderRadius.circular(10.sp),
-                                     borderSide: BorderSide(color: Colors.grey)),
-                                 fillColor: Colors.grey,
-                                 filled: true),
-                             onSubmitted: (value) {
-                               setState(() {
-                                 Provider.of<LocalStorageProvider>(context,
-                                     listen: false)
-                                     .storeNumber(_phoneNumberController.text);
-                               });
-                               _phoneNumberController.clear();
-                               Notify(context, 'phone number saved', Colors.green);
-
-                             },
-                           ),
-                         ),
-                         SizedBox(height: 80.h,)
-                       ],
-                     ),
-                   ),
-                 );
-               });
+             Navigator.push(context, MaterialPageRoute(builder: (context)=> EditProfile()));
              },
 
              ///EDIT PROFILE

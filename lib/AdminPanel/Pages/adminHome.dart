@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,6 +18,7 @@ import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/components/card1.dart';
 import 'package:provider/provider.dart';
 
+import '../../Notification/notification_Provider.dart';
 import '../OtherDetails/ID.dart';
 import '../components/ChangeIDofAdmin.dart';
 import '../components/adminCollectionRow.dart';
@@ -132,7 +131,7 @@ class _adminHomeState extends State<adminHome> {
   @override
   initState() {
     super.initState();
-    //Notify(context, 'Welcome', Colors.red);
+    /*//Notify(context, 'Welcome', Colors.red);
 
     WidgetsBinding.instance.addPostFrameCallback((_){
 
@@ -141,75 +140,21 @@ class _adminHomeState extends State<adminHome> {
 
 
     });
-    // Call the loadId function from AdminId provider
+    // Call the loadId function from AdminId provider*/
+
   }
 
 
   Widget build(BuildContext context) {
+final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        elevation: 3,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Badge(
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            label: Provider.of<IncomingOrdersProvider>(context, listen: false).gotIncomingOrdersIndex ? Consumer<IncomingOrdersProvider>(builder: (context, value, child){
-               return StreamBuilder(
-              stream: value.fetchOrders( Provider.of<AdminId>(context, listen: false).adminID),
-                  builder: (context, snapshot) {
-
-                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        // print(111111111111);
-                             return Center(
-                                   child: Text('  . . .  ',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),);}
-
-                       else if(snapshot.hasData && snapshot.data != null){
-                       //  print(22222222222);
-
-                  numberOfOrders = snapshot.data!.length;
-                         return Text('${numberOfOrders.toString()}', style: TextStyle(fontWeight: FontWeight.bold),);
-
-                       }
-                       else if (snapshot.hasError) {
-                      //   print(333333333333);
-                             return Center(child: Text('refresh page'));}
-                       else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                       //  print(4444444444);
-                             return Center( child: Text('Empty',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)));
-                      }
-                      else {
-                      //  print(5555555555);
-                             return Text('0', style: TextStyle(fontWeight: FontWeight.bold),);
-              }
-
-            });}): Text('0')
-
-            /*Text(
-             Provider.of<IncomingOrdersProvider>(context, listen: false).IncomingOrdersIndex.toString(),
-
-              // You can now use the provider
-              style: TextStyle(fontWeight: FontWeight.bold),
-            )*/,
-            child: IconButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => IncomingOrders()));
-              },
-              icon: ImageIcon(
-                AssetImage('assets/Icon/Orders.png'),
-                color: Colors.blueGrey,
-                size: 40,
-              ),
-            ),
-          ),
-        ),
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: RichText(text: TextSpan(
             children: [
-              TextSpan(text: "Admin", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold)),
+              TextSpan(text: "Admin", style: TextStyle(color: Colors.black, fontSize: 20.sp,)),
               TextSpan(text: "Panel", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,)),
 
 
@@ -221,6 +166,40 @@ class _adminHomeState extends State<adminHome> {
             fontWeight: FontWeight.bold,
             letterSpacing: 2),
         centerTitle: true,
+        elevation: 3,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child:  GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => IncomingOrders()));
+            },
+            child:  Badge(
+              backgroundColor: Colors.green,
+                  label:StreamBuilder(
+           stream: Provider.of<IncomingOrdersProvider>(context, listen: false).fetchOrders(adminId),
+           builder: (context, snapshot) {
+             if (snapshot.connectionState == ConnectionState.waiting) {
+                     return Center(
+                        child: Text('Updating', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10.sp, fontStyle: FontStyle.italic),),
+                        );
+                       } else if (snapshot.hasError) {
+                            return Center(child: Center(child: Text('refresh page')));
+             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+               return Center(
+                 child: Text('No Order Detected'),
+               );
+             } else {
+               return Text(snapshot.data!.length.toString(), style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15.sp),);
+             }
+           }
+    ),
+                  child: ImageIcon(AssetImage('assets/Icon/Order.png'), size: 25.sp,color: Colors.blueGrey,),
+                ),
+
+          ),),
+
+
         actions: [
           /// ICON BUTTON TO SHOW THE LIST OF ADMINS UPLOADS
           IconButton(
@@ -244,15 +223,30 @@ class _adminHomeState extends State<adminHome> {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => AdminNotice()));
               },
-              icon: Badge(
+              icon:Badge(
                 backgroundColor: Colors.green,
-                label: Text('1', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                child: ImageIcon(
-                   AssetImage('assets/Icon/notification.png'),
-                  size: 25.sp,
-                  color: Colors.deepOrangeAccent,
+                label: Builder(
+                  builder: (context) {
+                    Provider.of<NotificationProvider>(context, listen: false).getAdminNotifications();
+                    return Consumer<NotificationProvider>(
+
+                        builder: (context, value, child)
+                        {
+                          value.getAdminNotifications();
+
+                          return  Text(
+                            value.adminNotificationLength.toString(),
+                            style: TextStyle(
+                                color: Colors.white, fontWeight: FontWeight.bold),
+                          );
+                        });
+                  }
                 ),
-              ),
+                child: ImageIcon(AssetImage(
+                    'assets/Icon/notification.png'
+                ), color: Colors.blueGrey,size: 30.spMin,
+                ),
+              )
             ),
           
           SizedBox(
@@ -313,7 +307,7 @@ class _adminHomeState extends State<adminHome> {
                                 overflow: TextOverflow.ellipsis,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 10.spMin));
+                                fontSize: 10.sp));
                       }
                       return Text(
                         'locating you...',
@@ -373,12 +367,8 @@ class _adminHomeState extends State<adminHome> {
                 ),
 
                 ///ROW OF BUTTONS TO SELECT THE FOOD COLLECTION YOU WAN TO UPLOAD
-                Image(
-                  image: AssetImage('assets/Icon/alert.png'),
-                  height: 30.h,
-                  width: 30.w,
-                ),
-                Text('Please Select Collection bellow to Upload Product',
+
+                Text('Please Select Collection bellow before Uploading Product and to view your uploads',
                     style: TextStyle(
                         fontSize: 10.sp,
                         color: Colors.blueGrey,

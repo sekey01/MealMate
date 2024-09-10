@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mealmate/AdminPanel/Pages/adminHome.dart';
 import 'package:mealmate/components/CustomLoading.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/Notify.dart';
+import '../OtherDetails/ID.dart';
 
 class AdminLogin extends StatefulWidget {
   const AdminLogin({super.key});
@@ -192,6 +194,7 @@ class _AdminLoginState extends State<AdminLogin> {
 
             ),
                           onPressed: () {
+                            Provider.of<AdminId>(context, listen: false).loadId();
                             adminSignIn();
                           }, //_signInWithEmailAndPassword,
                           child: Text(

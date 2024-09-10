@@ -60,13 +60,13 @@ class _HomeState extends State<Home> {
             BottomNavigationBarItem(
                 backgroundColor: Colors.white,
                 icon: Badge(
-                  backgroundColor: Colors.blueGrey,
+                  backgroundColor: Colors.green,
                   label: Consumer<CartModel>(
                       builder: (context, value, child) => Text(
                             value.cart.length.toString(),
                             style: TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.normal),
+                                fontWeight: FontWeight.bold),
                           )),
                   child: ImageIcon(
                       color: Colors.blueGrey, AssetImage('assets/Icon/Cart.png')),

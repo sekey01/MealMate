@@ -1,13 +1,15 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
 class LocationProvider extends ChangeNotifier {
   final String googleMapsApiKey = 'AIzaSyCO2v58cOsSM5IKXwyGa172U_YHrmRK9ks';
-  late double Lat;
+  late double Lat ;
   late double Long;
 
   Future<String> determinePosition() async {
@@ -77,5 +79,43 @@ class LocationProvider extends ChangeNotifier {
     }
   }
 
-  ///ADDING MAKERS HERE
+
+
+  bool isFareDistance = true;
+
+  double calculateDistance(LatLng point1, LatLng point2) {
+    const double R = 6371; // Radius of the Earth in kilometers
+
+    // Convert degrees to radians
+    double lat1Rad = point1.latitude * pi / 180;
+    double lon1Rad = point1.longitude * pi / 180;
+    double lat2Rad = point2.latitude * pi / 180;
+    double lon2Rad = point2.longitude * pi / 180;
+
+    // Differences in coordinates
+    double dLat = lat2Rad - lat1Rad;
+    double dLon = lon2Rad - lon1Rad;
+
+    // Haversine formula
+    double a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(lat1Rad) * cos(lat2Rad) * sin(dLon / 2) * sin(dLon / 2);
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+    // Distance in kilometers
+    double distance = R * c ;
+
+    if( distance > 30){
+      isFareDistance = false;
+      print('dddddddddddddddddddddddd');
+      print(distance);
+    }
+    else {
+      isFareDistance = true;
+      print('uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
+
+    }
+
+    return distance;
+  }
 }
+

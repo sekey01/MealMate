@@ -1,9 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mealmate/AdminPanel/Pages/adminlogin.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
+import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/pages/authpages/signup.dart';
-import 'package:mealmate/pages/authpages/verifyNumber.dart';
+import 'package:mealmate/pages/authpages/Otp_VerificationPage.dart';
+import 'package:mealmate/pages/navpages/home.dart';
 import 'package:phone_text_field/phone_text_field.dart';
 import 'package:provider/provider.dart';
 
@@ -16,12 +20,76 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   TextEditingController _phoneNumberController = TextEditingController();
-  bool _isPhoneNumberValid = false;
+  bool _isPhoneNumberValid = true;
 
   @override
 
+
+  Future<User?> signInWithGoogle(BuildContext context) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+
+    try {
+      final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+
+        try {
+          final UserCredential userCredential =
+          await auth.signInWithCredential(credential);
+
+          user = userCredential.user;
+
+          // If sign-in was successful, navigate to Home
+          if (user != null) {
+            await Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Home())
+            );
+          }
+        } on FirebaseAuthException catch (e) {
+          if (e.code == 'account-exists-with-different-credential') {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('The account already exists with a different credential.'),
+              ),
+            );
+          } else if (e.code == 'invalid-credential') {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error occurred while accessing credentials. Try again.'),
+              ),
+            );
+          }
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error occurred using Google Sign-In. Try again.'),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error occurred using Google Sign-In. Try again.'),
+        ),
+      );
+    }
+
+    return user;
+  }
+
   void dispose() {
-    // Dispose of the controller when the widget is disposed
     _phoneNumberController.dispose();
     super.dispose();
   }
@@ -63,7 +131,29 @@ class _LoginState extends State<Login> {
                         height: 20.h,
                       ),
 
-                      ///THIS IS THE PHONE TEXT FIELD WIDGET
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: TextField(
+                          style: TextStyle(color: Colors.black),
+                          keyboardType: TextInputType.numberWithOptions(),
+                          decoration: InputDecoration(
+                              prefixIcon:
+                              Icon(Icons.phone, color: Colors.red),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(color: Colors.deepOrangeAccent)),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Colors.deepOrangeAccent),
+                              ),
+                              hintText: "Enter number: 0542169225 ",
+                              hintStyle: TextStyle(color: Colors.grey,fontSize: 14.sp,fontStyle: FontStyle.italic)),
+                        ),
+                      ),
+
+
+
+                      /*///THIS IS THE PHONE TEXT FIELD WIDGET
                       ///IT IS A CUSTOM WIDGET THAT I CREATED TO MAKE IT EASY TO GET THE PHONE NUMBER
                       ///IT IS A CUSTOM TEXT FIELD THAT TAKES THE PHONE NUMBER AND COUNTRY CODE
                       Padding(
@@ -126,69 +216,36 @@ class _LoginState extends State<Login> {
                             });
                           },
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(),
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Enjoy your meal',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
+                      ),*/
+
                       SizedBox(
                         width: double.infinity,
-                        height: 50,
+                        height: 50.h,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.deepOrangeAccent),
+                              backgroundColor: Colors.white),
                           onPressed: () {
-                            if (_isPhoneNumberValid) {
-                              /// BELLOW CODE STORES THE VALID NUMBER THE USER ENTERED AND SAVES IT TO LOCAL STORAGE
-                              ///
-                              /*
-                              setState(() {
-                                Provider.of<LocalStorageProvider>(context,
-                                        listen: false)
-                                    .StorePhoneNumber(
-                                        _phoneNumberController.text.toString());
-                              });*/
+                          /*  if (_isPhoneNumberValid) {
+                         signInWithGoogle(context);
 
-                              /// AFTER THE NUMBER IS SAVED,WE PUSH TO THE OTP PAGE FOR VERIFICATION
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => verifyOTP(
-                                            phoneNumber: _phoneNumberController
-                                                .text
-                                                .trim(),
-                                          )));
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  content: Center(
-                                      child: Text(
-                                "Invalid Phone Number",
+                              Notify(context, 'Enter Correct Number',Colors.red);
+                            }*/
+Navigator.push(context, MaterialPageRoute(builder: (context)=> Home()));
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                "Continue with Google ",
                                 style: TextStyle(
-                                    color: Colors.deepOrangeAccent,
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w600),
-                              ))));
-                            }
+                                  letterSpacing: 2,
+                                  color: Colors.black,
 
-                            // signIn();
-                          }, //_signInWithEmailAndPassword,
-                          child: Text(
-                            "Continue",
-                            style: TextStyle(
-                              letterSpacing: 2,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15.sp,
-                            ),
+                                  fontSize: 15.sp,
+                                ),
+                              ),
+
+                            ],
                           ),
                         ),
                       ),
@@ -232,3 +289,5 @@ class _LoginState extends State<Login> {
     );
   }
 }
+
+
