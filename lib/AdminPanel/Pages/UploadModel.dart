@@ -11,8 +11,9 @@ class UploadModel {
   final bool isAvailable;
   final double latitude;
   final double longitude;
+  final String adminEmail;
 
-  UploadModel(  {
+  UploadModel({
     required this.imageUrl,
     required this.restaurant,
     required this.foodName,
@@ -22,7 +23,8 @@ class UploadModel {
     required this.time,
     required this.isAvailable,
     required this.latitude,
-    required this.longitude
+    required this.longitude,
+    required this.adminEmail
 
   });
 
@@ -37,8 +39,8 @@ class UploadModel {
       'vendorId': vendorId,
       'isActive': isAvailable,
       'latitude' : latitude?? 0,
-
       'longitude': longitude?? 0,
+      'adminEmail': adminEmail ?? ''
     };
   }
 }

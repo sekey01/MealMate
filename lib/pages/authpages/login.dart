@@ -132,7 +132,10 @@ class _LoginState extends State<Login> {
                           key: _formKey,
 
                           child: TextFormField(
+ onFieldSubmitted: (value){
+   Provider.of<LocalStorageProvider>(context,listen: false).storeNumber(value);
 
+ },
                             maxLength: 10,
                             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,fontSize: 20.sp),
                             keyboardType: TextInputType.numberWithOptions(),
@@ -141,15 +144,14 @@ class _LoginState extends State<Login> {
                                 prefixIcon:
                                 Icon(Icons.phone, color: Colors.red),
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(10.r),
                                     borderSide: BorderSide(color: Colors.deepOrangeAccent)),
                                 enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(10.r),
                                   borderSide: BorderSide(color: Colors.deepOrangeAccent),
                                 ),
                                 hintText: "Enter number: 0542169225 ",
-                                hintStyle: TextStyle(color: Colors.grey,fontSize: 14.sp,fontStyle: FontStyle.italic)),
-
+                                hintStyle: TextStyle(color: Colors.grey,fontSize: 14.spMin,fontStyle: FontStyle.italic)),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return '   This field cannot be empty';
@@ -236,11 +238,16 @@ class _LoginState extends State<Login> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white),
-    onPressed: () {
+    onPressed: ()  {
       if (_formKey.currentState?.validate() ?? false) {
         _handleSignIn();
 
       }
+
+      /*Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Home()),
+      );*/
 
 
 
@@ -255,10 +262,10 @@ class _LoginState extends State<Login> {
                                   letterSpacing: 2,
                                   color: Colors.black,
 
-                                  fontSize: 15.sp,
+                                  fontSize: 15.spMin,
                                 ),
                               ),
- Image(image: AssetImage('assets/Icon/google.png'),height: 50.sp,width: 40.sp,)
+ Image(image: AssetImage('assets/Icon/google.png'),height: 50.sp,width: 40.spMin,)
                               //ImageIcon(AssetImage('assets/Icon/google.png'), size: 30.sp,color: Colors.blue,)
 
                             ],

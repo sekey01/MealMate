@@ -13,6 +13,7 @@ Column horizontalCard(
   int id,
     double latitude,
     double longitude,
+    String adminEmail,
 ) {
   return Column(
     children: [
@@ -33,6 +34,7 @@ Column horizontalCard(
                           time: time,
                         latitude:latitude ,
                         longitude: longitude,
+                        adminEmail: adminEmail,
 
 
                       )));
@@ -54,7 +56,7 @@ Column horizontalCard(
                                   ///
                                   Icons.image_not_supported_outlined,
                                   color: Colors.deepOrange,
-                                  size: 120,
+                                  size: 120.sp,
                                 ),
                               )
                             : ClipRRect(
@@ -62,8 +64,8 @@ Column horizontalCard(
                                 child: Image(
                                   fit: BoxFit.fill,
                                   image: NetworkImage(imgUrl),
-                                  height: 90,
-                                  width: 120,
+                                  height: 90.sp,
+                                  width: 120.sp,
                                 ),
                               ),
                       ),
@@ -78,21 +80,21 @@ Column horizontalCard(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             SizedBox(
-                              height: 5,
+                              height: 5.h,
                             ),
 
                             ///Row for restaurant name
                             Text(
                               restaurant,
                               style: TextStyle(
-                                fontSize: 10,
+                                fontSize: 10.sp,
                                 letterSpacing: 2,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.black,
                               ),
                             ),
                             SizedBox(
-                              height: 5,
+                              height: 5.h,
                             ),
 
                             ///Row for food name
@@ -100,12 +102,12 @@ Column horizontalCard(
                               foodName,
                               style: TextStyle(
                                   letterSpacing: 1,
-                                  fontSize: 10,
+                                  fontSize: 10.sp,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.deepOrangeAccent),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 10.h,
                             ),
 
                             ///Row for price
@@ -113,12 +115,12 @@ Column horizontalCard(
                               'GHC ${price}0 ',
                               style: TextStyle(
                                   letterSpacing: 1,
-                                  fontSize: 10,
+                                  fontSize: 10.sp,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.black87),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 10.h,
                             ),
 
                             ///Row for location
@@ -126,12 +128,12 @@ Column horizontalCard(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Icon(Icons.location_on_outlined,
-                                    color: Colors.deepOrangeAccent, size: 13),
+                                    color: Colors.deepOrangeAccent, size: 13.sp),
                                 Text(
                                   location,
                                   style: TextStyle(
                                       letterSpacing: 2,
-                                      fontSize: 12,
+                                      fontSize: 12.sp,
                                       //fontWeight: FontWeight.bold,
                                       color: Colors.deepOrangeAccent),
                                 ),
@@ -146,25 +148,25 @@ Column horizontalCard(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Icon(Icons.timelapse_rounded,
-                                    color: Colors.black, size: 10),
+                                    color: Colors.black, size: 10.sp),
                                 Text(
                                   time,
                                   style: TextStyle(
                                       fontStyle: FontStyle.italic,
-                                      fontSize: 10,
+                                      fontSize: 10.sp,
                                       //fontWeight: FontWeight.bold,
                                       color: Colors.black),
                                 ),
                                 SizedBox(
-                                  width: 15,
+                                  width: 15.h,
                                 ),
                                 Icon(Icons.payment_outlined,
-                                    color: Colors.black, size: 10),
+                                    color: Colors.black, size: 10.sp),
                                 Text(
                                   '  $id',
                                   style: TextStyle(
                                       letterSpacing: 3,
-                                      fontSize: 10,
+                                      fontSize: 10.sp,
                                       //fontWeight: FontWeight.bold,
                                       color: Colors.black),
                                 ),

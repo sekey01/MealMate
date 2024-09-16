@@ -14,6 +14,7 @@ class LocalStorageProvider extends ChangeNotifier {
   String userName = '' ;
   String  email = '' ;
   String imageUrl = '' ;
+  String adminEmail = '';
 
   Future<void> storeNumber(String newValue) async {
     try {
@@ -125,7 +126,7 @@ class LocalStorageProvider extends ChangeNotifier {
     }
   }
 
-/// STORE EMAIL HERE
+/// STORE USER EMAIL HERE
   ///
   Future<void> storeEmail(String newValue) async {
     try {
@@ -184,7 +185,68 @@ class LocalStorageProvider extends ChangeNotifier {
 
 
 
-/// STORE IMAGE URL HERE
+
+
+
+  /// STORE ADMIN EMAIL HERE
+  ///
+  Future<void> storeAdminEmail(String newValue) async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final filepath = '${directory.path}/adminEmail.txt';
+      final file = File(filepath);
+
+      // Check if the file exists
+      if (!await file.exists()) {
+        await file.create(
+            recursive: true); // Create the file if it doesn't exist
+      }
+
+      // Write the new value to the file
+      await file.writeAsString(newValue);
+
+      // Update the telephone Number
+      adminEmail = newValue;
+
+      // Notify listeners of the change
+      notifyListeners();
+    } catch (e) {
+      // Handle any exceptions
+      //print("Error changing email: $e");
+      // You can throw the error or handle it as needed
+    }
+  }
+
+  ///GET EMAIL HERE
+  ///
+  Future <String>getAdminEmail() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final filepath = '${directory.path}/adminEmail.txt';
+      final file = File(filepath);
+
+      // Check if the file exists
+      if (await file.exists()) {
+        // Read the contents of the file
+        String contents = await file.readAsString();
+        adminEmail = contents; // Parse the contents to an integer
+        notifyListeners();
+
+        return adminEmail;
+      } else {
+        return adminEmail = ' mealmate@gmail.com'; // Default value if the file doesn't exist
+      }
+
+    } catch (e) {
+      // Handle any exceptions
+      return 'adminemail@gmail.com';
+      // print("Error loading Username: $e");
+      // You can throw the error or handle it as needed
+    }
+  }
+
+
+  /// STORE IMAGE URL HERE
   ///
   ///
 

@@ -74,7 +74,7 @@ bool _hasInternet = true;
         backgroundColor: Colors.white,
         actions: [
           SizedBox(
-            width: 20,
+            width: 20.w,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -92,11 +92,11 @@ bool _hasInternet = true;
                 icon: ImageIcon(
                   AssetImage('assets/Icon/Search.png'),
                   color: Colors.black,
-                  size: 20,
+                  size: 20.sp,
                 ),
               ),
               SizedBox(
-                width: 20,
+                width: 20.w,
               ),
               IconButton(
                   onPressed: () {
@@ -106,7 +106,7 @@ bool _hasInternet = true;
                   icon: ImageIcon(
                     AssetImage('assets/Icon/Order.png'),
                     color: Colors.black,
-                    size: 20,
+                    size: 20.w,
                   ))
             ],
           ),
@@ -121,7 +121,7 @@ bool _hasInternet = true;
             /// THUS { FOODS, DRINKS , ELECTRONICS, CLOTHING, GROCERY }
             padding: const EdgeInsets.all(10.0),
             child: Container(
-              height: 100,
+              height: 100.h,
               width: double.infinity,
               decoration: BoxDecoration(
                 //border: Border.all(color: Colors.deepOrangeAccent),
@@ -188,6 +188,7 @@ bool _hasInternet = true;
                                             time: data.time,
                                         latitude: data.latitude,
                                           longitude: data.longitude,
+                                          adminEmail: data.adminEmail,
                                         ))): Notify(context, 'This item Is not Available Now', Colors.red);
                               },
                               child: verticalCard(
@@ -198,7 +199,9 @@ bool _hasInternet = true;
                                   data.location,
                                   data.time,
                                   data.vendorId.toString(),
-                                  data.isAvailable),
+                                  data.isAvailable,
+                              data.adminEmail
+                              ),
                             );
                           });
                     }

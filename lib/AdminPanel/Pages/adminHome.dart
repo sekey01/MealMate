@@ -17,7 +17,11 @@ import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/components/card1.dart';
 import 'package:provider/provider.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:mealmate/components/NoInternet.dart';
 
+
+import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../Notification/notification_Provider.dart';
 import '../OtherDetails/ID.dart';
 import '../components/ChangeIDofAdmin.dart';
@@ -44,7 +48,7 @@ class _adminHomeState extends State<adminHome> {
   String imageUrl = '';
   late int numberOfOrders ;
 
-
+///IMAGE PICKER FUNCTION HERE
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? pickedFile =
@@ -88,7 +92,7 @@ class _adminHomeState extends State<adminHome> {
     }
   }
 
-  /// Firebase funtion to upload food items
+  /// UPLOAD FOOD ITEMS FUNCTION HERE
   Future<void> uploadFood(UploadModel food) async {
     try {
       _isLoading = true;
@@ -127,21 +131,16 @@ class _adminHomeState extends State<adminHome> {
       ));
     }
   }
-
+  bool _hasInternet = true;
   @override
   initState() {
     super.initState();
-    /*//Notify(context, 'Welcome', Colors.red);
-
-    WidgetsBinding.instance.addPostFrameCallback((_){
-
-
-      Provider.of<AdminId>(context, listen: false).loadId();
-
-
+    // Start listening to the internet connection status
+    InternetConnectionChecker().onStatusChange.listen((status) {
+      setState(() {
+        _hasInternet = status == InternetConnectionStatus.connected;
+      });
     });
-    // Call the loadId function from AdminId provider*/
-
   }
 
 
@@ -154,50 +153,48 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
         automaticallyImplyLeading: false,
         title: RichText(text: TextSpan(
             children: [
-              TextSpan(text: "Admin", style: TextStyle(color: Colors.black, fontSize: 20.sp,)),
-              TextSpan(text: "Panel", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,)),
+              TextSpan(text: "Admin", style: TextStyle(color: Colors.black, fontSize: 20.spMin,)),
+              TextSpan(text: "Panel", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin,)),
 
 
             ]
         )),
         titleTextStyle: TextStyle(
             color: Colors.blueGrey,
-            fontSize: 20.sp,
+            fontSize: 20.spMin,
             fontWeight: FontWeight.bold,
             letterSpacing: 2),
         centerTitle: true,
         elevation: 3,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child:  GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => IncomingOrders()));
-            },
-            child:  Badge(
-              backgroundColor: Colors.green,
-                  label:StreamBuilder(
-           stream: Provider.of<IncomingOrdersProvider>(context, listen: false).fetchOrders(adminId),
-           builder: (context, snapshot) {
-             if (snapshot.connectionState == ConnectionState.waiting) {
-                     return Center(
-                        child: Text('Updating', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10.sp, fontStyle: FontStyle.italic),),
-                        );
-                       } else if (snapshot.hasError) {
-                            return Center(child: Center(child: Text('refresh page')));
-             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-               return Center(
-                 child: Text('No Order Detected'),
-               );
-             } else {
-               return Text(snapshot.data!.length.toString(), style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15.sp),);
-             }
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => IncomingOrders()));
+          },
+          child:  Badge(
+            backgroundColor: Colors.green,
+                label:StreamBuilder(
+         stream: Provider.of<IncomingOrdersProvider>(context, listen: false).fetchOrders(adminId),
+         builder: (context, snapshot) {
+           if (snapshot.connectionState == ConnectionState.waiting) {
+                   return Center(
+                      child: Text('Updating', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10.sp, fontStyle: FontStyle.italic),),
+                      );
+                     } else if (snapshot.hasError) {
+                          return Center(child: Center(child: Text('refresh page')));
+           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+             return Center(
+               child: Text('No Order Detected',style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic), ),
+             );
+           } else {
+             return Text(snapshot.data!.length.toString(), style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15.sp),);
            }
-    ),
-                  child: ImageIcon(AssetImage('assets/Icon/Order.png'), size: 25.sp,color: Colors.blueGrey,),
-                ),
+         }
+            ),
+                child: ImageIcon(AssetImage('assets/Icon/Order.png'), size: 25.sp,color: Colors.blueGrey,),
+              ),
 
-          ),),
+        ),
 
 
         actions: [
@@ -259,20 +256,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
           ///
           IconButton(
             onPressed: () {
-              showModalBottomSheet(
-                useSafeArea: true,
-                enableDrag: true,
-                showDragHandle: true,
-                elevation: 4.sp,
-                isDismissible: true,
-                shape: Border.all(
-                  color: Colors.black,
-                ),
-                context: (context),
-                builder: (context) {
-                  return SingleChildScrollView(child: changeIdWidget());
-                },
-              );
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> ChangeAdminCredentials()));
             },
             icon: ImageIcon(
                AssetImage('assets/Icon/change.png'),
@@ -292,6 +276,28 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
+                SizedBox(height: 30.h,),
+                /// GET ADMIN EMAIL
+                FutureBuilder(
+                    future: Provider.of<LocalStorageProvider>(context, listen: false).getAdminEmail() ,
+                    builder: (context, snapshot){
+                      if(snapshot.hasData){
+                        return Text(snapshot.data.toString(),  style: TextStyle(
+                          letterSpacing: 1,
+                          color: Colors.black,
+                          fontSize: 15.spMin,
+                        ),
+                        );
+                      }else{
+                        return Text('adminemail@gmail.com ',  style: TextStyle(
+                          letterSpacing: 1,
+                          color: Colors.black,
+                          fontSize: 15.spMin,
+                          fontWeight: FontWeight.bold,
+                        ),);
+                      }
+                    }),
+
                 SizedBox(height: 30.h,),
                 ///LOCATION DISPLAYED HERE
                 ///
@@ -319,7 +325,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                 ),
 
                 ///TOGGLE BUTTON TO SHOW FOOD IS ONLINE
-                LiteRollingSwitch(
+               _hasInternet ? LiteRollingSwitch(
                   //initial value
                   value: false,
                   width: 200.w,
@@ -352,7 +358,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                   },
                   onDoubleTap: () {},
                   onSwipe: () {},
-                ),
+                ) : NoInternetConnection(),
                 SizedBox(
                   height: 30.h,
                 ),
@@ -703,19 +709,19 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                           onPressed: () {
                             if (_formkey.currentState!.validate() &&
                                 _image?.path != null) {
-                              uploadFood(UploadModel(
+                              uploadFood(
+                                  UploadModel(
                                   latitude : Provider.of<LocationProvider>(context,listen: false).Lat.toDouble(),
-                                longitude: Provider.of<LocationProvider>(context,listen: false).Long.toDouble() ,
+                                  longitude: Provider.of<LocationProvider>(context,listen: false).Long.toDouble() ,
                                   isAvailable: true,
                                   imageUrl: imageUrl,
                                   restaurant: restaurantController.text.toLowerCase().trim(),
                                   foodName: foodNameController.text.toLowerCase().trim(),
-                                  price:
-                                      double.parse(priceController.text.trim()),
+                                  price: double.parse(priceController.text.trim()),
                                   location: locationController.text.toLowerCase().trim(),
                                   time: timeController.text.trim(),
-                                  vendorId:
-                                      int.parse(idController.text.trim()),
+                                  vendorId: int.parse(idController.text.trim()),
+                                    adminEmail: Provider.of<LocalStorageProvider>(context,listen: false).getAdminEmail().toString() ,
 
                               ));
 

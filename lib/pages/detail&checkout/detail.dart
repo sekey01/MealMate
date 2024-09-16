@@ -25,6 +25,7 @@ class DetailedCard extends StatefulWidget {
   final String time;
   final double latitude;
   final double longitude;
+  final String adminEmail;
 
 
 
@@ -37,7 +38,8 @@ class DetailedCard extends StatefulWidget {
     required this.vendorid,
     required this.time,
     required this.latitude,
-    required this.longitude
+    required this.longitude,
+    required this.adminEmail
 
   });
 
@@ -185,7 +187,7 @@ class _DetailedCardState extends State<DetailedCard> {
                   widget.vendorid.toString(),
                   style: TextStyle(
                     color: Colors.deepOrangeAccent,
-                    fontSize: 15,
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -198,8 +200,8 @@ class _DetailedCardState extends State<DetailedCard> {
                 return Text(
                   'Total: GHC${tPrice}0',
                   style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
+                    color: Colors.red,
+                    fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 );
@@ -486,6 +488,7 @@ class _DetailedCardState extends State<DetailedCard> {
                               served: false,
                               courier : false,
                               delivered: false,
+                              adminEmail: widget.adminEmail
                             ),
                           );
 

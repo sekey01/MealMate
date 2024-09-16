@@ -95,7 +95,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                     ),
                   ),
                   label: Text('Foodname and Restaurant'),
-                  labelStyle: TextStyle(color: Colors.grey, fontSize: 10),
+                  labelStyle: TextStyle(color: Colors.grey, fontSize: 10.spMin),
                 ),
                 onChanged: (value) {
                   searchProvider.searchItem = value;
@@ -154,6 +154,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                                               time: foodItem.time,
                                             latitude: foodItem.latitude,
                                             longitude: foodItem.longitude,
+                                            adminEmail: foodItem.adminEmail,
                                           )));
                                 },
                                 child: horizontalCard(
@@ -165,7 +166,8 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                                   foodItem.time,
                                   foodItem.vendorId,
                                   foodItem.latitude,
-                                  foodItem.longitude
+                                  foodItem.longitude,
+                                  foodItem.adminEmail
                                 ),
                               ),
                             ));

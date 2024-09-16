@@ -11,6 +11,7 @@ Material verticalCard(
   String time,
   String vendorId,
   bool isAvailable,
+    String adminEmail,
 ) {
   return Material(
     borderRadius: BorderRadius.circular(10),
@@ -18,7 +19,7 @@ Material verticalCard(
     color: Colors.black,
     elevation: 3,
     child: Container(
-      height: 220.h,
+      height: 200.h,
       color: Colors.white,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -35,7 +36,7 @@ Material verticalCard(
                 style: TextStyle(
                     letterSpacing: 1,
                     color: Colors.white,
-                    fontSize: 8,
+                    fontSize: 8.spMin,
                     fontWeight: FontWeight.bold),
               ),
               child: Container(
@@ -51,7 +52,7 @@ Material verticalCard(
                           ///
                           Icons.image_not_supported_outlined,
                           color: Colors.deepOrange,
-                          size: 120,
+                          size: 120.spMin,
                         ),
                       )
                     : ClipRRect(
@@ -73,7 +74,7 @@ Material verticalCard(
             ///NAME OF RESTAURANT
             '$restaurant',
             style: TextStyle(
-                fontSize: 9.sp,
+                fontSize: 9.spMin,
                 letterSpacing: 1,
                 fontWeight: FontWeight.w600,
                 color: Colors.black),
@@ -82,7 +83,7 @@ Material verticalCard(
             ///NAME OF FOOD
             '$foodName',
             style: TextStyle(
-                fontSize: 10,
+                fontSize: 10.spMin,
                 letterSpacing: 2,
                 //fontWeight: FontWeight.w600,
                 color: Colors.black),
@@ -90,8 +91,8 @@ Material verticalCard(
 ///PRICE OF FOD
     RichText(text: TextSpan(
         children: [
-          TextSpan(text: "GHC  ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 10.sp, fontWeight: FontWeight.normal)),
-          TextSpan(text: '$price '+'0', style: TextStyle(color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.bold)),
+          TextSpan(text: "GHC  ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 10.spMin, fontWeight: FontWeight.bold)),
+          TextSpan(text: '$price '+'0', style: TextStyle(color: Colors.black, fontSize: 10.spMin, fontWeight: FontWeight.bold)),
 
 
         ]
@@ -111,7 +112,7 @@ Material verticalCard(
                 ' $location ',
                 style: TextStyle(
                     color: Colors.deepOrangeAccent,
-                    fontSize: 10.sp,
+                    fontSize: 10.spMin,
                     overflow: TextOverflow.ellipsis,
                     letterSpacing: 1),
               ),
@@ -122,18 +123,18 @@ Material verticalCard(
             children: [
               ///
               Icon(
-                size: 13.sp,
+                size: 10.spMin,
                 Icons.timelapse_rounded,
                 color: Colors.deepOrange,
               ),
               Text('  $time  ',
                   style: TextStyle(
-                      fontSize: 8,
+                      fontSize: 8.spMin,
                       color: Colors.black,
                       fontWeight: FontWeight.bold)),
 
               Icon(
-                size: 13.sp,
+                size: 10.spMin,
                 Icons.payments_outlined,
                 color: Colors.deepOrange,
               ),
@@ -142,7 +143,7 @@ Material verticalCard(
                 ///
                 ' $vendorId',
                 style: TextStyle(
-                    fontSize: 10.sp,
+                    fontSize: 10.spMin,
                     color: Colors.black,
                     fontWeight: FontWeight.bold),
               ),

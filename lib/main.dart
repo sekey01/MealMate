@@ -6,6 +6,7 @@ import 'package:mealmate/AdminPanel/OtherDetails/AdminFunctionsProvider.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/ID.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import 'package:mealmate/Network_Images_Provider/Network_Images.dart';
 import 'package:mealmate/Notification/notification_Provider.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/firebase_options.dart';
@@ -51,7 +52,8 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => SendOrderProvider()),
           ChangeNotifierProvider(create: (context) => LocalStorageProvider()),
           ChangeNotifierProvider(create: (context)=> IncomingOrdersProvider()),
-          ChangeNotifierProvider(create: (context)=> NotificationProvider())
+          ChangeNotifierProvider(create: (context)=> NotificationProvider()),
+          ChangeNotifierProvider(create: (context)=> NetworkImageProvider())
         ],
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
@@ -61,6 +63,7 @@ class MyApp extends StatelessWidget {
               body: SplashScreen(),
             )),
       ),
+
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,

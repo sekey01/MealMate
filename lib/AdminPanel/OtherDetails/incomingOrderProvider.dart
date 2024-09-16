@@ -12,7 +12,7 @@ class IncomingOrdersProvider extends ChangeNotifier{
   /// Function to read all admin uploads based on the ID provided
   Stream<List<OrderInfo>> fetchOrders(int id) async *{
 
-    int retryCount = 3;
+    int retryCount = 2;
     int attempt = 0;
     while (attempt < retryCount) {
       try {
@@ -30,7 +30,7 @@ class IncomingOrdersProvider extends ChangeNotifier{
           OrderedIndex = orders.length;
 
         yield orders;
-        await Future.delayed(Duration(seconds: 30));
+        await Future.delayed(Duration(seconds: 15));
        // gotIncomingOrdersIndex = true;
 
         notifyListeners();

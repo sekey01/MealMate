@@ -137,23 +137,27 @@ class _IndexState extends State<Index> {
         child: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(6.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+
+
+
 SizedBox(height: 30.h,),
 
                   ///LOCATION DISPLAYED HERE
                   ///
-                  Padding(padding: EdgeInsets.all(3), child:     FutureBuilder(
+                  FutureBuilder(
                       future:
                       Provider.of<LocationProvider>(context, listen: false)
                           .determinePosition(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Icon(Icons.location_on_outlined, size: 20.sp,color: Colors.blueGrey,),
+                              Icon(Icons.location_on_outlined, size: 10.sp,color: Colors.blueGrey,),
                               Text(snapshot.data.toString(),
                                   style: TextStyle(
                                       overflow: TextOverflow.ellipsis,
@@ -165,9 +169,9 @@ SizedBox(height: 30.h,),
                         }
                         return Text(
                           'locating you...',
-                          style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.normal),
+                          style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.normal,fontSize: 10.spMin),
                         );
-                      }),),
+                      }),
 
 
                   SizedBox(height: 20.h,),
@@ -226,9 +230,13 @@ SizedBox(height: 30.h,),
 
                   ///
                   ///
-                  SizedBox(
-                    height: 30.h,
-                  ),
+
+                  SizedBox(height: 30.h,),
+
+
+                  Padding(padding: EdgeInsets.all(1),
+                      child: Image(image: AssetImage('assets/Announcements/An_Feedback.png')
+                      )),
                   Wrap(children: [
                     Padding(
                       padding: const EdgeInsets.all(4.0),
@@ -377,6 +385,7 @@ SizedBox(height: 30.h,),
                                                       time: foodItem.time,
                                                   latitude: foodItem.latitude,
                                                     longitude: foodItem.longitude,
+                                                    adminEmail: foodItem.adminEmail,
                                                   ))) :  Notify(context, 'This item is not Avable now', Colors.red) ;
                                     },
                                     child: verticalCard(
@@ -387,7 +396,9 @@ SizedBox(height: 30.h,),
                                         foodItem.location,
                                         foodItem.time,
                                         foodItem.vendorId.toString(),
-                                        foodItem.isAvailable),
+                                        foodItem.isAvailable,
+                                      foodItem.adminEmail,
+                                    ),
                                   )) ;
                             },
                             scrollDirection: Axis.horizontal,
@@ -401,7 +412,8 @@ SizedBox(height: 30.h,),
                   ),
 
                   Padding(padding: EdgeInsets.all(1),
-                      child: Image(image: AssetImage('assets/Announcements/An_Feedback.png'))
+                      child: Image(image: AssetImage('assets/Announcements/An_Pizza.png')
+                      )
 
 
                       ),
@@ -498,6 +510,7 @@ SizedBox(height: 30.h,),
                                                         time: foodItem.time,
                                                     latitude: foodItem.latitude,
                                                       longitude: foodItem.longitude,
+                                                      adminEmail: foodItem.adminEmail,
                                                     ))):Notify(context, 'This item is not Available now', Colors.red);
                                       },
                                       child: verticalCard(
@@ -508,7 +521,8 @@ SizedBox(height: 30.h,),
                                         foodItem.location,
                                         foodItem.time,
                                         foodItem.vendorId.toString(),
-                                        foodItem.isAvailable
+                                        foodItem.isAvailable,
+                                        foodItem.adminEmail
                                       ),
                                     ),
                                   ));

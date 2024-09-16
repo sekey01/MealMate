@@ -9,6 +9,7 @@ class FoodItem {
   final bool isAvailable;
   final double latitude;
   final double longitude;
+  final String adminEmail;
 
   FoodItem( {
     required this.vendorId,
@@ -21,6 +22,7 @@ class FoodItem {
     this.isAvailable = true,
     required this.latitude,
     required this.longitude,
+    required this.adminEmail,
   });
 
   factory FoodItem.fromMap(Map<String, dynamic> data, String documentId) {
@@ -35,6 +37,7 @@ class FoodItem {
       isAvailable: data['isActive'] ?? true,
       latitude: data['latitude'] ?? 0,
       longitude: data['longitude']??0,
+      adminEmail: data['adminEmail']?? '',
     );
   }
 }

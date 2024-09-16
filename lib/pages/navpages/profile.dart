@@ -248,14 +248,16 @@ class _ProfileState extends State<Profile> {
                         //leading:Icon(Icons.login_outlined, color: Colors.deepOrangeAccent, size: 30,),
                         children: [
                           ListTile(
-                            title: Text('Buy something before logging out 😊', style: TextStyle(color: Colors.blueGrey,fontSize: 10.sp),),
+                            title: Text('Buy something before logging out 😊', style: TextStyle(color: Colors.blueGrey,fontSize: 10.spMin),),
                             subtitle: TextButton(onPressed: () async{
                               final GoogleSignIn _googleSignIn = GoogleSignIn();
                               await _googleSignIn.signOut();
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login()));
+                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Login()),
+                              (route) => false,
+                              );
                               Notify(context, 'Logout Successfully', Colors.green);
 
-                            }, child: Text('Logout', style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold,fontSize: 15.sp),)),
+                            }, child: Text('Logout', style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold,fontSize: 15.spMin),)),
                           )
                         ],
                       ),
