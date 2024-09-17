@@ -386,6 +386,7 @@ SizedBox(height: 30.h,),
                                                   latitude: foodItem.latitude,
                                                     longitude: foodItem.longitude,
                                                     adminEmail: foodItem.adminEmail,
+                                                    adminContact: foodItem.adminContact,
                                                   ))) :  Notify(context, 'This item is not Avable now', Colors.red) ;
                                     },
                                     child: verticalCard(
@@ -398,6 +399,7 @@ SizedBox(height: 30.h,),
                                         foodItem.vendorId.toString(),
                                         foodItem.isAvailable,
                                       foodItem.adminEmail,
+                                      foodItem.adminContact
                                     ),
                                   )) ;
                             },
@@ -511,6 +513,7 @@ SizedBox(height: 30.h,),
                                                     latitude: foodItem.latitude,
                                                       longitude: foodItem.longitude,
                                                       adminEmail: foodItem.adminEmail,
+                                                      adminContact: foodItem.adminContact,
                                                     ))):Notify(context, 'This item is not Available now', Colors.red);
                                       },
                                       child: verticalCard(
@@ -522,7 +525,8 @@ SizedBox(height: 30.h,),
                                         foodItem.time,
                                         foodItem.vendorId.toString(),
                                         foodItem.isAvailable,
-                                        foodItem.adminEmail
+                                        foodItem.adminEmail,
+                                          foodItem.adminContact
                                       ),
                                     ),
                                   ));

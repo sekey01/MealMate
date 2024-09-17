@@ -10,6 +10,7 @@ class FoodItem {
   final double latitude;
   final double longitude;
   final String adminEmail;
+  final int adminContact;
 
   FoodItem( {
     required this.vendorId,
@@ -23,6 +24,7 @@ class FoodItem {
     required this.latitude,
     required this.longitude,
     required this.adminEmail,
+    required this.adminContact,
   });
 
   factory FoodItem.fromMap(Map<String, dynamic> data, String documentId) {
@@ -38,6 +40,7 @@ class FoodItem {
       latitude: data['latitude'] ?? 0,
       longitude: data['longitude']??0,
       adminEmail: data['adminEmail']?? '',
+        adminContact: data['adminContact']??'',
     );
   }
 }

@@ -44,6 +44,7 @@ class _adminHomeState extends State<adminHome> {
   TextEditingController foodNameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController locationController = TextEditingController();
+  TextEditingController adminContactController = TextEditingController();
   File? _image;
   String imageUrl = '';
   late int numberOfOrders ;
@@ -100,42 +101,23 @@ class _adminHomeState extends State<adminHome> {
       final db = FirebaseFirestore.instance.collection(
           '${Provider.of<AdminCollectionProvider>(context, listen: false).collectionToUpload}');
       await db.add(food.toMap());
-
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        elevation: 20,
-        content: Center(
-          child: Text(
-            ' Food Uploaded Successfully ',
-            style: TextStyle(
-                color: Colors.green,
-                fontSize: 15.sp,
-                fontWeight: FontWeight.bold),
-          ),
-        ),
-        backgroundColor: Colors.black.withOpacity(0.5),
-      ));
+Notify(context, 'Item Uploaded Successfully', Colors.green);
       setState(() {
         _isLoading = false;
       });
     } catch (e) {
       ///print(e.toString());
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        elevation: 20,
-        content: Center(
-          child: Text(
-            ' Upload Unsuccessfull ',
-            style: TextStyle(color: Colors.red, fontSize: 20),
-          ),
-        ),
-        backgroundColor: Colors.black.withOpacity(0.5),
-      ));
+      Notify(context, 'Upload Unsuccessful', Colors.red);
     }
   }
+
+  ///BOOL TO CHECK FOR INTERNET
+  ///
   bool _hasInternet = true;
   @override
   initState() {
     super.initState();
-    // Start listening to the internet connection status
+    /// Start listening to the internet connection status
     InternetConnectionChecker().onStatusChange.listen((status) {
       setState(() {
         _hasInternet = status == InternetConnectionStatus.connected;
@@ -153,8 +135,8 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
         automaticallyImplyLeading: false,
         title: RichText(text: TextSpan(
             children: [
-              TextSpan(text: "Admin", style: TextStyle(color: Colors.black, fontSize: 20.spMin,)),
-              TextSpan(text: "Panel", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin,)),
+              TextSpan(text: "Admin", style: TextStyle(color: Colors.black, fontSize: 20.spMin,fontWeight: FontWeight.bold)),
+              TextSpan(text: "Panel", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin,fontWeight: FontWeight.bold)),
 
 
             ]
@@ -166,38 +148,42 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
             letterSpacing: 2),
         centerTitle: true,
         elevation: 3,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => IncomingOrders()));
-          },
-          child:  Badge(
-            backgroundColor: Colors.green,
-                label:StreamBuilder(
-         stream: Provider.of<IncomingOrdersProvider>(context, listen: false).fetchOrders(adminId),
-         builder: (context, snapshot) {
-           if (snapshot.connectionState == ConnectionState.waiting) {
-                   return Center(
-                      child: Text('Updating', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10.sp, fontStyle: FontStyle.italic),),
-                      );
-                     } else if (snapshot.hasError) {
-                          return Center(child: Center(child: Text('refresh page')));
-           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-             return Center(
-               child: Text('No Order Detected',style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic), ),
-             );
-           } else {
-             return Text(snapshot.data!.length.toString(), style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15.sp),);
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => IncomingOrders()));
+            },
+            child:  Badge(
+              backgroundColor: Colors.green,
+                  label:StreamBuilder(
+           stream: Provider.of<IncomingOrdersProvider>(context, listen: false).fetchOrders(adminId),
+           builder: (context, snapshot) {
+             if (snapshot.connectionState == ConnectionState.waiting) {
+                     return Center(
+                        child: Text('Updating', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10.sp, fontStyle: FontStyle.italic),),
+                        );
+                       } else if (snapshot.hasError) {
+                            return Center(child: Center(child: Text('refresh page')));
+             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+               return Center(
+                 child: Text('No Order Detected',style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic), ),
+               );
+             } else {
+               return Text(snapshot.data!.length.toString(), style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15.sp),);
+             }
            }
-         }
-            ),
-                child: ImageIcon(AssetImage('assets/Icon/Order.png'), size: 25.sp,color: Colors.blueGrey,),
               ),
+                  child: ImageIcon(AssetImage('assets/Icon/Order.png'), size: 25.sp,color: Colors.blueGrey,),
+                ),
 
+          ),
         ),
 
 
         actions: [
+
           /// ICON BUTTON TO SHOW THE LIST OF ADMINS UPLOADS
           IconButton(
             onPressed: () {
@@ -245,7 +231,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                 ),
               )
             ),
-          
+
           SizedBox(
             width:2.w,
           ),
@@ -276,6 +262,8 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
+
+
                 SizedBox(height: 30.h,),
                 /// GET ADMIN EMAIL
                 FutureBuilder(
@@ -508,6 +496,41 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                                 },
                               ),
                             ),
+
+                            SizedBox(height: 20.h,),
+                            ///TEXTFIELD FOR MERCHANT ADMINCONTACT
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                                controller: adminContactController,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.deepOrange.shade50,
+                                  labelText: 'Admin Contact',
+                                  labelStyle: TextStyle(color: Colors.black),
+                                  hintStyle: TextStyle(color: Colors.black),
+                                  hintText: 'Admin Contact',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                        color: Colors.deepOrangeAccent
+
+
+                                    ),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please Enter Your Contact';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
                             SizedBox(
                               height: 20.h,
                             ),
@@ -721,17 +744,19 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                                   location: locationController.text.toLowerCase().trim(),
                                   time: timeController.text.trim(),
                                   vendorId: int.parse(idController.text.trim()),
-                                    adminEmail: Provider.of<LocalStorageProvider>(context,listen: false).getAdminEmail().toString() ,
+                                    adminEmail: Provider.of<LocalStorageProvider>(context,listen: false).adminEmail ,
+                                    adminContact: int.parse(adminContactController.text),
 
                               ));
 
-                              //clearing the text fields
+                              ///clearing the text fields
                               idController.clear();
                               restaurantController.clear();
                               foodNameController.clear();
                               priceController.clear();
                               locationController.clear();
                               timeController.clear();
+                              adminContactController.clear();
                               setState(() {
                                 _image = null;
                               });
@@ -748,6 +773,8 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                           ),
                         ),
                 ),
+
+                SizedBox(height: 30.h,)
               ],
             ),
           ),

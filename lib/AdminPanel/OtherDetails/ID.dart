@@ -26,7 +26,7 @@ class AdminId extends ChangeNotifier {
       await file.writeAsString(newValue.toString());
 
       // Update the adminID
-      adminID = newValue;
+      adminID = newValue.toInt();
 
       // Notify listeners of the change
       notifyListeners();

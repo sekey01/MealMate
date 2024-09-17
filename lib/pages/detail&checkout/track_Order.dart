@@ -18,7 +18,9 @@ class TrackOrder extends StatefulWidget {
   final int vendorId;
   final DateTime time;
   final String restaurant;
-  const TrackOrder({super.key,required this.vendorId,required this.time, required this.restaurant} );
+  final adminEmail;
+  final adminContact;
+  const TrackOrder({super.key,required this.vendorId,required this.time, required this.restaurant, required this.adminEmail,required this.adminContact} );
 
   @override
   State<TrackOrder> createState() => _TrackOrderState();
@@ -93,177 +95,209 @@ class _TrackOrderState extends State<TrackOrder> {
   @override
   Widget build(BuildContext context) {
 
-    return  Material(
-      child: Scaffold(
-        appBar: AppBar(title: Text('Track Order'),centerTitle: true,backgroundColor: Colors.white,titleTextStyle: TextStyle(color: Colors.blueGrey, fontSize: 20, fontWeight: FontWeight.bold),),
-        body: StreamBuilder<OrderInfo>(
-          ///
-          ///
-          ///
-          /// I HAVE TO MOVE THE ADMIN ID HERE IN ORDER TO GET ACCESS TO THE ACTUAL DOCUMENT
-          ///
-          /// ALSO DON'T FORGET TO ADD THE TOKEN ID FOR MORE ACCURACY
-          ///
-          ///
-          ///
-          ///
-            stream: trackOrder(widget.vendorId,Provider.of<LocalStorageProvider>(context, listen: false)
-                .phoneNumber, widget.time),
-            builder: (context, snapshot){
-          if(snapshot.connectionState == ConnectionState.waiting )
-          { return Center(child: Text('Collecting Updates...', style: TextStyle(color: Colors.deepOrangeAccent, fontWeight: FontWeight.bold, fontSize: 20),));
-          }
-          else if (snapshot.hasError){return Center(child: Text('Please wait while we connect you...'),);
-          }
-          else if (!snapshot.hasData ) {
-            return Center(
-              child: Text('Can not Track Order, call the restaurant ...'),
-            );
-          } else {
-final Order = snapshot.data;
+    return  Scaffold(
+      appBar: AppBar(title: Text('Track Order'),centerTitle: true,backgroundColor: Colors.white,titleTextStyle: TextStyle(color: Colors.blueGrey, fontSize: 20, fontWeight: FontWeight.bold),),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            StreamBuilder<OrderInfo>(
+              ///
+              ///
+              ///
+              /// I HAVE TO MOVE THE ADMIN ID HERE IN ORDER TO GET ACCESS TO THE ACTUAL DOCUMENT
+              ///
+              /// ALSO DON'T FORGET TO ADD THE TOKEN ID FOR MORE ACCURACY
+              ///
+              ///
+              ///
+              ///
+                stream: trackOrder(widget.vendorId,Provider.of<LocalStorageProvider>(context, listen: false)
+                    .phoneNumber, widget.time),
+                builder: (context, snapshot){
+              if(snapshot.connectionState == ConnectionState.waiting )
+              { return Center(child: Text('Collecting Updates...', style: TextStyle(color: Colors.deepOrangeAccent, fontWeight: FontWeight.bold, fontSize: 20),));
+              }
+              else if (snapshot.hasError){return Center(child: Text('Please wait while we connect you...'),);
+              }
+              else if (!snapshot.hasData ) {
+                return Center(
+                  child: Text('Can not Track Order, call the restaurant ...'),
+                );
+              } else {
+            final Order = snapshot.data;
 
-          return Center(
+              return Center(
 
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-Text('Order progress...', style: TextStyle(color: Colors.blueGrey, fontSize: 25, fontWeight: FontWeight.bold),),
-
-              ///TIMER
-            /*  Padding(padding: EdgeInsets.all(16), child: CustomLoGoLoading(),),
-
-              StreamBuilder<int>(
-                stream: countdownTimer(60), // Countdown from 60 seconds
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text(
-                      'Starting...',
-                      style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
-                    );
-                  } else if (snapshot.hasData) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: RichText(text: TextSpan(
-                          children: [
-                            TextSpan(text: "Order will be received in r", style: TextStyle(color: Colors.black, fontSize: 10.sp,)),
-                            TextSpan(text: "${snapshot.data} seconds , ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,)),
-                            TextSpan(text: "if the Order Served is not ticked green", style: TextStyle(color: Colors.black, fontSize: 10.sp,)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+             ///MEALMATE HERE
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RichText(text: TextSpan(
+                        children: [
+                          TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
+                          TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
 
 
-                          ]
-                      )),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text(
-                      'Error: ${snapshot.error}',
-                      style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
-                    );
-                  } else {
-                    return Text(
-                      'Done!',
-                      style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
-                    );
+                        ]
+                    )),
+                  ),
+
+                  ///VENDOR CONTACT
+                  ///
+
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RichText(text: TextSpan(
+                        children: [
+                          TextSpan(text: "Vendor Contact:  ", style: TextStyle(color: Colors.black, fontSize: 15.spMin, fontWeight: FontWeight.bold)),
+                          TextSpan(text: widget.adminContact.toString(), style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.spMin, fontWeight: FontWeight.bold)),
+
+
+                        ]
+                    )),
+                  ),
+            Text('Order progress...', style: TextStyle(color: Colors.blueGrey, fontSize: 25, fontWeight: FontWeight.bold),),
+
+                  ///TIMER
+                  Padding(padding: EdgeInsets.all(16), child: CustomLoGoLoading(),),
+
+                  StreamBuilder<int>(
+                    stream: countdownTimer(90), // Countdown from 60 seconds
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Text(
+                          'Starting...',
+                          style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+                        );
+                      } else if (snapshot.hasData) {
+                        return Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: RichText(text: TextSpan(
+                              children: [
+                                TextSpan(text: " Note : Please you can call vendor if Order Served delays by : \n ", style: TextStyle(color: Colors.black, fontSize: 10.sp,)),
+                                TextSpan(text: "${snapshot.data} seconds \n  ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.sp,fontWeight: FontWeight.bold)),
+                                TextSpan(text: "if the Order Served  Icon is not ticked green ", style: TextStyle(color: Colors.black, fontSize: 10.sp,)),
+
+
+                              ]
+                          )),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text(
+                          'Error: ${snapshot.error}',
+                          style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+                        );
+                      } else {
+                        return Text(
+                          'Done!',
+                          style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+                        );
+                      }
+                    },
+                  ),
+                  /// ORDER RECEIVED
+                  Padding(padding: EdgeInsets.all(8),
+                  child: ImageIcon(AssetImage(('assets/Icon/orderReceived.png'),), size: 80,color: Colors.green,),
+                  ),
+                  Text('Order Sent', style: TextStyle(color: Colors.green, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
+             SizedBox(height: 10.h,),
+                  Icon(Icons.arrow_downward, color: Colors.green,),
+                  //SizedBox(height: 10.h,),
+
+                  ///ORDER SERVED
+                  Padding(padding: EdgeInsets.all(8),
+                    child: ImageIcon(AssetImage(('assets/Icon/orderServed.png'),), size: Order!.served?80:30,color:Order.served?Colors.green: Colors.grey,),
+                  ),
+                  Text('Order Served', style: TextStyle(color: Order.served?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
+                  SizedBox(height: 10.h,),
+                  Icon(Icons.arrow_downward, color: Order.served?Colors.green: Colors.grey,),
+                 // SizedBox(height: 10.h,),
+
+                 /// ORDER GIVEN TO COURIER
+                  Padding(padding: EdgeInsets.all(8),
+                    child: ImageIcon(AssetImage(('assets/Icon/courier.png'),), size: Order.courier?80:30,color:Order.courier?Colors.green: Colors.grey,),
+                  ),
+                  Text(' Courier almost at your location', style: TextStyle(color: Order.courier?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
+                  SizedBox(height: 10.h,),
+                  Icon(Icons.arrow_downward, color: Order.courier?Colors.green: Colors.grey,),
+                  //SizedBox(height: 10.h,),
+
+                  /// ORDER COMPLETE
+                  Padding(padding: EdgeInsets.all(8),
+                    child: ImageIcon(AssetImage(('assets/Icon/orderComplete.png'),), size: Order.delivered?80:30,color: Order.delivered?Colors.green: Colors.grey,),
+                  ),
+                  Text(' Order Delivered ', style: TextStyle(color: Order.delivered?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
+                  SizedBox(height: 20.h,),
+
+
+
+            Material(  borderRadius: BorderRadius.circular(10),
+                color: Colors.deepOrangeAccent,
+                elevation: 3,
+                child: TextButton(onPressed: (){
+                  if(
+                  Order.delivered
+                  ){
+                    switchDelivered(context, widget.vendorId,Provider.of<LocalStorageProvider>(context, listen: false)
+                        .phoneNumber,true,widget.time);
+                    Alert(
+                      context: context,
+                      style: AlertStyle(
+                        backgroundColor: Colors.deepOrangeAccent,
+                        alertPadding: EdgeInsets.all(88),
+                        isButtonVisible: true,
+                        descStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                      desc: "Do you want to store order ? ",
+                      buttons: [
+                        DialogButton(
+                          child: Text('Yes', style: TextStyle(color: Colors.deepOrangeAccent,fontWeight: FontWeight.bold),),
+                          onPressed: () {
+                            // print(DateTime.timestamp());
+                            Provider.of<LocalStorageProvider>(context,listen: false).addOrder( StoreOrderLocally(id:widget.restaurant , item: Order.foodName, price: Order.price,time: DateTime.timestamp().toString()));
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+
+
+                            // print('DATA STORED');
+                          },
+                          width: 100.w,
+                        ),
+                      ],
+                    ).show();
+                    Notify(context, 'Thanks for Using MealMate 😊', Colors.green);
+
+
+                  } else{
+                    Notify(context, 'Order Not received yet', Colors.red);
                   }
-                },
-              ),*/
-              /// ORDER RECEIVED
-              Padding(padding: EdgeInsets.all(8),
-              child: ImageIcon(AssetImage(('assets/Icon/orderReceived.png'),), size: 80,color: Colors.green,),
-              ),
-              Text('Order Sent', style: TextStyle(color: Colors.green, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
- SizedBox(height: 10.h,),
-              Icon(Icons.arrow_downward, color: Colors.green,),
-              //SizedBox(height: 10.h,),
-
-              ///ORDER SERVED
-              Padding(padding: EdgeInsets.all(8),
-                child: ImageIcon(AssetImage(('assets/Icon/orderServed.png'),), size: Order!.served?80:30,color:Order.served?Colors.green: Colors.grey,),
-              ),
-              Text('Order Served', style: TextStyle(color: Order.served?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
-              SizedBox(height: 10.h,),
-              Icon(Icons.arrow_downward, color: Order.served?Colors.green: Colors.grey,),
-             // SizedBox(height: 10.h,),
-
-             /// ORDER GIVEN TO COURIER
-              Padding(padding: EdgeInsets.all(8),
-                child: ImageIcon(AssetImage(('assets/Icon/courier.png'),), size: Order.courier?80:30,color:Order.courier?Colors.green: Colors.grey,),
-              ),
-              Text(' Courier almost at your location', style: TextStyle(color: Order.courier?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
-              SizedBox(height: 10.h,),
-              Icon(Icons.arrow_downward, color: Order.courier?Colors.green: Colors.grey,),
-              //SizedBox(height: 10.h,),
-
-              /// ORDER COMPLETE
-              Padding(padding: EdgeInsets.all(8),
-                child: ImageIcon(AssetImage(('assets/Icon/orderComplete.png'),), size: Order.delivered?80:30,color: Order.delivered?Colors.green: Colors.grey,),
-              ),
-              Text(' Order Delivered ', style: TextStyle(color: Order.delivered?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
-              SizedBox(height: 20.h,),
 
 
 
-Material(  borderRadius: BorderRadius.circular(10),
-    color: Colors.deepOrangeAccent,
-    elevation: 3,
-    child: TextButton(onPressed: (){
+
+                }, child: Text('Received', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,letterSpacing: 3),))),
 
 
-      ///
-      ///
-      ///
-      /// DON'T FORGET TO USE THE ID IMPORTED FROM THE VENDOR HERE ALSO
-      ///
-      ///
-      ///
-     /* switchDelivered(context, widget.vendorId,Provider.of<LocalStorageProvider>(context, listen: false)
-          .phoneNumber,true,widget.time);*/
-      Notify(context, 'Thanks for Using MealMate 😊', Colors.green);
+            SizedBox(height: 30.h,)
 
-      Alert(
-        context: context,
-        style: AlertStyle(
-          backgroundColor: Colors.deepOrangeAccent,
-          alertPadding: EdgeInsets.all(88),
-          isButtonVisible: true,
-          descStyle: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            fontSize: 15.sp,
-          ),
+
+
+
+                ],),
+            );}
+            }),
+          ],
         ),
-        desc: "Do you want to store order ? ",
-        buttons: [
-          DialogButton(
-            child: Text('Yes', style: TextStyle(color: Colors.deepOrangeAccent,fontWeight: FontWeight.bold),),
-            onPressed: () {
-             // print(DateTime.timestamp());
-              Provider.of<LocalStorageProvider>(context,listen: false).addOrder( StoreOrderLocally(id:widget.restaurant , item: Order.foodName, price: Order.price,time: DateTime.timestamp().toString()));
-              Navigator.pop(context);
-              Navigator.pop(context);
-              Navigator.pop(context);
-
-
-              // print('DATA STORED');
-            },
-            width: 100.w,
-          ),
-        ],
-      ).show();
-
-
-    }, child: Text('Received', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,letterSpacing: 3),)))
-
-
-
-
-
-
-
-            ],),
-        );}
-        })
-        ,
-      ),
+      )
+      ,
     );
   }
 }

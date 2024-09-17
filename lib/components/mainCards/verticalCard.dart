@@ -12,6 +12,7 @@ Material verticalCard(
   String vendorId,
   bool isAvailable,
     String adminEmail,
+    int adminContact,
 ) {
   return Material(
     borderRadius: BorderRadius.circular(10),
@@ -99,8 +100,7 @@ Material verticalCard(
     )),
 
           //Row for location
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Row(mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
                 Icons.location_on,
@@ -132,16 +132,17 @@ Material verticalCard(
                       fontSize: 8.spMin,
                       color: Colors.black,
                       fontWeight: FontWeight.bold)),
+              SizedBox(width: 10.h,),
 
               Icon(
                 size: 10.spMin,
-                Icons.payments_outlined,
+                Icons.phone_callback_rounded,
                 color: Colors.deepOrange,
               ),
               Text(
-                ///ID OF FOR TRANSANCTION
+                /// CONTACT OF VENDOR
                 ///
-                ' $vendorId',
+                ' $adminContact',
                 style: TextStyle(
                     fontSize: 10.spMin,
                     color: Colors.black,

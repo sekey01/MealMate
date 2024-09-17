@@ -26,7 +26,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
 
   @override
   Widget build(BuildContext context) {
-    final adminId = Provider.of<AdminId>(context, listen: false).id;
+    final  adminId = Provider.of<AdminId>(context, listen: false).id;
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -46,7 +46,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
           builder: (context, value, child) {
             return Center(
               child: Text(
-                'ID: ${value.id}',
+                'ID: ${value.id.toString()}',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15.sp,
@@ -97,7 +97,14 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                         elevation: 2,
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
-                          child: ExpansionTile(
+                          child: ExpansionTile(leading: RichText(text: TextSpan(
+                              children: [
+                                TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 15.spMin,fontWeight: FontWeight.bold)),
+                                TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.spMin,fontWeight: FontWeight.bold)),
+
+
+                              ]
+                          )),
                             shape: Border.all(color: Colors.black),
                             textColor: Colors.black,
                             collapsedBackgroundColor: Colors.white,
@@ -113,14 +120,14 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                             title: Text(
                               ' ${Orders.foodName} ',
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 10.spMin),
+                                  fontWeight: FontWeight.bold, fontSize: 10.sp),
                             ),
                             subtitle: Text(
                               '${Orders.time}',
                               style: TextStyle(
                                   letterSpacing: 2,
                                   fontWeight: FontWeight.w300,
-                                  fontSize: 10.spMin),
+                                  fontSize: 10.sp),
                             ),
                             children: <Widget>[
                               ListTile(
@@ -134,9 +141,10 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                         return Text(snapshot.data.toString(),
                                             style: TextStyle(
                                                 overflow: TextOverflow.ellipsis,
-                                                color: Colors.deepOrangeAccent
-                    
-                    
+                                                color: Colors.deepOrangeAccent,
+                      fontWeight: FontWeight.bold
+
+
                       ,
                                                 fontSize: 10.sp));
                                       }
@@ -147,31 +155,27 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                     }),
                               ),
                               ListTile(
-                                leading: Text(
-                                    'Comment : ${Orders.message}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 10.spMin,
-                                     // fontWeight: FontWeight.bold,
-                                    )),
+
                                 trailing: Text(
                                   '${Orders.vendorId}',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 10.sp,
-                                      color: Colors.black),
+                                      color: Colors.black,
+                                  fontStyle: FontStyle.italic),
                                 ),
+                                title: Text('Latitude : '' ${Orders.Latitude.toString()}' ,style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold)),
+                                subtitle: Text('Latitude  : ''${Orders.Latitude.toString()}', style: TextStyle(color: Colors.black, fontSize: 15.sp,fontWeight: FontWeight.bold)),
+
                               ),
                               ListTile(
-                                leading: ImageIcon(AssetImage('assets/Icon/profile.png')),
                                 titleTextStyle:
                                     TextStyle(fontWeight: FontWeight.bold),
-                                title: Text(
-                                  '${Orders.phoneNumber}',
-                                  style: TextStyle(color: Colors.black, fontSize: 10.spMin, ),
+                                title: Text('Buyer Tel:  ''${Orders.phoneNumber}',
+                                  style: TextStyle(color: Colors.black, fontSize: 12.sp, ),
                                 ),
                                 subtitle: Text(
-                                  '${Orders.message}',
+                                  'Comment : ''${Orders.message}',
                                   style: TextStyle(
                                       color: Colors.black, fontSize: 10.spMin),
                                 ),

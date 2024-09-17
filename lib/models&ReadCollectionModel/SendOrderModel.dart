@@ -12,6 +12,7 @@ class OrderInfo {
   final bool courier;
   final bool served;
   final String adminEmail;
+  final int adminContact;
 
 
   OrderInfo({
@@ -27,7 +28,8 @@ class OrderInfo {
     required this.served,
     required this.courier,
     required this.delivered,
-    required this.adminEmail
+    required this.adminEmail,
+    required  this.adminContact
   });
 
   Map<String, dynamic> toMap() {
@@ -45,6 +47,7 @@ class OrderInfo {
       'courier' : courier,
       'delivered': delivered,
       'adminEmail': adminEmail,
+      'adminContact': adminContact,
     };
   }
 
@@ -62,7 +65,8 @@ class OrderInfo {
       served: data['served']?? false,
       courier: data['courier']?? false,
       delivered: data['delivered']?? false,
-      adminEmail:  data['adminEmail']
+      adminEmail:  data['adminEmail']?? '',
+        adminContact: data['adminContact'] ?? '',
     );
   }
 }

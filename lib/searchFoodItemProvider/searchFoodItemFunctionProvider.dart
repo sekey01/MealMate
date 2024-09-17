@@ -31,6 +31,11 @@ class SearchProvider extends ChangeNotifier {
             .get(),
         FirebaseFirestore.instance
             .collection(_foodCollection)
+            .where('location', isGreaterThanOrEqualTo: _searchItem.toLowerCase())
+            .where('location', isLessThan: _searchItem.toLowerCase() + 'z')
+            .get(),
+        FirebaseFirestore.instance
+            .collection(_foodCollection)
             .where('restaurant', isGreaterThanOrEqualTo: _searchItem.toLowerCase())
             .where('restaurant', isLessThan: _searchItem.toLowerCase() + 'z')
             .get(),
@@ -48,6 +53,11 @@ class SearchProvider extends ChangeNotifier {
             .collection(_groceryCollection)
             .where('foodName', isGreaterThanOrEqualTo: _searchItem.toLowerCase())
             .where('foodName', isLessThan: _searchItem.toLowerCase() + 'z')
+            .get(),
+        FirebaseFirestore.instance
+            .collection(_groceryCollection)
+            .where('location', isGreaterThanOrEqualTo: _searchItem.toLowerCase())
+            .where('location', isLessThan: _searchItem.toLowerCase() + 'z')
             .get(),
         FirebaseFirestore.instance
             .collection(_groceryCollection)

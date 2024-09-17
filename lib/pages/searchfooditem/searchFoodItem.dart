@@ -155,6 +155,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                                             latitude: foodItem.latitude,
                                             longitude: foodItem.longitude,
                                             adminEmail: foodItem.adminEmail,
+                                            adminContact: foodItem.adminContact,
                                           )));
                                 },
                                 child: horizontalCard(
@@ -167,7 +168,8 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                                   foodItem.vendorId,
                                   foodItem.latitude,
                                   foodItem.longitude,
-                                  foodItem.adminEmail
+                                  foodItem.adminEmail,
+                                  foodItem.adminContact,
                                 ),
                               ),
                             ));

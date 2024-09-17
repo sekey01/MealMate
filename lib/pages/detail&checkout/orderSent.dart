@@ -6,7 +6,9 @@ class OrderSent extends StatefulWidget {
   final int vendorId;
   final DateTime time;
   final String restaurant;
-  const OrderSent({super.key, required this.vendorId, required this.time, required this.restaurant} );
+  final adminEmail;
+  final adminContact;
+  const OrderSent({super.key, required this.vendorId, required this.time, required this.restaurant, required this.adminEmail, required this.adminContact} );
 
   @override
   State<OrderSent> createState() => _OrderSentState();
@@ -67,7 +69,7 @@ class _OrderSentState extends State<OrderSent> {
                   elevation: 3,
                   child: TextButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> TrackOrder(vendorId: widget.vendorId,time: widget.time, restaurant: widget.restaurant,)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> TrackOrder(vendorId: widget.vendorId,time: widget.time, restaurant: widget.restaurant,adminEmail: widget.adminEmail,adminContact: widget.adminContact,)));
                       },
                       child: Text(
                         'Track Order',

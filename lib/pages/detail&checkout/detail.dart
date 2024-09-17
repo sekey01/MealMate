@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import '../../components/Notify.dart';
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
 import '../../models&ReadCollectionModel/cartmodel.dart';
 import '../../models&ReadCollectionModel/sendOrderFunctionProvider.dart';
@@ -26,6 +27,7 @@ class DetailedCard extends StatefulWidget {
   final double latitude;
   final double longitude;
   final String adminEmail;
+  final int adminContact;
 
 
 
@@ -39,7 +41,8 @@ class DetailedCard extends StatefulWidget {
     required this.time,
     required this.latitude,
     required this.longitude,
-    required this.adminEmail
+    required this.adminEmail,
+    required this.adminContact,
 
   });
 
@@ -74,10 +77,11 @@ class _DetailedCardState extends State<DetailedCard> {
 
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
               color: Colors.white,
-              height: 280.h,
+              height: 200.h,
               width: 350.h,
               child: widget.imgUrl.isEmpty
                   ? Center(
@@ -97,7 +101,7 @@ class _DetailedCardState extends State<DetailedCard> {
                       ),
                     ),
             ),
-            SizedBox(height: 5.h),
+            SizedBox(height: 10.h),
             Text(
               widget.restaurant,
               style: TextStyle(
@@ -136,6 +140,7 @@ class _DetailedCardState extends State<DetailedCard> {
                     Icon(
                       Icons.location_on,
                       color: Colors.deepOrangeAccent,
+                      size: 15.sp,
                     ),
                     SizedBox(width: 10.h),
                     Text(
@@ -156,35 +161,30 @@ class _DetailedCardState extends State<DetailedCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Material(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  elevation: 3,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.timelapse_rounded,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.timelapse_rounded,
+                      color: Colors.black,
+                    ),
+                    Text(
+                      widget.time,
+                      style: TextStyle(
                         color: Colors.black,
+                        fontSize: 15.sp,
                       ),
-                      Text(
-                        widget.time,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                    ],
-                  ),
+                    ),
+                    SizedBox(width: 10),
+                  ],
                 ),
-                SizedBox(width: 15),
+                SizedBox(width: 15.w),
                 Icon(
-                  Icons.payments_outlined,
+                  Icons.phone_callback_outlined,
                   color: Colors.black,
                 ),
                 Text(
-                  widget.vendorid.toString(),
+                  widget.adminContact.toString(),
                   style: TextStyle(
                     color: Colors.deepOrangeAccent,
                     fontSize: 15.sp,
@@ -263,7 +263,7 @@ class _DetailedCardState extends State<DetailedCard> {
             Consumer<CartModel>(
               builder: (context, value, child) => Container(
                 margin: EdgeInsets.all(10),
-                height: 600.sp,
+                height: 700.h,
                 width: double.infinity,
                 child: Center(
                   child: Column(
@@ -287,14 +287,14 @@ class _DetailedCardState extends State<DetailedCard> {
                               child: Text(
                                 '  -  ',
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 20.sp,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
                               ),
                             ),
                           ),
-                          SizedBox(width: 15),
+                          SizedBox(width: 15.w),
                           Material(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(7),
@@ -309,7 +309,7 @@ class _DetailedCardState extends State<DetailedCard> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 15),
+                          SizedBox(width: 15.w),
                           GestureDetector(
                             onTap: () {
                               value.incrementQuantity();
@@ -346,7 +346,7 @@ class _DetailedCardState extends State<DetailedCard> {
                                 border: Border.all(
                                     color: Colors.black,
                                     style: BorderStyle.solid)),
-                            height: 260,
+                            height: 260.h,
                             width: double.infinity,
 
                             ///MAP HERE
@@ -379,8 +379,7 @@ class _DetailedCardState extends State<DetailedCard> {
                                         onMapCreated:
                                             (GoogleMapController controller) {
                                           _controller.complete(_controller
-                                              as FutureOr<
-                                                  GoogleMapController>?);
+                                              as FutureOr<GoogleMapController>?);
                                         },
                                         initialCameraPosition: CameraPosition(
                                           bearing: 192.8334901395798,
@@ -419,6 +418,8 @@ class _DetailedCardState extends State<DetailedCard> {
 
                         )
                       ),*/
+
+
                       /// TEXTFIELDFOR USER TO ENTER EXTRA INFORMATION
                       ///
                       ///
@@ -430,6 +431,8 @@ class _DetailedCardState extends State<DetailedCard> {
                             fontSize: 10.sp,
                             color: Colors.black
                           ),),),
+                      SizedBox(height: 30.h,),
+
                       Padding(
                         padding: const EdgeInsets.all(18.0),
                         child: TextField(
@@ -438,9 +441,14 @@ class _DetailedCardState extends State<DetailedCard> {
                           scrollPhysics: BouncingScrollPhysics(),
                           style: TextStyle(color: Colors.black),
                           decoration: InputDecoration(
+                            label: Text('Leave a message here ...'),
+                            labelStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15.sp,
+                            ),
                             filled: true,
                             fillColor: Colors.grey.shade200,
-                            hintText: 'Enter phone number and important details here... ',
+                            hintText: 'Leave a message for Us / other details here... ',
                             hintStyle: TextStyle(
                               color: Colors.black,
                               fontSize: 11.sp,
@@ -452,6 +460,18 @@ class _DetailedCardState extends State<DetailedCard> {
                           controller: messageController,
                         ),
                       ),
+
+SizedBox(height: 30.h,),
+                      Padding(padding: EdgeInsets.all(8),
+                        child: Text('Note:  Make sure your number displays bellow; '
+                            'Go to your profile page to add number ...',
+                          style: TextStyle(
+                              fontSize: 10.sp,
+                              color: Colors.black
+                          ),),),
+
+                      SizedBox(height: 30.h,),
+
                       Text(
                         " Your Telephone: ${Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber}",
                         style: TextStyle(
@@ -468,37 +488,43 @@ class _DetailedCardState extends State<DetailedCard> {
                           ),
                         ),
                         onPressed: () {
+    if(!Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber.isEmpty){
+      DateTime time = DateTime.now();
+      //  print(time);
+
+      Provider.of<SendOrderProvider>(context, listen: false)
+          .sendOrder(
+        OrderInfo(
+            time: time,
+            foodName: widget.foodName,
+            quantity: Provider.of<CartModel>(context, listen: false).getQuantity,
+            price: widget.price,
+            message: messageController.text.toString(),
+            Latitude: Provider.of<LocationProvider>(context, listen: false).Lat,
+            Longitude: Provider.of<LocationProvider>(context, listen: false).Long,
+            phoneNumber: Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber,
+            vendorId: widget.vendorid,
+            served: false,
+            courier : false,
+            delivered: false,
+            adminEmail: widget.adminEmail,
+            adminContact: widget.adminContact
+        ),
+      );
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => OrderSent(vendorId: widget.vendorid,time: time, restaurant: widget.restaurant,adminEmail:  widget.adminEmail,adminContact:  widget.adminContact),
+        ),
+      );
 
 
-                          DateTime time = DateTime.now();
-                          print(time);
+    } else {
+    Notify(context, 'Please add Telephone number', Colors.red);}
 
-                          Provider.of<SendOrderProvider>(context, listen: false)
-                              .sendOrder(
-                            OrderInfo(
-                              time: time,
-                              foodName: widget.foodName,
-                              quantity: Provider.of<CartModel>(context, listen: false).getQuantity,
-                              price: widget.price,
-                              message: messageController.text.toString(),
-                              Latitude: Provider.of<LocationProvider>(context, listen: false).Lat,
-                              Longitude: Provider.of<LocationProvider>(context, listen: false).Long,
-                              phoneNumber: Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber,
-                              vendorId: widget.vendorid,
-                              served: false,
-                              courier : false,
-                              delivered: false,
-                              adminEmail: widget.adminEmail
-                            ),
-                          );
+  },
 
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => OrderSent(vendorId: widget.vendorid,time: time, restaurant: widget.restaurant,),
-                            ),
-                          );
-                        },
                         child: Text(
                           'CheckOut',
                           style:

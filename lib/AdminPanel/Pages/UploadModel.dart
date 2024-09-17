@@ -12,6 +12,7 @@ class UploadModel {
   final double latitude;
   final double longitude;
   final String adminEmail;
+  final int adminContact;
 
   UploadModel({
     required this.imageUrl,
@@ -24,7 +25,8 @@ class UploadModel {
     required this.isAvailable,
     required this.latitude,
     required this.longitude,
-    required this.adminEmail
+    required this.adminEmail,
+    required this.adminContact,
 
   });
 
@@ -40,7 +42,8 @@ class UploadModel {
       'isActive': isAvailable,
       'latitude' : latitude?? 0,
       'longitude': longitude?? 0,
-      'adminEmail': adminEmail ?? ''
+      'adminEmail': adminEmail ?? '',
+      'adminContact': adminContact?? ''
     };
   }
 }

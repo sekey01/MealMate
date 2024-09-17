@@ -189,6 +189,7 @@ bool _hasInternet = true;
                                         latitude: data.latitude,
                                           longitude: data.longitude,
                                           adminEmail: data.adminEmail,
+                                          adminContact: data.adminContact,
                                         ))): Notify(context, 'This item Is not Available Now', Colors.red);
                               },
                               child: verticalCard(
@@ -200,7 +201,8 @@ bool _hasInternet = true;
                                   data.time,
                                   data.vendorId.toString(),
                                   data.isAvailable,
-                              data.adminEmail
+                              data.adminEmail,
+                                data.adminContact,
                               ),
                             );
                           });

@@ -14,6 +14,7 @@ Column horizontalCard(
     double latitude,
     double longitude,
     String adminEmail,
+    int adminContact,
 ) {
   return Column(
     children: [
@@ -35,6 +36,7 @@ Column horizontalCard(
                         latitude:latitude ,
                         longitude: longitude,
                         adminEmail: adminEmail,
+                        adminContact: adminContact,
 
 
                       )));

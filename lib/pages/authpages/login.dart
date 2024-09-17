@@ -1,15 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mealmate/AdminPanel/Pages/adminlogin.dart';
+import 'package:mealmate/Courier/courierInit.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
-import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/components/Notify.dart';
-import 'package:mealmate/pages/authpages/signup.dart';
-import 'package:mealmate/pages/authpages/Otp_VerificationPage.dart';
 import 'package:mealmate/pages/navpages/home.dart';
-import 'package:phone_text_field/phone_text_field.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
@@ -240,7 +236,9 @@ class _LoginState extends State<Login> {
                               backgroundColor: Colors.white),
     onPressed: ()  {
       if (_formKey.currentState?.validate() ?? false) {
+        Provider.of<LocalStorageProvider>(context,listen: false).storeNumber(_phoneNumberController.text.toString());
         _handleSignIn();
+
 
       }
 
@@ -291,7 +289,23 @@ class _LoginState extends State<Login> {
                                       builder: ((context) => AdminLogin())));
                             },
                             child: Text(
-                              ' Click here',
+                              ' Admin  /',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.deepOrangeAccent,
+                              ),
+                            ),
+                          ),
+SizedBox(width: 10.w,),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) => CourierInit())));
+                            },
+                            child: Text(
+                              'Courier ',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.deepOrangeAccent,
