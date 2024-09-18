@@ -48,7 +48,7 @@ class _LoginState extends State<Login> {
         Provider.of<LocalStorageProvider>(context,listen: false).storeImageUrl(user.photoUrl.toString());
 
 
-        /* print('${user.email} uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
+        /* print('${user.email} uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
         print(user.photoUrl);
         print(user.displayName);*/// Print user email for debugging
         Navigator.push(
