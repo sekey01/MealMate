@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mealmate/Courier/trackbuyer.dart';
+import 'package:provider/provider.dart';
 
+import '../UserLocation/LocationProvider.dart';
 import '../components/card1.dart';
 
 class CourierInit extends StatefulWidget {
@@ -20,6 +22,10 @@ class _CourierInitState extends State<CourierInit> {
 
   @override
   Widget build(BuildContext context) {
+    ///I RUN THE DETERMIN LOCATION HERE TO GET THE LAT AND LONG QUICKLY
+    Provider.of<LocationProvider>(
+        context,
+        listen: false).determinePosition();
     return  Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
