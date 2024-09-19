@@ -48,6 +48,7 @@ class _LoginState extends State<Login> {
         Provider.of<LocalStorageProvider>(context,listen: false).storeImageUrl(user.photoUrl.toString());
 
 
+
         /* print('${user.email} uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
         print(user.photoUrl);
         print(user.displayName);*/// Print user email for debugging
@@ -73,10 +74,10 @@ class _LoginState extends State<Login> {
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login()));
   }*/
 
-  void dispose() {
+  /*void dispose() {
     _phoneNumberController.dispose();
     super.dispose();
-  }
+  }*/
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,7 +130,7 @@ class _LoginState extends State<Login> {
 
                           child: TextFormField(
  onFieldSubmitted: (value){
-   Provider.of<LocalStorageProvider>(context,listen: false).storeNumber(value);
+   Provider.of<LocalStorageProvider>(context,listen: false).storePhoneNumber(value);
 
  },
                             maxLength: 10,
@@ -152,6 +153,10 @@ class _LoginState extends State<Login> {
                               if (value == null || value.trim().isEmpty) {
                                 return '   This field cannot be empty';
                               }
+                              //if phone number is not up to 10 digits
+                              if (value.length < 10 || value.length > 10) {
+                                return 'Phone number must be 10 digits';
+                              }
                               return null; // return null if the input is valid
                             },
 
@@ -162,70 +167,7 @@ class _LoginState extends State<Login> {
 
 
 
-                      /*///THIS IS THE PHONE TEXT FIELD WIDGET
-                      ///IT IS A CUSTOM WIDGET THAT I CREATED TO MAKE IT EASY TO GET THE PHONE NUMBER
-                      ///IT IS A CUSTOM TEXT FIELD THAT TAKES THE PHONE NUMBER AND COUNTRY CODE
-                      Padding(
-                        padding: EdgeInsets.all(0),
-                        child: PhoneTextField(
-                          showCountryCodeAsIcon: true,
-                          autovalidateMode: AutovalidateMode.disabled,
-                          locale: const Locale('en'),
-                          decoration: const InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            contentPadding: EdgeInsets.zero,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
-                              borderSide: BorderSide(),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
-                              borderSide: BorderSide(),
-                            ),
-                            labelText: "Phone number",
-                            labelStyle: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                          dropdownIcon: Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.black,
-                          ),
-                          textStyle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.bold),
-                          searchFieldInputDecoration: const InputDecoration(
-                            filled: true,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
-                              borderSide: BorderSide(),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
-                              borderSide: BorderSide(),
-                            ),
-                            suffixIcon: Icon(Icons.search),
-                            hintText: "Search country",
-                          ),
-                          initialCountryCode: "GH",
-                          onChanged: (phone) {
-                            setState(() {
-                              if (phone.isValidNumber())
-                                _phoneNumberController.text =
-                                    phone.completeNumber;
-                              _isPhoneNumberValid = true;
 
-                              return;
-                            });
-                          },
-                        ),
-                      ),*/
 
                       ///GOOGLE SIGN IN BUTTON HERE
                       SizedBox(
@@ -235,8 +177,9 @@ class _LoginState extends State<Login> {
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white),
     onPressed: ()  {
+
       if (_formKey.currentState?.validate() ?? false) {
-        Provider.of<LocalStorageProvider>(context,listen: false).storeNumber(_phoneNumberController.text.toString());
+
         _handleSignIn();
 
 
@@ -271,7 +214,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       SizedBox(
-                        height: 20.h,
+                        height: 150.h,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -279,7 +222,7 @@ class _LoginState extends State<Login> {
                           Text(
                             " Are you an Admin ?  ",
                             style: TextStyle(
-                                color: Colors.black, fontStyle: FontStyle.italic, fontSize: 12.sp),
+                                color: Colors.black, fontStyle: FontStyle.italic, fontSize: 10.sp),
                           ),
                           GestureDetector(
                             onTap: () {
@@ -291,6 +234,7 @@ class _LoginState extends State<Login> {
                             child: Text(
                               ' Admin  /',
                               style: TextStyle(
+                                fontSize: 10.sp,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.deepOrangeAccent,
                               ),
@@ -307,6 +251,7 @@ SizedBox(width: 10.w,),
                             child: Text(
                               'Courier ',
                               style: TextStyle(
+                                fontSize: 10.sp,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.deepOrangeAccent,
                               ),

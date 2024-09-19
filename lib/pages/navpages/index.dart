@@ -154,17 +154,20 @@ SizedBox(height: 30.h,),
                           .determinePosition(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(Icons.location_on_outlined, size: 10.sp,color: Colors.blueGrey,),
-                              Text(snapshot.data.toString(),
-                                  style: TextStyle(
-                                      overflow: TextOverflow.ellipsis,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10.sp)),
-                            ],
+                          return Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(Icons.location_on_outlined, size: 10.sp,color: Colors.blueGrey,),
+                                Text(snapshot.data.toString(),
+                                    style: TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 10.sp)),
+                              ],
+                            ),
                           );
                         }
                         return Text(
@@ -177,7 +180,6 @@ SizedBox(height: 30.h,),
                   SizedBox(height: 20.h,),
                   /// SEARCH BAR HERE
                   ///
-
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextField(
@@ -187,7 +189,7 @@ SizedBox(height: 30.h,),
                       style: TextStyle(color: Colors.deepOrange),
                       decoration: InputDecoration(
                         hintText: 'FoodName or Restaurant',
-                        fillColor: Colors.grey.shade300,
+                        fillColor: Colors.deepOrange.shade50,
                         filled: true,
                         prefixIcon: Icon(
                           Icons.search,
@@ -266,10 +268,7 @@ SizedBox(height: 30.h,),
                       ),
                     ),
                   ]),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Padding(padding: EdgeInsets.all(1), child: Image(image: AssetImage('assets/Announcements/An_Jollof.png'),height: 200.h,),),
+
                   SizedBox(
                     height: 30.h,
                   ),

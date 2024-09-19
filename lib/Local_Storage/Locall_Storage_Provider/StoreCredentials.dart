@@ -16,10 +16,11 @@ class LocalStorageProvider extends ChangeNotifier {
   String imageUrl = '' ;
   String adminEmail = '';
 
-  Future<void> storeNumber(String newValue) async {
+
+  Future<void> storePhoneNumber(String newValue) async {
     try {
       final directory = await getApplicationDocumentsDirectory();
-      final filepath = '${directory.path}/phoneNumber.txt';
+      final filepath = '${directory.path}/storePhoneNumber.txt';
       final file = File(filepath);
 
       // Check if the file exists
@@ -29,42 +30,44 @@ class LocalStorageProvider extends ChangeNotifier {
       }
 
       // Write the new value to the file
-      await file.writeAsString( newValue.toString());
+      await file.writeAsString(newValue);
 
       // Update the telephone Number
-      phoneNumber = newValue.toString();
-
+      phoneNumber = newValue;
+print(phoneNumber);
       // Notify listeners of the change
       notifyListeners();
     } catch (e) {
       // Handle any exceptions
-      print("Error Storing Number: $e");
+      print("Error changing phoneNumber: $e");
       // You can throw the error or handle it as needed
     }
   }
 
-  Future <String> getNumber() async {
+
+  Future <String>getPhoneNumber() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
-      final filepath = '${directory.path}/phoneNumber.txt';
+      final filepath = '${directory.path}/storePhoneNumber.txt';
       final file = File(filepath);
 
       // Check if the file exists
       if (await file.exists()) {
         // Read the contents of the file
         String contents = await file.readAsString();
+        phoneNumber = contents; // Parse the contents to an integer
         notifyListeners();
-        phoneNumber = contents;// Par// se the contents to an integer
-        return phoneNumber.toString();
 
+        return phoneNumber;
       } else {
-       return  phoneNumber = '+233 XX XXX XXXX '; // Default value if the file doesn't exist
+        return phoneNumber = '+233 XXX XX XXXX'; // Default value if the file doesn't exist
       }
 
-
+      // Notify listeners of the change
     } catch (e) {
       // Handle any exceptions
-    return '+233 XX XXX XXXX';
+      return 'Username';
+      //print("Error loading Username: $e");
       // You can throw the error or handle it as needed
     }
   }
@@ -304,19 +307,6 @@ class LocalStorageProvider extends ChangeNotifier {
       // You can throw the error or handle it as needed
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

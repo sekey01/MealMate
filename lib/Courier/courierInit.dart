@@ -19,6 +19,7 @@ class _CourierInitState extends State<CourierInit> {
 
   final TextEditingController LatitudeController = TextEditingController();
   final TextEditingController LongitudeController = TextEditingController();
+  final TextEditingController PhoneNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +51,13 @@ class _CourierInitState extends State<CourierInit> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                initCard(),
+                initCourierCard(),
                 SizedBox(height: 50.h,),
 
                 Badge(
                   backgroundColor: Colors.green,
                   alignment: Alignment.bottomLeft,
-                  label: Text('Get rewarded ...', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 10.sp),),
+                  label: Text('Get rewarded MealMate Dress soon...', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 10.sp),),
                   child: Padding(padding: EdgeInsets.all(1),
                       child: Image(image: AssetImage('assets/images/MealmateDress.png'),height: 150,width: 250,
                       )),
@@ -68,6 +69,48 @@ class _CourierInitState extends State<CourierInit> {
                 key: _formKey,
                 child: Column(
               children: [
+                ///TEXTFIELD FOR BUYER PHONE NUMBER
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                        keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
+                        maxLength: 10,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter phone number';
+                          }
+                          double? phoneNumber = double.tryParse(value);
+                          if (phoneNumber == null) {
+                            return 'Please enter a valid number';
+                          }
+                          if (phoneNumber < 0 ) {
+                            return 'Phone number must be positive';
+                          }
+                          //if phone number is not up to 10 digits
+                          if (value.length < 10) {
+                            return 'Phone number must be 10 digits';
+                          }
+                          return null;
+                        },
+                        style: TextStyle(color: Colors.black),
+                        controller: PhoneNumberController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.deepOrange.shade50,
+                          hintStyle: TextStyle(color: Colors.black),
+                          //label: Text('Restaurant Name'),
+                          labelStyle: TextStyle(color: Colors.black),
+                          labelText: 'Receiver Phone Number',
+                          hintText: ' Tellephone Number',
+
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                                color: Colors.deepOrangeAccent
+
+
+                            ),),))),
+                SizedBox(height: 10.h,),
                 ///TEXTFIELD FOR LATITUDE
                 Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -142,7 +185,6 @@ class _CourierInitState extends State<CourierInit> {
                             ))
                     )
                 ),
-
                 SizedBox(height: 30.h,),
 
                 ElevatedButton(
@@ -158,6 +200,7 @@ class _CourierInitState extends State<CourierInit> {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context)=>
                               TrackBuyer(
+                                  phoneNumber: int.parse(PhoneNumberController.text.toString()),
                                   Latitude: double.parse(LatitudeController.text.toString()),
                                   Longitude: double.parse(LongitudeController.text.toString())))
                       );
@@ -165,7 +208,10 @@ class _CourierInitState extends State<CourierInit> {
                     }
                   },
                   child: Text('Track Route ',style: TextStyle(fontSize: 15.sp,fontWeight: FontWeight.bold,color: Colors.white),),
-                )
+
+                ),
+                SizedBox(height: 50.h,),
+
               ],
             )),
 

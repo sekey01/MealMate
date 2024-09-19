@@ -108,7 +108,7 @@ SizedBox(height: 30.h,),
                         if (value == null || value.isEmpty) {
                           return 'Please enter longitude';
                         }},
-
+                     obscureText: true,
                       style: TextStyle(color: Colors.black),
                       controller: CourierIdController,
                       decoration: InputDecoration(

@@ -41,14 +41,11 @@ dependencies:
   firebase_core: ^2.31.1
   cloud_firestore: ^4.17.4
   flutterfire_cli: ^1.0.1-dev.1
-  pin_code_fields: ^8.0.1
   swipe: ^0.0.1
   image_picker: ^1.1.1
   permission_handler: ^10.2.0
   firebase_storage: ^11.7.6
   flutter_staggered_grid_view: ^0.7.0
-  flutter_launcher_icons: ^0.13.1
-  phone_text_field: ^0.0.7
   card_loading: ^0.3.2
   firebase_auth: ^4.20.0
   internet_connection_checker: ^2.0.0
@@ -58,11 +55,11 @@ dependencies:
   location_geocoder: ^1.0.5
   google_maps_flutter: ^2.7.0
   lite_rolling_switch: ^1.0.1
-
-
   path_provider: any
   http: any
   google_sign_in: ^6.2.1
+  url_launcher: ^6.3.0
+  easy_url_launcher: ^0.0.7
 dev_dependencies:
 
 flutter_launcher_icons:
@@ -141,6 +138,7 @@ flutter:
      - assets/Icon/yummy.png
      - assets/Icon/coupon.png
      - assets/Icon/version.png
+     - assets/Icon/customer-service.png
      - assets/Icon/transaction.png
      - assets/Icon/filter.png
      - assets/Icon/loading.gif
@@ -150,6 +148,7 @@ flutter:
      - assets/Announcements/An_Location.png
      - assets/Announcements/An_Pizza.png
      - assets/Announcements/An_Grocery.png
+     - assets/Announcements/OrderNow.png
 
 
 

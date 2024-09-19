@@ -58,8 +58,8 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                 controller: searchitemController,
                 style: TextStyle(color: Colors.deepOrange),
                 decoration: InputDecoration(
-                  hintText: 'FoodName or Restaurant',
-                  fillColor: Colors.grey.shade200,
+                  hintText: 'foodName / restaurant / location',
+                  fillColor: Colors.deepOrange.shade50,
                   filled: true,
                   prefixIcon: Icon(
                     Icons.filter_alt_outlined,
@@ -83,8 +83,9 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
 
                     ///borderSide: BorderSide(color: Colors.red),
                   ),
+
                   hintStyle: TextStyle(
-                    color: Colors.grey,
+                    color: Colors.black,
                     fontSize: 10.sp,
                   ),
                   border: OutlineInputBorder(
@@ -94,12 +95,12 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                       style: BorderStyle.solid,
                     ),
                   ),
-                  label: Text('Foodname and Restaurant'),
+                  label: Text('foodName / restaurant / location'),
                   labelStyle: TextStyle(color: Colors.grey, fontSize: 10.spMin),
                 ),
                 onChanged: (value) {
                   searchProvider.searchItem = value;
-                  print("this is the ${value.toString()}");
+                  //print("this is the ${value.toString()}");
                   setState(() {
                     searchProvider.searchFoodItems();
                   });

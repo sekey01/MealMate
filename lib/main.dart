@@ -6,8 +6,8 @@ import 'package:mealmate/AdminPanel/OtherDetails/AdminFunctionsProvider.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/ID.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
-import 'package:mealmate/Network_Images_Provider/Network_Images.dart';
 import 'package:mealmate/Notification/notification_Provider.dart';
+import 'package:mealmate/Other_Providers/Url_Launcher.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/firebase_options.dart';
 import 'package:mealmate/models&ReadCollectionModel/sendOrderFunctionProvider.dart';
@@ -17,6 +17,7 @@ import 'package:mealmate/theme/themedata.dart';
 import 'package:provider/provider.dart';
 
 import 'AdminPanel/collectionUploadModelProvider/collectionProvider.dart';
+import 'Other_Providers/Network_Images.dart';
 import 'models&ReadCollectionModel/cartmodel.dart';
 import 'models&ReadCollectionModel/userReadwithCollection.dart';
 
@@ -53,7 +54,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => LocalStorageProvider()),
           ChangeNotifierProvider(create: (context)=> IncomingOrdersProvider()),
           ChangeNotifierProvider(create: (context)=> NotificationProvider()),
-          ChangeNotifierProvider(create: (context)=> NetworkImageProvider())
+          ChangeNotifierProvider(create: (context)=> NetworkImageProvider()),
+         // ChangeNotifierProvider(create: (context)=> UrlLauncherProvider())
+
         ],
         child: MaterialApp(
             debugShowCheckedModeBanner: false,

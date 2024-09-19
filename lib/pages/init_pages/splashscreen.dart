@@ -22,18 +22,21 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.white,
       splashScreenBody: Center(
           child: Padding(
-        padding: const EdgeInsets.all(80.0),
+        padding: const EdgeInsets.all(8.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(child: Image(image: AssetImage('assets/images/logo.png'))),
-              SizedBox(
-                height: 50,
-              ),
-              Center(
-                child: CustomLoGoLoading(),
-              ),
+              Center(child: Image(image: AssetImage('assets/Announcements/OrderNow.png'))),
+              RichText(text: TextSpan(
+                  children: [
+                    TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)),
+                    TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20, fontWeight: FontWeight.bold)),
+
+
+                  ]
+              )),
+
               SizedBox(
                 height: 20,
               ),

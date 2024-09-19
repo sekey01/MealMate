@@ -168,8 +168,9 @@ class _DetailedCardState extends State<DetailedCard> {
                       Icons.timelapse_rounded,
                       color: Colors.black,
                     ),
+                    SizedBox(width: 10.w),
                     Text(
-                      widget.time,
+                      '${widget.time}'' mins',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 15.sp,
@@ -398,8 +399,8 @@ class _DetailedCardState extends State<DetailedCard> {
                                       );
                                     }
                                     return Text(
-                                      'locating you...',
-                                      style: TextStyle(color: Colors.black),
+                                      'Map Loading ... please wait for map to locate you before you order...',
+                                      style: TextStyle(color: Colors.deepOrange, fontSize: 12.sp),
                                     );
                                   }),
                             ),
@@ -447,12 +448,13 @@ class _DetailedCardState extends State<DetailedCard> {
                               fontSize: 15.sp,
                             ),
                             filled: true,
-                            fillColor: Colors.grey.shade200,
+                            fillColor: Colors.deepOrange.shade50,
                             hintText: 'Leave a message for Us / other details here... ',
                             hintStyle: TextStyle(
                               color: Colors.black,
                               fontSize: 11.sp,
                             ),
+
                             border: OutlineInputBorder(
                               borderSide: BorderSide(),
                             ),
@@ -463,7 +465,7 @@ class _DetailedCardState extends State<DetailedCard> {
 
 SizedBox(height: 30.h,),
                       Padding(padding: EdgeInsets.all(8),
-                        child: Text('Note:  Make sure your number displays bellow; '
+                        child: Text('Note:  Make sure your number displays bellow before you order; '
                             'Go to your profile page to add number ...',
                           style: TextStyle(
                               fontSize: 10.sp,
@@ -488,10 +490,10 @@ SizedBox(height: 30.h,),
                           ),
                         ),
                         onPressed: () {
+
     if(!Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber.isEmpty){
       DateTime time = DateTime.now();
       //  print(time);
-
       Provider.of<SendOrderProvider>(context, listen: false)
           .sendOrder(
         OrderInfo(

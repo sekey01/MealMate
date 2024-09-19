@@ -355,7 +355,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                   style: TextStyle(fontSize: 15.sp, color: Colors.blueGrey),
                 ),
 
-                _isLoading ? CustomLoGoLoading() : initCard(),
+                _isLoading ? CustomLoGoLoading() : initAdminCard(),
                 SizedBox(
                   height: 30.h,
                 ),

@@ -8,10 +8,12 @@ import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/AdminFunctionsProvider.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/ID.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
+import 'package:mealmate/Other_Providers/Url_Launcher.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/NoFoodFound.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_url_launcher/easy_url_launcher.dart';
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
 
 class IncomingOrders extends StatefulWidget {
@@ -165,14 +167,20 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                   fontStyle: FontStyle.italic),
                                 ),
                                 title: Text('Latitude : '' ${Orders.Latitude.toString()}' ,style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold)),
-                                subtitle: Text('Latitude  : ''${Orders.Latitude.toString()}', style: TextStyle(color: Colors.black, fontSize: 15.sp,fontWeight: FontWeight.bold)),
+                                subtitle: Text('Longitude  : ''${Orders.Longitude.toString()}', style: TextStyle(color: Colors.black, fontSize: 15.sp,fontWeight: FontWeight.bold)),
 
                               ),
                               ListTile(
                                 titleTextStyle:
                                     TextStyle(fontWeight: FontWeight.bold),
-                                title: Text('Buyer Tel:  ''${Orders.phoneNumber}',
-                                  style: TextStyle(color: Colors.black, fontSize: 12.sp, ),
+                                title: GestureDetector(
+                                  onTap: () async{
+                                    /// This function will take the Buyer's phone number and call the buyer
+                                    await EasyLauncher.call(number: Orders.phoneNumber.toString());
+                                  },
+                                  child: Text('Buyer Tel:  ''${Orders.phoneNumber}',
+                                    style: TextStyle(color: Colors.black, fontSize: 12.sp, ),
+                                  ),
                                 ),
                                 subtitle: Text(
                                   'Comment : ''${Orders.message}',

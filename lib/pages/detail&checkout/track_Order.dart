@@ -1,16 +1,14 @@
 
-import 'package:card_loading/card_loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/storeOrderModel.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/Notify.dart';
-import 'package:mealmate/pages/navpages/home.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
 
@@ -96,9 +94,17 @@ class _TrackOrderState extends State<TrackOrder> {
   Widget build(BuildContext context) {
 
     return  Scaffold(
-      appBar: AppBar(title: Text('Track Order'),centerTitle: true,backgroundColor: Colors.white,titleTextStyle: TextStyle(color: Colors.blueGrey, fontSize: 20, fontWeight: FontWeight.bold),),
+      appBar: AppBar(title: RichText(text: TextSpan(
+          children: [
+            TextSpan(text: "Tracking ", style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
+            TextSpan(text: "Order ...", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
+
+
+          ]
+      )),centerTitle: true,backgroundColor: Colors.white,titleTextStyle: TextStyle(color: Colors.blueGrey, fontSize: 20, fontWeight: FontWeight.bold),),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             StreamBuilder<OrderInfo>(
               ///
@@ -136,8 +142,8 @@ class _TrackOrderState extends State<TrackOrder> {
                     padding: const EdgeInsets.all(8.0),
                     child: RichText(text: TextSpan(
                         children: [
-                          TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
-                          TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
+                          TextSpan(text: "GHC ", style: TextStyle(color: Colors.black, fontSize: 20.spMin, )),
+                          TextSpan(text: '${Order?.price.toString()}''0', style: TextStyle(color: Colors.black, fontSize: 25.spMin, fontWeight: FontWeight.bold)),
 
 
                         ]
@@ -150,16 +156,25 @@ class _TrackOrderState extends State<TrackOrder> {
 
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: RichText(text: TextSpan(
-                        children: [
-                          TextSpan(text: "Vendor Contact:  ", style: TextStyle(color: Colors.black, fontSize: 15.spMin, fontWeight: FontWeight.bold)),
-                          TextSpan(text: widget.adminContact.toString(), style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.spMin, fontWeight: FontWeight.bold)),
+                    child: GestureDetector(
+                      onTap: () async{
+                        ///THIS IS THE CALL FUNCTION TO CALL THE VENDOR
+                        EasyLauncher.call(number: widget.adminContact.toString());
+                      },
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
 
+                          children: [
 
-                        ]
-                    )),
+                            Text('Tap here to Call Vendor ', style:TextStyle(color: Colors.blueGrey, fontSize: 15.sp, ) ,),
+                            ImageIcon(AssetImage('assets/Icon/customer-service.png'),size: 25.sp,color: Colors.green,)
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-            Text('Order progress...', style: TextStyle(color: Colors.blueGrey, fontSize: 25, fontWeight: FontWeight.bold),),
+            Text('Order In progress...', style: TextStyle(color: Colors.blueGrey, fontSize: 25, fontWeight: FontWeight.bold),),
 
                   ///TIMER
                   Padding(padding: EdgeInsets.all(16), child: CustomLoGoLoading(),),
@@ -177,9 +192,9 @@ class _TrackOrderState extends State<TrackOrder> {
                           padding: const EdgeInsets.all(16.0),
                           child: RichText(text: TextSpan(
                               children: [
-                                TextSpan(text: " Note : Please you can call vendor if Order Served delays by : \n ", style: TextStyle(color: Colors.black, fontSize: 10.sp,)),
-                                TextSpan(text: "${snapshot.data} seconds \n  ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.sp,fontWeight: FontWeight.bold)),
-                                TextSpan(text: "if the Order Served  Icon is not ticked green ", style: TextStyle(color: Colors.black, fontSize: 10.sp,)),
+                                TextSpan(text: " Order will be served in :  ", style: TextStyle(color: Colors.blueGrey, fontSize: 10.sp,)),
+                                TextSpan(text: "${snapshot.data} seconds \n ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.sp,fontWeight: FontWeight.bold)),
+                                TextSpan(text: "if the Order Served  Icon is not ticked green, try calling the vendor ", style: TextStyle(color: Colors.blueGrey, fontSize: 10.sp,)),
 
 
                               ]
@@ -283,7 +298,7 @@ class _TrackOrderState extends State<TrackOrder> {
 
 
 
-                }, child: Text('Received', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,letterSpacing: 3),))),
+                }, child: Text('Order Received', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,letterSpacing: 3),))),
 
 
             SizedBox(height: 30.h,)

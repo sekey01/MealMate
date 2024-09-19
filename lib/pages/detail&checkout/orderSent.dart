@@ -63,18 +63,23 @@ class _OrderSentState extends State<OrderSent> {
                 SizedBox(
                   height: 30,
                 ),
+
+                Text('Please don\'t leave the order tracking page Until order is received ...', style: TextStyle(fontSize: 15.sp,color: Colors.blueGrey),),
+                SizedBox(
+                  height: 30,
+                ),
                 Material(
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.white,
+                  color: Colors.deepOrange,
                   elevation: 3,
                   child: TextButton(
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context)=> TrackOrder(vendorId: widget.vendorId,time: widget.time, restaurant: widget.restaurant,adminEmail: widget.adminEmail,adminContact: widget.adminContact,)));
                       },
                       child: Text(
-                        'Track Order',
+                        'Track Order Now',
                         style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 15.spMin),
                       )),

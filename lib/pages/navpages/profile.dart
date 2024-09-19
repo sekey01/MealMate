@@ -21,17 +21,21 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    ///I CALLED THE getUsername() and getNumber() METHODS HERE SO THAT ALL THE NAME S WILL BE CALLED AND DISPLAYED IN THE PROFILE
+   /* ///I CALLED THE getUsername() and getNumber() METHODS HERE SO THAT ALL THE NAME S WILL BE CALLED AND DISPLAYED IN THE PROFILE
     ///PAGE PAGE TO PREVENT ANY FORM OF DELAY
     ///I WRAPPED IT IN A "WidgetsBinding.instance.addPostFrameCallback()" in other for the function to be called when the the UI o the tree that contains the function is rendered since this is just
     ///the initial phase of the TREE /APP and it needs to access the function from the inside
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final localStorageProvider = Provider.of<LocalStorageProvider>(context, listen: false);
       localStorageProvider.getUsername();
-      localStorageProvider.getNumber();
-    });
+      localStorageProvider.getPhoneNumber();
+    });*/
+   /* final localStorageProvider = Provider.of<LocalStorageProvider>(context, listen: false);
+    localStorageProvider.getUsername();
+    localStorageProvider.getPhoneNumber();*/
   }
   Widget build(BuildContext context) {
+    Provider.of<LocalStorageProvider>(context, listen: false).getPhoneNumber();
     return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
@@ -67,19 +71,19 @@ class _ProfileState extends State<Profile> {
                         if(snapshot.hasData){
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: CircleAvatar(radius: 60,
+                            child: CircleAvatar(radius: 50.r,
                               backgroundColor: Colors.deepOrangeAccent,
-                              child: ClipRRect(child: Image(image: NetworkImage(snapshot.data.toString()), fit: BoxFit.fill,), borderRadius: BorderRadius.circular(50.sp),),
+                              child: ClipRRect(child: Image(image: NetworkImage(snapshot.data.toString()), fit: BoxFit.fill,), borderRadius: BorderRadius.circular(60.r),),
                             ),
                           );
                         }else{
                           return   Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: CircleAvatar(radius: 60,
+                      child: CircleAvatar(radius: 60.r,
                         backgroundColor: Colors.deepOrangeAccent,
                         child: ImageIcon(
                           color: Colors.white,
-                          size: 100,
+                          size: 100.sp,
                           AssetImage('assets/Icon/yummy.png')
                         ),
                       ),
@@ -161,13 +165,13 @@ class _ProfileState extends State<Profile> {
                   ///
                   ///
                   FutureBuilder(
-                      future: Provider.of<LocalStorageProvider>(context, listen: false).getNumber() ,
+                      future: Provider.of<LocalStorageProvider>(context, listen: false).getPhoneNumber(),
                       builder: (context, snapshot){
                     if(snapshot.hasData){
                       return Text(snapshot.data.toString(),  style: TextStyle(
                         letterSpacing: 1,
-                        color: Colors.black,
-                        fontSize: 15.sp,
+                        color: Colors.deepOrangeAccent,
+                        fontSize: 20.sp,
                       ),
                       );
                     }else{
