@@ -115,8 +115,8 @@ class _LoginState extends State<Login> {
                       ),
                       RichText(text: TextSpan(
                           children: [
-                            TextSpan(text: "Wel", style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
-                            TextSpan(text: "come !", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
+                            TextSpan(text: "Wel", style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+                            TextSpan(text: "come !", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
 
 
                           ]
@@ -244,12 +244,14 @@ class _LoginState extends State<Login> {
                                       builder: ((context) => AdminLogin())));
                             },
                             child: Text(
-                              ' Admin  /',
+                              ' Admin   /',
                               style: TextStyle(
+                                fontFamily: 'Righteous',
                                 fontSize: 10.sp,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.deepOrangeAccent,
                               ),
+
                             ),
                           ),
 SizedBox(width: 10.w,),
@@ -263,6 +265,7 @@ SizedBox(width: 10.w,),
                             child: Text(
                               'Courier ',
                               style: TextStyle(
+                                fontFamily: 'Righteous',
                                 fontSize: 10.sp,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.deepOrangeAccent,

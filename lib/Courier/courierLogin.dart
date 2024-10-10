@@ -77,8 +77,8 @@ class _CourierLoginPageState extends State<CourierLoginPage> {
     backgroundColor: Colors.white,
     title: RichText(text: TextSpan(
     children: [
-    TextSpan(text: "Courier", style: TextStyle(color: Colors.black, fontSize: 20.spMin,fontWeight: FontWeight.bold)),
-    TextSpan(text: "Verification", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin,fontWeight: FontWeight.bold)),
+    TextSpan(text: "Courier", style: TextStyle(color: Colors.black, fontSize: 20.spMin,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+    TextSpan(text: "Verification", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
     ]
     )),
     centerTitle: true,
@@ -149,7 +149,7 @@ SizedBox(height: 30.h,),
                             ///
                             CourierIdController.clear();
                           },
-                          child: Text(' Verify Id ',style: TextStyle(fontSize: 20.sp,fontWeight: FontWeight.bold,color: Colors.white),),
+                          child: Text(' Verify Id ',style: TextStyle(fontSize: 20.sp,fontWeight: FontWeight.bold,color: Colors.white,fontFamily: 'Righteous',letterSpacing: 2),),
                         )
 
 

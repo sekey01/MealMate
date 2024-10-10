@@ -442,7 +442,8 @@ class _DetailedCardState extends State<DetailedCard> {
                                   height: 25,
                                   child: Text(
                                     '  Okay  ',
-                                    style: TextStyle(color: Colors.deepOrange),
+                                    style: TextStyle(color: Colors.deepOrange,  fontFamily: 'Righteous',
+                                    ),
                                   ),
                                 ),
                                 onPressed: () => Navigator.pop(context),
@@ -647,8 +648,8 @@ class _DetailedCardState extends State<DetailedCard> {
                               ///
                               ///
                               Padding(padding: EdgeInsets.all(8),
-                                child: Text('Note:  Always make sure the map loads before you Order; '
-                                    'Tap on the Green Marker  on the Map to see the distance between you the the vendor is less than 15 Km before ordering ...',
+                                child: Text('Note:  Always make sure your location is set and accurate; '
+                                    'Tap on the Green Marker  on the Map to see the distance between you the the vendor is less than 30 Km before ordering ...',
                                   style: TextStyle(
                                       fontSize: 10.sp,
                                       color: Colors.red
@@ -658,27 +659,34 @@ class _DetailedCardState extends State<DetailedCard> {
                               Padding(
                                 padding: const EdgeInsets.all(18.0),
                                 child: TextField(
+                                  maxLines: 3,
                                   enableSuggestions: true,
                                   scrollPadding: EdgeInsets.all(8),
                                   scrollPhysics: BouncingScrollPhysics(),
                                   style: TextStyle(color: Colors.black),
                                   decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.blueGrey.shade100,
+                                        style: BorderStyle.solid,
+                                      ),
+                                    ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Colors.blueGrey.shade100,
                                         style: BorderStyle.solid,
                                       ),
                                     ),
-                                    label: Text('Leave a message here ...'),
+                                    label: Text('Leave a message for Vendor/Courier ...'),
                                     labelStyle: TextStyle(
                                       color: Colors.blueGrey,
-                                      fontSize: 15.sp,
+                                      fontSize: 12.sp,
                                     ),
                                     filled: true,
                                     fillColor: Colors.grey.shade100,
-                                    hintText: 'Leave a message for Us / other details here... ',
+                                    hintText: ' - Leave a message for Us  or other details here...\n - Landmark\n - Delivery Instructions\n - etc',
                                     hintStyle: TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.blueGrey.shade200,
                                       fontSize: 11.sp,
                                     ),
 

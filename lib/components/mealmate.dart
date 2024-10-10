@@ -17,8 +17,9 @@ class MealMate extends StatelessWidget {
             text: const TextSpan(
               text: ' Meal',
               style: TextStyle(
+                fontFamily: 'Righteous',
                 letterSpacing: 3,
-                fontSize: 20,
+                fontSize: 25,
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
@@ -26,8 +27,10 @@ class MealMate extends StatelessWidget {
           ),
           RichText(
             text: TextSpan(
+
                 text: 'Mate 🍕 ',
                 style: TextStyle(
+                  fontFamily: 'Righteous',
                   letterSpacing: 3,
                   fontSize: 25,
                   color: Colors.deepOrangeAccent,

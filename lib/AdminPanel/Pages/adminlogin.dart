@@ -103,6 +103,7 @@ class _AdminLoginState extends State<AdminLogin> {
                           'Admin Login',
                           style: TextStyle(
                               fontSize: 25,
+                              fontFamily: 'Righteous',
                               color: Colors.black87,
                               fontWeight: FontWeight.bold),
                         ),

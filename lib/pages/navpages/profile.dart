@@ -139,6 +139,8 @@ class _ProfileState extends State<Profile> {
                                 color: Colors.black,
                                 fontSize: 25.sp,
                                 fontWeight: FontWeight.bold,
+                                fontFamily: 'Righteous',
+
                               ),);
                             }else{
                               return Text(' Username ', style: TextStyle(
@@ -169,6 +171,8 @@ class _ProfileState extends State<Profile> {
                       builder: (context, snapshot){
                     if(snapshot.hasData){
                       return Text(snapshot.data.toString(),  style: TextStyle(
+                        fontFamily: 'Righteous',
+
                         letterSpacing: 1,
                         color: Colors.deepOrangeAccent,
                         fontSize: 20.sp,
@@ -176,6 +180,8 @@ class _ProfileState extends State<Profile> {
                       );
                     }else{
                       return Text('+233 XX - XXX - XXXX ',  style: TextStyle(
+                        fontFamily: 'Righteous',
+
                         letterSpacing: 1,
                         color: Colors.black,
                         fontSize: 15.sp,
@@ -209,9 +215,12 @@ class _ProfileState extends State<Profile> {
                    SizedBox(
                      width: 10.w,
                    ),                  Text('Edit profile',  style: TextStyle(
+
                      letterSpacing: 1,
                      color: Colors.black,
                      fontSize: 10.sp,
+                     fontFamily: 'Righteous',
+
                    ),),
                  ],
                ),),

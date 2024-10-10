@@ -35,8 +35,8 @@ class _TrackBuyerState extends State<TrackBuyer> {
           backgroundColor: Colors.white,
     title: RichText(text: TextSpan(
         children: [
-        TextSpan(text: "Tracking ", style: TextStyle(color: Colors.black, fontSize: 20.spMin,)),
-    TextSpan(text: "Buyer...", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin,)),
+        TextSpan(text: "Tracking ", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontFamily: 'Righteous',)),
+    TextSpan(text: "Buyer...", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontFamily: 'Righteous',)),
 
     ]
     )),
@@ -53,7 +53,7 @@ class _TrackBuyerState extends State<TrackBuyer> {
                child: Row(
                  children: [
                    Icon(Icons.phone, color: Colors.white,),
-                   Text('  Tap to call Receiver : ${widget.phoneNumber}  ', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 10.sp),),
+                   Text('  Tap to call Receiver : 0${widget.phoneNumber}  ', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 10.sp,fontFamily: 'Righteous',),),
                  ],
                ),
              ),

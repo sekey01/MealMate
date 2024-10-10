@@ -3,12 +3,8 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:lite_rolling_switch/lite_rolling_switch.dart';
-import 'package:mealmate/AdminPanel/OtherDetails/AdminFunctionsProvider.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/ID.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
-import 'package:mealmate/Other_Providers/Url_Launcher.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/NoFoodFound.dart';
@@ -46,8 +42,8 @@ class _CompletedOrdersState extends State<CompletedOrders> {
         centerTitle: true,
         title:  RichText(text: TextSpan(
             children: [
-              TextSpan(text: "Completed", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold)),
-              TextSpan(text: "Orders", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold)),
+              TextSpan(text: "Completed", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+              TextSpan(text: "Orders", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
 
 
             ]
@@ -58,7 +54,7 @@ class _CompletedOrdersState extends State<CompletedOrders> {
           RichText(text: TextSpan(
               children: [
                 TextSpan(text: "GHC", style: TextStyle(color: Colors.black, fontSize: 15.sp,fontWeight: FontWeight.bold)),
-                TextSpan(text:' ${TotalPrice}''.00', style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold)),
+                TextSpan(text:' ${TotalPrice}''.00', style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
               ]
           )),
           SizedBox(width: 10.w,),
@@ -91,7 +87,7 @@ class _CompletedOrdersState extends State<CompletedOrders> {
                   return Badge(
                     alignment: Alignment.topCenter,
                     backgroundColor: Orders.delivered?Colors.green:Colors.red,
-                    label: Text(Orders.delivered ? ' Order Completed': 'Incomplete Order', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                    label: Text(Orders.delivered ? ' Order Completed': 'Incomplete Order', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontFamily: 'Righteous',),),
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Material(
@@ -118,7 +114,8 @@ class _CompletedOrdersState extends State<CompletedOrders> {
                               "Quantity: ${Orders.quantity}",
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontWeight: FontWeight.bold
+                                  fontWeight: FontWeight.bold,
+                                fontFamily: 'Righteous',
                               ),
                             ),
                             title: Text(

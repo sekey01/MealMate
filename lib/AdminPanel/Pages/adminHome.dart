@@ -135,7 +135,8 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
         automaticallyImplyLeading: false,
         title: RichText(text: TextSpan(
             children: [
-              TextSpan(text: "Welcome ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.spMin,fontWeight: FontWeight.bold)),
+              TextSpan(text: "Welcome ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.spMin,fontWeight: FontWeight.bold,fontFamily: 'Righteous',
+              )),
               TextSpan(text: " !", style: TextStyle(color: Colors.black, fontSize: 15.spMin,fontWeight: FontWeight.bold)),
 
 
@@ -285,8 +286,8 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                 ///ADMIN PANEL TEXT
                 RichText(text: TextSpan(
                     children: [
-                      TextSpan(text: "Admin", style: TextStyle(color: Colors.black, fontSize: 25.spMin,fontWeight: FontWeight.bold)),
-                      TextSpan(text: "Panel", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 25.spMin,fontWeight: FontWeight.bold)),
+                      TextSpan(text: "Admin", style: TextStyle(color: Colors.black, fontSize: 25.spMin,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+                      TextSpan(text: "Panel", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 25.spMin,fontWeight: FontWeight.bold,fontFamily: 'Righteous',),),
 
 
                     ]
@@ -394,7 +395,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                     style: TextStyle(
                         fontSize: 10.sp,
                         color: Colors.blueGrey,
-                        fontWeight: FontWeight.bold)),
+                        fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
 
                 ///COLLECTION FOR THE TYPE OF PRODUCT TO BE UPLOADED
 
@@ -434,6 +435,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                       Provider.of<AdminCollectionProvider>(context)
                           .collectionToUpload,
                       style: TextStyle(
+                          fontFamily: 'Righteous',
                           color: Colors.white,
                           letterSpacing: 3,
                           fontWeight: FontWeight.bold),

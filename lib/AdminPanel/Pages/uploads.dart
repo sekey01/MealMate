@@ -83,7 +83,7 @@ class _UploadedState extends State<Uploaded> {
           return Center(
             child: Text(
               'ID: ${value.id}',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.blueGrey),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.blueGrey, fontFamily: 'Righteous',),
             ),
           );
         }),

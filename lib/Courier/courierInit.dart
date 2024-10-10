@@ -37,8 +37,8 @@ class _CourierInitState extends State<CourierInit> {
         backgroundColor: Colors.white,
         title: RichText(text: TextSpan(
             children: [
-              TextSpan(text: "Courier", style: TextStyle(color: Colors.black, fontSize: 20.spMin,fontWeight: FontWeight.bold)),
-              TextSpan(text: "Panel", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin,fontWeight: FontWeight.bold)),
+              TextSpan(text: "Courier", style: TextStyle(color: Colors.black, fontSize: 20.spMin,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+              TextSpan(text: "Panel", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
 
             ]
         )),
@@ -118,14 +118,14 @@ class _CourierInitState extends State<CourierInit> {
                         keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter longitude';
+                            return 'Please enter latitude';
                           }
                           double? longitude = double.tryParse(value);
                           if (longitude == null) {
                             return 'Please enter a valid number';
                           }
                           if (longitude < -180 || longitude > 180) {
-                            return 'Longitude must be between -180 and 180';
+                            return 'Latitude must be between -180 and 180';
                           }
                           return null;
                         },
@@ -137,7 +137,7 @@ class _CourierInitState extends State<CourierInit> {
                           hintStyle: TextStyle(color: Colors.black),
                           //label: Text('Restaurant Name'),
                           labelStyle: TextStyle(color: Colors.black),
-                          labelText: 'latitude',
+                          labelText: 'Latitude',
                           hintText: ' Latitude',
 
                           border: OutlineInputBorder(
@@ -207,7 +207,7 @@ class _CourierInitState extends State<CourierInit> {
 
                     }
                   },
-                  child: Text('Track Route ',style: TextStyle(fontSize: 15.sp,fontWeight: FontWeight.bold,color: Colors.white),),
+                  child: Text('Track Route ',style: TextStyle(fontSize: 15.sp,fontWeight: FontWeight.bold,color: Colors.white,fontFamily: 'Righteous', letterSpacing: 2),),
 
                 ),
                 SizedBox(height: 50.h,),

@@ -8,7 +8,6 @@ import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/AdminFunctionsProvider.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/ID.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
-import 'package:mealmate/Other_Providers/Url_Launcher.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/NoFoodFound.dart';
@@ -46,8 +45,8 @@ class _IncomingOrdersState extends State<IncomingOrders> {
         centerTitle: true,
         title:  RichText(text: TextSpan(
             children: [
-              TextSpan(text: "InComing", style: TextStyle(color: Colors.black, fontSize: 20.spMin,fontWeight: FontWeight.bold)),
-              TextSpan(text: "Orders", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin,fontWeight: FontWeight.bold)),
+              TextSpan(text: "InComing", style: TextStyle(color: Colors.black, fontSize: 20.spMin,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+              TextSpan(text: "Orders", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
 
 
             ]
@@ -84,7 +83,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                   return Badge(
                     alignment: Alignment.topCenter,
                     backgroundColor: Orders.delivered?Colors.green:Colors.red,
-                    label: Text(Orders.delivered?' Order Completed': 'Incomplete Order', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                    label: Text(Orders.delivered?' Order Completed': 'Incomplete Order', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontFamily: 'Righteous',),),
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Material(
@@ -111,7 +110,8 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                               "Quantity: ${Orders.quantity}",
                               style: TextStyle(
                                 color: Colors.black,
-                                fontWeight: FontWeight.bold
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Righteous',
                               ),
                             ),
                             title: Text(
