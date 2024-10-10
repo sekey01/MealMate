@@ -60,12 +60,12 @@ Widget MatePayCard(
               children: [
                 MealMate(),
                 Text(
-                  'NAME:$CardHolderName',
+                  'NAME: ${CardHolderName.toUpperCase()}',
                   style: TextStyle(
                     overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.w600,
                       fontSize: 15.sp,
-                      letterSpacing: 1.sp,
+                      letterSpacing: 2,
                       color: Colors.white),
                 ),
                 SizedBox(

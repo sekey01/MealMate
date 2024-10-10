@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/pages/navpages/searchByCollection.dart';
+import 'package:mealmate/pages/searchfooditem/searchFoodItem.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -75,91 +76,125 @@ class _DetailedCardState extends State<DetailedCard> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-appBar: AppBar(
-  backgroundColor: Colors.white,
-  title: RichText(text: TextSpan(
-      children: [
-        TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
-        TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
-
-
-      ]
-  )),
-  centerTitle: true,
-  automaticallyImplyLeading: false,
-  leading: GestureDetector(
-      onTap: (){
-        Navigator.pop(context);
-      },
-      child: Icon(Icons.arrow_back_ios, color: Colors.blueGrey,size: 25.sp,)
-  ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Search(),
-                ),
-              );
-            },
-            icon: ImageIcon(
-              AssetImage('assets/Icon/Search.png'),
-              color: Colors.blueGrey,
-            ),
-          ),
-        ],
-
-        elevation: 0,
-      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
 
           children: [
+            SizedBox(height: 30.h),
+
             /// FOOD IMAGE IN CONTANER
             ///
-            Badge(
-              alignment: Alignment.topCenter,
+            Stack(
+              children: [
+                ///IMAGE CONTAINER
+                Container(
 
-              label: RichText(text: TextSpan(
-                  children: [
-                    TextSpan(text: "  ${widget.price * (10/100)}%", style: TextStyle(color: Colors.white, fontSize:20.sp,fontWeight: FontWeight.bold)),
-                    TextSpan(text: " Discounted", style: TextStyle(color: Colors.white, fontSize: 10.spMin,)),
-
-
-                  ]
-              )),
-              backgroundColor: Colors.green,
-              ///FOOD IMAGE CONTAINER
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Colors.white,
-                    style: BorderStyle.solid,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20.r),
+                      bottomRight: Radius.circular(20.r),
+                    ),
+                    border: Border.all(
+                      color: Colors.black,
+                      style: BorderStyle.solid,
+                    ),
                   ),
+                  height: 180.h,
+                  width: double.infinity,
+                  child: widget.imgUrl.isEmpty
+                      ? Center(
+                          child: Icon(
+                            Icons.image_not_supported_outlined,
+                            color: Colors.deepOrange,
+                            size: 120.sp,
+                          ),
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20.r),
+                            bottomRight: Radius.circular(20.r),
+                          ),
+                          child: Image(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(widget.imgUrl),
+                            height: 90.h,
+                            width: 120.w,
+                          ),
+                        ),
                 ),
-                height: 180.h,
-                width: 350.h,
-                child: widget.imgUrl.isEmpty
-                    ? Center(
-                        child: Icon(
-                          Icons.image_not_supported_outlined,
-                          color: Colors.deepOrange,
-                          size: 120.sp,
+                ///BACK ICON
+                Positioned(
+                    top: 5,
+                    left: 10,
+                    child: Container(
+                      height: 30.h,
+                        width: 30.h,
+                        decoration: BoxDecoration(
+
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20.r),
                         ),
-                      )
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(13),
-                        child: Image(
-                          fit: BoxFit.fill,
-                          image: NetworkImage(widget.imgUrl),
-                          height: 90.h,
-                          width: 120.w,
+                        child: Center(
+                          child: IconButton(onPressed: (){
+                            Navigator.pop(context);
+                          }, icon: Icon(Icons.arrow_back_outlined, color: Colors.black,)),
+                        ))),
+                ///SEARCH ICON
+                Positioned(
+                    top: 5,
+                    right: 10,
+                    child: Container(
+                        height: 30.h,
+                        width: 35.h,
+                        decoration: BoxDecoration(
+
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
                         ),
+                        child: Center(
+                          child: IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SearchFoodItem(),
+                                ),
+                              );
+                            },
+                            icon: ImageIcon(
+                              AssetImage('assets/Icon/Search.png'),
+                              color: Colors.black,
+                            ),
+                          ),
+
+                        ))),
+/// DISCOUNTED PRICE
+                Positioned(
+                    top: 140.h,
+                    left: 0.w,
+                    child:  Container(
+                      height: 25.h,
+                      width: 150.w,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
                       ),
-              ),
+                      child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                         ImageIcon(AssetImage('assets/Icon/discount.png'), color: Colors.red, size: 20.sp,),
+                          RichText(text: TextSpan(
+                          children: [
+                            TextSpan(text: " - ${widget.price * (10/100)}%", style: TextStyle( fontFamily: 'Righteous',color: Colors.red, fontSize:15.sp,fontWeight: FontWeight.bold)),
+                            TextSpan(text: " Discounted   ", style: TextStyle(color: Colors.black, fontSize: 10.sp, fontFamily: 'Righteous',)),
+
+
+                          ]
+                                          )),
+                        ],
+                      ),
+                    ))
+              ],
             ),
             SizedBox(height: 10.h),
 
@@ -170,12 +205,11 @@ appBar: AppBar(
       ),
 
       bottomSheet: BottomSheet(
-
-          elevation: 2,
+          elevation: 6,
           onClosing: (){},
           builder: (context) {
             return Container(
-              height: 450.h,
+              height: 500.h,
               width: double.infinity,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -188,8 +222,8 @@ appBar: AppBar(
                 ),
                 border: Border.all(color: Colors.white),
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.r),
-                  topRight: Radius.circular(20.r),
+                  topLeft: Radius.circular(0.r),
+                  topRight: Radius.circular(30.r),
                 ),
               ),
               child: Center(
@@ -197,12 +231,23 @@ appBar: AppBar(
               child:  Column(
                   children: [
                     SizedBox(height: 10.h),
+
+                    RichText(text: TextSpan(
+                        children: [
+                          TextSpan(text: "Meal", style: TextStyle(fontFamily: 'Righteous',color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
+                          TextSpan(text: "Mate", style: TextStyle(fontFamily: 'Righteous',color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
+
+
+                        ]
+                    )),
+
+                    SizedBox(height: 20.h),
                     /// RESTAURANT ICON AND NAME
                     ///
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
                             Icons.storefront,
@@ -215,7 +260,7 @@ appBar: AppBar(
                             style: TextStyle(
                               overflow: TextOverflow.ellipsis,
                               fontSize: 20.sp,
-                              fontWeight: FontWeight.bold,
+                              //fontWeight: FontWeight.bold,
                               color: Colors.black,
                               letterSpacing: 1,
                             ),
@@ -242,7 +287,7 @@ appBar: AppBar(
                             widget.foodName,
                             style:
                             TextStyle(
-                              fontFamily: 'Righteous',
+                              //fontFamily: 'Righteous',
                               overflow: TextOverflow.ellipsis,
                               fontSize: 17.sp,
                               //fontWeight: FontWeight.w600,
@@ -257,6 +302,7 @@ appBar: AppBar(
                     Text(
                       'GHC ${widget.price}0',
                       style: TextStyle(
+                        fontFamily: 'Righteous',
                         fontSize: 20.sp,
                         letterSpacing: 3,
                         fontWeight: FontWeight.bold,
@@ -264,33 +310,32 @@ appBar: AppBar(
                       ),
                     ),
                     SizedBox(height: 10.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.location_on,
-                              color: Colors.redAccent,
-                              size: 20.sp,
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            color: Colors.redAccent,
+                            size: 20.sp,
+                          ),
+                          SizedBox(width: 10.h),
+                          Text(
+                            widget.location,
+                            style: TextStyle(
+                             // fontFamily: 'Righteous',
+                              color: Colors.blueGrey,
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.bold,
+                              overflow: TextOverflow.ellipsis,
+                              letterSpacing: 3,
                             ),
-                            SizedBox(width: 10.h),
-                            Text(
-                              widget.location,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.bold,
-                                overflow: TextOverflow.ellipsis,
-                                letterSpacing: 3,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(width: 10.h),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
+                    SizedBox(width: 10.h),
                     SizedBox(height: 20.h),
                     Row(
                       ///ROW FOR TIME AND PHONE NUMBER
@@ -309,7 +354,8 @@ appBar: AppBar(
                             SizedBox(width: 10.w),
                             RichText(text: TextSpan(
                                 children: [
-                                  TextSpan(text: "${widget.time}mins\n", style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold)),
+                                  TextSpan(text: "${widget.time} mins\n", style: TextStyle(
+                                      fontFamily: 'Righteous',color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold)),
                                   TextSpan(text: "Delivery", style: TextStyle(color: Colors.grey, fontSize: 15.sp, )),
 
 
@@ -330,7 +376,7 @@ appBar: AppBar(
                             SizedBox(width: 10.w),
                             RichText(text: TextSpan(
                                 children: [
-                                  TextSpan(text: '${widget.adminContact}\n', style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold)),
+                                  TextSpan(text: '+233${widget.adminContact}\n', style: TextStyle( fontFamily: 'Righteous',color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold)),
                                   TextSpan(text: "Call Us", style: TextStyle(color: Colors.grey, fontSize: 15.sp,)),
 
 
@@ -348,8 +394,9 @@ appBar: AppBar(
                       builder: (context, CartModel, child) {
                         tPrice = CartModel.getQuantity * widget.price;
                         return Text(
-                          'Total: GHC${tPrice}0',
+                          'Total: GHC ${tPrice}0',
                           style: TextStyle(
+                            fontFamily: 'Righteous',
                             color: Colors.red,
                             fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
@@ -358,7 +405,7 @@ appBar: AppBar(
                       },
                     ),
                     SizedBox(height: 10),
-                    ///ADD TO CART BUTTON
+                    ///ADD TO FAVOURITE BUTTON
                     Consumer<CartModel>(
                       builder: (context, value, child) => ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -388,7 +435,7 @@ appBar: AppBar(
                                 fontSize: 15,
                               ),
                             ),
-                            desc: "Food added to Cart",
+                            desc: "Food added to Favourites",
                             buttons: [
                               DialogButton(
                                 child: CardLoading(
@@ -405,7 +452,7 @@ appBar: AppBar(
                           ).show();
                         },
                         child: Text(
-                          'Add to Cart',
+                          'Add to Favourite',
                           style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -575,7 +622,7 @@ appBar: AppBar(
                                                 ),
                                               );
                                             }
-                                            return Center(child: CustomLoGoLoading());
+                                            return Center(child: SearchLoadingOutLook());
                                           }),
                                     ),
 
@@ -616,13 +663,19 @@ appBar: AppBar(
                                   scrollPhysics: BouncingScrollPhysics(),
                                   style: TextStyle(color: Colors.black),
                                   decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.blueGrey.shade100,
+                                        style: BorderStyle.solid,
+                                      ),
+                                    ),
                                     label: Text('Leave a message here ...'),
                                     labelStyle: TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.blueGrey,
                                       fontSize: 15.sp,
                                     ),
                                     filled: true,
-                                    fillColor: Colors.deepOrange.shade50,
+                                    fillColor: Colors.grey.shade100,
                                     hintText: 'Leave a message for Us / other details here... ',
                                     hintStyle: TextStyle(
                                       color: Colors.black,
@@ -630,7 +683,7 @@ appBar: AppBar(
                                     ),
 
                                     border: OutlineInputBorder(
-                                      borderSide: BorderSide(),
+                                      borderSide: BorderSide( color: Colors.black, style: BorderStyle.solid),
                                     ),
                                   ),
                                   controller: messageController,

@@ -68,7 +68,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: CustomLoGoLoading(),
+                child: SearchLoadingOutLook(),
               );
             } else if (snapshot.hasError) {
               return Center(child: Center(child: Text('Error: Try again later')));

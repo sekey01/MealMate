@@ -34,7 +34,7 @@ class _AdminNoticeState extends State<AdminNotice> {
       body: FutureBuilder(future: Provider.of<NotificationProvider>(context,listen: false).getAdminNotifications(),
           builder: (context, snapshot){
             if(snapshot.connectionState == ConnectionState.waiting){
-              return Center(child: CustomLoGoLoading());
+              return Center(child: SearchLoadingOutLook());
             }
             else if (snapshot.hasData && snapshot.data != null && snapshot.data!.isNotEmpty) {
               return ListView.builder(

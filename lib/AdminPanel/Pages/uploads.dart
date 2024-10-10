@@ -115,7 +115,7 @@ class _UploadedState extends State<Uploaded> {
                   ),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CustomLoGoLoading());
+                      return Center(child: SearchLoadingOutLook());
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: Try Again later', style: TextStyle(color: Colors.deepOrangeAccent),));
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

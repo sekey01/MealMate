@@ -21,7 +21,7 @@ class _CartState extends State<Cart> {
               appBar: AppBar(
                 // automaticallyImplyLeading: false,
                 title: Text(
-                  'Cart',
+                  'Favourites',
                   style: TextStyle(
                       color: Colors.blueGrey,
                       fontSize: 20,
@@ -41,7 +41,7 @@ class _CartState extends State<Cart> {
                                   fontWeight: FontWeight.bold),
                             )),
                     child: ImageIcon(
-                      AssetImage('assets/Icon/Cart.png'),
+                      AssetImage('assets/Icon/favourite.png'),
                       size: 30,
                       color: Colors.blueGrey,
                     ),

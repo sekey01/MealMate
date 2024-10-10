@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/NoFoodFound.dart';
 import 'package:mealmate/components/mainCards/horizontalCard.dart';
-
 import '../../models&ReadCollectionModel/ListFoodItemModel.dart';
 import '../../searchFoodItemProvider/searchFoodItemFunctionProvider.dart';
 import '../detail&checkout/detail.dart';
+
 
 class SearchFoodItem extends StatefulWidget {
   const SearchFoodItem({super.key});
@@ -117,7 +117,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
-                      child: CustomLoGoLoading(),
+                      child: SearchLoadingOutLook(),
                     );
                   } else if (snapshot.hasError) {
                     return Center(
@@ -131,6 +131,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                         child: noFoodFound(),
                       ),
                     );
+
                   } else {
 
                     final foodItems = snapshot.data as List<FoodItem>;

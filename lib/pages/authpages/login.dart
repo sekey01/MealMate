@@ -98,7 +98,7 @@ class _LoginState extends State<Login> {
       body: Center(
         child: SafeArea(
           child: SingleChildScrollView(
-            child: signInLoading ? CustomLoGoLoading(): Column(
+            child: signInLoading ? SearchLoadingOutLook(): Column(
               children: [
                 Padding(
                   padding: EdgeInsets.all(25),

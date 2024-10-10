@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 import 'package:mealmate/Notification/notification_Provider.dart';
 import 'package:mealmate/components/NoInternet.dart';
@@ -48,15 +48,31 @@ class _IndexState extends State<Index> {
 
   final textController = TextEditingController();
   bool _hasInternet = true;
+
+  checkInternet() async {
+    final listener = InternetConnection().onStatusChange.listen((InternetStatus status) {
+      if (status == InternetStatus.connected) {
+        setState(() {
+          _hasInternet = true;
+        });
+        print('Connected');
+      } else {
+        setState(() {
+          NoInternetNotify(context, 'Check internet Connection !', Colors.red);
+
+          _hasInternet = false;
+
+        });
+        print('Not connected');
+      }
+    });
+
+  }
   @override
   void initState() {
     super.initState();
     // Start listening to the internet connection status
-    InternetConnectionChecker().onStatusChange.listen((status) {
-      setState(() {
-        _hasInternet = status == InternetConnectionStatus.connected;
-      });
-    });
+checkInternet();
   }
 
   Widget build(BuildContext context) {
@@ -147,6 +163,7 @@ class _IndexState extends State<Index> {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Icon(Icons.location_on_outlined, size: 20.sp,color: Colors.blueGrey,),
                         FutureBuilder(
@@ -353,7 +370,7 @@ class _IndexState extends State<Index> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: Center(child:  CustomLoGoLoading()));
+                          return Center(child: Center(child:  SearchLoadingOutLook()));
                         } else if (snapshot.hasError) {
                           return Center(
                               child: Text('Error: ${snapshot.error}'));
@@ -477,7 +494,7 @@ class _IndexState extends State<Index> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: Center(child:  CustomLoGoLoading()));
+                          return Center(child: Center(child:  SearchLoadingOutLook()));
                         } else if (snapshot.hasError) {
                           return Center(
                               child: Text('Error: ${snapshot.error}'));

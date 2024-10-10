@@ -177,7 +177,7 @@ class _TrackOrderState extends State<TrackOrder> {
             Text('Order In progress...', style: TextStyle(color: Colors.blueGrey, fontSize: 25, fontWeight: FontWeight.bold),),
 
                   ///TIMER
-                  Padding(padding: EdgeInsets.all(16), child: CustomLoGoLoading(),),
+                  Padding(padding: EdgeInsets.all(16), child: SearchLoadingOutLook(),),
 
                   StreamBuilder<int>(
                     stream: countdownTimer(90), // Countdown from 60 seconds

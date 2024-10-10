@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+//import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mealmate/AdminPanel/components/adminHorizontalCard.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/NoFoodFound.dart';
@@ -26,7 +27,6 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-//final TextEditingController searchController = TextEditingController();
 
   /// THIS FUNCTION FETCHES THE FOOD ITEMS FROM THE COLLECTION SELECTED BY THE USER
   ///
@@ -48,15 +48,27 @@ class _SearchState extends State<Search> {
 
   ///CHECK FOR INTERNET UPON INIT
 bool _hasInternet = true;
+  checkInternet() async {
+    final listener = InternetConnection().onStatusChange.listen((InternetStatus status) {
+      if (status == InternetStatus.connected) {
+       // print('Connected');
+      } else {
+        setState(() {
+        //  print('Not connected');
+          _hasInternet = false;
+          NoInternetNotify(context, 'Check Internet Connection ', Colors.red);
+
+        });
+      }
+    });
+
+  }
+
   @override
   void initState() {
     super.initState();
     // Start listening to the internet connection status
-    InternetConnectionChecker().onStatusChange.listen((status) {
-      setState(() {
-        _hasInternet = status == InternetConnectionStatus.connected;
-      });
-    });
+    checkInternet();
   }
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,7 +171,7 @@ bool _hasInternet = true;
                       .collectionToRead),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CustomLoGoLoading());
+                      return Center(child: SearchLoadingOutLook());
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

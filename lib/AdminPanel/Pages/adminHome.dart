@@ -18,7 +18,6 @@ import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/components/card1.dart';
 import 'package:provider/provider.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mealmate/components/NoInternet.dart';
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../Notification/notification_Provider.dart';
@@ -119,11 +118,11 @@ Notify(context, 'Item Uploaded Successfully', Colors.green);
   initState() {
     super.initState();
     /// Start listening to the internet connection status
-    InternetConnectionChecker().onStatusChange.listen((status) {
-      setState(() {
-        _hasInternet = status == InternetConnectionStatus.connected;
-      });
-    });
+    // InternetConnectionChecker().onStatusChange.listen((status) {
+    //   setState(() {
+    //     _hasInternet = status == InternetConnectionStatus.connected;
+    //   });
+    // });
   }
 
 
@@ -384,7 +383,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                   style: TextStyle(fontSize: 15.sp, color: Colors.blueGrey),
                 ),
 
-                _isLoading ? CustomLoGoLoading() : initAdminCard(),
+                _isLoading ? SearchLoadingOutLook() : initAdminCard(),
                 SizedBox(
                   height: 30.h,
                 ),
@@ -753,7 +752,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                   width: 200.w,
                   height: 50.h,
                   child: _isLoading
-                      ? CustomLoGoLoading()
+                      ? SearchLoadingOutLook()
                       : ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.deepOrangeAccent

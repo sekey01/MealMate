@@ -70,9 +70,9 @@ class _HomeState extends State<Home> {
                                 fontWeight: FontWeight.bold),
                           )),
                   child: ImageIcon(
-                      color: Colors.blueGrey, AssetImage('assets/Icon/Cart.png')),
+                      color: Colors.blueGrey, AssetImage('assets/Icon/favourite.png')),
                 ),
-                label: 'Cart'),
+                label: 'Favourites'),
             BottomNavigationBarItem(
                 backgroundColor: Colors.white,
                 icon: ImageIcon(

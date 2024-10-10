@@ -14,14 +14,20 @@ Widget initCard() {
         'Call Us 📞 +233 55 376 7177',
       ),
       child: Container(
-
         decoration: BoxDecoration(
-border: Border.all(color: Colors.blueGrey),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.blueGrey.shade100.withOpacity(0.5),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+          ],
+border: Border.all(color: Colors.blueGrey.shade100),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Colors.grey,
               Colors.white,
               Colors.white,
             ],
