@@ -10,7 +10,7 @@ class LocalStorageProvider extends ChangeNotifier {
   int notificationLength = 1;
 ///
 
-  String phoneNumber = '' ;
+  String phoneNumber = '';
   String userName = '' ;
   String  email = '' ;
   String imageUrl = '' ;
@@ -60,7 +60,7 @@ print(phoneNumber);
 
         return phoneNumber;
       } else {
-        return phoneNumber = '+233 XXX XX XXXX'; // Default value if the file doesn't exist
+        return phoneNumber = 'Add Phone Number'; // Default value if the file doesn't exist
       }
 
       // Notify listeners of the change

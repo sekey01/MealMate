@@ -32,8 +32,7 @@ Material verticalCard(
               alignment: Alignment.topCenter,
               backgroundColor: isAvailable ? Colors.green : Colors.red,
               label: Text(
-                ///'Discount: ${((price.toInt() / 400) * 100).toInt()} %',
-                isAvailable ? 'Online' : 'Not Available',
+                isAvailable ? 'Online' : 'UnAvailable',
                 style: TextStyle(
                     letterSpacing: 1,
                     color: Colors.white,
@@ -71,29 +70,68 @@ Material verticalCard(
           SizedBox(
             height: 2,
           ),
-          Text(
-            ///NAME OF RESTAURANT
-            '$restaurant',
-            style: TextStyle(
-                fontSize: 9.spMin,
-                letterSpacing: 1,
-                fontWeight: FontWeight.w600,
-                color: Colors.black),
+          ///ROW FOR RESTAURANT NAME AND ICON
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ///ICON FOR RESTAURANT
+                Icon(
+                  Icons.food_bank_outlined,
+                  color: Colors.redAccent,
+                  size: 10.sp,
+                ),
+                SizedBox(
+                  width: 5.w,
+                ),
+                Text(
+                  ///NAME OF RESTAURANT
+                  '$restaurant',
+                  style: TextStyle(
+                    overflow: TextOverflow.ellipsis,
+                      fontSize: 9.sp,
+                      letterSpacing: 1,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black),
+                ),
+              ],
+            ),
           ),
-          Text(
-            ///NAME OF FOOD
-            '$foodName',
-            style: TextStyle(
-                fontSize: 10.spMin,
-                letterSpacing: 2,
-                //fontWeight: FontWeight.w600,
-                color: Colors.black),
+
+          ///ROW FOR FOOD NAME AND ICON
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ///ICON FOR FOOD
+                Icon(
+                  Icons.restaurant_outlined,
+                  color: Colors.deepOrangeAccent,
+                  size: 10.sp,
+                ),
+                SizedBox(
+                  width: 5.w,
+                ),
+                Text(
+                  ///NAME OF FOOD
+                  '$foodName',
+                  style: TextStyle(
+                    overflow: TextOverflow.ellipsis,
+                      fontSize: 10.sp,
+                      letterSpacing: 2,
+                      //fontWeight: FontWeight.w600,
+                      color: Colors.black),
+                ),
+              ],
+            ),
           ),
 ///PRICE OF FOD
     RichText(text: TextSpan(
         children: [
           TextSpan(text: "GHC  ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 10.spMin, fontWeight: FontWeight.bold)),
-          TextSpan(text: '$price '+'0', style: TextStyle(color: Colors.black, fontSize: 10.spMin, fontWeight: FontWeight.bold)),
+          TextSpan(text: '$price 0', style: TextStyle(color: Colors.black, fontSize: 10.spMin, fontWeight: FontWeight.bold)),
 
 
         ]

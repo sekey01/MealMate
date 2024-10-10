@@ -13,10 +13,21 @@ Widget initCard() {
       label: Text(
         'Call Us 📞 +233 55 376 7177',
       ),
-      child: Material(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-        color: Colors.white,
-        elevation: 6,
+      child: Container(
+
+        decoration: BoxDecoration(
+border: Border.all(color: Colors.blueGrey),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.grey,
+              Colors.white,
+              Colors.white,
+            ],
+          ),
+          borderRadius: BorderRadius.circular(25),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

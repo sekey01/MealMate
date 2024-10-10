@@ -18,11 +18,20 @@ Widget MatePayCard(
       label: Text(
         Premium,
       ),
-      child: Material(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.r)),
-        color: Colors.grey,
-        elevation: 6,
+      child: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Colors.blueGrey,Colors.black, Colors.deepOrangeAccent.shade100]),
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3))
+            ]),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -36,8 +45,8 @@ Widget MatePayCard(
                       borderRadius: BorderRadius.all(Radius.circular(70)),
                       child: Image(
                         image: AssetImage('assets/Icon/chip.png'),
-                        height: 70.h,
-                        width: 60.w,
+                        height: 60.h,
+                        width: 50.w,
                       ),
                     ),
                     SizedBox(
@@ -53,10 +62,11 @@ Widget MatePayCard(
                 Text(
                   'NAME:$CardHolderName',
                   style: TextStyle(
+                    overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.w600,
                       fontSize: 15.sp,
                       letterSpacing: 1.sp,
-                      color: Colors.black),
+                      color: Colors.white),
                 ),
                 SizedBox(
                   height: 5.h,
@@ -65,8 +75,8 @@ Widget MatePayCard(
                   'Promo Code :'+"$CardNumber",
                   style: TextStyle(
                       //fontWeight: FontWeight.bold,
-                      fontSize: 18.sp,
-                      color: Colors.black),
+                      fontSize: 15.sp,
+                      color: Colors.white),
                 ),
                 SizedBox(
                   height: 20.h,
@@ -76,24 +86,27 @@ Widget MatePayCard(
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 10.sp,
-                      color: Colors.black),
+                      color: Colors.white),
                 ),
                 Text(
                   ' 12/25',
                   style: TextStyle(
                       //fontWeight: FontWeight.bold,
                       fontSize: 18.sp,
-                      color: Colors.black),
+                      color: Colors.white),
+                ),
+                SizedBox(
+                  height: 10.h,
                 ),
                 Text(
                   "ACC ID : $ID",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
-                      color: Colors.black87),
+                      color: Colors.white),
                 ),
                 SizedBox(
-                  height: 10.h,
+                  height: 15.h,
                 )
               ],
             ),

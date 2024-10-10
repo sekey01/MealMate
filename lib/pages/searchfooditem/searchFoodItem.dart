@@ -52,14 +52,16 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            ///SEARCH BAR
+            ///
             Padding(
-              padding: const EdgeInsets.all(2.0),
+              padding: const EdgeInsets.all(4.0),
               child: TextField(
                 controller: searchitemController,
                 style: TextStyle(color: Colors.deepOrange),
                 decoration: InputDecoration(
                   hintText: 'foodName / restaurant / location',
-                  fillColor: Colors.deepOrange.shade50,
+                  fillColor: Colors.grey.shade100,
                   filled: true,
                   prefixIcon: Icon(
                     Icons.filter_alt_outlined,
@@ -122,6 +124,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                       child: Text('An error occurred: ${snapshot.error}'),
                     );
                   } else if (snapshot.data!.isEmpty) {
+
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
@@ -129,6 +132,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                       ),
                     );
                   } else {
+
                     final foodItems = snapshot.data as List<FoodItem>;
 
                     return ListView.builder(

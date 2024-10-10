@@ -39,7 +39,7 @@ class _OrderListState extends State<OrderList> {
               height: 10.h,
             ),
             MatePayCard(
-                'Coming Soon', 'XXX - 0123', Provider.of<LocalStorageProvider>(context, listen: true).userName,Provider.of<LocalStorageProvider>(context, listen: true).phoneNumber.toString()),
+                'Coming Soon', ' XXXX - 0123', Provider.of<LocalStorageProvider>(context, listen: true).userName,Provider.of<LocalStorageProvider>(context, listen: true).phoneNumber.toString()),
             SizedBox(height: 40),
 
 
@@ -51,20 +51,30 @@ class _OrderListState extends State<OrderList> {
               children: [
                 RichText(text: TextSpan(
                     children: [
-                      TextSpan(text: " Order ", style: TextStyle(color: Colors.black, fontSize: 20.spMin,)),
-                      TextSpan(text: " History", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin,)),
+                      TextSpan(text: " Order", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold)),
+                      TextSpan(text: " History", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold)),
 
 
                     ]
                 )),
+SizedBox(width: 20.w,),
 
+                /// DELETE ALL BUTTON
+                Container(
+height: 30.h,
+                  width: 100.w,
+                  decoration: BoxDecoration(
 
-                TextButton(onPressed: (){
-                  setState(() {
-                    Provider.of<LocalStorageProvider>(context,listen: false).deleteAllOrders();
+                      color: Colors.deepOrangeAccent,
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: TextButton(onPressed: (){
+                    setState(() {
+                      Provider.of<LocalStorageProvider>(context,listen: false).deleteAllOrders();
 
-                  });
-                }, child: Text('Delete all', style: TextStyle(fontSize: 15.sp),))
+                    });
+                  }, child: Text('Delete all', style: TextStyle(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold),)),
+                ),
               ],
             ),
 
@@ -119,7 +129,7 @@ return  Center(
                 else{
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: noFoodFound(),
+                    child: EmptyHistory(),
                   );
                 }
 

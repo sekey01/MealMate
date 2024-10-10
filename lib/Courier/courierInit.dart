@@ -57,7 +57,7 @@ class _CourierInitState extends State<CourierInit> {
                 Badge(
                   backgroundColor: Colors.green,
                   alignment: Alignment.bottomLeft,
-                  label: Text('Get rewarded MealMate Dress soon...', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 10.sp),),
+                  label: Text('Get rewarded MealMate Shirt soon...', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 10.sp),),
                   child: Padding(padding: EdgeInsets.all(1),
                       child: Image(image: AssetImage('assets/images/MealmateDress.png'),height: 150,width: 250,
                       )),

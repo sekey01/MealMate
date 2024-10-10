@@ -30,6 +30,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: _pages[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.shifting,
           backgroundColor: Colors.white,
           showSelectedLabels: true,
           showUnselectedLabels: true,

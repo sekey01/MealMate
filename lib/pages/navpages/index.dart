@@ -127,7 +127,7 @@ class _IndexState extends State<Index> {
           ]
         )),
         titleTextStyle: TextStyle(
-            color: Colors.black,
+           // color: Colors.black,
             fontWeight: FontWeight.bold,
             letterSpacing: 1,
             fontSize: 20.spMin),
@@ -142,86 +142,91 @@ class _IndexState extends State<Index> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
 
-
-
-SizedBox(height: 30.h,),
-
                   ///LOCATION DISPLAYED HERE
                   ///
-                  FutureBuilder(
-                      future:
-                      Provider.of<LocationProvider>(context, listen: false)
-                          .determinePosition(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Icon(Icons.location_on_outlined, size: 10.sp,color: Colors.blueGrey,),
-                                Text(snapshot.data.toString(),
-                                    style: TextStyle(
-                                        overflow: TextOverflow.ellipsis,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.sp)),
-                              ],
-                            ),
-                          );
-                        }
-                        return Text(
-                          'locating you...',
-                          style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.normal,fontSize: 10.spMin),
-                        );
-                      }),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Icon(Icons.location_on_outlined, size: 20.sp,color: Colors.blueGrey,),
+                        FutureBuilder(
+                            future:
+                            Provider.of<LocationProvider>(context, listen: false)
+                                .determinePosition(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+
+                                return Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: Text(snapshot.data.toString(),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          overflow: TextOverflow.ellipsis,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12.sp)),
+                                );
+                              }
+                              return Text(
+                                'locating you...',
+                                style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.normal,fontSize: 10.spMin),
+                              );
+                            }),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: 10.h,),
 
 
-                  SizedBox(height: 20.h,),
                   /// SEARCH BAR HERE
                   ///
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: TextField(
-                      onTap: (){
+                    child: GestureDetector(
+                      onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchFoodItem()));
                       },
-                      style: TextStyle(color: Colors.deepOrange),
-                      decoration: InputDecoration(
-                        hintText: 'FoodName or Restaurant',
-                        fillColor: Colors.deepOrange.shade50,
-                        filled: true,
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Colors.blueGrey,
-                        ),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                          },
-                          icon: ImageIcon(AssetImage('assets/Icon/filter.png'), color: Colors.blueGrey,),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            style: BorderStyle.none,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
+                      child: AbsorbPointer(
+                        child: TextField(
+                          style: TextStyle(color: Colors.deepOrange),
+                          decoration: InputDecoration(
+                            hintText: 'FoodName or Restaurant',
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: Colors.blueGrey,
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                              },
+                              icon: ImageIcon(AssetImage('assets/Icon/filter.png'), color: Colors.blueGrey,),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade200,
+                                style: BorderStyle.solid,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
 
-                          ///borderSide: BorderSide(color: Colors.red),
-                        ),
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 15,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.blueGrey,
-                            style: BorderStyle.solid,
+                              ///borderSide: BorderSide(color: Colors.red),
+                            ),
+                            hintStyle: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 15,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: Colors.blueGrey,
+                                style: BorderStyle.solid,
+                              ),
+                            ),
+                                         /*       label: Text('Foodnameee and Restaurant'),
+                            labelStyle: TextStyle(color: Colors.grey, fontSize: 10),*/
                           ),
                         ),
-                 /*       label: Text('Foodnameee and Restaurant'),
-                        labelStyle: TextStyle(color: Colors.grey, fontSize: 10),*/
                       ),
                     ),
                   ),

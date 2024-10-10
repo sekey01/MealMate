@@ -190,7 +190,7 @@ class _TrackOrderState extends State<TrackOrder> {
                       } else if (snapshot.hasData) {
                         return Padding(
                           padding: const EdgeInsets.all(16.0),
-                          child: RichText(text: TextSpan(
+                          child: RichText(textAlign: TextAlign.center,text: TextSpan(
                               children: [
                                 TextSpan(text: " Order will be served in :  ", style: TextStyle(color: Colors.blueGrey, fontSize: 10.sp,)),
                                 TextSpan(text: "${snapshot.data} seconds \n ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.sp,fontWeight: FontWeight.bold)),

@@ -82,40 +82,45 @@ class LocationProvider extends ChangeNotifier {
 
 
   bool isFareDistance = true;
+  late double Distance;
 
   double calculateDistance(LatLng point1, LatLng point2) {
     const double R = 6371; // Radius of the Earth in kilometers
 
     // Convert degrees to radians
-    double lat1Rad = point1.latitude * pi / 180;
-    double lon1Rad = point1.longitude * pi / 180;
-    double lat2Rad = point2.latitude * pi / 180;
-    double lon2Rad = point2.longitude * pi / 180;
+    double lat1Rad = point1.latitude * (22/7) / 180;
+    double lon1Rad = point1.longitude * (22/7)  / 180;
+    double lat2Rad = point2.latitude * (22/7)  / 180;
+    double lon2Rad = point2.longitude * (22/7)  / 180;
 
     // Differences in coordinates
     double dLat = lat2Rad - lat1Rad;
     double dLon = lon2Rad - lon1Rad;
 
     // Haversine formula
-    double a = sin(dLat / 2) * sin(dLat / 2) +
-        cos(lat1Rad) * cos(lat2Rad) * sin(dLon / 2) * sin(dLon / 2);
+    double a = sin(dLat / 2) * sin(dLat / 2) + cos(lat1Rad) * cos(lat2Rad) * sin(dLon / 2) * sin(dLon / 2);
     double c = 2 * atan2(sqrt(a), sqrt(1 - a));
 
     // Distance in kilometers
     double distance = R * c ;
+    Distance = distance;
+    print('Distance isssssssssss ${Distance} km');
 
     if( distance > 30){
       isFareDistance = false;
-      print('dddddddddddddddddddddddd');
-      print(distance);
+      print('Greater than 30km');
+     // print(distance);
     }
     else {
       isFareDistance = true;
-      print('uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
-
+      print('Less than 30km');
+//print(distance)
     }
 
     return distance;
   }
-}
+
+
+  }
+
 

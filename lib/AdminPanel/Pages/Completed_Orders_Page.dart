@@ -16,20 +16,20 @@ import 'package:provider/provider.dart';
 import 'package:easy_url_launcher/easy_url_launcher.dart';
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
 
-class IncomingOrders extends StatefulWidget {
-  const IncomingOrders({super.key});
+
+class CompletedOrders extends StatefulWidget {
+  const CompletedOrders({super.key});
 
   @override
-  State<IncomingOrders> createState() => _IncomingOrdersState();
+  State<CompletedOrders> createState() => _CompletedOrdersState();
 }
 
-class _IncomingOrdersState extends State<IncomingOrders> {
-  final Completer<GoogleMapController> _Usercontroller = Completer<GoogleMapController>();
-
+class _CompletedOrdersState extends State<CompletedOrders> {
   @override
   Widget build(BuildContext context) {
-    final  adminId = Provider.of<AdminId>(context, listen: false).id;
 
+    final  adminId = Provider.of<AdminId>(context, listen: false).id;
+     String TotalPrice = Provider.of<IncomingOrdersProvider>(context, listen: false).TotalPrice;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -46,25 +46,29 @@ class _IncomingOrdersState extends State<IncomingOrders> {
         centerTitle: true,
         title:  RichText(text: TextSpan(
             children: [
-              TextSpan(text: "InComing", style: TextStyle(color: Colors.black, fontSize: 20.spMin,fontWeight: FontWeight.bold)),
-              TextSpan(text: "Orders", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin,fontWeight: FontWeight.bold)),
+              TextSpan(text: "Completed", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold)),
+              TextSpan(text: "Orders", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold)),
 
 
             ]
         )),
         actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {}); // Refresh the page
-            },
-            icon: ImageIcon(AssetImage('assets/Icon/refresh.png'), color: Colors.blueGrey,size:30,),
-          ),
+          SizedBox(width: 10.w,),
+
+          RichText(text: TextSpan(
+              children: [
+                TextSpan(text: "GHC", style: TextStyle(color: Colors.black, fontSize: 15.sp,fontWeight: FontWeight.bold)),
+                TextSpan(text:' ${TotalPrice}''.00', style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold)),
+              ]
+          )),
+          SizedBox(width: 10.w,),
+
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: StreamBuilder<List<OrderInfo>>(
-          stream: Provider.of<IncomingOrdersProvider>(context, listen: false).fetchOrders(adminId),
+          stream: Provider.of<IncomingOrdersProvider>(context, listen: false).fetchCompleteOrders(adminId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -81,10 +85,13 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final Orders = snapshot.data![index];
+                  //function to get the total price of the orders in the list
+                  final totalPrice = snapshot.data?.fold(0, (previousValue, element) => previousValue + element.price.toInt());
+                  Provider.of<IncomingOrdersProvider>(context, listen: false).TotalPrice = totalPrice.toString();
                   return Badge(
                     alignment: Alignment.topCenter,
                     backgroundColor: Orders.delivered?Colors.green:Colors.red,
-                    label: Text(Orders.delivered?' Order Completed': 'Incomplete Order', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                    label: Text(Orders.delivered ? ' Order Completed': 'Incomplete Order', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Material(
@@ -110,8 +117,8 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                             trailing: Text(
                               "Quantity: ${Orders.quantity}",
                               style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold
                               ),
                             ),
                             title: Text(
@@ -130,19 +137,19 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                               ListTile(
                                 title: FutureBuilder(
                                     future: Provider.of<LocationProvider>(context,
-                                            listen: false)
+                                        listen: false)
                                         .getAddressFromLatLng(Orders.Latitude, Orders.Longitude),
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
-                    
+
                                         return Text(snapshot.data.toString(),
                                             style: TextStyle(
                                                 overflow: TextOverflow.ellipsis,
                                                 color: Colors.deepOrangeAccent,
-                      fontWeight: FontWeight.bold
+                                                fontWeight: FontWeight.bold
 
 
-                      ,
+                                                ,
                                                 fontSize: 10.sp));
                                       }
                                       return Text(
@@ -159,7 +166,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 10.sp,
                                       color: Colors.black,
-                                  fontStyle: FontStyle.italic),
+                                      fontStyle: FontStyle.italic),
                                 ),
                                 title: Text('Latitude : '' ${Orders.Latitude.toString()}' ,style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold)),
                                 subtitle: Text('Longitude  : ''${Orders.Longitude.toString()}', style: TextStyle(color: Colors.black, fontSize: 15.sp,fontWeight: FontWeight.bold)),
@@ -167,7 +174,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                               ),
                               ListTile(
                                 titleTextStyle:
-                                    TextStyle(fontWeight: FontWeight.bold),
+                                TextStyle(fontWeight: FontWeight.bold),
                                 title: GestureDetector(
                                   onTap: () async{
                                     /// This function will take the Buyer's phone number and call the buyer
@@ -190,111 +197,9 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              ///GOOGLE MAP HERE 
-                              ///
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Container(
-                                    height: 250.spMin,
-                                    width: double.infinity,
-                                    child: GoogleMap(
-                                      markers: {
-                                        Marker(
-                                            markerId: MarkerId('User'),
-                                            visible: true,
-                                            position: LatLng(
-                                                Orders.Latitude, Orders.Longitude
-                                                ))
-                                      },
-                                      //liteModeEnabled: true,
-                                      compassEnabled: true,
-                                      mapToolbarEnabled: true,
-                                      padding: EdgeInsets.all(12),
-                                      scrollGesturesEnabled: true,
-                                      zoomControlsEnabled: true,
-                                      myLocationEnabled: true,
-                                      myLocationButtonEnabled: true,
-                                      mapType: MapType.normal,
-                                      onMapCreated: (GoogleMapController controller) {
-                                        _Usercontroller.complete(_Usercontroller
-                                            as FutureOr<GoogleMapController>?);
-                                      },
-                                      gestureRecognizers: Set(),
-                                      initialCameraPosition: CameraPosition(
-                                        bearing: 192.8334901395799,
-                                        target: LatLng(
-                                          Orders.Latitude,
-                                          Orders.Longitude,
-                                        ),
-                                        tilt: 9.440717697143555,
-                                        zoom: 11.151926040649414,
-                                      ),
-                                    )),
-                              ),
-                    SizedBox(height: 10,),
-                    
-                    /// ROW FOR SERVED AND COURIER
-                              ///
-                    
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                    
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                        LiteRollingSwitch(
-                          //initial value
-                          value: Orders.served,
-                          width: 120.spMin,
-                          textOn: 'Served',
-                          textOnColor: Colors.white,
-                          textOff: 'Not-Served',
-                          textOffColor: Colors.white,
-                          colorOn: CupertinoColors.activeGreen,
-                          colorOff: Colors.redAccent,
-                          iconOn: Icons.done,
-                          iconOff: Icons.remove_circle_outline,
-                          textSize: 8.0,
-                          onChanged: (bool state) {
-                            print('Served');
-                            Provider.of<AdminFunctions>(context, listen: false).switchServedFood(context,Orders.vendorId , Orders.phoneNumber, state, Orders.time);
-                 //   print(Orders.vendorId);
-                 //   print(Orders.phoneNumber);
-                            ///Use it to manage the different states
-                            //print('Current State of SWITCH IS: $state');
-                          },
-                          onTap: () {
-                          },
-                          onDoubleTap: () {},
-                          onSwipe: () {},
-                        ), LiteRollingSwitch(
-                          //initial value
-                          value: Orders.courier,
-                          width: 120.spMin,
-                          textOn: 'Courier',
-                          textOnColor: Colors.white,
-                          textOff: 'N-Courier',
-                          textOffColor: Colors.white,
-                          colorOn: CupertinoColors.activeGreen,
-                          colorOff: Colors.redAccent,
-                          iconOn: Icons.done,
-                          iconOff: Icons.remove_circle_outline,
-                          textSize: 8.0,
-                          onChanged: (bool state) {
-                            print('Given to Courier');
-                            Provider.of<AdminFunctions>(context, listen: false).switchCourier(context,Orders.vendorId , Orders.phoneNumber, state, Orders.time);
 
-                            ///Use it to manage the different states
-                            //print('Current State of SWITCH IS: $state');
-                          },
-                          onTap: () {
-                          },
-                          onDoubleTap: () {},
-                          onSwipe: () {},
-                        ),
-                      ],),
-                    ),
-                    
+
+
                             ],
                           ),
                         ),

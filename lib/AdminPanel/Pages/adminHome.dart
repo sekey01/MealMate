@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/AdminFunctionsProvider.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
+import 'package:mealmate/AdminPanel/Pages/Completed_Orders_Page.dart';
 import 'package:mealmate/AdminPanel/Pages/UploadModel.dart';
 import 'package:mealmate/AdminPanel/Pages/adminNotificationPage.dart';
 import 'package:mealmate/AdminPanel/Pages/uploads.dart';
@@ -19,14 +20,14 @@ import 'package:mealmate/components/card1.dart';
 import 'package:provider/provider.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mealmate/components/NoInternet.dart';
-
-
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../Notification/notification_Provider.dart';
 import '../OtherDetails/ID.dart';
 import '../components/ChangeIDofAdmin.dart';
 import '../components/adminCollectionRow.dart';
 import 'IncomingOrdersPage.dart';
+import 'Completed_Orders_Page.dart';
+
 
 class adminHome extends StatefulWidget {
   const adminHome({super.key});
@@ -135,17 +136,13 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
         automaticallyImplyLeading: false,
         title: RichText(text: TextSpan(
             children: [
-              TextSpan(text: "Admin", style: TextStyle(color: Colors.black, fontSize: 20.spMin,fontWeight: FontWeight.bold)),
-              TextSpan(text: "Panel", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin,fontWeight: FontWeight.bold)),
+              TextSpan(text: "Welcome ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.spMin,fontWeight: FontWeight.bold)),
+              TextSpan(text: " !", style: TextStyle(color: Colors.black, fontSize: 15.spMin,fontWeight: FontWeight.bold)),
 
 
             ]
         )),
-        titleTextStyle: TextStyle(
-            color: Colors.blueGrey,
-            fontSize: 20.spMin,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 2),
+
         centerTitle: true,
         elevation: 3,
         leading: Padding(
@@ -162,7 +159,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
            builder: (context, snapshot) {
              if (snapshot.connectionState == ConnectionState.waiting) {
                      return Center(
-                        child: Text('Updating', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10.sp, fontStyle: FontStyle.italic),),
+                        child: Text('Updating', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic),),
                         );
                        } else if (snapshot.hasError) {
                             return Center(child: Center(child: Text('refresh page')));
@@ -171,7 +168,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                  child: Text('No Order Detected',style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic), ),
                );
              } else {
-               return Text(snapshot.data!.length.toString(), style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15.sp),);
+               return Text(snapshot.data!.length.toString(), style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 10.sp),);
              }
            }
               ),
@@ -183,7 +180,36 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
 
 
         actions: [
+          /// ICON BUTTON TO SHOW THE LIST OF COMPLETED ORDERS
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context)=> CompletedOrders()));
+            },
+            child:  Badge(
+              backgroundColor: Colors.green,
+              label:StreamBuilder(
+                  stream: Provider.of<IncomingOrdersProvider>(context, listen: false).fetchCompleteOrders(adminId),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: Text('...', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic),),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Center(child: Center(child: Text('refresh page')));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(
+                        child: Text('0',style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic), ),
+                      );
+                    } else {
+                      return Text(snapshot.data!.length.toString(), style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 10.sp),);
+                    }
+                  }
+              ),
+              child: ImageIcon(AssetImage('assets/Icon/Orders.png'), size: 25.sp,color: Colors.blueGrey,),
+            ),
 
+          ),
           /// ICON BUTTON TO SHOW THE LIST OF ADMINS UPLOADS
           IconButton(
             onPressed: () {
@@ -196,9 +222,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
               color: Colors.deepOrangeAccent,
             ),
           ),
-          SizedBox(
-            width: 2.w,
-          ),
+
           /// THIS IS NOTIFICATION TO ALL ADMINS
           ///
           IconButton(
@@ -227,14 +251,11 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                 ),
                 child: ImageIcon(AssetImage(
                     'assets/Icon/notification.png'
-                ), color: Colors.blueGrey,size: 30.spMin,
+                ), color: Colors.blueGrey,size: 25.sp,
                 ),
               )
             ),
 
-          SizedBox(
-            width:2.w,
-          ),
 
           ///ICON BUTTON CHANGE THE ID OF ADMIN
           /// IT OPENS BUTTOMSHEETVIEW TO CHANGE THE ID
@@ -246,7 +267,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
             },
             icon: ImageIcon(
                AssetImage('assets/Icon/change.png'),
-              size: 25.spMin,
+              size: 25.sp,
               color: Colors.blueGrey
 
 
@@ -262,7 +283,15 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
+                ///ADMIN PANEL TEXT
+                RichText(text: TextSpan(
+                    children: [
+                      TextSpan(text: "Admin", style: TextStyle(color: Colors.black, fontSize: 25.spMin,fontWeight: FontWeight.bold)),
+                      TextSpan(text: "Panel", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 25.spMin,fontWeight: FontWeight.bold)),
 
+
+                    ]
+                )),
 
                 SizedBox(height: 30.h,),
                 /// GET ADMIN EMAIL

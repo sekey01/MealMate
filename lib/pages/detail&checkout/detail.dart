@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
+import 'package:mealmate/components/CustomLoading.dart';
+import 'package:mealmate/pages/navpages/searchByCollection.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -56,7 +58,6 @@ class DetailedCard extends StatefulWidget {
 class _DetailedCardState extends State<DetailedCard> {
 
 
-
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
   double tPrice = 0.0;
@@ -74,341 +75,514 @@ class _DetailedCardState extends State<DetailedCard> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+appBar: AppBar(
+  backgroundColor: Colors.white,
+  title: RichText(text: TextSpan(
+      children: [
+        TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
+        TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
 
+
+      ]
+  )),
+  centerTitle: true,
+  automaticallyImplyLeading: false,
+  leading: GestureDetector(
+      onTap: (){
+        Navigator.pop(context);
+      },
+      child: Icon(Icons.arrow_back_ios, color: Colors.blueGrey,size: 25.sp,)
+  ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Search(),
+                ),
+              );
+            },
+            icon: ImageIcon(
+              AssetImage('assets/Icon/Search.png'),
+              color: Colors.blueGrey,
+            ),
+          ),
+        ],
+
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+
           children: [
-            Container(
-              color: Colors.white,
-              height: 200.h,
-              width: 350.h,
-              child: widget.imgUrl.isEmpty
-                  ? Center(
-                      child: Icon(
-                        Icons.image_not_supported_outlined,
-                        color: Colors.deepOrange,
-                        size: 120.sp,
-                      ),
-                    )
-                  : ClipRRect(
-                      borderRadius: BorderRadius.circular(13),
-                      child: Image(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(widget.imgUrl),
-                        height: 90.h,
-                        width: 120.w,
-                      ),
-                    ),
-            ),
-            SizedBox(height: 10.h),
-            Text(
-              widget.restaurant,
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-                letterSpacing: 1,
-              ),
-            ),
-            SizedBox(height: 5.h),
-            Text(
-              widget.foodName,
-              style: TextStyle(
-                fontSize: 15.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-                letterSpacing: 2,
-              ),
-            ),
-            Text(
-              'GHC ${widget.price}0',
-              style: TextStyle(
-                fontSize: 20.sp,
-                letterSpacing: 3,
-                fontWeight: FontWeight.bold,
-                color: Colors.deepOrangeAccent,
-              ),
-            ),
-            SizedBox(height: 10.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.location_on,
-                      color: Colors.deepOrangeAccent,
-                      size: 15.sp,
-                    ),
-                    SizedBox(width: 10.h),
-                    Text(
-                      widget.location,
-                      style: TextStyle(
-                        color: Colors.deepOrangeAccent,
-                        fontSize: 15.sp,
-                        overflow: TextOverflow.ellipsis,
-                        letterSpacing: 3,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(width: 10.h),
-              ],
-            ),
-            SizedBox(height: 20.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.timelapse_rounded,
-                      color: Colors.black,
-                    ),
-                    SizedBox(width: 10.w),
-                    Text(
-                      '${widget.time}'' mins',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15.sp,
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                  ],
-                ),
-                SizedBox(width: 15.w),
-                Icon(
-                  Icons.phone_callback_outlined,
-                  color: Colors.black,
-                ),
-                Text(
-                  widget.adminContact.toString(),
-                  style: TextStyle(
-                    color: Colors.deepOrangeAccent,
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.h),
-            Consumer<CartModel>(
-              builder: (context, CartModel, child) {
-                tPrice = CartModel.getQuantity * widget.price;
-                return Text(
-                  'Total: GHC${tPrice}0',
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 10),
-            Consumer<CartModel>(
-              builder: (context, value, child) => ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 3,
-                  backgroundColor: Colors.deepOrangeAccent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                onPressed: () {
-                  value.add(CartFood(
-                    imgUrl: widget.imgUrl,
-                    restaurant: widget.restaurant,
-                    foodName: widget.foodName,
-                    price: widget.price,
-                    id: widget.vendorid,
-                  ));
+            /// FOOD IMAGE IN CONTANER
+            ///
+            Badge(
+              alignment: Alignment.topCenter,
 
-                  Alert(
-                    context: context,
-                    style: AlertStyle(
-                      backgroundColor: Colors.transparent,
-                      alertPadding: EdgeInsets.all(88),
-                      isButtonVisible: true,
-                      descStyle: TextStyle(
-                        color: Colors.green,
-                        fontSize: 15,
-                      ),
-                    ),
-                    desc: "Food added to Cart",
-                    buttons: [
-                      DialogButton(
-                        child: CardLoading(
-                          height: 25,
-                          child: Text(
-                            '  Okay  ',
-                            style: TextStyle(color: Colors.deepOrange),
-                          ),
+              label: RichText(text: TextSpan(
+                  children: [
+                    TextSpan(text: "  ${widget.price * (10/100)}%", style: TextStyle(color: Colors.white, fontSize:20.sp,fontWeight: FontWeight.bold)),
+                    TextSpan(text: " Discounted", style: TextStyle(color: Colors.white, fontSize: 10.spMin,)),
+
+
+                  ]
+              )),
+              backgroundColor: Colors.green,
+              ///FOOD IMAGE CONTAINER
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Colors.white,
+                    style: BorderStyle.solid,
+                  ),
+                ),
+                height: 180.h,
+                width: 350.h,
+                child: widget.imgUrl.isEmpty
+                    ? Center(
+                        child: Icon(
+                          Icons.image_not_supported_outlined,
+                          color: Colors.deepOrange,
+                          size: 120.sp,
                         ),
-                        onPressed: () => Navigator.pop(context),
-                        width: 100,
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(13),
+                        child: Image(
+                          fit: BoxFit.fill,
+                          image: NetworkImage(widget.imgUrl),
+                          height: 90.h,
+                          width: 120.w,
+                        ),
                       ),
-                    ],
-                  ).show();
-                },
-                child: Text(
-                  'Add to Cart',
-                  style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
-                ),
               ),
             ),
-            SizedBox(height: 20.h),
-            Consumer<CartModel>(
-              builder: (context, value, child) => Container(
-                margin: EdgeInsets.all(10),
-                height: 700.h,
-                width: double.infinity,
-                child: Center(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 5),
+            SizedBox(height: 10.h),
 
-                      ///INCREMENT AND DECREEMENT BUTTONS
-                      ///
-                      ///
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+
+
+          ],
+        ),
+      ),
+
+      bottomSheet: BottomSheet(
+
+          elevation: 2,
+          onClosing: (){},
+          builder: (context) {
+            return Container(
+              height: 450.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.white,
+                    Colors.white,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.r),
+                  topRight: Radius.circular(20.r),
+                ),
+              ),
+              child: Center(
+                child:SingleChildScrollView(
+              child:  Column(
+                  children: [
+                    SizedBox(height: 10.h),
+                    /// RESTAURANT ICON AND NAME
+                    ///
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              value.decrementQuantity();
-                            },
-                            child: Material(
-                              color: Colors.deepOrangeAccent,
-                              borderRadius: BorderRadius.circular(7),
-                              elevation: 3,
-                              child: Text(
-                                '  -  ',
-                                style: TextStyle(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
+                          Icon(
+                            Icons.storefront,
+                            color: Colors.redAccent,
+                            size: 20.sp,
                           ),
-                          SizedBox(width: 15.w),
-                          Material(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(7),
-                            elevation: 3,
-                            child: Text(
-                              value.getQuantity.toString(),
-                              style: TextStyle(
-                                fontSize: 20.sp,
-                                letterSpacing: 3,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 15.w),
-                          GestureDetector(
-                            onTap: () {
-                              value.incrementQuantity();
-                            },
-                            child: Material(
-                              color: Colors.deepOrangeAccent,
-                              borderRadius: BorderRadius.circular(7),
-                              elevation: 3,
-                              child: Text(
-                                '  +  ',
-                                style: TextStyle(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
+                          Text(
+                           '  ${widget.restaurant}',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              letterSpacing: 1,
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 15.h),
-                      ///MAP
-                      ///
-                      ///
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Material(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white,
-                          ///MAP CONATAINER
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                    color: Colors.black,
-                                    style: BorderStyle.solid)),
-                            height: 260.h,
-                            width: double.infinity,
+                    ),
+                    SizedBox(height: 5.h),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
 
-                            ///MAP HERE
-                            ///
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: FutureBuilder(
-                                  future: Provider.of<LocationProvider>(context,
-                                          listen: false)
-                                      .determinePosition(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      return GoogleMap(
-                                        markers: {
-                                          Marker(
-                                              markerId: MarkerId('User'),
-                                              visible: true,
-                                              position: LatLng(
-                                                  widget.latitude,
-                                                  widget.longitude)), 
-                                        },
-                                        circles: Set(),
-                                        mapToolbarEnabled: true,
-                                        padding: EdgeInsets.all(12),
-                                        scrollGesturesEnabled: true,
-                                        zoomControlsEnabled: true,
-                                        myLocationEnabled: true,
-                                        myLocationButtonEnabled: true,
-                                        mapType: MapType.normal,
-                                        onMapCreated:
-                                            (GoogleMapController controller) {
-                                          _controller.complete(_controller
-                                              as FutureOr<GoogleMapController>?);
-                                        },
-                                        initialCameraPosition: CameraPosition(
-                                          bearing: 192.8334901395798,
-                                          target: LatLng(
-                                              Provider.of<LocationProvider>(
-                                                      context,
-                                                      listen: false)
-                                                  .Lat,
-                                              Provider.of<LocationProvider>(
-                                                      context,
-                                                      listen: false)
-                                                  .Long),
-                                          tilt: 9.440717697143555,
-                                          zoom: 11.151926040649414,
-                                        ),
-                                      );
-                                    }
-                                    return Text(
-                                      'Map Loading ... please wait for map to locate you before you order...',
-                                      style: TextStyle(color: Colors.deepOrange, fontSize: 12.sp),
-                                    );
-                                  }),
+                        children: [
+                          SizedBox(width: 5.sp,),
+
+                         Image(
+                           height: 40,
+                            width: 30,
+                            image: AssetImage('assets/Icon/Food.png'),
+                         ),
+                          SizedBox(width: 10.sp,),
+                          Text(
+                            widget.foodName,
+                            style:
+                            TextStyle(
+                              fontFamily: 'Righteous',
+                              overflow: TextOverflow.ellipsis,
+                              fontSize: 17.sp,
+                              //fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                              letterSpacing: 1,
                             ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+                    Text(
+                      'GHC ${widget.price}0',
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        letterSpacing: 3,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.deepOrangeAccent,
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.location_on,
+                              color: Colors.redAccent,
+                              size: 20.sp,
+                            ),
+                            SizedBox(width: 10.h),
+                            Text(
+                              widget.location,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold,
+                                overflow: TextOverflow.ellipsis,
+                                letterSpacing: 3,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 10.h),
+                      ],
+                    ),
+                    SizedBox(height: 20.h),
+                    Row(
+                      ///ROW FOR TIME AND PHONE NUMBER
+                      ///
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ///ROW FOR TIME AND ITS ICON
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.timelapse_outlined,
+                              color: Colors.redAccent,
+                              size: 25.sp,
+                            ),
+                            SizedBox(width: 10.w),
+                            RichText(text: TextSpan(
+                                children: [
+                                  TextSpan(text: "${widget.time}mins\n", style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold)),
+                                  TextSpan(text: "Delivery", style: TextStyle(color: Colors.grey, fontSize: 15.sp, )),
 
+
+                                ]
+                            )),
+                            SizedBox(width: 10),
+                          ],
+                        ),
+                        SizedBox(width: 15.w),
+                        ///ROW FOR PHONE NUMBER AND ITS ICON
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.call,
+                              color: Colors.redAccent,
+                            ),
+                            SizedBox(width: 10.w),
+                            RichText(text: TextSpan(
+                                children: [
+                                  TextSpan(text: '${widget.adminContact}\n', style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold)),
+                                  TextSpan(text: "Call Us", style: TextStyle(color: Colors.grey, fontSize: 15.sp,)),
+
+
+                                ]
+                            )),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10.h),
+
+                    ///TOTAL PRICE
+                    ///
+                    Consumer<CartModel>(
+                      builder: (context, CartModel, child) {
+                        tPrice = CartModel.getQuantity * widget.price;
+                        return Text(
+                          'Total: GHC${tPrice}0',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      },
+                    ),
+                    SizedBox(height: 10),
+                    ///ADD TO CART BUTTON
+                    Consumer<CartModel>(
+                      builder: (context, value, child) => ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 3,
+                          backgroundColor: Colors.deepOrangeAccent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
+                        onPressed: () {
+                          value.add(CartFood(
+                            imgUrl: widget.imgUrl,
+                            restaurant: widget.restaurant,
+                            foodName: widget.foodName,
+                            price: widget.price,
+                            id: widget.vendorid,
+                          ));
+
+                          Alert(
+                            context: context,
+                            style: AlertStyle(
+                              backgroundColor: Colors.transparent,
+                              alertPadding: EdgeInsets.all(88),
+                              isButtonVisible: true,
+                              descStyle: TextStyle(
+                                color: Colors.green,
+                                fontSize: 15,
+                              ),
+                            ),
+                            desc: "Food added to Cart",
+                            buttons: [
+                              DialogButton(
+                                child: CardLoading(
+                                  height: 25,
+                                  child: Text(
+                                    '  Okay  ',
+                                    style: TextStyle(color: Colors.deepOrange),
+                                  ),
+                                ),
+                                onPressed: () => Navigator.pop(context),
+                                width: 100,
+                              ),
+                            ],
+                          ).show();
+                        },
+                        child: Text(
+                          'Add to Cart',
+                          style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                        ),
                       ),
-                   /*   Padding(padding: EdgeInsets.all(8),
+                    ),
+                    SizedBox(height: 20.h),
+                    Consumer<CartModel>(
+                      builder: (context, value, child) => Container(
+                        margin: EdgeInsets.all(10),
+                        height: 700.h,
+                        width: double.infinity,
+                        child: Center(
+                          child: Column(
+                            children: [
+                              SizedBox(height: 5),
+
+                              ///INCREMENT AND DECREEMENT BUTTONS
+                              ///
+                              ///
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      value.decrementQuantity();
+                                    },
+                                    child: Material(
+                                      color: Colors.deepOrangeAccent,
+                                      borderRadius: BorderRadius.circular(7),
+                                      elevation: 3,
+                                      child: Text(
+                                        '  -  ',
+                                        style: TextStyle(
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 15.w),
+                                  Material(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(7),
+                                    elevation: 3,
+                                    child: Text(
+                                      value.getQuantity.toString(),
+                                      style: TextStyle(
+                                        fontSize: 20.sp,
+                                        letterSpacing: 3,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 15.w),
+                                  GestureDetector(
+                                    onTap: () {
+                                      value.incrementQuantity();
+                                    },
+                                    child: Material(
+                                      color: Colors.deepOrangeAccent,
+                                      borderRadius: BorderRadius.circular(7),
+                                      elevation: 3,
+                                      child: Text(
+                                        '  +  ',
+                                        style: TextStyle(
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 15.h),
+                              ///MAP
+                              ///
+                              ///
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Material(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white,
+                                  ///MAP CONATAINER
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                            color: Colors.black,
+                                            style: BorderStyle.solid)),
+                                    height: 260.h,
+                                    width: double.infinity,
+
+                                    ///MAP HERE
+                                    ///
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: FutureBuilder(
+
+                                          future: Provider.of<LocationProvider>(context,
+                                              listen: false)
+                                              .determinePosition(),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              ///Run the get distance function here
+                                              Provider.of<LocationProvider>(context,listen: false).calculateDistance(
+                                                  LatLng(widget.latitude, widget.longitude),
+                                                  LatLng(Provider.of<LocationProvider>(context, listen: false).Lat, Provider.of<LocationProvider>(context, listen: false).Long));
+
+                                              /// RETURN THE MAP
+                                              return GoogleMap(
+                                                markers: {
+                                                  ///MARKER FOR VEENDOR LOCATION ON THE MAP
+                                                  Marker(
+                                                      markerId: MarkerId('Vendor'),
+                                                      visible: true,
+                                                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen.sp),
+                                                      infoWindow: InfoWindow(
+
+                                                        title: 'Vendor\'s Location',
+                                                        snippet: 'Distance: ${Provider.of<LocationProvider>(context, listen: false).Distance.toStringAsFixed(3)} km',),
+                                                      position: LatLng(
+                                                          widget.latitude,
+                                                          widget.longitude)),
+                                                  ///MARKER FOR USER LOCATION ON THE MAP
+                                                  Marker(
+                                                      markerId: MarkerId('User'),
+                                                      visible: true,
+                                                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue.sp),
+                                                      infoWindow: InfoWindow(
+                                                        title: 'Your Location',
+                                                        snippet: 'Distance: ${Provider.of<LocationProvider>(context, listen: false).Distance.toStringAsFixed(3)} km',),
+                                                      position: LatLng(
+                                                          Provider.of<LocationProvider>(context, listen: false).Lat,
+                                                          Provider.of<LocationProvider>(context, listen: false).Long)),
+                                                },
+                                                circles: Set(),
+                                                polylines: Set(),
+                                                mapToolbarEnabled: true,
+                                                padding: EdgeInsets.all(12),
+                                                scrollGesturesEnabled: true,
+                                                zoomControlsEnabled: true,
+                                                myLocationEnabled: true,
+                                                myLocationButtonEnabled: true,
+                                                fortyFiveDegreeImageryEnabled: true,
+                                                cloudMapId: 'mapId',
+                                                mapType: MapType.normal,
+                                                onMapCreated:
+                                                    (GoogleMapController controller) {
+                                                  _controller.complete(_controller
+                                                  as FutureOr<GoogleMapController>?);
+                                                },
+                                                initialCameraPosition: CameraPosition(
+                                                  bearing: 192.8334901395798,
+                                                  target: LatLng(
+                                                      Provider.of<LocationProvider>(
+                                                          context,
+                                                          listen: false)
+                                                          .Lat,
+                                                      Provider.of<LocationProvider>(
+                                                          context,
+                                                          listen: false)
+                                                          .Long),
+                                                  tilt: 9.440717697143555,
+                                                  zoom: 15.151926040649414,
+                                                ),
+                                              );
+                                            }
+                                            return Center(child: CustomLoGoLoading());
+                                          }),
+                                    ),
+
+                                  ),
+                                ),
+                              ),
+                              /*   Padding(padding: EdgeInsets.all(8),
                         child: Builder(builder: (context) {
                           Provider.of<LocationProvider>(context,listen: false).calculateDistance(
                               LatLng(widget.latitude,widget.longitude),
@@ -421,126 +595,161 @@ class _DetailedCardState extends State<DetailedCard> {
                       ),*/
 
 
-                      /// TEXTFIELDFOR USER TO ENTER EXTRA INFORMATION
-                      ///
-                      ///
-                      ///
-                      Padding(padding: EdgeInsets.all(8),
-                        child: Text('Note:  Always make sure the map loads before you Order; '
-                            'Tap on the Red Marker  on the Map to see the distance between you the the vendor is less than 15 Km before ordering ...',
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                            color: Colors.black
-                          ),),),
-                      SizedBox(height: 30.h,),
+                              /// TEXTFIELDFOR USER TO ENTER EXTRA INFORMATION
+                              ///
+                              ///
+                              ///
+                              Padding(padding: EdgeInsets.all(8),
+                                child: Text('Note:  Always make sure the map loads before you Order; '
+                                    'Tap on the Green Marker  on the Map to see the distance between you the the vendor is less than 15 Km before ordering ...',
+                                  style: TextStyle(
+                                      fontSize: 10.sp,
+                                      color: Colors.red
+                                  ),),),
 
-                      Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: TextField(
-                          enableSuggestions: true,
-                          scrollPadding: EdgeInsets.all(8),
-                          scrollPhysics: BouncingScrollPhysics(),
-                          style: TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                            label: Text('Leave a message here ...'),
-                            labelStyle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15.sp,
-                            ),
-                            filled: true,
-                            fillColor: Colors.deepOrange.shade50,
-                            hintText: 'Leave a message for Us / other details here... ',
-                            hintStyle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 11.sp,
-                            ),
+                              SizedBox(height: 30.h,),
+                              Padding(
+                                padding: const EdgeInsets.all(18.0),
+                                child: TextField(
+                                  enableSuggestions: true,
+                                  scrollPadding: EdgeInsets.all(8),
+                                  scrollPhysics: BouncingScrollPhysics(),
+                                  style: TextStyle(color: Colors.black),
+                                  decoration: InputDecoration(
+                                    label: Text('Leave a message here ...'),
+                                    labelStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15.sp,
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.deepOrange.shade50,
+                                    hintText: 'Leave a message for Us / other details here... ',
+                                    hintStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 11.sp,
+                                    ),
 
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(),
-                            ),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(),
+                                    ),
+                                  ),
+                                  controller: messageController,
+                                ),
+                              ),
+
+                              SizedBox(height: 30.h,),
+
+
+                              SizedBox(height: 30.h,),
+                              ///USER TELEPHONE NUMBER
+                              Builder(
+                                  builder: (context) {
+                                    Provider.of<LocalStorageProvider>(context, listen: false).getPhoneNumber();
+                                    return Text(
+                                      " Your Telephone: ${Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber}",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    );
+                                  }
+                              ),
+                              SizedBox(height: 15.h),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 3,
+                                  backgroundColor: Colors.deepOrangeAccent,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  print(widget.latitude);
+                                  print(widget.longitude);
+                                  print(Provider.of<LocationProvider>(context, listen: false).Lat);
+                                  print(Provider.of<LocationProvider>(context, listen: false).Long);
+                                  Provider.of<LocationProvider>(context, listen: false).calculateDistance(
+
+                                      LatLng(widget.latitude, widget.longitude),
+
+                                      LatLng(Provider.of<LocationProvider>(context, listen: false).Lat,
+                                          Provider.of<LocationProvider>(context, listen: false).Lat)
+
+
+                                  );
+                                  // Provider.of<LocationProvider>(context, listen: false).isFareDistance
+
+                                  if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty) {
+                                    DateTime time = DateTime.now();
+                                    //  print(time);
+                                    Provider.of<SendOrderProvider>(context,
+                                        listen: false)
+                                        .sendOrder(
+                                      OrderInfo(
+                                          time: time,
+                                          foodName: widget.foodName,
+                                          quantity: Provider.of<CartModel>(context,
+                                              listen: false)
+                                              .getQuantity,
+                                          price: widget.price,
+                                          message: messageController.text.toString(),
+                                          Latitude: Provider.of<LocationProvider>(
+                                              context,
+                                              listen: false)
+                                              .Lat,
+                                          Longitude: Provider.of<LocationProvider>(
+                                              context,
+                                              listen: false)
+                                              .Long,
+                                          phoneNumber:
+                                          Provider.of<LocalStorageProvider>(
+                                              context,
+                                              listen: false)
+                                              .phoneNumber,
+                                          vendorId: widget.vendorid,
+                                          served: false,
+                                          courier: false,
+                                          delivered: false,
+                                          adminEmail: widget.adminEmail,
+                                          adminContact: widget.adminContact),
+                                    );
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => OrderSent(
+                                            vendorId: widget.vendorid,
+                                            time: time,
+                                            restaurant: widget.restaurant,
+                                            adminEmail: widget.adminEmail,
+                                            adminContact: widget.adminContact),
+                                      ),
+                                    );
+                                  } else {
+
+                                    Notify(context, 'Please add Telephone number',
+                                        Colors.red);
+
+                                  }
+                                },
+
+                                child: Text(
+                                  'CheckOut',
+                                  style:
+                                  TextStyle(color: Colors.white, fontSize: 20.spMin , fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
                           ),
-                          controller: messageController,
                         ),
                       ),
-
-SizedBox(height: 30.h,),
-                      Padding(padding: EdgeInsets.all(8),
-                        child: Text('Note:  Make sure your number displays bellow before you order; '
-                            'Go to your profile page to add number ...',
-                          style: TextStyle(
-                              fontSize: 10.sp,
-                              color: Colors.black
-                          ),),),
-
-                      SizedBox(height: 30.h,),
-
-                      Text(
-                        " Your Telephone: ${Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber}",
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 15.h),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 3,
-                          backgroundColor: Colors.deepOrangeAccent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        onPressed: () {
-
-    if(!Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber.isEmpty){
-      DateTime time = DateTime.now();
-      //  print(time);
-      Provider.of<SendOrderProvider>(context, listen: false)
-          .sendOrder(
-        OrderInfo(
-            time: time,
-            foodName: widget.foodName,
-            quantity: Provider.of<CartModel>(context, listen: false).getQuantity,
-            price: widget.price,
-            message: messageController.text.toString(),
-            Latitude: Provider.of<LocationProvider>(context, listen: false).Lat,
-            Longitude: Provider.of<LocationProvider>(context, listen: false).Long,
-            phoneNumber: Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber,
-            vendorId: widget.vendorid,
-            served: false,
-            courier : false,
-            delivered: false,
-            adminEmail: widget.adminEmail,
-            adminContact: widget.adminContact
-        ),
-      );
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => OrderSent(vendorId: widget.vendorid,time: time, restaurant: widget.restaurant,adminEmail:  widget.adminEmail,adminContact:  widget.adminContact),
-        ),
-      );
-
-
-    } else {
-    Notify(context, 'Please add Telephone number', Colors.red);}
-
-  },
-
-                        child: Text(
-                          'CheckOut',
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 20.spMin , fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
+                )
                 ),
-              ),
             ),
-          ],
-        ),
-      ),
+            );
+          }
+    ),
     );
   }
 }

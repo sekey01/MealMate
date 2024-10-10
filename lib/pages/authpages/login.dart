@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mealmate/AdminPanel/Pages/adminlogin.dart';
 import 'package:mealmate/Courier/courierLogin.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/pages/navpages/home.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,8 @@ class _LoginState extends State<Login> {
 
   GoogleSignInAccount? _user;
 
+  bool signInLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -32,11 +35,20 @@ class _LoginState extends State<Login> {
 
       });
     });
-    _googleSignIn.signInSilently(); // Auto sign-in if the user is already signed in
+  //  CheckSignedIn();
+   // _googleSignIn.signInSilently(); // Auto sign-in if the user is already signed in
   }
-
+/*  Future CheckSignedIn() async{
+    if( await _googleSignIn.isSignedIn()){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Home()));
+    }
+  }*/
   Future<void> _handleSignIn() async {
+  setState(() {
+    signInLoading = true;
+  });
     try {
+
       final userCredential = await _googleSignIn.signIn();
 
       if (userCredential != null) {
@@ -56,36 +68,37 @@ class _LoginState extends State<Login> {
           context,
           MaterialPageRoute(builder: (context) => Home()),
         );
+        setState(() {
+          signInLoading = false;
+        });
         Notify(context, 'Login Successfully', Colors.green);
       } else {
+        setState(() {
+          signInLoading = false;
+        });
         // Handle the case where the sign-in was canceled by the user
         Notify(context, 'Sign-in was canceled', Colors.red);
       }
     } catch (error) {
+      setState(() {
+        signInLoading = false;
+      });
       // Handle other potential errors
       print(error);
-      Notify(context, 'Error Logging in', Colors.red);
+      Notify(context, 'Please Check Your Internet...', Colors.red);
     }
   }
 
 
- /* Future<void> _handleSignOut() async {
-    await _googleSignIn.signOut();
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Login()));
-  }*/
-
-  /*void dispose() {
-    _phoneNumberController.dispose();
-    super.dispose();
-  }*/
 
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Center(
         child: SafeArea(
           child: SingleChildScrollView(
-            child: Column(
+            child: signInLoading ? CustomLoGoLoading(): Column(
               children: [
                 Padding(
                   padding: EdgeInsets.all(25),
@@ -100,26 +113,25 @@ class _LoginState extends State<Login> {
                       SizedBox(
                         height: 20.h,
                       ),
-                      Text(
-                        '     Welcome ! ',
-                        style: TextStyle(
-                            letterSpacing: 4,
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87),
-                      ),
+                      RichText(text: TextSpan(
+                          children: [
+                            TextSpan(text: "Wel", style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
+                            TextSpan(text: "come !", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
+
+
+                          ]
+                      )),
                       SizedBox(
                         height: 20.h,
                       ),
                       Text(
                         'Discover new amazing recipies',
                         style: TextStyle(
-                            fontSize: 15.sp, color: Colors.blueGrey),
+                            fontSize: 15.sp, color: Colors.black),
                       ),
                       SizedBox(
                         height: 20.h,
                       ),
-
 
 
                       ///TEXTFORMFIELD   HERE
@@ -147,8 +159,8 @@ class _LoginState extends State<Login> {
                                   borderRadius: BorderRadius.circular(10.r),
                                   borderSide: BorderSide(color: Colors.deepOrangeAccent),
                                 ),
-                                hintText: "Enter number: 0542169225 ",
-                                hintStyle: TextStyle(color: Colors.grey,fontSize: 14.spMin,fontStyle: FontStyle.italic)),
+                                hintText: "enter number: 0542169225 ",
+                                hintStyle: TextStyle(color: Colors.black,fontSize: 15.sp,fontWeight: FontWeight.normal)),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return '   This field cannot be empty';
@@ -175,7 +187,7 @@ class _LoginState extends State<Login> {
                         height: 50.h,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white),
+                              backgroundColor: Colors.deepOrange.shade50,),
     onPressed: ()  {
 
       if (_formKey.currentState?.validate() ?? false) {
@@ -264,7 +276,7 @@ SizedBox(width: 10.w,),
                   ),
                 ),
               ],
-            ),
+            ) ,
           ),
         ),
       ),
