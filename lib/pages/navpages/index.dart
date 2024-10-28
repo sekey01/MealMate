@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 
 import 'package:mealmate/Notification/notification_Provider.dart';
 import 'package:mealmate/components/NoInternet.dart';
-import 'package:mealmate/components/Notify.dart';
+import 'package:mealmate/components/mainCards/promotion_ads_card.dart';
 import 'package:mealmate/pages/detail&checkout/detail.dart';
 import 'package:mealmate/pages/navpages/profile.dart';
 import 'package:mealmate/pages/navpages/searchByCollection.dart';
@@ -13,6 +14,7 @@ import 'package:mealmate/pages/searchfooditem/searchFoodItem.dart';
 import 'package:provider/provider.dart';
 
 import '../../UserLocation/LocationProvider.dart';
+import '../../components/Notify.dart';
 import '../../components/adsCouressel.dart';
 import '../../components/card1.dart';
 import '../../components/mainCards/verticalCard.dart';
@@ -168,11 +170,9 @@ checkInternet();
                         Icon(Icons.location_on_outlined, size: 20.sp,color: Colors.blueGrey,),
                         FutureBuilder(
                             future:
-                            Provider.of<LocationProvider>(context, listen: false)
-                                .determinePosition(),
+                            Provider.of<LocationProvider>(context, listen: false).determinePosition(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-
                                 return Padding(
                                   padding: const EdgeInsets.all(2.0),
                                   child: Text(snapshot.data.toString(),
@@ -252,45 +252,6 @@ checkInternet();
                   ///CARD SHOWING THE INTRODUCTION OF THE APP AND COUROSEL OF IMAGES
                   initCard(),
 
-                  ///
-                  ///
-
-                  SizedBox(height: 30.h,),
-
-
-                  Padding(padding: EdgeInsets.all(1),
-                      child: Image(image: AssetImage('assets/Announcements/An_Feedback.png')
-                      )),
-                  Wrap(children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            'LETS EXPLORE  ',
-                            style: TextStyle(
-                              fontSize: 20.spMin,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 2,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            'More Delicious Foods 😋  ',
-                            style: TextStyle(
-                              fontSize: 15.spMin,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 2,
-                              color: Colors.blueGrey,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ]),
-
                   SizedBox(
                     height: 30.h,
                   ),
@@ -311,10 +272,15 @@ checkInternet();
                   ),
 
                   Padding(padding: EdgeInsets.all(1),
-                      child: Image(image: AssetImage('assets/Announcements/An_Grocery.png'))
+                      child: PromotionAdsCard(
+                        image: 'assets/images/MMBoard.png',
+                        heading:'Satisfy Your cravings With MealMate',
+                        content: 'Order your favorite food from your favorite restaurant',
+                        contentColor: Colors.white70,
+                        headingColor: Colors.white,
+                        backgroundColor: Colors.deepOrange,
 
-
-                  ),
+                      )),
                   SizedBox(
                     height: 30.h,
                   ),
@@ -327,8 +293,9 @@ checkInternet();
                         child: Text(
                           ' 🏪 Stores Near You ',
                           style: TextStyle(
+                            fontFamily: 'Righteous',
                               color: Colors.blueGrey,
-                              fontSize: 10.spMin,
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -341,17 +308,27 @@ checkInternet();
                                 MaterialPageRoute(
                                     builder: (context) => Search()));
                           },
-                          child: Text(
-                            'see more',
-                            style: TextStyle(
-                                fontSize: 10.spMin, color: Colors.deepOrangeAccent),
+                          child: Row(
+                            children: [
+
+                              Text(
+                                'View All',
+                                style: TextStyle(
+                                    fontSize: 15.sp, color: Colors.deepOrangeAccent),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 15.spMin,
+                                color: Colors.deepOrangeAccent,
+                              )
+                            ],
                           ),
                         ),
                       )
                     ],
                   ),
                   SizedBox(
-                    height: 30.h,
+                    height: 10.h,
                   ),
 
 
@@ -370,13 +347,29 @@ checkInternet();
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: Center(child:  SearchLoadingOutLook()));
+                          return ListView.builder(
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: NewSearchLoadingOutLook());
+                            },
+                            scrollDirection: Axis.horizontal,
+                          );
                         } else if (snapshot.hasError) {
                           return Center(
                               child: Text('Error: ${snapshot.error}'));
                         } else if (!snapshot.hasData ||
                             snapshot.data!.isEmpty) {
-                          return Center(child: Text('No food items found.'));
+                          return  ListView.builder(
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: EmptyCollection());
+                            },
+                            scrollDirection: Axis.horizontal,
+                          );
                         } else {
                           return ListView.builder(
                             itemCount: snapshot.data!.length,
@@ -408,9 +401,10 @@ checkInternet();
                                                     longitude: foodItem.longitude,
                                                     adminEmail: foodItem.adminEmail,
                                                     adminContact: foodItem.adminContact,
+                                                    maxDistance: foodItem.maxDistance,
                                                   ))) :  Notify(context, 'This item is not Avable now', Colors.red) ;
                                     },
-                                    child: verticalCard(
+                                    child: NewVerticalCard(
                                         foodItem.imageUrl,
                                         foodItem.restaurant,
                                         foodItem.foodName,
@@ -420,7 +414,8 @@ checkInternet();
                                         foodItem.vendorId.toString(),
                                         foodItem.isAvailable,
                                       foodItem.adminEmail,
-                                      foodItem.adminContact
+                                      foodItem.adminContact,
+                                      foodItem.maxDistance,
                                     ),
                                   )) ;
                             },
@@ -435,11 +430,15 @@ checkInternet();
                   ),
 
                   Padding(padding: EdgeInsets.all(1),
-                      child: Image(image: AssetImage('assets/Announcements/An_Pizza.png')
-                      )
+                      child: PromotionAdsCard(
+                        image: 'assets/adsimages/ads1.png',
+                        heading:'Grab Your Favorite Burger',
+                        content: 'Fast & fresh on MealMate foods: click to order',
+                        contentColor: Colors.white70,
+                        headingColor: Colors.white,
+                        backgroundColor: Colors.pinkAccent.shade200,
 
-
-                      ),
+                      )),
                   SizedBox(
                     height: 30.h,
                   ),
@@ -452,8 +451,9 @@ checkInternet();
                         child: Text(
                           '   Drinks 🍹🍷 ',
                           style: TextStyle(
+                            fontFamily: 'Righteous',
                               color: Colors.blueGrey,
-                              fontSize: 10.spMin,
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -466,10 +466,19 @@ checkInternet();
                                 MaterialPageRoute(
                                     builder: (context) => Search()));
                           },
-                          child: Text(
-                            'see more',
-                            style: TextStyle(
-                                fontSize: 10.spMin, color: Colors.deepOrangeAccent),
+                          child: Row(
+                            children: [
+                              Text(
+                                'View All',
+                                style: TextStyle(
+                                    fontSize: 12.sp, color: Colors.deepOrangeAccent,fontWeight: FontWeight.bold),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 12.spMin,
+                                color: Colors.deepOrangeAccent,
+                              )
+                            ],
                           ),
                         ),
                       )
@@ -494,13 +503,29 @@ checkInternet();
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: Center(child:  SearchLoadingOutLook()));
+                          return ListView.builder(
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: NewSearchLoadingOutLook());
+                            },
+                            scrollDirection: Axis.horizontal,
+                          );
                         } else if (snapshot.hasError) {
                           return Center(
                               child: Text('Error: ${snapshot.error}'));
                         } else if (!snapshot.hasData ||
                             snapshot.data!.isEmpty) {
-                          return Center(child: Text('No food items found.'));
+                          return ListView.builder(
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: EmptyCollection());
+                            },
+                            scrollDirection: Axis.horizontal,
+                          );
                         } else {
                           return ListView.builder(
                             itemCount: snapshot.data!.length,
@@ -535,6 +560,7 @@ checkInternet();
                                                       longitude: foodItem.longitude,
                                                       adminEmail: foodItem.adminEmail,
                                                       adminContact: foodItem.adminContact,
+                                                      maxDistance: foodItem.maxDistance
                                                     ))):Notify(context, 'This item is not Available now', Colors.red);
                                       },
                                       child: verticalCard(

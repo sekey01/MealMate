@@ -34,7 +34,7 @@ class _NoticeState extends State<Notice> {
       body: FutureBuilder(future: Provider.of<NotificationProvider>(context, listen: true).getUserNotifications(),
           builder: (context, snapshot){
         if(snapshot.connectionState == ConnectionState.waiting){
-          return Center(child: SearchLoadingOutLook());
+          return Center(child: NewSearchLoadingOutLook());
         }
             else if (snapshot.hasData && snapshot.data != null && snapshot.data!.isNotEmpty) {
               return ListView.builder(

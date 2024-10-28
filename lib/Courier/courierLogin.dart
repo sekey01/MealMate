@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mealmate/Courier/courierInit.dart';
-import 'package:mealmate/components/Notify.dart';
+
+import '../components/Notify.dart';
 
 Future<bool> authenticateUser(BuildContext context, int userId) async {
   try {

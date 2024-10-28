@@ -117,7 +117,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
-                      child: SearchLoadingOutLook(),
+                      child: NewSearchLoadingOutLook(),
                     );
                   } else if (snapshot.hasError) {
                     return Center(
@@ -162,6 +162,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                                             longitude: foodItem.longitude,
                                             adminEmail: foodItem.adminEmail,
                                             adminContact: foodItem.adminContact,
+                                            maxDistance: foodItem.maxDistance
                                           )));
                                 },
                                 child: horizontalCard(
@@ -176,6 +177,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                                   foodItem.longitude,
                                   foodItem.adminEmail,
                                   foodItem.adminContact,
+                                  foodItem.maxDistance
                                 ),
                               ),
                             ));

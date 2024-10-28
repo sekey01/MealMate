@@ -1,5 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../theme/styles.dart';
 
 
 Material verticalCard(
@@ -190,6 +194,198 @@ Material verticalCard(
           ),
         ],
       ),
+    ),
+  );
+}
+
+
+Container NewVerticalCard(
+    String imgUrl,
+    String restaurant,
+    String foodName,
+    double price,
+    String location,
+    String time,
+    String vendorId,
+    bool isAvailable,
+    String adminEmail,
+    int adminContact,
+    int maxDistance,
+    ) {
+  final deliveryFee = (price * 0.2).toStringAsFixed(2);
+  final foodPrice = (price*0.8).toStringAsFixed(2);
+  return Container(
+    height: 200.h,
+    width: 250.w,
+    color: Colors.white,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Stack(
+          children: [
+
+            imgUrl.isEmpty
+                ? Center(
+              child: Icon(
+                ///NO IMAGE ICON WHEN THE IMAGE URL IS EMPTY
+                ///
+                Icons.image_not_supported_outlined,
+                color: Colors.deepOrange,
+                size: 120.sp,
+              ),
+            )
+                : ClipRRect(
+              borderRadius: BorderRadius.circular(13),
+              child: ImageFiltered(
+                imageFilter: isAvailable?ImageFilter.blur(sigmaX: 0.0, sigmaY: 0.0) : ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+                child: Image(
+
+                  fit: BoxFit.fill,
+                  image: NetworkImage(imgUrl),
+            
+                  height: 120.h,
+                  width: 250.w,
+                ),
+              ),
+            ),
+
+            Positioned(
+                right: 10,
+                bottom: 10,
+                child: Container(
+                  height: 30,
+                  width: 50,
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Row(
+                children: [
+                  ImageIcon(
+                    AssetImage('assets/Icon/cedi.png'),
+                    color: Colors.black,
+                    size: 10.sp,
+                  ),
+                  Text('$foodPrice', style: TextStyle(color: Colors.redAccent, fontSize: 10.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous'),),
+                ],
+              ),
+            )),
+            Positioned(
+                top: 60,
+                left: 50,
+                bottom: 50,
+
+                child: isAvailable? Text(''):Text(' Food / Courier not available', style: TextStyle(color: Colors.white, fontSize: 10.sp,fontWeight: FontWeight.bold),
+            )),
+
+            Positioned(
+                top: 10,
+                left: 20,
+                child: Container(
+              height: 25,
+              width: 40,
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Text('-10%', style: TextStyle(color: Colors.white, fontSize: 10.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous'),),
+            )),
+          ],
+        ),
+        SizedBox(
+          height: 2,
+        ),
+        ///ROW FOR RESTAURANT NAME AND ICON
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Text(
+            ///NAME OF RESTAURANT
+            toTitleCase(restaurant),
+            style: TextStyle(
+
+              fontFamily: 'Poppins',
+                overflow: TextOverflow.ellipsis,
+                fontSize: 12.sp,
+                //letterSpacing: 1,
+                fontWeight: FontWeight.w600,
+                color: Colors.black),
+          ),
+        ),
+
+        ///ROW FOR FOOD NAME AND ICON
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+             ImageIcon(
+                AssetImage('assets/Icon/delivery.png'),
+                color: Colors.black,
+                size: 20.sp,
+             ),
+              SizedBox(
+                width: 5.w,
+              ),
+              Text(
+                'GH',
+                style: TextStyle(
+                  fontFamily: 'Righteous',
+                  fontWeight: FontWeight.bold,
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: 12.sp,
+                   // letterSpacing: 2,
+                    //fontWeight: FontWeight.w600,
+                    color: Colors.red),
+              ),
+              ImageIcon(
+                AssetImage('assets/Icon/cedi.png'),
+                color: Colors.red,
+                size: 10.sp,
+              ),
+              Text(
+                '$deliveryFee',
+                style: TextStyle(
+                 // fontWeight: FontWeight.bold,
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: 12.sp,
+decoration: TextDecoration.lineThrough,
+decorationColor: Colors.black,
+                    //letterSpacing: 2,
+                    //fontWeight: FontWeight.w600,
+                    color: Colors.black),
+
+              ),
+
+              SizedBox(
+                width: 10.w
+              ),
+              ImageIcon(
+                AssetImage('assets/Icon/clock.png'),
+                color: Colors.black,
+                size: 20.sp,
+              ),
+              SizedBox(
+                width: 5.w,
+              ),
+              Text(
+                '10-20 mins',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  //fontWeight: FontWeight.bold,
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: 10.sp,
+                    //letterSpacing: 2,
+                    //fontWeight: FontWeight.w600,
+                    color: Colors.red),
+              ),
+            ],
+          ),
+        ),
+
+      ],
     ),
   );
 }

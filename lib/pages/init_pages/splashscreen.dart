@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mealmate/pages/authpages/login.dart';
 import 'package:mealmate/pages/navpages/home.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 
 
@@ -37,7 +39,7 @@ bool isLoggedIn = false;
   @override
   Widget build(BuildContext context) {
     return FlutterSplashScreen(
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 10),
       nextScreen: isLoggedIn ? const Home() :
       Login(),
       backgroundColor: Colors.white,
@@ -51,11 +53,14 @@ bool isLoggedIn = false;
               return  Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Center(child: Image(image: AssetImage('assets/Announcements/OrderNow.png'))),
+                  Center(child: Image(image: AssetImage('assets/Announcements/OrderNow.png'), height: 250.h, width: double.infinity.w)),
+                  SizedBox(
+                    height: 20,
+                  ),
                   RichText(text: TextSpan(
                       children: [
-                        TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)),
-                        TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20, fontWeight: FontWeight.bold)),
+                        TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+                        TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
 
 
                       ]

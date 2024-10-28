@@ -8,13 +8,13 @@ import 'package:mealmate/AdminPanel/components/adminHorizontalCard.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/NoFoodFound.dart';
 import 'package:mealmate/components/NoInternet.dart';
-import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/components/mainCards/verticalCard.dart';
 import 'package:mealmate/pages/detail&checkout/detail.dart';
 import 'package:mealmate/pages/navpages/order.dart';
 import 'package:mealmate/pages/searchfooditem/searchFoodItem.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/Notify.dart';
 import '../../components/userCollectionshow.dart';
 import '../../models&ReadCollectionModel/ListFoodItemModel.dart';
 import '../../models&ReadCollectionModel/userReadwithCollection.dart';
@@ -171,7 +171,7 @@ bool _hasInternet = true;
                       .collectionToRead),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: SearchLoadingOutLook());
+                      return Center(child: NewSearchLoadingOutLook());
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -180,7 +180,7 @@ bool _hasInternet = true;
                       return MasonryGridView.count(
                           itemCount: snapshot.data!.length,
                           crossAxisCount: 2,
-                          mainAxisSpacing: 2,
+                          mainAxisSpacing: 1,
                           crossAxisSpacing: 3,
                           itemBuilder: (context, index) {
                             final data = snapshot.data![index];
@@ -202,19 +202,24 @@ bool _hasInternet = true;
                                           longitude: data.longitude,
                                           adminEmail: data.adminEmail,
                                           adminContact: data.adminContact,
+                                          maxDistance: data.maxDistance
                                         ))): Notify(context, 'This item Is not Available Now', Colors.red);
                               },
-                              child: verticalCard(
-                                  data.imageUrl,
-                                  data.restaurant,
-                                  data.foodName,
-                                  data.price,
-                                  data.location,
-                                  data.time,
-                                  data.vendorId.toString(),
-                                  data.isAvailable,
-                              data.adminEmail,
-                                data.adminContact,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: NewVerticalCard(
+                                    data.imageUrl,
+                                    data.restaurant,
+                                    data.foodName,
+                                    data.price,
+                                    data.location,
+                                    data.time,
+                                    data.vendorId.toString(),
+                                    data.isAvailable,
+                                data.adminEmail,
+                                  data.adminContact,
+                                  data.maxDistance
+                                ),
                               ),
                             );
                           });

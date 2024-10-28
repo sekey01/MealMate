@@ -13,6 +13,7 @@ class UploadModel {
   final double longitude;
   final String adminEmail;
   final int adminContact;
+  final int maxDistance;
 
   UploadModel({
     required this.imageUrl,
@@ -27,6 +28,8 @@ class UploadModel {
     required this.longitude,
     required this.adminEmail,
     required this.adminContact,
+    required this.maxDistance
+
 
   });
 
@@ -43,7 +46,8 @@ class UploadModel {
       'latitude' : latitude?? 0,
       'longitude': longitude?? 0,
       'adminEmail': adminEmail ?? '',
-      'adminContact': adminContact?? ''
+      'adminContact': adminContact?? '',
+      'maxDistance': maxDistance?? 0
     };
   }
 }

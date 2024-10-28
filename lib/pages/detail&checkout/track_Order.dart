@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/storeOrderModel.dart';
 import 'package:mealmate/components/CustomLoading.dart';
-import 'package:mealmate/components/Notify.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import '../../components/Notify.dart';
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
 
 class TrackOrder extends StatefulWidget {
@@ -177,7 +177,7 @@ class _TrackOrderState extends State<TrackOrder> {
             Text('Order In progress...', style: TextStyle(color: Colors.blueGrey, fontSize: 25, fontWeight: FontWeight.bold),),
 
                   ///TIMER
-                  Padding(padding: EdgeInsets.all(16), child: SearchLoadingOutLook(),),
+                  Padding(padding: EdgeInsets.all(16), child: NewSearchLoadingOutLook(),),
 
                   StreamBuilder<int>(
                     stream: countdownTimer(90), // Countdown from 60 seconds

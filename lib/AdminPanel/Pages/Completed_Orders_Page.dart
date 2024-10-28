@@ -42,8 +42,8 @@ class _CompletedOrdersState extends State<CompletedOrders> {
         centerTitle: true,
         title:  RichText(text: TextSpan(
             children: [
-              TextSpan(text: "Completed", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
-              TextSpan(text: "Orders", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+              TextSpan(text: "Completed", style: TextStyle(color: Colors.black, fontSize: 18.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+              TextSpan(text: "Orders", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 17.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
 
 
             ]
@@ -54,7 +54,7 @@ class _CompletedOrdersState extends State<CompletedOrders> {
           RichText(text: TextSpan(
               children: [
                 TextSpan(text: "GHC", style: TextStyle(color: Colors.black, fontSize: 15.sp,fontWeight: FontWeight.bold)),
-                TextSpan(text:' ${TotalPrice}''.00', style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+                TextSpan(text:' ${TotalPrice}''', style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
               ]
           )),
           SizedBox(width: 10.w,),
@@ -68,7 +68,7 @@ class _CompletedOrdersState extends State<CompletedOrders> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: SearchLoadingOutLook(),
+                child: NewSearchLoadingOutLook(),
               );
             } else if (snapshot.hasError) {
               return Center(child: Center(child: Text('Error: Try again later')));
@@ -99,8 +99,8 @@ class _CompletedOrdersState extends State<CompletedOrders> {
                           padding: const EdgeInsets.all(4.0),
                           child: ExpansionTile(leading: RichText(text: TextSpan(
                               children: [
-                                TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 15.spMin,fontWeight: FontWeight.bold)),
-                                TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.spMin,fontWeight: FontWeight.bold)),
+                                TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 15.spMin,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+                                TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.spMin,fontWeight: FontWeight.bold, fontFamily: 'Righteous',)),
 
 
                               ]

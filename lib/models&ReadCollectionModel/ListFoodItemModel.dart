@@ -11,6 +11,7 @@ class FoodItem {
   final double longitude;
   final String adminEmail;
   final int adminContact;
+  final int maxDistance;
 
   FoodItem( {
     required this.vendorId,
@@ -25,6 +26,7 @@ class FoodItem {
     required this.longitude,
     required this.adminEmail,
     required this.adminContact,
+    required this.maxDistance
   });
 
   factory FoodItem.fromMap(Map<String, dynamic> data, String documentId) {
@@ -41,6 +43,7 @@ class FoodItem {
       longitude: data['longitude']??0,
       adminEmail: data['adminEmail']?? '',
         adminContact: data['adminContact']??'',
+        maxDistance: data['maxDistance']??''
     );
   }
 }

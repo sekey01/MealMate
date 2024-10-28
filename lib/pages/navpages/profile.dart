@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/pages/navpages/edit_profile.dart';
 import 'package:provider/provider.dart';
 
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import '../../components/Notify.dart';
 import '../authpages/login.dart';
 
 class Profile extends StatefulWidget {

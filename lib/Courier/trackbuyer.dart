@@ -102,7 +102,7 @@ class _TrackBuyerState extends State<TrackBuyer> {
                        ),
                      );
                    }
-                   return Center( child: SearchLoadingOutLook(),);
+                   return Center( child: NewSearchLoadingOutLook(),);
                  }),
 
            ),

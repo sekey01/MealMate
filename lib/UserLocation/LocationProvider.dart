@@ -70,6 +70,7 @@ class LocationProvider extends ChangeNotifier {
         final String address = data['results'][0]['formatted_address'] +
             '  ' +
             data['results'][0]['address_components'][1]['long_name'];
+
         return address;
       } else {
         return 'No address available';
@@ -78,6 +79,8 @@ class LocationProvider extends ChangeNotifier {
       return 'Failed to get address';
     }
   }
+
+
 
 
 

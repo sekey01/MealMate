@@ -67,7 +67,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: SearchLoadingOutLook(),
+                child: NewSearchLoadingOutLook(),
               );
             } else if (snapshot.hasError) {
               return Center(child: Center(child: Text('Error: Try again later')));
@@ -95,8 +95,8 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                           padding: const EdgeInsets.all(4.0),
                           child: ExpansionTile(leading: RichText(text: TextSpan(
                               children: [
-                                TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 15.spMin,fontWeight: FontWeight.bold)),
-                                TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.spMin,fontWeight: FontWeight.bold)),
+                                TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 15.spMin,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+                                TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.spMin,fontWeight: FontWeight.bold, fontFamily: 'Righteous',)),
 
 
                               ]

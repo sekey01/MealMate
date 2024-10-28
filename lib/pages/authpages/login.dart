@@ -5,9 +5,10 @@ import 'package:mealmate/AdminPanel/Pages/adminlogin.dart';
 import 'package:mealmate/Courier/courierLogin.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import 'package:mealmate/components/CustomLoading.dart';
-import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/pages/navpages/home.dart';
 import 'package:provider/provider.dart';
+
+import '../../components/Notify.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -98,7 +99,7 @@ class _LoginState extends State<Login> {
       body: Center(
         child: SafeArea(
           child: SingleChildScrollView(
-            child: signInLoading ? SearchLoadingOutLook(): Column(
+            child: signInLoading ? CustomLoGoLoading(): Column(
               children: [
                 Padding(
                   padding: EdgeInsets.all(25),

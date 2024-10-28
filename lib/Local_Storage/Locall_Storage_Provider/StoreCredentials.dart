@@ -15,6 +15,7 @@ class LocalStorageProvider extends ChangeNotifier {
   String  email = '' ;
   String imageUrl = '' ;
   String adminEmail = '';
+  String locationName = '';
 
 
   Future<void> storePhoneNumber(String newValue) async {
@@ -243,6 +244,66 @@ print(phoneNumber);
     } catch (e) {
       // Handle any exceptions
       return 'adminemail@gmail.com';
+      // print("Error loading Username: $e");
+      // You can throw the error or handle it as needed
+    }
+  }
+
+
+
+
+  /// STORE LOCATION HERE
+  ///
+  Future<void> storeLocation(String newValue) async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final filepath = '${directory.path}/location.txt';
+      final file = File(filepath);
+
+      // Check if the file exists
+      if (!await file.exists()) {
+        await file.create(
+            recursive: true); // Create the file if it doesn't exist
+      }
+
+      // Write the new value to the file
+      await file.writeAsString(newValue);
+
+      // Update the telephone Number
+      locationName = newValue;
+
+      // Notify listeners of the change
+      notifyListeners();
+    } catch (e) {
+      // Handle any exceptions
+      //print("Error changing email: $e");
+      // You can throw the error or handle it as needed
+    }
+  }
+
+  ///GET EMAIL HERE
+  ///
+  Future <String>getLocationName() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final filepath = '${directory.path}/location.txt';
+      final file = File(filepath);
+
+      // Check if the file exists
+      if (await file.exists()) {
+        // Read the contents of the file
+        String contents = await file.readAsString();
+        locationName = contents; // Parse the contents to an integer
+        notifyListeners();
+
+        return locationName;
+      } else {
+        return locationName = ' Tap to set location'; // Default value if the file doesn't exist
+      }
+
+    } catch (e) {
+      // Handle any exceptions
+      return 'reset location';
       // print("Error loading Username: $e");
       // You can throw the error or handle it as needed
     }

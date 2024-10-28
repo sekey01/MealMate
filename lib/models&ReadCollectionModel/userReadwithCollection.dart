@@ -18,7 +18,7 @@ class userCollectionProvider extends ChangeNotifier {
   ];
   final List<String> collectionImageList = [
     'assets/Icon/Drinks.png',
-    'assets/Icon/Food.png',
+    'assets/Icon/Foods.png',
     'assets/Icon/Grocery.png',
     'assets/Icon/Clothing.png',
     'assets/Icon/Electronics.png',

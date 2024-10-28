@@ -2,9 +2,9 @@ import 'package:card_loading/card_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
-import 'package:mealmate/components/Notify.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/Notify.dart';
 import '../OtherDetails/ID.dart';
 
 class ChangeAdminCredentials extends StatefulWidget {

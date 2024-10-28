@@ -53,13 +53,14 @@ dependencies:
   geolocator: ^12.0.0
   geocoding: ^3.0.0
   location_geocoder: ^1.0.5
-  google_maps_flutter: ^2.7.0
+  google_maps_flutter: ^2.9.0
   lite_rolling_switch: ^1.0.1
   path_provider: any
   http: any
   google_sign_in: ^6.2.1
   url_launcher: ^6.3.0
   easy_url_launcher: ^0.0.7
+
 dev_dependencies:
 
 flutter_launcher_icons:
@@ -108,7 +109,8 @@ flutter:
      - assets/adsimages/ads3.png
      - assets/images/notFound.jpg
      - assets/Icon/Drinks.png
-     - assets/Icon/Food.png
+     - assets/Icon/food.png
+     - assets/Icon/Foods.png
      - assets/Icon/Grocery.png
      - assets/Icon/Clothing.png
      - assets/Icon/Electronics.png
@@ -139,10 +141,17 @@ flutter:
      - assets/images/MMBoard1.png
      - assets/Icon/yummy.png
      - assets/Icon/coupon.png
+     - assets/Icon/map.png
+     - assets/Icon/delivery.png
+     - assets/Icon/clock.png
+     - assets/Icon/cedi.png
+     - assets/Icon/no_food_found.png
+     - assets/Icon/restaurant.png
      - assets/Icon/version.png
      - assets/Icon/customer-service.png
      - assets/Icon/transaction.png
      - assets/Icon/filter.png
+     - assets/Icon/VendorLocation.png
      - assets/Icon/loading.gif
      - assets/Icon/notification.png
      - assets/Announcements/An_Feedback.png
@@ -170,10 +179,7 @@ flutter:
        fonts:
 #         - asset: 'assets/fonts/Poppins-ExtraLight.ttf'
          - asset: 'assets/fonts/Poppins-Regular.ttf'
-         - asset: 'assets/fonts/Poppins-Bold.ttf'
 
-           style: italic
-#
      - family: Righteous
        fonts:
            - asset: 'assets/fonts/Righteous-Regular.ttf'

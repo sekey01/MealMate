@@ -15,12 +15,12 @@ import 'package:mealmate/AdminPanel/Pages/uploads.dart';
 import 'package:mealmate/AdminPanel/collectionUploadModelProvider/collectionProvider.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
-import 'package:mealmate/components/Notify.dart';
 import 'package:mealmate/components/card1.dart';
 import 'package:provider/provider.dart';
 import 'package:mealmate/components/NoInternet.dart';
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../Notification/notification_Provider.dart';
+import '../../components/Notify.dart';
 import '../OtherDetails/ID.dart';
 import '../components/ChangeIDofAdmin.dart';
 import '../components/adminCollectionRow.dart';
@@ -45,6 +45,7 @@ class _adminHomeState extends State<adminHome> {
   TextEditingController priceController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   TextEditingController adminContactController = TextEditingController();
+  int maxDistance = 0;
   File? _image;
   String imageUrl = '';
   late int numberOfOrders ;
@@ -143,7 +144,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
             ]
         )),
 
-        centerTitle: true,
+       // centerTitle: true,
         elevation: 3,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -165,7 +166,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                             return Center(child: Center(child: Text('refresh page')));
              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                return Center(
-                 child: Text('No Order Detected',style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic), ),
+                 child: Text('No Order Detected',style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic), ),
                );
              } else {
                return Text(snapshot.data!.length.toString(), style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 10.sp),);
@@ -180,99 +181,106 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
 
 
         actions: [
-          /// ICON BUTTON TO SHOW THE LIST OF COMPLETED ORDERS
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context)=> CompletedOrders()));
-            },
-            child:  Badge(
-              backgroundColor: Colors.green,
-              label:StreamBuilder(
-                  stream: Provider.of<IncomingOrdersProvider>(context, listen: false).fetchCompleteOrders(adminId),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: Text('...', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic),),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Center(child: Center(child: Text('refresh page')));
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Center(
-                        child: Text('0',style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic), ),
-                      );
-                    } else {
-                      return Text(snapshot.data!.length.toString(), style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 10.sp),);
-                    }
-                  }
-              ),
-              child: ImageIcon(AssetImage('assets/Icon/Orders.png'), size: 25.sp,color: Colors.blueGrey,),
-            ),
 
-          ),
-          /// ICON BUTTON TO SHOW THE LIST OF ADMINS UPLOADS
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Uploaded()));
-            },
-            icon: ImageIcon(
-              AssetImage('assets/Icon/uploads.png'),
-              size: 25.sp,
-              color: Colors.deepOrangeAccent,
-            ),
-          ),
-
-          /// THIS IS NOTIFICATION TO ALL ADMINS
-          ///
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => AdminNotice()));
-              },
-              icon:Badge(
-                backgroundColor: Colors.green,
-                label: Builder(
-                  builder: (context) {
-                    Provider.of<NotificationProvider>(context, listen: false).getAdminNotifications();
-                    return Consumer<NotificationProvider>(
-
-                        builder: (context, value, child)
-                        {
-                          value.getAdminNotifications();
-
-                          return  Text(
-                            value.adminNotificationLength.toString(),
-                            style: TextStyle(
-                                color: Colors.white, fontWeight: FontWeight.bold),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              /// ICON BUTTON TO SHOW THE LIST OF COMPLETED ORDERS
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context)=> CompletedOrders()));
+                },
+                child:  Badge(
+                  backgroundColor: Colors.green,
+                  label:StreamBuilder(
+                      stream: Provider.of<IncomingOrdersProvider>(context, listen: false).fetchCompleteOrders(adminId),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(
+                            child: Text('...', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic),),
                           );
-                        });
-                  }
+                        } else if (snapshot.hasError) {
+                          return Center(child: Center(child: Text('refresh page')));
+                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                          return Center(
+                            child: Text('0',style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic), ),
+                          );
+                        } else {
+                          return Text(snapshot.data!.length.toString(), style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 10.sp),);
+                        }
+                      }
+                  ),
+                  child: ImageIcon(AssetImage('assets/Icon/Orders.png'), size: 25.sp,color: Colors.blueGrey,),
                 ),
-                child: ImageIcon(AssetImage(
-                    'assets/Icon/notification.png'
-                ), color: Colors.blueGrey,size: 25.sp,
+
+              ),
+
+              /// ICON BUTTON TO SHOW THE LIST OF ADMINS UPLOADS
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => Uploaded()));
+                },
+                icon: ImageIcon(
+                  AssetImage('assets/Icon/uploads.png'),
+                  size: 25.sp,
+                  color: Colors.deepOrangeAccent,
                 ),
-              )
-            ),
+              ),
+
+              /// THIS IS NOTIFICATION TO ALL ADMINS
+              ///
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => AdminNotice()));
+                  },
+                  icon:Badge(
+                    backgroundColor: Colors.green,
+                    label: Builder(
+                      builder: (context) {
+                        Provider.of<NotificationProvider>(context, listen: false).getAdminNotifications();
+                        return Consumer<NotificationProvider>(
+
+                            builder: (context, value, child)
+                            {
+                              value.getAdminNotifications();
+
+                              return  Text(
+                                value.adminNotificationLength.toString(),
+                                style: TextStyle(
+                                    color: Colors.white, fontWeight: FontWeight.bold),
+                              );
+                            });
+                      }
+                    ),
+                    child: ImageIcon(AssetImage(
+                        'assets/Icon/notification.png'
+                    ), color: Colors.blueGrey,size: 25.sp,
+                    ),
+                  )
+                ),
 
 
-          ///ICON BUTTON CHANGE THE ID OF ADMIN
-          /// IT OPENS BUTTOMSHEETVIEW TO CHANGE THE ID
-          ///
-          ///
-          IconButton(
-            onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> ChangeAdminCredentials()));
-            },
-            icon: ImageIcon(
-               AssetImage('assets/Icon/change.png'),
-              size: 25.sp,
-              color: Colors.blueGrey
+              ///ICON BUTTON CHANGE THE ID OF ADMIN
+              /// IT OPENS BUTTOMSHEETVIEW TO CHANGE THE ID
+              ///
+              ///
+              IconButton(
+                onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> ChangeAdminCredentials()));
+                },
+                icon: ImageIcon(
+                   AssetImage('assets/Icon/change.png'),
+                  size: 25.sp,
+                  color: Colors.blueGrey
 
 
-,
-            ),
+              ,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -384,7 +392,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                   style: TextStyle(fontSize: 15.sp, color: Colors.blueGrey),
                 ),
 
-                _isLoading ? SearchLoadingOutLook() : initAdminCard(),
+                _isLoading ? NewSearchLoadingOutLook() : initAdminCard(),
                 SizedBox(
                   height: 30.h,
                 ),
@@ -673,6 +681,55 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                               height: 20.h,
                             ),
 
+                            ///DROPDOWN BUTTON FOR MAX DISTANCE
+                            Padding(
+                              
+                              padding: const EdgeInsets.all(8.0),
+                              child: DropdownButtonFormField(
+                                dropdownColor: Colors.white,
+                                  validator: (value){
+                                    if(value!.isEmpty){
+                                      return 'Please select Max Distance';
+                                    }
+                                    return null;
+                                  },
+                                  icon: const Icon(Icons.arrow_drop_down_circle_outlined, color: Colors.black,),
+                                  style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,),
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.deepOrange.shade50,
+                                    label: Text('Max distance you can deliver(km)', style: TextStyle(color: Colors.black),),
+                                    hintText: 'Select Max Distance in KM',
+                                    hintStyle: TextStyle(color: Colors.black),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                     borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Colors.deepOrange, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  items: const [
+                                    DropdownMenuItem(value: '5',child: Text('5 km'),),
+                                    DropdownMenuItem(value: '10',child: Text('10 km'),),
+                                    DropdownMenuItem(value: '15',child: Text('15 km'),),
+                                    DropdownMenuItem(value: '20',child: Text('20 km '),),
+
+                                  ],
+                                  onChanged: (value){
+                                    setState(() {
+                                     maxDistance = int.parse(value.toString());
+                                    });
+                                  }),
+                            ),
+
+                            SizedBox(
+                              height: 20.h,
+                            ),
                             ///TEXTFIELD FOR FOODNAME
                             Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -754,7 +811,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                   width: 200.w,
                   height: 50.h,
                   child: _isLoading
-                      ? SearchLoadingOutLook()
+                      ? NewSearchLoadingOutLook()
                       : ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.deepOrangeAccent
@@ -776,20 +833,23 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                                   vendorId: int.parse(idController.text.trim()),
                                     adminEmail: Provider.of<LocalStorageProvider>(context,listen: false).adminEmail ,
                                     adminContact: int.parse(adminContactController.text),
+                                    maxDistance: maxDistance
 
-                              ));
+                              )).then((_){
 
-                              ///clearing the text fields
-                              idController.clear();
-                              restaurantController.clear();
-                              foodNameController.clear();
-                              priceController.clear();
-                              locationController.clear();
-                              timeController.clear();
-                              adminContactController.clear();
-                              setState(() {
-                                _image = null;
+                                ///clearing the text fields
+                                idController.clear();
+                                restaurantController.clear();
+                                foodNameController.clear();
+                                priceController.clear();
+                                locationController.clear();
+                                timeController.clear();
+                                adminContactController.clear();
+                                setState(() {
+                                  _image = null;
+                                });
                               });
+
                             } else {
                              Notify(context, 'Please pick an image and fill all fields ', Colors.red);
                             }
