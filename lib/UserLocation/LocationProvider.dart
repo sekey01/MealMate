@@ -91,10 +91,10 @@ class LocationProvider extends ChangeNotifier {
     const double R = 6371; // Radius of the Earth in kilometers
 
     // Convert degrees to radians
-    double lat1Rad = point1.latitude * (22/7) / 180;
-    double lon1Rad = point1.longitude * (22/7)  / 180;
-    double lat2Rad = point2.latitude * (22/7)  / 180;
-    double lon2Rad = point2.longitude * (22/7)  / 180;
+    double lat1Rad = point1.latitude * pi / 180;
+    double lon1Rad = point1.longitude * pi / 180;
+    double lat2Rad = point2.latitude * pi / 180;
+    double lon2Rad = point2.longitude * pi / 180;
 
     // Differences in coordinates
     double dLat = lat2Rad - lat1Rad;
@@ -105,24 +105,25 @@ class LocationProvider extends ChangeNotifier {
     double c = 2 * atan2(sqrt(a), sqrt(1 - a));
 
     // Distance in kilometers
-    double distance = R * c ;
+    double distance = R * c;
     Distance = distance;
-    print('Distance isssssssssss ${Distance} km');
+    //print('Distance is $Distance km');
 
-    if( distance > 30){
+    if (distance > 30) {
       isFareDistance = false;
-      print('Greater than 30km');
-     // print(distance);
-    }
-    else {
+     // print('Greater than 30km');
+    } else {
       isFareDistance = true;
-      print('Less than 30km');
-//print(distance)
+      //print('Less than 30km');
     }
 
     return distance;
   }
 
+
+  Future<LatLng> getPoints() async {
+    await determinePosition();
+    return LatLng(Lat, Long);}
 
   }
 

@@ -7,17 +7,14 @@ Widget NoInternetConnection() {
     child: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(child: ImageIcon(AssetImage('assets/Icon/no-connection.png'), color: Colors.red, size: 100,)),
+          Center(child: Image(image: AssetImage('assets/Icon/no-connection.png'), height: 150.h, width: 150.w,)),
           SizedBox(height: 20.h,),
-          RichText(text: TextSpan(
-              children: [
-                TextSpan(text: "Internet Connection ", style: TextStyle(color: Colors.red, fontSize: 15.sp, fontWeight: FontWeight.normal)),
-                TextSpan(text: 'Unstable', style: TextStyle(color: Colors.red, fontSize: 15.sp, fontWeight: FontWeight.normal)),
-
-
-              ]
-          )),
+  Text( "Unstable Internet Connection ", style: TextStyle(color: Colors.red, fontSize: 15.sp, fontWeight: FontWeight.normal, fontFamily: 'Popins'),),
+          SizedBox(height: 10.h,),
+          Text( "Please check your internet connection and try again", style: TextStyle(color: Colors.black, fontSize: 10.sp, fontWeight: FontWeight.normal, fontFamily: 'Popins'),)
+  ,
         ],
       ),
     ),

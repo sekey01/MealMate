@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-//import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mealmate/AdminPanel/components/adminHorizontalCard.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/NoFoodFound.dart';
@@ -14,6 +14,7 @@ import 'package:mealmate/pages/navpages/order.dart';
 import 'package:mealmate/pages/searchfooditem/searchFoodItem.dart';
 import 'package:provider/provider.dart';
 
+import '../../UserLocation/LocationProvider.dart';
 import '../../components/Notify.dart';
 import '../../components/userCollectionshow.dart';
 import '../../models&ReadCollectionModel/ListFoodItemModel.dart';
@@ -27,204 +28,240 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  bool _hasInternet = true;
 
-  /// THIS FUNCTION FETCHES THE FOOD ITEMS FROM THE COLLECTION SELECTED BY THE USER
-  ///
-  /// THE FUNCTION TAKES IN A COLLECTION AS A PARAMETER
-  Future<List<FoodItem>> fetchFoodItems(String Collection) async {
+  @override
+  void initState() {
+    super.initState();
+    checkInternet();
+  }
+
+  Future<List<FoodItem>> fetchFoodItems(String collection) async {
     try {
-      QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection(Collection).get();
-      return snapshot.docs
-          .map((doc) =>
-              FoodItem.fromMap(doc.data() as Map<String, dynamic>, doc.id))
-          .toList();
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection(collection).get();
+      return snapshot.docs.map((doc) => FoodItem.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
     } catch (e) {
       print("Error fetching food items: $e");
       return [];
     }
   }
 
-
-  ///CHECK FOR INTERNET UPON INIT
-bool _hasInternet = true;
-  checkInternet() async {
+  void checkInternet() async {
     final listener = InternetConnection().onStatusChange.listen((InternetStatus status) {
-      if (status == InternetStatus.connected) {
-       // print('Connected');
-      } else {
+      if (status != InternetStatus.connected) {
         setState(() {
-        //  print('Not connected');
           _hasInternet = false;
-          NoInternetNotify(context, 'Check Internet Connection ', Colors.red);
-
+          NoInternetNotify(context, 'Check Internet Connection', Colors.red);
         });
       }
     });
-
   }
 
   @override
-  void initState() {
-    super.initState();
-    // Start listening to the internet connection status
-    checkInternet();
-  }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text('Search '),
+        title: Text('Search'),
         titleTextStyle: TextStyle(
-            color: Colors.blueGrey,
-            fontWeight: FontWeight.normal,
-            letterSpacing: 3,
-            fontSize: 20.spMin),
+          color: Colors.blueGrey,
+          fontWeight: FontWeight.normal,
+          letterSpacing: 3,
+          fontSize: 20.spMin,
+        ),
         backgroundColor: Colors.white,
         actions: [
-          SizedBox(
-            width: 20.w,
-          ),
+          SizedBox(width: 20.w),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               IconButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SearchFoodItem()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SearchFoodItem()));
                 },
-
-                ///ICON THAT TAKES YOU TO ORDER DETAILS PAGE
-                ///TO VIEW LIST OF ODERS AND REPORT ISSUES
                 icon: ImageIcon(
                   AssetImage('assets/Icon/Search.png'),
                   color: Colors.black,
                   size: 20.sp,
                 ),
               ),
-              SizedBox(
-                width: 20.w,
-              ),
+              SizedBox(width: 20.w),
               IconButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => OrderList()));
-                  },
-                  icon: ImageIcon(
-                    AssetImage('assets/Icon/Order.png'),
-                    color: Colors.black,
-                    size: 20.w,
-                  ))
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => OrderList()));
+                },
+                icon: ImageIcon(
+                  AssetImage('assets/Icon/Order.png'),
+                  color: Colors.black,
+                  size: 20.w,
+                ),
+              ),
             ],
           ),
         ],
       ),
       body: Column(
         children: [
-          // SizedBox(height: 10),
           Padding(
-            /// THIS IS WHERE THE FOOD COLLECTION ITMES ARE DISPLAYED ,
-            ///
-            /// THUS { FOODS, DRINKS , ELECTRONICS, CLOTHING, GROCERY }
             padding: const EdgeInsets.all(10.0),
             child: Container(
               height: 100.h,
               width: double.infinity,
               decoration: BoxDecoration(
-                //border: Border.all(color: Colors.deepOrangeAccent),
                 color: Colors.transparent,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Consumer<userCollectionProvider>(
-                  builder: (context, value, child) {
-                return ListView.builder(
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        /// SINCE THIS IS WHERE A ROW(LIST < FOOD, DRINKS, CLOTHING, ELECTRONICS >  OF COLLECTION IS DISPLAYED FOR USER TO SEARCH FOOD ITEMS
-                        /// I USED THE PROVIDER TO CHANGE THE INDEX OF THE COLLECTION TO READ
-                        ///
-                        ///
-                        value.changeIndex(index);
-                        setState(() {});
-                      },
-                      child: userCollectionItemsRow(value.collectionList[index],
-                          value.collectionImageList[index]),
-                    );
-                  },
-                  scrollDirection: Axis.horizontal,
-                  itemCount: value.collectionList.length,
-                );
-              }),
+                builder: (context, value, child) {
+                  return ListView.builder(
+                    itemCount: value.collectionList.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          value.changeIndex(index);
+                          setState(() {});
+                        },
+                        child: userCollectionItemsRow(
+                          value.collectionList[index],
+                          value.collectionImageList[index],
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ),
-         _hasInternet ?Expanded(
-              child: FutureBuilder<List<FoodItem>>(
-                  future: fetchFoodItems(Provider.of<userCollectionProvider>(
-                          context,
-                          listen: false)
-                      .collectionToRead),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: NewSearchLoadingOutLook());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Center(child: noFoodFound());
-                    } else {
-                      return MasonryGridView.count(
-                          itemCount: snapshot.data!.length,
+          _hasInternet
+              ? Expanded(
+            child: FutureBuilder<List<FoodItem>>(
+              future: fetchFoodItems(
+                Provider.of<userCollectionProvider>(context, listen: false).collectionToRead,
+              ),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return ListView.builder(
+                    itemCount: 5,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: NewSearchLoadingOutLook(),
+                      );
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return ListView.builder(
+                    itemCount: 5,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: EmptyCollection(),
+                      );
+                    },
+                  );
+                } else {
+                  return FutureBuilder<LatLng>(
+                    future: Provider.of<LocationProvider>(context, listen: false).getPoints(),
+                    builder: (context, locationSnapshot) {
+                      if (locationSnapshot.connectionState == ConnectionState.waiting) {
+                        return ListView.builder(
+                          itemCount: 5,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: SizedBox(
+
+                                height: 1000,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      NewSearchLoadingOutLook(),
+                                      NewSearchLoadingOutLook(),
+                                      NewSearchLoadingOutLook(),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      } else if (locationSnapshot.hasError) {
+                        return Center(child: Text('Error: ${locationSnapshot.error}'));
+                      } else if (!locationSnapshot.hasData) {
+                        return Center(child: Text('Unable to determine location'));
+                      } else {
+                        LatLng userLocation = locationSnapshot.data!;
+                        List<FoodItem> nearbyRestaurants = snapshot.data!.where((foodItem) {
+                          double distance = Provider.of<LocationProvider>(context, listen: false)
+                              .calculateDistance(userLocation, LatLng(foodItem.latitude, foodItem.longitude));
+                          return distance <= 10; // Check if the restaurant is within 10 km
+                        }).toList();
+                        return MasonryGridView.count(
+                          itemCount: nearbyRestaurants.length,
                           crossAxisCount: 2,
                           mainAxisSpacing: 1,
                           crossAxisSpacing: 3,
                           itemBuilder: (context, index) {
-                            final data = snapshot.data![index];
+                            final data = nearbyRestaurants[index];
                             return GestureDetector(
                               onTap: () {
-
-                                data.isAvailable?Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => DetailedCard(
-                                            imgUrl: data.imageUrl,
-                                            restaurant: data.restaurant,
-                                            foodName: data.foodName,
-                                            price: data.price,
-                                            location: data.location,
-                                            vendorid: data.vendorId,
-                                            time: data.time,
-                                        latitude: data.latitude,
-                                          longitude: data.longitude,
-                                          adminEmail: data.adminEmail,
-                                          adminContact: data.adminContact,
-                                          maxDistance: data.maxDistance
-                                        ))): Notify(context, 'This item Is not Available Now', Colors.red);
+                                data.isAvailable
+                                    ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailedCard(
+                                      imgUrl: data.imageUrl,
+                                      restaurant: data.restaurant,
+                                      foodName: data.foodName,
+                                      price: data.price,
+                                      location: data.location,
+                                      vendorid: data.vendorId,
+                                      time: data.time,
+                                      latitude: data.latitude,
+                                      longitude: data.longitude,
+                                      adminEmail: data.adminEmail,
+                                      adminContact: data.adminContact,
+                                      maxDistance: data.maxDistance,
+                                    ),
+                                  ),
+                                )
+                                    : Notify(context, 'This item Is not Available Now', Colors.red);
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: NewVerticalCard(
-                                    data.imageUrl,
-                                    data.restaurant,
-                                    data.foodName,
-                                    data.price,
-                                    data.location,
-                                    data.time,
-                                    data.vendorId.toString(),
-                                    data.isAvailable,
-                                data.adminEmail,
+                                  data.imageUrl,
+                                  data.restaurant,
+                                  data.foodName,
+                                  data.price,
+                                  data.location,
+                                  data.time,
+                                  data.vendorId.toString(),
+                                  data.isAvailable,
+                                  data.adminEmail,
                                   data.adminContact,
-                                  data.maxDistance
+                                  data.maxDistance,
                                 ),
                               ),
                             );
-                          });
-                    }
-                  })) : Center(child: NoInternetConnection(),)
+                          },
+                        );
+                      }
+                    },
+                  );
+                }
+              },
+            ),
+          )
+              : Center(child: NoInternetConnection()),
         ],
       ),
     );

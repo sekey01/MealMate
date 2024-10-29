@@ -3,10 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/NoFoodFound.dart';
 import 'package:mealmate/components/mainCards/horizontalCard.dart';
+import 'package:mealmate/components/mainCards/verticalCard.dart';
+import 'package:provider/provider.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../models&ReadCollectionModel/ListFoodItemModel.dart';
 import '../../searchFoodItemProvider/searchFoodItemFunctionProvider.dart';
+import '../../UserLocation/LocationProvider.dart';
 import '../detail&checkout/detail.dart';
-
 
 class SearchFoodItem extends StatefulWidget {
   const SearchFoodItem({super.key});
@@ -17,9 +20,6 @@ class SearchFoodItem extends StatefulWidget {
 
 class _SearchFoodItemState extends State<SearchFoodItem> {
   final TextEditingController searchitemController = TextEditingController();
-
-  /// search provider instance
-  ///
   final searchProvider = SearchProvider();
 
   @override
@@ -52,8 +52,6 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ///SEARCH BAR
-            ///
             Padding(
               padding: const EdgeInsets.all(4.0),
               child: TextField(
@@ -82,10 +80,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                       style: BorderStyle.none,
                     ),
                     borderRadius: BorderRadius.circular(10),
-
-                    ///borderSide: BorderSide(color: Colors.red),
                   ),
-
                   hintStyle: TextStyle(
                     color: Colors.black,
                     fontSize: 10.sp,
@@ -102,12 +97,9 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                 ),
                 onChanged: (value) {
                   searchProvider.searchItem = value;
-                  //print("this is the ${value.toString()}");
                   setState(() {
                     searchProvider.searchFoodItems();
                   });
-
-                  /// Trigger rebuild to update search results
                 },
               ),
             ),
@@ -123,64 +115,90 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                     return Center(
                       child: Text('An error occurred: ${snapshot.error}'),
                     );
-                  } else if (snapshot.data!.isEmpty) {
-
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
                         child: noFoodFound(),
                       ),
                     );
-
                   } else {
-
                     final foodItems = snapshot.data as List<FoodItem>;
+                    return FutureBuilder<LatLng>(
+                      future: Provider.of<LocationProvider>(context, listen: false).getPoints(),
+                      builder: (context, locationSnapshot) {
+                        if (locationSnapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                NewSearchLoadingOutLook(),
+                                NewSearchLoadingOutLook(),
+                                NewSearchLoadingOutLook()
 
-                    return ListView.builder(
-                      itemCount: foodItems.length,
-                      itemBuilder: (context, index) {
-                        final foodItem = foodItems[index];
-                        return Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Material(
-                              color: Colors.white,
-                              elevation: 2,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
+                              ],
+                            ),
+                          ));
+                        } else if (locationSnapshot.hasError) {
+                          return Center(child: Text('Error: ${locationSnapshot.error}'));
+                        } else if (!locationSnapshot.hasData) {
+                          return Center(child: Text('Unable to determine location'));
+                        } else {
+                          LatLng userLocation = locationSnapshot.data!;
+                          List<FoodItem> nearbyRestaurants = foodItems.where((foodItem) {
+                            double distance = Provider.of<LocationProvider>(context, listen: false)
+                                .calculateDistance(userLocation, LatLng(foodItem.latitude, foodItem.longitude));
+                            return distance <= 10; // Check if the restaurant is within 10 km
+                          }).toList();
+
+                          return ListView.builder(
+                            itemCount: nearbyRestaurants.length,
+                            itemBuilder: (context, index) {
+                              final foodItem = nearbyRestaurants[index];
+                              return Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => DetailedCard(
-                                              imgUrl: foodItem.imageUrl,
-                                              restaurant: foodItem.restaurant,
-                                              foodName: foodItem.foodName,
-                                              price: foodItem.price,
-                                              location: foodItem.location,
-                                              vendorid: foodItem.vendorId,
-                                              time: foodItem.time,
-                                            latitude: foodItem.latitude,
-                                            longitude: foodItem.longitude,
-                                            adminEmail: foodItem.adminEmail,
-                                            adminContact: foodItem.adminContact,
-                                            maxDistance: foodItem.maxDistance
-                                          )));
-                                },
-                                child: horizontalCard(
-                                  foodItem.imageUrl,
-                                  foodItem.restaurant,
-                                  foodItem.foodName,
-                                  foodItem.price,
-                                  foodItem.location,
-                                  foodItem.time,
-                                  foodItem.vendorId,
-                                  foodItem.latitude,
-                                  foodItem.longitude,
-                                  foodItem.adminEmail,
-                                  foodItem.adminContact,
-                                  foodItem.maxDistance
+                                        builder: (context) => DetailedCard(
+                                          imgUrl: foodItem.imageUrl,
+                                          restaurant: foodItem.restaurant,
+                                          foodName: foodItem.foodName,
+                                          price: foodItem.price,
+                                          location: foodItem.location,
+                                          vendorid: foodItem.vendorId,
+                                          time: foodItem.time,
+                                          latitude: foodItem.latitude,
+                                          longitude: foodItem.longitude,
+                                          adminEmail: foodItem.adminEmail,
+                                          adminContact: foodItem.adminContact,
+                                          maxDistance: foodItem.maxDistance,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: NewVerticalCard(
+                                      foodItem.imageUrl,
+                                      foodItem.restaurant,
+                                      foodItem.foodName,
+                                      foodItem.price,
+                                      foodItem.location,
+                                      foodItem.time,
+                                      foodItem.vendorId.toString(),
+                                    foodItem.isAvailable,
+                                    foodItem.adminEmail,
+                                    foodItem.adminContact,
+                                    foodItem.maxDistance,
+
+
+
+                                      ),
                                 ),
-                              ),
-                            ));
+                              );
+                            },
+                          );
+                        }
                       },
                     );
                   }
