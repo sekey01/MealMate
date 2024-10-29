@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:card_loading/card_loading.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -14,6 +16,8 @@ import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../components/Notify.dart';
+import '../../components/mainCards/verticalCard.dart';
+import '../../models&ReadCollectionModel/ListFoodItemModel.dart';
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
 import '../../models&ReadCollectionModel/cartmodel.dart';
 import '../../models&ReadCollectionModel/sendOrderFunctionProvider.dart';
@@ -61,7 +65,19 @@ class DetailedCard extends StatefulWidget {
 class _DetailedCardState extends State<DetailedCard> {
 
 
-
+  Future<List<FoodItem>> fetchFoodItems(String Collection) async {
+    try {
+      QuerySnapshot snapshot =
+      await FirebaseFirestore.instance.collection(Collection).get();
+      return snapshot.docs
+          .map((doc) =>
+          FoodItem.fromMap(doc.data() as Map<String, dynamic>, doc.id))
+          .toList();
+    } catch (e) {
+      print("Error fetching food items: $e");
+      return [];
+    }
+  }
 
 
 
@@ -79,7 +95,8 @@ class _DetailedCardState extends State<DetailedCard> {
 
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
-  double tPrice = 0.0;
+  double overAllPrice = 0.00;
+  late double deliveryFee;
   TextEditingController messageController = TextEditingController();
 
 
@@ -89,7 +106,11 @@ class _DetailedCardState extends State<DetailedCard> {
   void initState() {
     super.initState();
     _loadCustomIcon(context);
-    tPrice = widget.price;
+    Provider.of<LocationProvider>(context, listen: false).calculateDistance(
+      LatLng(widget.latitude, widget.longitude),
+      LatLng(Provider.of<LocationProvider>(context, listen: false).Lat, Provider.of<LocationProvider>(context, listen: false).Long),
+    );
+    ///overAllPrice = widget.price;
   }
 
   @override
@@ -252,16 +273,16 @@ class _DetailedCardState extends State<DetailedCard> {
                   children: [
                     SizedBox(height: 10.h),
 
-                    RichText(text: TextSpan(
+                    /*RichText(text: TextSpan(
                         children: [
                           TextSpan(text: "Meal", style: TextStyle(fontFamily: 'Righteous',color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
                           TextSpan(text: "Mate", style: TextStyle(fontFamily: 'Righteous',color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
 
 
                         ]
-                    )),
+                    )),*/
 
-                    SizedBox(height: 10.h),
+                    //SizedBox(height: 10.h),
                     /// RESTAURANT ICON AND NAME
                     ///
                     SingleChildScrollView(
@@ -269,37 +290,163 @@ class _DetailedCardState extends State<DetailedCard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                         ImageIcon(AssetImage('assets/Icon/restaurant.png'), color: Colors.red, size: 25.sp,),
                           SizedBox(width: 5.sp),
                           Text(
-                           toTitleCase(widget.restaurant),
+                            toTitleCase(widget.restaurant),
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              overflow: TextOverflow.ellipsis,
-                              fontSize: 18.sp,
-                              fontFamily: 'Popins',
-                              color: Colors.black,
-                              letterSpacing: 1,
-                              fontWeight: FontWeight.bold
+                                overflow: TextOverflow.ellipsis,
+                                fontSize: 15.sp,
+                                fontFamily: 'Righteous',
+                                color: Colors.black,
+                                letterSpacing: 1,
+                                fontWeight: FontWeight.bold
                             ),
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 5.h),
+
+                   // SizedBox(height: 10.h),
+                    Divider(
+                      color: Colors.grey,
+                      thickness: 1,
+
+                    ),
+
+
+                    /// DELIVERY , TIME AND FOOD PRICE
+                    ///
+                    ///
+                    ///
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Container(
+                        height: 50.h,
+                        color: Colors.grey.shade50,
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+
+                                children: [
+                                  ImageIcon(
+                                    AssetImage('assets/Icon/delivery.png'),
+                                    color: Colors.black,
+                                    size: 30.sp,
+                                  ),
+                                  Text('Delivery fee',style: TextStyle(color: Colors.grey,fontSize: 10.sp,fontWeight: FontWeight.bold),)
+                                ],
+                              ),
+                              ImageIcon(
+                                AssetImage('assets/Icon/cedi.png'),
+                                color: Colors.black,
+                                size: 15.sp,
+                              ),
+                              Builder(
+                                builder: (context) {
+
+
+                                  ///Delivery fee is GHC 10.00  per km, so i multiplied it by the distance between the vendor and buyer
+                                  ///
+
+                                   deliveryFee = Provider.of<LocationProvider>(context, listen: false).Distance * 10;
+                                  return Text(
+                                    deliveryFee.toStringAsFixed(2),
+                                    style: TextStyle(
+                                      // fontWeight: FontWeight.bold,
+                                        overflow: TextOverflow.ellipsis,
+                                        fontSize: 15.sp,
+                                        //decoration: TextDecoration.lineThrough,
+                                        decorationColor: Colors.black,
+                                        //letterSpacing: 2,
+                                        //fontWeight: FontWeight.w600,
+                                        color: Colors.black),
+
+                                  );
+                                }
+                              ),
+                              SizedBox(width: 10.sp,),
+                              ///DELIVERY TIME
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+
+                                children: [
+                                  RichText(text: TextSpan(
+                                      children: [
+                                        TextSpan(text: widget.time, style: TextStyle(fontFamily: 'Popins',color: Colors.black, fontSize: 16.sp, )),
+                                        TextSpan(text: " mins", style: TextStyle(fontFamily: 'Righteous',color: Colors.deepOrangeAccent, fontSize: 15.sp,)),
+                                      ]
+                                  )),
+                                  Text('Avg delivery time',style: TextStyle(color: Colors.grey,fontSize: 10.sp,fontFamily: 'Popins',fontWeight: FontWeight.bold),)
+                                ],
+                              ),
+                          SizedBox(width: 10.sp,),
+
+
+                              ///PRICE OF FOOD HERE
+                              ///
+                              ///
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+
+                                children: [
+                                  ImageIcon(
+                                    AssetImage('assets/Icon/food.png'),
+                                    color: Colors.black,
+                                    size: 25.sp,
+                                  ),
+                                  Text('Price..',style: TextStyle(color: Colors.grey,fontSize: 10.sp,fontWeight: FontWeight.bold/*fontFamily: 'Popins'*/),)
+                                ],
+                              ),
+
+                              ImageIcon(
+                                AssetImage('assets/Icon/cedi.png'),
+                                color: Colors.black,
+                                size: 15.sp,
+                              ),
+                          Text(widget.price.toStringAsFixed(2),
+                                      style: TextStyle(
+                                        // fontWeight: FontWeight.bold,
+                                          overflow: TextOverflow.ellipsis,
+                                          fontSize: 15.sp,
+                                          //decoration: TextDecoration.lineThrough,
+                                          decorationColor: Colors.black,
+                                          //letterSpacing: 2,
+                                          //fontWeight: FontWeight.w600,
+                                          color: Colors.black),
+
+                                    )
+
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                   // SizedBox(height: 10.h),
+
+
+
+                   // SizedBox(height: 5.h),
+
+                    ///FOOD NAME
+                    ///
+
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
 
                         children: [
-                          SizedBox(width: 5.sp,),
+                          SizedBox(width: 10.sp,),
 
-                         Image(
-                            image: AssetImage('assets/Icon/Foods.png'),height: 30,width: 30,
-                           // color: Colors.red,
-                            //size: 25.sp,
-                         ),
+                          ImageIcon(AssetImage('assets/Icon/restaurant.png'), color: Colors.red, size: 20.sp,),
+
                           SizedBox(width: 10.sp,),
                           Text(
                             widget.foodName,
@@ -307,7 +454,7 @@ class _DetailedCardState extends State<DetailedCard> {
                             TextStyle(
                               fontFamily: 'Popins',
                               overflow: TextOverflow.ellipsis,
-                              fontSize: 17.sp,
+                              fontSize: 15.sp,
                               //fontWeight: FontWeight.w600,
                               color: Colors.black,
                               letterSpacing: 1,
@@ -316,90 +463,68 @@ class _DetailedCardState extends State<DetailedCard> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 10.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        ImageIcon(
-                          AssetImage('assets/Icon/delivery.png'),
-                          color: Colors.red,
-                          size: 30.sp,
-                        ),
-                        Text(
-                          'GH',
-                          style: TextStyle(
-                            fontFamily: 'Righteous',
-                            fontSize: 15.sp,
-                            letterSpacing: 3,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                        ImageIcon(
-                          AssetImage('assets/Icon/cedi.png'),
-                          color: Colors.red,
-                          size: 15.sp,
-                        ),
-                        Text(
-                          tPrice.toStringAsFixed(2),
-                          style: TextStyle(
-                            // fontWeight: FontWeight.bold,
-                              overflow: TextOverflow.ellipsis,
-                              fontSize: 15.sp,
-                              decoration: TextDecoration.lineThrough,
-                              decorationColor: Colors.black,
-                              //letterSpacing: 2,
-                              //fontWeight: FontWeight.w600,
-                              color: Colors.black),
 
-                        ),
-SizedBox(width: 40.sp,),
-                        Text(
-                          'GH',
-                          style: TextStyle(
-                            fontFamily: 'Righteous',
-                            fontSize: 15.sp,
-                            letterSpacing: 3,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                        ImageIcon(
-                          AssetImage('assets/Icon/cedi.png'),
-                          color: Colors.red,
-                          size: 15.sp,
-                        ),
-Text(
-  widget.price.toStringAsFixed(2),
-  style: TextStyle(
-    fontFamily: 'Popins',
-    fontSize: 20.sp,
-    letterSpacing: 3,
-    fontWeight: FontWeight.bold,
-    color: Colors.black,
-  ),
-),
-                      ],
-                    ),
-                    SizedBox(height: 10.h),
+
+
+
+
+
+
+
+
+
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+                          SizedBox(
+                            width: 10.w,
+                          ),
                           ImageIcon(AssetImage('assets/Icon/VendorLocation.png'), color: Colors.red, size: 25.sp,),
 
                           SizedBox(width: 10.h),
-                          Text(
-                            toTitleCase(widget.location),
-                            style: TextStyle(
-                             // fontFamily: 'Righteous',
-                              color: Colors.blueGrey,
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.bold,
-                              overflow: TextOverflow.ellipsis,
-                              letterSpacing: 3,
-                            ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+
+                              ///Display Location
+                              Text(
+                                toTitleCase(widget.location),
+                                style: TextStyle(
+                                 // fontFamily: 'Righteous',
+                                  color: Colors.blueGrey,
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.bold,
+                                  overflow: TextOverflow.ellipsis,
+                                  letterSpacing: 3,
+                                ),
+                              ),
+
+                              //Get Vendor Location with Lat and Lng
+                              FutureBuilder(
+                                  future:
+                                  Provider.of<LocationProvider>(context, listen: false).getAddressFromLatLng(widget.latitude, widget.longitude),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: Text(snapshot.data.toString(),
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                overflow: TextOverflow.ellipsis,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 10.sp)),
+                                      );
+                                    }
+                                    return Text(
+                                      'locating Vendor...',
+                                      style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.normal,fontSize: 10.spMin),
+                                    );
+                                  })
+                            ],
                           ),
                         ],
                       ),
@@ -434,13 +559,13 @@ Text(
                           ],
                         ),
                         SizedBox(width: 15.w),
+
                         ///ROW FOR PHONE NUMBER AND ITS ICON
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
-                              Icons.call,
-                              color: Colors.redAccent,
+                            ImageIcon(
+                              AssetImage('assets/Icon/call.png'), size: 25.sp,color: Colors.deepOrangeAccent,
                             ),
                             SizedBox(width: 10.w),
                             RichText(text: TextSpan(
@@ -461,11 +586,17 @@ Text(
                     ///
                     Row(mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        Text('Total: GH',style: TextStyle(color: Colors.black,fontFamily: 'Popins',fontWeight: FontWeight.bold,fontSize: 20),),
+                        ImageIcon(AssetImage('assets/Icon/cedi.png'),
+                  color: Colors.black,
+                  size: 20.sp,
+                ),
+
                         Consumer<CartModel>(
                           builder: (context, CartModel, child) {
-                            tPrice = CartModel.getQuantity * widget.price;
+                            overAllPrice = CartModel.getQuantity * widget.price + deliveryFee;
                             return Text(
-                              'Total: GHC ${tPrice}0',
+                               overAllPrice.toStringAsFixed(2),
                               style: TextStyle(
                                 fontFamily: 'Righteous',
                                 color: Colors.red,
@@ -909,6 +1040,13 @@ else if (snapshot.hasData) {
                         ),
                       ),
                     ),
+
+
+
+
+                    
+                    
+                    
                   ],
                 )
                 ),

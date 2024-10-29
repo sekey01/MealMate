@@ -268,7 +268,7 @@ Container NewVerticalCard(
                     color: Colors.black,
                     size: 10.sp,
                   ),
-                  Text('$foodPrice', style: TextStyle(color: Colors.redAccent, fontSize: 10.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous'),),
+                  Text(price.toStringAsFixed(2), style: TextStyle(color: Colors.redAccent, fontSize: 10.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous'),),
                 ],
               ),
             )),

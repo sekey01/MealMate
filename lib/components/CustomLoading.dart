@@ -50,6 +50,7 @@ class NewSearchLoadingOutLook extends StatelessWidget {
               color: Colors.blueGrey.shade50,
               borderRadius: BorderRadius.circular(10),
             ),
+            child: LinearProgressIndicator( color: Colors.grey.shade50,),
           ),
           SizedBox(height: 10),
           Container(
@@ -59,6 +60,8 @@ class NewSearchLoadingOutLook extends StatelessWidget {
               color: Colors.blueGrey.shade100,
               borderRadius: BorderRadius.circular(10),
             ),
+            child: LinearProgressIndicator(color: Colors.grey.shade50,),
+
           ),
           SizedBox(height: 10),
           Row(
@@ -72,6 +75,8 @@ class NewSearchLoadingOutLook extends StatelessWidget {
                   color: Colors.blueGrey.shade100,
                   borderRadius: BorderRadius.circular(10),
                 ),
+                child: LinearProgressIndicator(color: Colors.grey.shade50,),
+
               ),
               SizedBox(width: 10),
               Container(
@@ -81,6 +86,8 @@ class NewSearchLoadingOutLook extends StatelessWidget {
                   color: Colors.blueGrey.shade100,
                   borderRadius: BorderRadius.circular(10),
                 ),
+                child: LinearProgressIndicator(color: Colors.grey.shade50,),
+
               ),
               SizedBox(width: 10),
               Container(
@@ -90,6 +97,8 @@ class NewSearchLoadingOutLook extends StatelessWidget {
                   color: Colors.blueGrey.shade100,
                   borderRadius: BorderRadius.circular(10),
                 ),
+                child: LinearProgressIndicator(color: Colors.grey.shade50,),
+
               ),
             ],
           )
