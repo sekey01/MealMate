@@ -134,6 +134,9 @@ flutter:
      - assets/Icon/profile.png
      - assets/Icon/courier.png
      - assets/Icon/discount.png
+     - assets/Icon/whatsapp.png
+     - assets/Icon/sms.png
+     - assets/Icon/gmail.png
      - assets/Icon/favourite.png
      - assets/Icon/orderComplete.png
      - assets/Icon/orderReceived.png
@@ -141,6 +144,9 @@ flutter:
      - assets/images/MealmateDress.png
      - assets/images/MMBoard.png
      - assets/images/MMBoard1.png
+     - assets/images/burger.png
+     - assets/images/grocery.png
+     - assets/images/shops.jpg
      - assets/Icon/yummy.png
      - assets/Icon/coupon.png
      - assets/Icon/map.png

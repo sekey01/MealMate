@@ -8,18 +8,14 @@ Container noFoodFound() {
         SizedBox(
           height: 80.h,
         ),
-        Icon(
-          Icons.no_food_outlined,
-          size: 65.sp,
-          color: Colors.red,
-        ),
+        Image(image: AssetImage("assets/Icon/no_food_found.png"), height: 150, width: 200,),
         SizedBox(
           height: 20.h,
         ),
     RichText(text: TextSpan(
         children: [
-          TextSpan(text: " No Food", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold)),
-          TextSpan(text: " Found", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold)),
+          TextSpan(text: " No Product", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+          TextSpan(text: " Found", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
 
 
         ]
@@ -34,20 +30,16 @@ Container EmptyHistory() {
     child: Column(
       children: [
         SizedBox(
-          height: 80.h,
+          height: 50.h,
         ),
-        Icon(
-          Icons.no_food_outlined,
-          size: 65.sp,
-          color: Colors.red,
-        ),
+      Image(image: AssetImage("assets/Icon/no_food_found.png"), height: 150, width: 200,),
         SizedBox(
-          height: 20.h,
+          height: 10.h,
         ),
         RichText(text: TextSpan(
             children: [
-              TextSpan(text: " Empty", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold)),
-              TextSpan(text: " History", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold)),
+              TextSpan(text: " Empty", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+              TextSpan(text: " History", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
             ]
         )),      ],
     ),

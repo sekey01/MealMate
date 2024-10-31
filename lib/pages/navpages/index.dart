@@ -20,6 +20,7 @@ import '../../components/adsCouressel.dart';
 import '../../components/card1.dart';
 import '../../components/mainCards/verticalCard.dart';
 import '../../models&ReadCollectionModel/ListFoodItemModel.dart';
+import '../searchfooditem/init_page_search.dart';
 import 'notifications.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 
@@ -194,7 +195,11 @@ checkInternet();
                     ),
                   ),
 
-                  SizedBox(height: 10.h,),
+
+
+
+                //  SizedBox(height: 30.h,),
+
 
 
                   /// SEARCH BAR HERE
@@ -206,64 +211,268 @@ checkInternet();
                         Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchFoodItem()));
                       },
                       child: AbsorbPointer(
-                        child: TextField(
-                          style: TextStyle(color: Colors.deepOrange),
-                          decoration: InputDecoration(
-                            hintText: 'FoodName or Restaurant',
-                            fillColor: Colors.grey.shade100,
-                            filled: true,
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: Colors.blueGrey,
-                            ),
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                              },
-                              icon: ImageIcon(AssetImage('assets/Icon/filter.png'), color: Colors.blueGrey,),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
                                 color: Colors.grey.shade200,
-                                style: BorderStyle.solid,
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: Offset(0, 3), // changes position of shadow
                               ),
-                              borderRadius: BorderRadius.circular(10),
-
-                              ///borderSide: BorderSide(color: Colors.red),
-                            ),
-                            hintStyle: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 15,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
+                            ],
+                          ),
+                          child: TextField(
+                            style: TextStyle(color: Colors.deepOrange),
+                            decoration: InputDecoration(
+                              hintText: 'FoodName or Restaurant',
+                              fillColor: Colors.white,
+                              filled: true,
+                              prefixIcon: Icon(
+                                Icons.search,
                                 color: Colors.blueGrey,
-                                style: BorderStyle.solid,
                               ),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                },
+                                icon: ImageIcon(AssetImage('assets/Icon/filter.png'), color: Colors.blueGrey,),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.grey.shade200,
+                                  style: BorderStyle.solid,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+
+                                ///borderSide: BorderSide(color: Colors.red),
+                              ),
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 15,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  color: Colors.blueGrey,
+                                  style: BorderStyle.solid,
+                                ),
+                              ),
+                              /*       label: Text('Foodnameee and Restaurant'),
+                              labelStyle: TextStyle(color: Colors.grey, fontSize: 10),*/
                             ),
-                                         /*       label: Text('Foodnameee and Restaurant'),
-                            labelStyle: TextStyle(color: Colors.grey, fontSize: 10),*/
                           ),
                         ),
                       ),
                     ),
                   ),
 
-                  SizedBox(height: 30.h,),
+                  SizedBox(height: 10.h,),
+
+
+                  ///FOOD DELIVERY AND SUPERMARKET AND SHOPS
+                  Container(
+                    height: 260.h,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.shade200,
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+
+                        children: [
+                          ///FOOD DELIVERY
+                          Expanded(
+                            flex: 2,
+                            child: GestureDetector(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=> InitPageSearch(searchCollection: 'Food 🍔', Title: 'Food Delivery',)));
+
+                              },
+                              child: Container(
+
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: Text(
+                                        'Food Delivery',
+                                        style: TextStyle(
+                                          fontFamily: 'Righteous',
+                                            color: Colors.black,
+                                            fontSize: 35.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: Text(
+                                        'Order from your favorite restaurant',
+                                        style: TextStyle(
+                                          wordSpacing: 2,
+                                            fontFamily: 'Popins',
+                                            color: Colors.black,
+                                            fontSize: 12.sp,
+                                            //fontWeight: FontWeight.bold
+                                        ),
+                                      ),
+                                    ),
+                                    Image(image: AssetImage('assets/images/burger.png'), height: 100.h, width: 200.w,),
+
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          ///SUPERMARKET AND SHOPS
+                          Expanded(
+                            flex: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 4),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ///SUPERMARKET
+                                  ///
+                                  ///
+                                  GestureDetector(
+                                    onTap: (){
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=> InitPageSearch(searchCollection: 'Grocery 🛒', Title: 'Supermarket',)));
+
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 8.0,top: 8),
+                                            child: Text(
+                                              'Supermarket',
+                                              style: TextStyle(
+                                                  fontFamily: 'Righteous',
+                                                  color: Colors.black,
+                                                  fontSize: 18.sp,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+
+
+                                                                Padding(
+                                                                  padding: const EdgeInsets.only(left: 8.0,),
+                                                                  child: Text(
+                                                                    'Groceries and more...',
+                                                                    style: TextStyle(
+                                     // fontFamily: 'Popins',
+                                      color: Colors.blueGrey,
+                                      fontSize: 15.sp,
+                                      //fontWeight: FontWeight.bold
+                                                                    ),
+                                                                  ),),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 16),
+                                            child: Image(image: AssetImage('assets/images/grocery.png'), height: 80.h, width: 150.w,),
+                                          ),
+
+
+
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+
+                                  ///SHOPS
+                                  ///
+                                  ///
+                                  GestureDetector(
+                                    onTap: (){
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=> InitPageSearch(searchCollection: 'Clothing 👗', Title: ' Other Shops',)));
+
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                               Padding(
+                                                 padding: const EdgeInsets.only(left: 8,top: 8),
+                                                 child: Text('Shops', style: TextStyle(
+                                                     fontFamily: 'Righteous',
+                                                     color: Colors.black,
+                                                     fontSize: 15.sp,
+                                                     fontWeight: FontWeight.bold),),
+                                               ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 8.0),
+                                                  child: Text('This and more available in shops around you...',
+                                                    style: TextStyle(
+                                                        color: Colors.blueGrey,
+                                                        fontSize: 8.sp,
+                                                        //fontWeight: FontWeight.bold
+                                                    ),),
+                                                ),
+
+                                              ],
+                                          )),
+                                          Expanded(child: Image(image: AssetImage('assets/images/shops.jpg'), height: 80.h, width: 150.w,)),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ),
+                  ),
+
+
                   ///CARD SHOWING THE INTRODUCTION OF THE APP AND COUROSEL OF IMAGES
                   initCard(),
+
 
                   SizedBox(
                     height: 30.h,
                   ),
                   ///COURRESSEL  FOR ADS
-                  Badge(
+             /*     Badge(
                       backgroundColor: Colors.green,
                       textColor: Colors.white,
                       label: Text(
                         'Ads 📢',
                       ),
-                      child: adsCouressel()),
+                      child: adsCouressel()),*/
                   ///
                   ///
                   ///
@@ -274,12 +483,12 @@ checkInternet();
 
                   Padding(padding: EdgeInsets.all(1),
                       child: PromotionAdsCard(
-                        image: 'assets/images/MMBoard.png',
-                        heading:'Satisfy Your cravings With MealMate',
-                        content: 'Order your favorite food from your favorite restaurant',
+                        image: 'assets/images/MealmateDress.png',
+                        heading:'Get Rewarded With MealMate Shirt',
+                        content: 'Order your favorite food and get Lucky..',
                         contentColor: Colors.white70,
                         headingColor: Colors.white,
-                        backgroundColor: Colors.deepOrange,
+                        backgroundColor: Colors.black,
 
                       )),
                   SizedBox(
@@ -724,7 +933,155 @@ checkInternet();
                       },
                     ),
                   ) : Center(child: NoInternetConnection(),),
+SizedBox(height: 30.h,),
+                  Padding(padding: EdgeInsets.all(1),
+                      child: PromotionAdsCard(
+                        image: 'assets/images/MMBoard.png',
+                        heading:'Satisfy Your cravings With MealMate',
+                        content: 'Order your favorite food from your favorite restaurant',
+                        contentColor: Colors.white70,
+                        headingColor: Colors.white,
+                        backgroundColor: Colors.deepOrange,
 
+                      )),
+
+
+
+SizedBox(height: 30.h,),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          '   Grocery 🛒 ',
+                          style: TextStyle(
+                              fontFamily: 'Righteous',
+                              color: Colors.blueGrey,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Search()));
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                'View All',
+                                style: TextStyle(
+                                    fontSize: 12.sp, color: Colors.deepOrangeAccent,fontWeight: FontWeight.bold),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 12.spMin,
+                                color: Colors.deepOrangeAccent,
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  ////CONTAINER OF HRORINZAOL LIST OF GROCERY
+
+                  _hasInternet? Container(
+                    color: Colors.white,
+                    width: double.infinity,
+                    height: 200.h,
+                    child: FutureBuilder<List<FoodItem>>(
+                      future: fetchFoodItems('Grocery 🛒'),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return ListView.builder(
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: NewSearchLoadingOutLook());
+                            },
+                            scrollDirection: Axis.horizontal,
+                          );
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
+                          return ListView.builder(
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: EmptyCollection());
+                            },
+                            scrollDirection: Axis.horizontal,
+                          );
+                        } else {
+                          return ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              final foodItem = snapshot.data![index];
+                              return Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Material(
+                                    elevation: 2,
+                                    child: GestureDetector(
+                                      onTap: () {
+
+                                        foodItem.isAvailable?Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetailedCard(
+
+                                                        imgUrl:
+                                                        foodItem.imageUrl,
+                                                        restaurant:
+                                                        foodItem.restaurant,
+                                                        foodName:
+                                                        foodItem.foodName,
+                                                        price: foodItem.price,
+                                                        location:
+                                                        foodItem.location,
+                                                        vendorid:
+                                                        foodItem.vendorId,
+                                                        time: foodItem.time,
+                                                        latitude: foodItem.latitude,
+                                                        longitude: foodItem.longitude,
+                                                        adminEmail: foodItem.adminEmail,
+                                                        adminContact: foodItem.adminContact,
+                                                        maxDistance: foodItem.maxDistance
+                                                    ))):Notify(context, 'This item is not Available now', Colors.red);
+                                      },
+                                      child: verticalCard(
+                                          foodItem.imageUrl,
+                                          foodItem.restaurant,
+                                          foodItem.foodName,
+                                          foodItem.price,
+                                          foodItem.location,
+                                          foodItem.time,
+                                          foodItem.vendorId.toString(),
+                                          foodItem.isAvailable,
+                                          foodItem.adminEmail,
+                                          foodItem.adminContact
+                                      ),
+                                    ),
+                                  ));
+                            },
+                            scrollDirection: Axis.horizontal,
+                          );
+                        }
+                      },
+                    ),
+                  ) : Center(child: NoInternetConnection(),),
 
                 ],
               ),

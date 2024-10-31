@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:card_loading/card_loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -210,6 +211,38 @@ class _DetailedCardState extends State<DetailedCard> {
                           ),
 
                         ))),
+/// SEND GMAIL
+                Positioned(
+                    top: 5,
+                    right: 70,
+                    child: Container(
+                        height: 30.h,
+                        width: 35.h,
+                        decoration: BoxDecoration(
+
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Center(
+                          child: IconButton(
+                            onPressed: () async{
+                              ///THIS IS THE GMAIL FUNCTION TO SEND A MESSAGE TO THE VENDOR
+                              EasyLauncher.email(
+                                  email: widget.adminEmail,
+                                  subject: 'Order for ${widget.foodName} from ${widget.restaurant}',
+                                  body: 'Hello, I would like to make an order for ${widget.foodName} from ${widget.restaurant} \n'
+                                      'I would like to know if you have any allergies or specifications for the food. \n'
+                                      'Thank you');
+
+                            },
+                            icon: Image(
+                              image: AssetImage('assets/Icon/gmail.png'),
+                              height: 30.h,
+                              width: 30.w,
+                            ),
+                          ),
+
+                        ))),
 /// DISCOUNTED PRICE
                 Positioned(
                     top: 140.h,
@@ -253,8 +286,8 @@ class _DetailedCardState extends State<DetailedCard> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Colors.white,
-                    Colors.white,
+                    Colors.grey.shade50,
+                    Colors.grey.shade50,
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -315,15 +348,19 @@ class _DetailedCardState extends State<DetailedCard> {
                     ),
 
 
-                    /// DELIVERY , TIME AND FOOD PRICE
+                    /// DELIVERY FEE , AVERAGE TIME AND FOOD PRICE
                     ///
                     ///
                     ///
                     Padding(
-                      padding: const EdgeInsets.all(4.0),
+                      padding: const EdgeInsets.all(2.0),
                       child: Container(
                         height: 50.h,
-                        color: Colors.grey.shade50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+
+                        ),
                         child: Center(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -343,7 +380,7 @@ class _DetailedCardState extends State<DetailedCard> {
                               ),
                               ImageIcon(
                                 AssetImage('assets/Icon/cedi.png'),
-                                color: Colors.black,
+                                color: Colors.red,
                                 size: 15.sp,
                               ),
                               Builder(
@@ -357,14 +394,15 @@ class _DetailedCardState extends State<DetailedCard> {
                                   return Text(
                                     deliveryFee.toStringAsFixed(2),
                                     style: TextStyle(
+                                      color: Colors.red,
                                       // fontWeight: FontWeight.bold,
                                         overflow: TextOverflow.ellipsis,
                                         fontSize: 15.sp,
                                         //decoration: TextDecoration.lineThrough,
                                         decorationColor: Colors.black,
                                         //letterSpacing: 2,
-                                        //fontWeight: FontWeight.w600,
-                                        color: Colors.black),
+                                        fontWeight: FontWeight.w600,
+                                        ),
 
                                   );
                                 }
@@ -407,7 +445,7 @@ class _DetailedCardState extends State<DetailedCard> {
 
                               ImageIcon(
                                 AssetImage('assets/Icon/cedi.png'),
-                                color: Colors.black,
+                                color: Colors.red,
                                 size: 15.sp,
                               ),
                           Text(widget.price.toStringAsFixed(2),
@@ -418,8 +456,8 @@ class _DetailedCardState extends State<DetailedCard> {
                                           //decoration: TextDecoration.lineThrough,
                                           decorationColor: Colors.black,
                                           //letterSpacing: 2,
-                                          //fontWeight: FontWeight.w600,
-                                          color: Colors.black),
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.red),
 
                                     )
 
@@ -428,7 +466,7 @@ class _DetailedCardState extends State<DetailedCard> {
                         ),
                       ),
                     ),
-                   // SizedBox(height: 10.h),
+                   SizedBox(height: 10.h),
 
 
 
@@ -445,18 +483,18 @@ class _DetailedCardState extends State<DetailedCard> {
                         children: [
                           SizedBox(width: 10.sp,),
 
-                          ImageIcon(AssetImage('assets/Icon/restaurant.png'), color: Colors.red, size: 20.sp,),
+                          ImageIcon(AssetImage('assets/Icon/restaurant.png'), color: Colors.black, size: 20.sp,),
 
                           SizedBox(width: 10.sp,),
                           Text(
                             widget.foodName,
                             style:
                             TextStyle(
-                              fontFamily: 'Popins',
+                              //fontFamily: 'Popins',
                               overflow: TextOverflow.ellipsis,
                               fontSize: 15.sp,
-                              //fontWeight: FontWeight.w600,
                               color: Colors.black,
+                              fontWeight: FontWeight.bold,
                               letterSpacing: 1,
                             ),
                           ),
@@ -470,67 +508,167 @@ class _DetailedCardState extends State<DetailedCard> {
 
 
 
+                    SizedBox(height: 10.h),
 
 
 
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          ImageIcon(AssetImage('assets/Icon/VendorLocation.png'), color: Colors.red, size: 25.sp,),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                      ),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            ImageIcon(AssetImage('assets/Icon/VendorLocation.png'), color: Colors.black, size: 25.sp,),
 
-                          SizedBox(width: 10.h),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            SizedBox(width: 10.h),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
 
-                              ///Display Location
-                              Text(
-                                toTitleCase(widget.location),
-                                style: TextStyle(
-                                 // fontFamily: 'Righteous',
-                                  color: Colors.blueGrey,
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.bold,
-                                  overflow: TextOverflow.ellipsis,
-                                  letterSpacing: 3,
+                                ///Display Location
+                                Text(
+                                  toTitleCase(widget.location),
+                                  style: TextStyle(
+                                    fontFamily: 'Righteous',
+                                    color: Colors.blueGrey,
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.bold,
+                                    overflow: TextOverflow.ellipsis,
+                                    letterSpacing: 3,
+                                  ),
                                 ),
-                              ),
 
-                              //Get Vendor Location with Lat and Lng
-                              FutureBuilder(
-                                  future:
-                                  Provider.of<LocationProvider>(context, listen: false).getAddressFromLatLng(widget.latitude, widget.longitude),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: Text(snapshot.data.toString(),
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                overflow: TextOverflow.ellipsis,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 10.sp)),
+                                //Get Vendor Location with Lat and Lng
+                                FutureBuilder(
+                                    future:
+                                    Provider.of<LocationProvider>(context, listen: false).getAddressFromLatLng(widget.latitude, widget.longitude),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Text(snapshot.data.toString(),
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  overflow: TextOverflow.ellipsis,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 10.sp)),
+                                        );
+                                      }
+                                      return Text(
+                                        'locating Vendor...',
+                                        style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.normal,fontSize: 10.spMin),
                                       );
-                                    }
-                                    return Text(
-                                      'locating Vendor...',
-                                      style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.normal,fontSize: 10.spMin),
-                                    );
-                                  })
-                            ],
-                          ),
-                        ],
+                                    })
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    SizedBox(width: 10.h),
-                    SizedBox(height: 20.h),
+
+                    SizedBox(height: 10.h),
+
+
+                    /// CALL BUTTON, SMS MESSAGE FUNCTIONALITY, WHATSAPP FUNCTIONALITY
+                    Column(
+                      children: [
+                        ///TEXT TO ALERT USER TO CALL VENDOR IF ANY ALLERGIES
+                        Padding(padding: EdgeInsets.all(8),
+                          child: Text(' Do you have any allergies ? '
+                              'Or would you like to give specification to what you\'re Ordering ?...\n'
+                              'Please call us now Or Leave a message in the Comment box.',
+
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 12.sp,
+                                color: Colors.grey.shade600
+                            ),),),
+
+                        Row(mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+
+                            ///WHATSAPP BUTTON
+                            GestureDetector(
+                              onTap: () async{
+                                ///THIS IS THE WHATSAPP FUNCTION TO SEND A MESSAGE TO THE VENDOR
+                                EasyLauncher.sendToWhatsApp(
+                                    phone: '+233${widget.adminContact}',
+                                    message: 'Hello, I would like to make an order for ${widget.foodName} from ${widget.restaurant} \n'
+                                        'I would like to know if you have any allergies or specifications for the food. \n'
+                                        'Thank you');
+                              },
+                              child: Column(
+                                children: [
+                                  Image(image: AssetImage('assets/Icon/whatsapp.png'), height: 30.h, width: 30.w,),
+                                  Text('Whatsapp', style: TextStyle(color: Colors.black, fontSize: 10.sp, fontWeight: FontWeight.bold),),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 30.w),
+
+                            ///CALL BUTTON
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 3,
+                                backgroundColor: Colors.redAccent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: ()  async{
+                                ///THIS IS THE CALL FUNCTION TO CALL THE VENDOR
+                                EasyLauncher.call(number: widget.adminContact.toString());
+                              },
+                              child: Text(
+                                'Call Us',
+                                style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontFamily: 'Righteous', fontSize: 15.sp,letterSpacing: 2),
+                              ),
+                            ),
+
+                            SizedBox(width: 30.w),
+
+
+
+                            ///SMS BUTTON
+                            GestureDetector(
+                              onTap: () async{
+                                ///THIS IS THE SMS FUNCTION TO SEND A MESSAGE TO THE VENDOR
+                                EasyLauncher.sms(number: widget.adminContact.toString());
+                              },
+                              child: Column(
+                                children: [
+                                  Image(image: AssetImage('assets/Icon/sms.png'), height: 30.h, width: 30.w,),
+                                  Text('SMS', style: TextStyle(color: Colors.black, fontSize: 10.sp, fontWeight: FontWeight.bold),),
+                                ],
+                              ),
+                            ),
+
+
+                          ],
+                        ),
+                      ],
+                    ),
+
+
+
+
+
+
+
+
+
+
+
+                    SizedBox(height: 10.h),
                     Row(
                       ///ROW FOR TIME AND PHONE NUMBER
                       ///
@@ -561,26 +699,34 @@ class _DetailedCardState extends State<DetailedCard> {
                         SizedBox(width: 15.w),
 
                         ///ROW FOR PHONE NUMBER AND ITS ICON
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ImageIcon(
-                              AssetImage('assets/Icon/call.png'), size: 25.sp,color: Colors.deepOrangeAccent,
-                            ),
-                            SizedBox(width: 10.w),
-                            RichText(text: TextSpan(
-                                children: [
-                                  TextSpan(text: '+233${widget.adminContact}\n', style: TextStyle( fontFamily: 'Righteous',color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold)),
-                                  TextSpan(text: "Call Us", style: TextStyle(color: Colors.grey, fontSize: 15.sp,)),
+                        GestureDetector(
+                          onTap: () async{
+                            ///THIS IS THE CALL FUNCTION TO CALL THE VENDOR
+                            EasyLauncher.call(number: widget.adminContact.toString());
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ImageIcon(
+                                AssetImage('assets/Icon/call.png'), size: 26.sp,color: Colors.red,
+                              ),
+                              SizedBox(width: 10.w),
+                              RichText(text: TextSpan(
+                                  children: [
+                                    TextSpan(text: '+233${widget.adminContact}\n', style: TextStyle( fontFamily: 'Righteous',color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold)),
+                                    TextSpan(text: "Call Us", style: TextStyle(color: Colors.grey, fontSize: 15.sp,)),
 
 
-                                ]
-                            )),
-                          ],
+                                  ]
+                              )),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                     SizedBox(height: 10.h),
+
+
 
                     ///TOTAL PRICE
                     ///
@@ -617,7 +763,7 @@ class _DetailedCardState extends State<DetailedCard> {
                           builder: (context, value, child) => ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               elevation: 3,
-                              backgroundColor: Colors.deepOrangeAccent,
+                              backgroundColor: Colors.redAccent,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -689,7 +835,7 @@ class _DetailedCardState extends State<DetailedCard> {
                                       value.decrementQuantity();
                                     },
                                     child: Material(
-                                      color: Colors.deepOrangeAccent,
+                                      color: Colors.redAccent,
                                       borderRadius: BorderRadius.circular(7),
                                       elevation: 3,
                                       child: Text(
@@ -723,7 +869,7 @@ class _DetailedCardState extends State<DetailedCard> {
                                       value.incrementQuantity();
                                     },
                                     child: Material(
-                                      color: Colors.deepOrangeAccent,
+                                      color: Colors.redAccent,
                                       borderRadius: BorderRadius.circular(7),
                                       elevation: 3,
                                       child: Text(
@@ -770,13 +916,13 @@ else if (snapshot.hasData) {
                                           border: Border.all(
                                               color: Colors.black,
                                               style: BorderStyle.solid)),
-                                      height: 260.h,
+                                      height: 170.h,
                                       width: double.infinity,
 
                                       ///MAP HERE
                                       ///
                                       child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.all(2.0),
                                         child: FutureBuilder(
 
                                             future: Provider.of<LocationProvider>(context,
@@ -875,20 +1021,35 @@ else if (snapshot.hasData) {
                                 ),
                               ),
 
-
+                              SizedBox(height: 10.h),
+                              ///USER TELEPHONE NUMBER
+                              Builder(
+                                  builder: (context) {
+                                    Provider.of<LocalStorageProvider>(context, listen: false).getPhoneNumber();
+                                    return Text(
+                                      " Your Telephone: ${Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber}",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15.sp,
+                                        //fontWeight: FontWeight.bold,
+                                        fontFamily: 'Righteous',
+                                      ),
+                                    );
+                                  }
+                              ),
 
                               /// TEXTFIELDFOR USER TO ENTER EXTRA INFORMATION
                               ///
                               ///
                               ///
                               Padding(padding: EdgeInsets.all(8),
-                                child: Text('Note:  Always make sure your location is set and accurate; '
-                                    'Also give description with landmark if location is not set to desired ...',
+                                child: Text(' Make sure your number below is correct and Active '
+                                    'Vendor can call you to confirm your order... ',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-
                                       fontSize: 10.sp,
-                                      color: Colors.green
+                                      color: Colors.grey.shade800,
+                                      fontFamily: 'Popins'
                                   ),),),
 
                               SizedBox(height: 10.h,),
@@ -934,27 +1095,11 @@ else if (snapshot.hasData) {
                                 ),
                               ),
 
-                              SizedBox(height: 30.h,),
-
-
-                              SizedBox(height: 30.h,),
-                              ///USER TELEPHONE NUMBER
-                              Builder(
-                                  builder: (context) {
-                                    Provider.of<LocalStorageProvider>(context, listen: false).getPhoneNumber();
-                                    return Text(
-                                      " Your Telephone: ${Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber}",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    );
-                                  }
-                              ),
                               SizedBox(height: 15.h),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   elevation: 3,
-                                  backgroundColor: Colors.deepOrangeAccent,
+                                  backgroundColor: Colors.redAccent,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -1032,7 +1177,7 @@ else if (snapshot.hasData) {
                                 child: Text(
                                   'CheckOut',
                                   style:
-                                  TextStyle(color: Colors.white, fontSize: 20.spMin , fontWeight: FontWeight.bold),
+                                  TextStyle(color: Colors.white, fontSize: 20.spMin , fontWeight: FontWeight.bold, fontFamily: 'Righteous'),
                                 ),
                               ),
                             ],

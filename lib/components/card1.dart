@@ -57,8 +57,8 @@ border: Border.all(color: Colors.blueGrey.shade100),
                 images: [
                   Image(
                     image: AssetImage('assets/images/logo.png'),
-                    height: 200.h,
-                    width: 200.w,
+                    height: 400.h,
+                    width: 400.w,
                   ),
                   Image(
                     image: AssetImage('assets/images/delivery.jpg'),
