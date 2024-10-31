@@ -52,9 +52,10 @@ class _PromotionAdsCardState extends State<PromotionAdsCard> {
                     '${widget.content}',
                     softWrap: true,
                     style: TextStyle(
-                      fontSize: 10.sp,
+                      fontFamily: 'Poppins',
+                      fontSize: 11.sp,
                       fontWeight: FontWeight.w700,
-                      letterSpacing: 2,
+                      letterSpacing: 1,
                       color: widget.contentColor,
                     ),
                   ),

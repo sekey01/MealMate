@@ -5,6 +5,7 @@ import 'package:mealmate/AdminPanel/Pages/adminlogin.dart';
 import 'package:mealmate/Courier/courierLogin.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import 'package:mealmate/components/CustomLoading.dart';
+import 'package:mealmate/pages/authpages/take_phonenumber.dart';
 import 'package:mealmate/pages/navpages/home.dart';
 import 'package:provider/provider.dart';
 
@@ -18,8 +19,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController _phoneNumberController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -67,7 +67,7 @@ class _LoginState extends State<Login> {
         print(user.displayName);*/// Print user email for debugging
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Home()),
+          MaterialPageRoute(builder: (context) => TakePhoneNumber()),
         );
         setState(() {
           signInLoading = false;
@@ -135,48 +135,6 @@ class _LoginState extends State<Login> {
                       ),
 
 
-                      ///TEXTFORMFIELD   HERE
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Form(
-                          key: _formKey,
-
-                          child: TextFormField(
- onFieldSubmitted: (value){
-   Provider.of<LocalStorageProvider>(context,listen: false).storePhoneNumber(value);
-
- },
-                            maxLength: 10,
-                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,fontSize: 20.sp),
-                            keyboardType: TextInputType.numberWithOptions(),
-
-                            decoration: InputDecoration(
-                                prefixIcon:
-                                Icon(Icons.phone, color: Colors.red),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.r),
-                                    borderSide: BorderSide(color: Colors.deepOrangeAccent)),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: BorderSide(color: Colors.deepOrangeAccent),
-                                ),
-                                hintText: "enter number: 0542169225 ",
-                                hintStyle: TextStyle(color: Colors.black,fontSize: 15.sp,fontWeight: FontWeight.normal)),
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return '   This field cannot be empty';
-                              }
-                              //if phone number is not up to 10 digits
-                              if (value.length < 10 || value.length > 10) {
-                                return 'Phone number must be 10 digits';
-                              }
-                              return null; // return null if the input is valid
-                            },
-
-                          ),
-
-                        ),
-                      ),
 
 
 
@@ -191,21 +149,8 @@ class _LoginState extends State<Login> {
                               backgroundColor: Colors.deepOrange.shade50,),
     onPressed: ()  {
 
-      if (_formKey.currentState?.validate() ?? false) {
 
         _handleSignIn();
-
-
-      }
-
-      /*Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Home()),
-      );*/
-
-
-
-
 
                           },
                           child: Row(

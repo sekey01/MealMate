@@ -88,7 +88,7 @@ class _AdminLoginState extends State<AdminLogin> {
                     children: [
                       Center(
                         child: isLoading
-                            ? NewSearchLoadingOutLook()
+                            ? CustomLoGoLoading()
                             : Image(
                                 image: AssetImage("assets/images/logo.png"),
                                 height: 150,

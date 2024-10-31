@@ -25,7 +25,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -41,10 +41,11 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
         centerTitle: true,
         title: Text('search'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Righteous',
             color: Colors.blueGrey,
             fontWeight: FontWeight.normal,
             letterSpacing: 2,
-            fontSize: 20.spMin),
+            fontSize: 20.sp),
         backgroundColor: Colors.white,
       ),
       body: Padding(
@@ -52,57 +53,73 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: TextField(
-                controller: searchitemController,
-                style: TextStyle(color: Colors.deepOrange),
-                decoration: InputDecoration(
-                  hintText: 'foodName / restaurant / location',
-                  fillColor: Colors.grey.shade100,
-                  filled: true,
-                  prefixIcon: Icon(
-                    Icons.filter_alt_outlined,
-                    color: Colors.black,
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade200,
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3), // changes position of shadow
                   ),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      searchitemController.clear();
-                    },
-                    icon: Icon(
-                      Icons.clear,
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: TextField(
+                  controller: searchitemController,
+                  style: TextStyle(color: Colors.deepOrange),
+                  decoration: InputDecoration(
+                    hintText: 'Search : foodName / restaurant / location',
+                    fillColor: Colors.grey.shade100,
+                    filled: true,
+                    prefixIcon:  Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: ImageIcon(AssetImage('assets/Icon/filter.png'), color: Colors.blueGrey,size: 20,),
+                    ),
+
+                suffixIcon: IconButton(
+                      onPressed: () {
+                        searchitemController.clear();
+                      },
+                      icon: Icon(
+                        Icons.clear,
+                        color: Colors.black,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.deepOrangeAccent,
+                        style: BorderStyle.none,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    hintStyle: TextStyle(
                       color: Colors.black,
+                      fontSize: 10.sp,
                     ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.deepOrangeAccent,
-                      style: BorderStyle.none,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: Colors.deepOrangeAccent,
+                        style: BorderStyle.solid,
+                      ),
                     ),
-                    borderRadius: BorderRadius.circular(10),
+                    label: Text('foodName / restaurant / location'),
+                    labelStyle: TextStyle(color: Colors.grey, fontSize: 10.spMin),
                   ),
-                  hintStyle: TextStyle(
-                    color: Colors.black,
-                    fontSize: 10.sp,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(
-                      color: Colors.deepOrangeAccent,
-                      style: BorderStyle.solid,
-                    ),
-                  ),
-                  label: Text('foodName / restaurant / location'),
-                  labelStyle: TextStyle(color: Colors.grey, fontSize: 10.spMin),
+                  onChanged: (value) {
+                    searchProvider.searchItem = value;
+                    setState(() {
+                      searchProvider.searchFoodItems();
+                    });
+                  },
                 ),
-                onChanged: (value) {
-                  searchProvider.searchItem = value;
-                  setState(() {
-                    searchProvider.searchFoodItems();
-                  });
-                },
               ),
             ),
+
             Expanded(
               child: FutureBuilder(
                 future: searchProvider.searchFoodItems(),
@@ -119,7 +136,18 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
-                        child: noFoodFound(),
+                        child: Column(
+                          children: [
+                            SizedBox(height: 10.h,),
+                            RichText(text: TextSpan(
+                                children: [
+                                  TextSpan(text: "Search for : ", style: TextStyle(color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+                                  TextSpan(text: " \" FoodName, Restaurant or location \"", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 12.sp, fontWeight: FontWeight.bold,fontFamily: 'Poppins',)),
+                                ]
+                            )),
+                            noFoodFound(),
+                          ],
+                        ),
                       ),
                     );
                   } else {

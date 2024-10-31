@@ -327,10 +327,10 @@ checkInternet();
                                         'Order from your favorite restaurant',
                                         style: TextStyle(
                                           wordSpacing: 2,
-                                            fontFamily: 'Popins',
-                                            color: Colors.black,
-                                            fontSize: 12.sp,
-                                            //fontWeight: FontWeight.bold
+                                            fontFamily: 'Poppins',
+                                            color: Colors.blueGrey,
+                                            fontSize: 13.sp,
+
                                         ),
                                       ),
                                     ),
@@ -392,7 +392,7 @@ checkInternet();
                                                                   ),),
                                           Padding(
                                             padding: const EdgeInsets.only(left: 16),
-                                            child: Image(image: AssetImage('assets/images/grocery.png'), height: 80.h, width: 150.w,),
+                                            child: Image(image: AssetImage('assets/images/grocery.png'), height: 100.h, width: 150.w,),
                                           ),
 
 
@@ -421,13 +421,14 @@ checkInternet();
                                         children: [
                                           Expanded(child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                               children: [
                                                Padding(
                                                  padding: const EdgeInsets.only(left: 8,top: 8),
                                                  child: Text('Shops', style: TextStyle(
                                                      fontFamily: 'Righteous',
                                                      color: Colors.black,
-                                                     fontSize: 15.sp,
+                                                     fontSize: 17.sp,
                                                      fontWeight: FontWeight.bold),),
                                                ),
                                                 Padding(
@@ -435,7 +436,8 @@ checkInternet();
                                                   child: Text('This and more available in shops around you...',
                                                     style: TextStyle(
                                                         color: Colors.blueGrey,
-                                                        fontSize: 8.sp,
+                                                        fontSize: 9.sp,
+                                                        fontFamily: 'Poppins',
                                                         //fontWeight: FontWeight.bold
                                                     ),),
                                                 ),
@@ -456,10 +458,18 @@ checkInternet();
                       ),
                     ),
                   ),
+SizedBox(height: 30.h,),
 
+                  Padding(padding: EdgeInsets.all(1),
+                      child: PromotionAdsCard(
+                        image: 'assets/images/MealmateDress.png',
+                        heading:'Get Rewarded With MealMate Shirt',
+                        content: 'Order your favorite food and get Lucky..',
+                        contentColor: Colors.white70,
+                        headingColor: Colors.white,
+                        backgroundColor: Colors.black,
 
-                  ///CARD SHOWING THE INTRODUCTION OF THE APP AND COUROSEL OF IMAGES
-                  initCard(),
+                      )),
 
 
                   SizedBox(
@@ -480,17 +490,9 @@ checkInternet();
                   SizedBox(
                     height: 30.h,
                   ),
+                  ///CARD SHOWING THE INTRODUCTION OF THE APP AND COUROSEL OF IMAGES
+                  initCard(),
 
-                  Padding(padding: EdgeInsets.all(1),
-                      child: PromotionAdsCard(
-                        image: 'assets/images/MealmateDress.png',
-                        heading:'Get Rewarded With MealMate Shirt',
-                        content: 'Order your favorite food and get Lucky..',
-                        contentColor: Colors.white70,
-                        headingColor: Colors.white,
-                        backgroundColor: Colors.black,
-
-                      )),
                   SizedBox(
                     height: 30.h,
                   ),
@@ -936,12 +938,12 @@ checkInternet();
 SizedBox(height: 30.h,),
                   Padding(padding: EdgeInsets.all(1),
                       child: PromotionAdsCard(
-                        image: 'assets/images/MMBoard.png',
+                        image: 'assets/images/jollof.png',
                         heading:'Satisfy Your cravings With MealMate',
                         content: 'Order your favorite food from your favorite restaurant',
-                        contentColor: Colors.white70,
+                        contentColor: Colors.white,
                         headingColor: Colors.white,
-                        backgroundColor: Colors.deepOrange,
+                        backgroundColor: Colors.redAccent.shade200,
 
                       )),
 

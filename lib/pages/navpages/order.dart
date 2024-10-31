@@ -23,6 +23,7 @@ class _OrderListState extends State<OrderList> {
         centerTitle: true,
         title: const Text('Order List'),
         titleTextStyle: const TextStyle(
+          fontFamily: 'Righteous',
             color: Colors.blueGrey,
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -51,8 +52,8 @@ class _OrderListState extends State<OrderList> {
               children: [
                 RichText(text: TextSpan(
                     children: [
-                      TextSpan(text: " Order", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold)),
-                      TextSpan(text: " History", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold)),
+                      TextSpan(text: " Order", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+                      TextSpan(text: " History", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold, fontFamily: 'Righteous')),
 
 
                     ]

@@ -7,7 +7,7 @@ void Notify(BuildContext context, String text, Color color) {
       content: Center(
         child: Text(
           text,
-          style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold,),
+          style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold,fontFamily: 'Righteous'),
         ),
       ),
       backgroundColor: color,
@@ -26,7 +26,7 @@ void NoInternetNotify(BuildContext context, String text, Color color) {
       content: Center(
         child: Text(
           text,
-          style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold,),
+          style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold,fontFamily: 'Righteous'),
         ),
       ),
       backgroundColor: color,

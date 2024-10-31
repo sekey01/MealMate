@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../UserLocation/LocationProvider.dart';
 import '../components/card1.dart';
+import '../components/mainCards/promotion_ads_card.dart';
 
 class CourierInit extends StatefulWidget {
   const CourierInit({super.key});
@@ -53,7 +54,16 @@ class _CourierInitState extends State<CourierInit> {
               children: [
                 initCourierCard(),
                 SizedBox(height: 50.h,),
+                Padding(padding: EdgeInsets.only(top: 20,bottom: 20),
+                    child: PromotionAdsCard(
+                      image: 'assets/Icon/free_shipping.png',
+                      heading:'Welcome to Courier Panel',
+                      content: ' Track buyer by entering the phone number and the latitude and longitude of the buyer',
+                      contentColor: Colors.white70,
+                      headingColor: Colors.white,
+                      backgroundColor: Colors.black,
 
+                    )),
                 Badge(
                   backgroundColor: Colors.green,
                   alignment: Alignment.bottomLeft,

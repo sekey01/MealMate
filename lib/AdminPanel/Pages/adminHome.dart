@@ -21,6 +21,7 @@ import 'package:mealmate/components/NoInternet.dart';
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../Notification/notification_Provider.dart';
 import '../../components/Notify.dart';
+import '../../components/mainCards/promotion_ads_card.dart';
 import '../OtherDetails/ID.dart';
 import '../components/ChangeIDofAdmin.dart';
 import '../components/adminCollectionRow.dart';
@@ -136,7 +137,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
         automaticallyImplyLeading: false,
         title: RichText(text: TextSpan(
             children: [
-              TextSpan(text: "Welcome ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.spMin,fontWeight: FontWeight.bold,fontFamily: 'Righteous',
+              TextSpan(text: "Hi ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous',
               )),
               TextSpan(text: " !", style: TextStyle(color: Colors.black, fontSize: 15.spMin,fontWeight: FontWeight.bold)),
 
@@ -163,7 +164,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                         child: Text('Updating', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic),),
                         );
                        } else if (snapshot.hasError) {
-                            return Center(child: Center(child: Text('refresh page')));
+                            return Center(child: Center(child: Text('🔃', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12.sp, ),)));
              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                return Center(
                  child: Text('No Order Detected',style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic), ),
@@ -183,7 +184,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
         actions: [
 
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               /// ICON BUTTON TO SHOW THE LIST OF COMPLETED ORDERS
               GestureDetector(
@@ -201,7 +202,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                             child: Text('...', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic),),
                           );
                         } else if (snapshot.hasError) {
-                          return Center(child: Center(child: Text('refresh page')));
+                          return Center(child: Center(child: Text('🔃', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12.sp, ),)));
                         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                           return Center(
                             child: Text('0',style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 8.sp, fontStyle: FontStyle.italic), ),
@@ -301,50 +302,78 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                     ]
                 )),
 
-                SizedBox(height: 30.h,),
-                /// GET ADMIN EMAIL
-                FutureBuilder(
-                    future: Provider.of<LocalStorageProvider>(context, listen: false).getAdminEmail() ,
-                    builder: (context, snapshot){
-                      if(snapshot.hasData){
-                        return Text(snapshot.data.toString(),  style: TextStyle(
-                          letterSpacing: 1,
-                          color: Colors.black,
-                          fontSize: 15.spMin,
-                        ),
-                        );
-                      }else{
-                        return Text('adminemail@gmail.com ',  style: TextStyle(
-                          letterSpacing: 1,
-                          color: Colors.black,
-                          fontSize: 15.spMin,
-                          fontWeight: FontWeight.bold,
-                        ),);
-                      }
-                    }),
 
-                SizedBox(height: 30.h,),
+                Padding(padding: EdgeInsets.only(top: 20,bottom: 20),
+                    child: PromotionAdsCard(
+                      image: 'assets/Icon/food.png',
+                      heading:'Welcome to Admin Panel',
+                      content: 'Upload your food items here and manage your orders',
+                      contentColor: Colors.white70,
+                      headingColor: Colors.white,
+                      backgroundColor: Colors.black,
+
+                    )),
+
+               // SizedBox(height: 10.h,),
+                /// GET ADMIN EMAIL
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+
+                    Image(image: AssetImage('assets/Icon/gmail.png'),height: 20.h,width: 20.h,),
+                    SizedBox(width: 10.w,),
+                    FutureBuilder(
+                        future: Provider.of<LocalStorageProvider>(context, listen: false).getAdminEmail() ,
+                        builder: (context, snapshot){
+                          if(snapshot.hasData){
+                            return Text(snapshot.data.toString(),  style: TextStyle(
+                              letterSpacing: 1,
+                              color: Colors.black,
+                              fontSize: 15.sp,
+                              fontFamily: 'Poppins'
+                            ),
+                            );
+                          }else{
+                            return Text('adminemail@gmail.com ',  style: TextStyle(
+                              letterSpacing: 1,
+                              color: Colors.black,
+                              fontSize: 15.spMin,
+                              fontWeight: FontWeight.bold,
+                            ),);
+                          }
+                        }),
+                  ],
+                ),
+
+               // SizedBox(height: 30.h,),
                 ///LOCATION DISPLAYED HERE
                 ///
                 ///
-                FutureBuilder(
-                    future:
-                        Provider.of<LocationProvider>(context, listen: false)
-                            .determinePosition(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Text(snapshot.data.toString(),
-                            style: TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 10.sp));
-                      }
-                      return Text(
-                        'locating you...',
-                        style: TextStyle(color: Colors.deepOrangeAccent,fontSize: 10.spMin, fontWeight: FontWeight.bold),
-                      );
-                    }),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Image(image: AssetImage('assets/Icon/map.png'),height: 20.h,width: 20.h,),
+                    SizedBox(width: 10.w,),
+                    FutureBuilder(
+                        future:
+                            Provider.of<LocationProvider>(context, listen: false)
+                                .determinePosition(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(snapshot.data.toString(),
+                                style: TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10.sp));
+                          }
+                          return Text(
+                            'locating you...',
+                            style: TextStyle(color: Colors.deepOrangeAccent,fontSize: 10.spMin, fontWeight: FontWeight.bold),
+                          );
+                        }),
+                  ],
+                ),
                 SizedBox(
                   height: 30.h,
                 ),

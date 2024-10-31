@@ -66,8 +66,9 @@ class _SearchState extends State<Search> {
         centerTitle: true,
         title: Text('Search'),
         titleTextStyle: TextStyle(
+          fontFamily: 'Righteous',
           color: Colors.blueGrey,
-          fontWeight: FontWeight.normal,
+          fontWeight: FontWeight.bold,
           letterSpacing: 3,
           fontSize: 20.spMin,
         ),
@@ -105,9 +106,9 @@ class _SearchState extends State<Search> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.only(top: 5),
             child: Container(
-              height: 100.h,
+              height: 70.h,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.transparent,
@@ -162,7 +163,16 @@ class _SearchState extends State<Search> {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.all(4.0),
-                        child: EmptyCollection(),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              EmptyCollection(),
+                              EmptyCollection(),
+                              EmptyCollection(),
+                            ],
+                          ),
+                        ),
                       );
                     },
                   );

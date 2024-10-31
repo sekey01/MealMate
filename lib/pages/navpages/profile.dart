@@ -72,7 +72,7 @@ class _ProfileState extends State<Profile> {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: CircleAvatar(radius: 50.r,
-                              backgroundColor: Colors.deepOrangeAccent,
+                              backgroundColor: Colors.black,
                               child: ClipRRect(child: Image(image: NetworkImage(snapshot.data.toString()), fit: BoxFit.fill,), borderRadius: BorderRadius.circular(60.r),),
                             ),
                           );
@@ -109,7 +109,8 @@ class _ProfileState extends State<Profile> {
                             letterSpacing: 1,
                             color: Colors.black,
                             fontSize: 15.sp,
-                            fontWeight: FontWeight.bold
+                            //fontWeight: FontWeight.bold,
+                            fontFamily: 'Popins'
                           ),
                           );
                         }else{

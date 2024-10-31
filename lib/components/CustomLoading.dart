@@ -136,21 +136,31 @@ class _EmptyCollectionState extends State<EmptyCollection> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 120,
-                width: 250,
-                decoration: BoxDecoration(
-                  color: Colors.blueGrey.shade50,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Image(image: AssetImage("assets/Icon/no_food_found.png"), height: 50, width: 150,),
+              Stack(
+                children:[
+                  Container(
+                    height: 120,
+                    width: 250,
+                    decoration: BoxDecoration(
+                      color: Colors.blueGrey.shade50,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Image(image: AssetImage("assets/Icon/no_food_found.png"), height: 50, width: 140,),
+                  ),
+                  Positioned(
+                    bottom: 1,
+                    left: 45,
+                    child:
+                  Text("no restaurant in your area yet",
+                    style: TextStyle(color: Colors.blueGrey, fontSize: 10,fontWeight: FontWeight.bold,fontFamily: 'Poppins'),)),
+                ],
               ),
               SizedBox(height: 10),
               Container(
                 height: 20,
-                width: 200,
+                width: 250,
                 decoration: BoxDecoration(
-                  color: Colors.blueGrey.shade100,
+                  color: Colors.blueGrey.shade50,
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -163,25 +173,25 @@ class _EmptyCollectionState extends State<EmptyCollection> {
                     height: 20,
                     width: 50,
                     decoration: BoxDecoration(
-                      color: Colors.blueGrey.shade100,
+                      color: Colors.blueGrey.shade50,
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                   SizedBox(width: 10),
                   Container(
                     height: 20,
-                    width: 20,
+                    width: 40,
                     decoration: BoxDecoration(
-                      color: Colors.blueGrey.shade100,
+                      color: Colors.blueGrey.shade50,
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                   SizedBox(width: 10),
                   Container(
                     height: 20,
-                    width: 110,
+                    width: 140,
                     decoration: BoxDecoration(
-                      color: Colors.blueGrey.shade100,
+                      color: Colors.blueGrey.shade50,
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),

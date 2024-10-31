@@ -146,7 +146,9 @@ flutter:
      - assets/images/MMBoard1.png
      - assets/images/burger.png
      - assets/images/grocery.png
+     - assets/images/enter_number.png
      - assets/images/shops.jpg
+     - assets/images/jollof.png
      - assets/Icon/yummy.png
      - assets/Icon/coupon.png
      - assets/Icon/map.png
@@ -155,6 +157,7 @@ flutter:
      - assets/Icon/cedi.png
      - assets/Icon/no_food_found.png
      - assets/Icon/restaurant.png
+     - assets/Icon/free_shipping.png
      - assets/Icon/version.png
      - assets/Icon/customer-service.png
      - assets/Icon/transaction.png
@@ -162,6 +165,7 @@ flutter:
      - assets/Icon/VendorLocation.png
      - assets/Icon/loading.gif
      - assets/Icon/notification.png
+     - assets/Icon/admin_panel.png
      - assets/Announcements/An_Feedback.png
      - assets/Announcements/An_Jollof.png
      - assets/Announcements/An_Location.png
