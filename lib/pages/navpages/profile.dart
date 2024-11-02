@@ -1,6 +1,8 @@
+import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mealmate/components/mainCards/promotion_ads_card.dart';
 import 'package:mealmate/pages/navpages/edit_profile.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +43,7 @@ class _ProfileState extends State<Profile> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           leading: IconButton(onPressed: (){Navigator.pop(context);}, icon: Icon(Icons.arrow_back_ios, color: Colors.black,)),
-          title: Text('Account', style: TextStyle(color: Colors.blueGrey, letterSpacing: 3, fontWeight: FontWeight.bold),), centerTitle: true,
+          title: Text('Account', style: TextStyle(color: Colors.blueGrey, letterSpacing: 3, fontWeight: FontWeight.bold,fontFamily: 'Righteous')), centerTitle: true,
           backgroundColor: Colors.white,
           actions: [
             Padding(
@@ -93,9 +95,7 @@ class _ProfileState extends State<Profile> {
 
 
 
-                  SizedBox(
-                    height: 10.h,
-                  ),
+
 
                   ///EMAIL DISPLAYED HERE
                   ///
@@ -109,8 +109,8 @@ class _ProfileState extends State<Profile> {
                             letterSpacing: 1,
                             color: Colors.black,
                             fontSize: 15.sp,
-                            //fontWeight: FontWeight.bold,
-                            fontFamily: 'Popins'
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins'
                           ),
                           );
                         }else{
@@ -119,6 +119,7 @@ class _ProfileState extends State<Profile> {
                             color: Colors.black,
                             fontSize: 15.sp,
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins'
                           ),);
                         }
                       }),
@@ -145,6 +146,7 @@ class _ProfileState extends State<Profile> {
                               ),);
                             }else{
                               return Text(' Username ', style: TextStyle(
+                                fontFamily:'Righteous',
                                 letterSpacing: 1,
                                 color: Colors.black,
                                 fontSize: 25.sp,
@@ -159,10 +161,6 @@ class _ProfileState extends State<Profile> {
 
 
 
-                  SizedBox(
-                    height: 10.h,
-                  ),
-
                   ///  TELEPHONE NUMBER HERE
                   ///
                   ///
@@ -172,7 +170,8 @@ class _ProfileState extends State<Profile> {
                       builder: (context, snapshot){
                     if(snapshot.hasData){
                       return Text(snapshot.data.toString(),  style: TextStyle(
-                        fontFamily: 'Righteous',
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.bold,
 
                         letterSpacing: 1,
                         color: Colors.deepOrangeAccent,
@@ -220,7 +219,7 @@ class _ProfileState extends State<Profile> {
                      letterSpacing: 1,
                      color: Colors.black,
                      fontSize: 10.sp,
-                     fontFamily: 'Righteous',
+                     fontFamily: 'Poppins',
 
                    ),),
                  ],
@@ -238,27 +237,46 @@ class _ProfileState extends State<Profile> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ExpansionTile(
-                        title: Text('Promo Codes ', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, letterSpacing:  1,),),
+                        title: Text('Terms & Conditions ', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, letterSpacing:  1,),),
                         //leading: ImageIcon(AssetImage('assets/Icon/coupon.png'),
                         //  size: 30,color: Colors.deepOrangeAccent,),
                         children: [
                           ListTile(
-                            title: Text('No promo available', style: TextStyle(color: Colors.blueGrey,fontSize: 15.spMax),),
+                            onTap: () async{
+                              await EasyLauncher.url(url: 'https://www.google.com/', mode: Mode.platformDefault);
+                            },
+                            title: Text(' Read Terms & Conditions ', style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontFamily: "Righteous",),),
+                          ),
+                          ListTile(
+                            onTap: () async{
+                              await EasyLauncher.url(url: 'https://www.google.com/', mode: Mode.platformDefault);
+                            },
+                            title: Text(' FAQ\'s ', style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontFamily: "Righteous",),),
                           )
                         ],
                       ),
                       ExpansionTile(
-                        title: Text('Transactions ', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, letterSpacing: 1,),),
+                        title: Text('Licenses ', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, letterSpacing: 1,),),
                        // leading: ImageIcon(AssetImage('assets/Icon/transaction.png'),
                          // size: 30,color: Colors.deepOrangeAccent,),
                         children: [
                           ListTile(
-                            title: Text('No recorded Transactions', style: TextStyle(color: Colors.blueGrey,fontSize: 15.spMax),),
+                            onTap: () async{
+                              await EasyLauncher.url(url: 'https://www.fda.gov.gh/', mode: Mode.platformDefault);
+                            },
+                            title: Text(' Foods And Drugs Authority ( FDA )', style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontFamily: "Righteous",),),
+                          ),
+                          ListTile(
+                            onTap: () async{
+                              await EasyLauncher.url(url: 'https://www.google.com/', mode: Mode.platformDefault);
+                            },
+                            title: Text(' MealMate Geo ', style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontFamily: "Righteous",),),
                           )
                         ],
                       ),
                       ExpansionTile(
-                        title: Text('Logout ', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, letterSpacing: 1),),
+
+                        title: Text('Logout ', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, letterSpacing: 1, fontFamily: 'Poppins'),),
                         //leading:Icon(Icons.login_outlined, color: Colors.deepOrangeAccent, size: 30,),
                         children: [
                           ListTile(
@@ -275,6 +293,23 @@ class _ProfileState extends State<Profile> {
                           )
                         ],
                       ),
+
+
+                      GestureDetector(
+                        onTap: () async{
+                          await EasyLauncher.url(url: 'https://www.google.com/', mode: Mode.platformDefault);
+                        },
+                        child: PromotionAdsCard(
+                            heading: 'Want to Become a Courier?',
+                            headingColor: Colors.black,
+                            content: 'Earn on the schedule, this can be your side Hustle...''Tap to learn more',
+                            contentColor: Colors.black,
+                            image: 'assets/Icon/delivery_man.png',
+                            backgroundColor: Colors.greenAccent),
+                      ),
+
+
+
                       ExpansionTile(
                         title: Text('Version ', style: TextStyle(color: Colors.blueGrey, letterSpacing: 1),),
                         //leading: ImageIcon(AssetImage('assets/Icon/version.png'),

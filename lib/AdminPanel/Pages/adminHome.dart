@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/AdminFunctionsProvider.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
 import 'package:mealmate/AdminPanel/Pages/Completed_Orders_Page.dart';
@@ -18,6 +19,7 @@ import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/card1.dart';
 import 'package:provider/provider.dart';
 import 'package:mealmate/components/NoInternet.dart';
+import '../../Courier/courier_model.dart';
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../Notification/notification_Provider.dart';
 import '../../components/Notify.dart';
@@ -27,6 +29,7 @@ import '../components/ChangeIDofAdmin.dart';
 import '../components/adminCollectionRow.dart';
 import 'IncomingOrdersPage.dart';
 import 'Completed_Orders_Page.dart';
+import 'available_couriers.dart';
 
 
 class adminHome extends StatefulWidget {
@@ -116,16 +119,7 @@ Notify(context, 'Item Uploaded Successfully', Colors.green);
   ///BOOL TO CHECK FOR INTERNET
   ///
   bool _hasInternet = true;
-  @override
-  initState() {
-    super.initState();
-    /// Start listening to the internet connection status
-    // InternetConnectionChecker().onStatusChange.listen((status) {
-    //   setState(() {
-    //     _hasInternet = status == InternetConnectionStatus.connected;
-    //   });
-    // });
-  }
+
 
 
   Widget build(BuildContext context) {
@@ -344,36 +338,71 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                         }),
                   ],
                 ),
-
-               // SizedBox(height: 30.h,),
                 ///LOCATION DISPLAYED HERE
                 ///
-                ///
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Image(image: AssetImage('assets/Icon/map.png'),height: 20.h,width: 20.h,),
-                    SizedBox(width: 10.w,),
-                    FutureBuilder(
-                        future:
-                            Provider.of<LocationProvider>(context, listen: false)
-                                .determinePosition(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return Text(snapshot.data.toString(),
-                                style: TextStyle(
-                                    overflow: TextOverflow.ellipsis,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10.sp));
-                          }
-                          return Text(
-                            'locating you...',
-                            style: TextStyle(color: Colors.deepOrangeAccent,fontSize: 10.spMin, fontWeight: FontWeight.bold),
-                          );
-                        }),
-                  ],
+                ///LOCATION OF THE ADMIN
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image(image: AssetImage('assets/Icon/map.png'),height: 20.h,width: 20.h,),
+                      SizedBox(width: 10.w,),
+                      FutureBuilder(
+                          future:
+                              Provider.of<LocationProvider>(context, listen: false)
+                                  .determinePosition(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Text(snapshot.data.toString(),
+                                  style: TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10.sp));
+                            }
+                            return Text(
+                              'locating you...',
+                              style: TextStyle(color: Colors.deepOrangeAccent,fontSize: 10.spMin, fontWeight: FontWeight.bold),
+                            );
+                          }),
+                    ],
+                  ),
                 ),
+
+                /// AVAILABLE COURIERS
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => CouriersAvailable()));
+                  },
+                  child: Container(
+                    height: 65.h,
+                    width: 10.sw,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(0.0, 1.0), //(x,y)
+                          blurRadius: 6.0,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+
+                        SizedBox(height: 5.h,),
+                        Text('Tap to view Available Couriers', style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold),),
+                        LottieBuilder.asset('assets/Icon/courier.json',height: 40.h,width: 30.h,),
+                        //Image(image: AssetImage('assets/Icon/courier.png'),height: 40.h,width: 30.h,),
+                      ],
+                    ),
+                  ),
+                ),
+
+
                 SizedBox(
                   height: 30.h,
                 ),
@@ -413,17 +442,18 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                   onDoubleTap: () {},
                   onSwipe: () {},
                 ) : NoInternetConnection(),
+                Text('Restaurant Online Status', style: TextStyle(color: Colors.blueGrey, fontSize: 15.sp),),
                 SizedBox(
                   height: 30.h,
                 ),
                 Text(
-                  'Upload Food Items Here',
-                  style: TextStyle(fontSize: 15.sp, color: Colors.blueGrey),
+                  'Upload Food Items Bellow',
+                  style: TextStyle(fontSize: 20.sp, color: Colors.blueGrey, fontFamily: 'Righteous'),
                 ),
 
-                _isLoading ? NewSearchLoadingOutLook() : initAdminCard(),
+              /*  _isLoading ? NewSearchLoadingOutLook() : initAdminCard(),*/
                 SizedBox(
-                  height: 30.h,
+                  height: 10.h,
                 ),
 
                 ///ROW OF BUTTONS TO SELECT THE FOOD COLLECTION YOU WAN TO UPLOAD
@@ -468,14 +498,28 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
-                    child: Text(
-                      Provider.of<AdminCollectionProvider>(context)
-                          .collectionToUpload,
-                      style: TextStyle(
-                          fontFamily: 'Righteous',
-                          color: Colors.white,
-                          letterSpacing: 3,
-                          fontWeight: FontWeight.bold),
+                    child: RichText(
+                      text: TextSpan(
+                          children: [
+                            TextSpan(
+                                text: 'Upload to : ',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                    color: Colors.white,
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.bold)),
+                          TextSpan(
+                            text: Provider.of<AdminCollectionProvider>(context, listen: false).collectionToUpload,
+                            style: TextStyle(
+                              fontFamily: 'Righteous',
+                                letterSpacing: 1,
+                                color: Colors.white,
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold)
+                          )
+                          ,
+                          ]
+                      ),
                     ),
                   ),
                 ),

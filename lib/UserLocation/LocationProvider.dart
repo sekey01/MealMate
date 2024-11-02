@@ -125,6 +125,33 @@ class LocationProvider extends ChangeNotifier {
     await determinePosition();
     return LatLng(Lat, Long);}
 
+
+
+
+  //// GETING THE ROUTE BETWEEN VENDOR AND CUSTOMER
+  Future<List<LatLng>> getRouteCoordinates(LatLng l1, LatLng l2) async {
+    String url = 'https://maps.googleapis.com/maps/api/directions/json?origin=${l1.latitude},${l1.longitude}&destination=${l2.latitude},${l2.longitude}&key=$googleMapsApiKey';
+    http.Response response = await http.get(Uri.parse(url));
+    Map values = jsonDecode(response.body);
+    List<LatLng> points = [];
+    if (values["status"] == "REQUEST_DENIED") {
+      print("API key is invalid");
+    } else {
+      values["routes"].forEach((route) {
+        route["legs"].forEach((leg) {
+          leg["steps"].forEach((step) {
+            points.add(LatLng(step["start_location"]["lat"], step["start_location"]["lng"]));
+            points.add(LatLng(step["end_location"]["lat"], step["end_location"]["lng"]));
+          });
+        });
+      });
+    }
+    return points;
   }
+
+
+
+
+}
 
 

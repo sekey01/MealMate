@@ -82,6 +82,7 @@ class _DetailedCardState extends State<DetailedCard> {
 
 
 
+  //CUSTOM ICON FOR VENDOR LOCATION
    late final customMapIcon;
   Future<BitmapDescriptor> _loadCustomIcon(BuildContext context) async {
     final ImageConfiguration configuration = createLocalImageConfiguration(context, size: Size(40, 40));
@@ -91,11 +92,27 @@ class _DetailedCardState extends State<DetailedCard> {
     return await BitmapDescriptor.asset(configuration, 'assets/Icon/VendorLocation.png');
   }
 
-   // Create the polyline
-
 
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
+
+
+  //CREATE POLYLINE
+  List<LatLng> _routes = [];
+  Future<List<LatLng>> _getRoutes () async{
+    final points = await Provider.of<LocationProvider> (context,listen: false).getRouteCoordinates(
+    LatLng(Provider.of<LocationProvider> (context,listen: false).Lat, Provider.of<LocationProvider> (context,listen: false).Long),
+    LatLng(widget.latitude, widget.longitude));
+    setState(() {
+      _routes = points;
+    });
+    return points;
+
+  }
+
+
+
+
   double overAllPrice = 0.00;
   late double deliveryFee;
   TextEditingController messageController = TextEditingController();
@@ -106,12 +123,17 @@ class _DetailedCardState extends State<DetailedCard> {
   @override
   void initState() {
     super.initState();
+    //Load Custom Icon
     _loadCustomIcon(context);
+
+    //Calculate Distance Between Customer And Vendor
     Provider.of<LocationProvider>(context, listen: false).calculateDistance(
       LatLng(widget.latitude, widget.longitude),
       LatLng(Provider.of<LocationProvider>(context, listen: false).Lat, Provider.of<LocationProvider>(context, listen: false).Long),
     );
-    ///overAllPrice = widget.price;
+
+    // Get The Best Route From Vendor To Customer
+    _getRoutes();
   }
 
   @override
@@ -254,18 +276,21 @@ class _DetailedCardState extends State<DetailedCard> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                         ImageIcon(AssetImage('assets/Icon/discount.png'), color: Colors.red, size: 20.sp,),
-                          RichText(text: TextSpan(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            TextSpan(text: " - ${(widget.price*0.1).toStringAsFixed(2)}%", style: TextStyle( fontFamily: 'Righteous',color: Colors.red, fontSize:15.sp,fontWeight: FontWeight.bold)),
-                            TextSpan(text: " Discounted   ", style: TextStyle(color: Colors.black, fontSize: 10.sp, fontFamily: 'Righteous',)),
+                           ImageIcon(AssetImage('assets/Icon/discount.png'), color: Colors.red, size: 20.sp,),
+                            RichText(text: TextSpan(
+                            children: [
+                              TextSpan(text: " - ${(widget.price*0.1).toStringAsFixed(2)}%", style: TextStyle( fontFamily: 'Righteous',color: Colors.red, fontSize:12.sp,fontWeight: FontWeight.bold)),
+                              TextSpan(text: " Discounted", style: TextStyle(color: Colors.black, fontSize: 8.sp, fontFamily: 'Righteous',)),
 
 
-                          ]
-                                          )),
-                        ],
+                            ]
+                                            )),
+                          ],
+                        ),
                       ),
                     ))
               ],
@@ -885,7 +910,9 @@ class _DetailedCardState extends State<DetailedCard> {
                                 ],
                               ),
                               SizedBox(height: 15.h),
-                              ///MAP
+
+
+                                      ///MAP
                               ///
                               ///
     FutureBuilder<BitmapDescriptor>(
@@ -975,11 +1002,9 @@ else if (snapshot.hasData) {
                                                   polylines:  Set<Polyline>.of(<Polyline>{
                                                     Polyline(
                                                       polylineId: PolylineId('polyline_id'),
-                                                      points: [
-                                                        LatLng(widget.latitude, widget.longitude),
-                                                        LatLng(Provider.of<LocationProvider>(context, listen: false).Lat, Provider.of<LocationProvider>(context, listen: false).Long),
-                                                      ],
-                                                      color: Colors.blue, // Set your desired color
+                                                      points: _routes,
+                                                      color: Colors.red,
+                                                      // Set your desired color
                                                       width: 5, // Set your desired width
                                                     ),
                                                   }),
@@ -1152,7 +1177,11 @@ else if (snapshot.hasData) {
                                           courier: false,
                                           delivered: false,
                                           adminEmail: widget.adminEmail,
-                                          adminContact: widget.adminContact),
+                                          adminContact: widget.adminContact,
+                                        CourierContact: '',
+                                        CourierId: '',
+                                        CourierName: '',
+                                      ),
                                     );
 
                                     Navigator.push(

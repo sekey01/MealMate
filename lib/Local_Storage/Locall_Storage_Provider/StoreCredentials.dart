@@ -16,9 +16,10 @@ class LocalStorageProvider extends ChangeNotifier {
   String imageUrl = '' ;
   String adminEmail = '';
   String locationName = '';
+  String courierId = '';
 
 
-  Future<void> storePhoneNumber(String newValue) async {
+ Future<void> storePhoneNumber(String newValue) async {
     try {
       final directory = await getApplicationDocumentsDirectory();
       final filepath = '${directory.path}/storePhoneNumber.txt';
@@ -44,7 +45,6 @@ print(phoneNumber);
       // You can throw the error or handle it as needed
     }
   }
-
 
   Future <String>getPhoneNumber() async {
     try {
@@ -72,6 +72,64 @@ print(phoneNumber);
       // You can throw the error or handle it as needed
     }
   }
+
+
+  Future<void> storeCourierID(String newValue) async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final filepath = '${directory.path}/storeCourierId.txt';
+      final file = File(filepath);
+
+      // Check if the file exists
+      if (!await file.exists()) {
+        await file.create(
+            recursive: true); // Create the file if it doesn't exist
+      }
+
+      // Write the new value to the file
+      await file.writeAsString(newValue);
+
+      // Update the telephone Number
+      courierId = newValue;
+      print(courierId);
+      // Notify listeners of the change
+      notifyListeners();
+    } catch (e) {
+      // Handle any exceptions
+      print("Error changing Courier ID: $e");
+      // You can throw the error or handle it as needed
+    }
+  }
+
+
+  Future <String>getCourierID() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final filepath = '${directory.path}/storeCourierId.txt';
+      final file = File(filepath);
+
+      // Check if the file exists
+      if (await file.exists()) {
+        // Read the contents of the file
+        String contents = await file.readAsString();
+        courierId = contents; // Parse the contents to an integer
+        notifyListeners();
+
+        return courierId;
+      } else {
+        return courierId = '0'; // Default value if the file doesn't exist
+      }
+
+      // Notify listeners of the change
+    } catch (e) {
+      // Handle any exceptions
+      return '0';
+      //print("Error loading Username: $e");
+      // You can throw the error or handle it as needed
+    }
+  }
+
+
 
 
 

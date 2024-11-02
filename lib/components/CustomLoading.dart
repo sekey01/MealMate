@@ -108,6 +108,155 @@ class NewSearchLoadingOutLook extends StatelessWidget {
   }
 }
 
+
+/// THIS DISPLAYS IF  THE LOADING OUTLOOK FOR COURIER DETAILS
+class CourierDetailsLoading extends StatelessWidget {
+  const CourierDetailsLoading({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return  Container(
+      height: 200,
+      width: 250,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 120,
+            width: 250,
+            decoration: BoxDecoration(
+              //color: Colors.blueGrey.shade50,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 70,
+                  width: 80,
+                  decoration: BoxDecoration(
+                    color: Colors.blueGrey.shade50,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+               //   child: Image(image: AssetImage("assets/Icon/no_food_found.png"), height: 50, width: 140,),
+                ),
+                SizedBox(width: 10),
+                Container(
+                  height: 40,
+                  width: 120,
+                  decoration: BoxDecoration(
+                    color: Colors.blueGrey.shade50,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                 // child: Image(image: AssetImage("assets/Icon/no_food_found.png"), height: 50, width: 140,),
+                ),
+              ],
+            ),),
+          SizedBox(height: 10),
+          Container(
+            height: 20,
+            width: 200,
+            decoration: BoxDecoration(
+              color: Colors.blueGrey.shade100,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child:Row(
+              children: [
+                Container(
+                  height: 20,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.blueGrey.shade100,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  //child: LinearProgressIndicator(color: Colors.grey.shade50,),
+
+                ),
+                SizedBox(width: 10),
+                Container(
+                  height: 20,
+                  width: 20,
+                  decoration: BoxDecoration(
+                    color: Colors.blueGrey.shade100,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+               //   child: LinearProgressIndicator(color: Colors.grey.shade50,),
+
+                ),
+                SizedBox(width: 10),
+                Container(
+                  height: 20,
+                  width: 110,
+                  decoration: BoxDecoration(
+                    color: Colors.blueGrey.shade100,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                 // child: LinearProgressIndicator(color: Colors.grey.shade50,),
+
+                ),
+              ],
+            ),
+
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 20,
+                width: 50,
+                decoration: BoxDecoration(
+                  color: Colors.blueGrey.shade100,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              //  child: LinearProgressIndicator(color: Colors.grey.shade50,),
+
+              ),
+              SizedBox(width: 10),
+              Container(
+                height: 40,
+                width: 20,
+                decoration: BoxDecoration(
+                  color: Colors.blueGrey.shade100,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              //  child: LinearProgressIndicator(color: Colors.grey.shade50,),
+
+              ),
+              SizedBox(width: 10),
+              Container(
+                height: 40,
+                width: 110,
+                decoration: BoxDecoration(
+                  color: Colors.blueGrey.shade100,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              //  child: LinearProgressIndicator(color: Colors.grey.shade50,),
+
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
 //// THIS DISPLAYS IF  THE LOADING OUTLOOK FOR EMPTY COLLECTION
 
 class EmptyCollection extends StatefulWidget {

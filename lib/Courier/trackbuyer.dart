@@ -28,6 +28,24 @@ class _TrackBuyerState extends State<TrackBuyer> {
   final Completer<GoogleMapController> _controller =
   Completer<GoogleMapController>();
 
+  //CREATE POLYLINE
+  List<LatLng> _routes = [];
+  Future<List<LatLng>> _getRoutes () async{
+    final points = await Provider.of<LocationProvider> (context,listen: false).getRouteCoordinates(
+        LatLng(Provider.of<LocationProvider> (context,listen: false).Lat, Provider.of<LocationProvider> (context,listen: false).Long),
+        LatLng(widget.Latitude, widget.Longitude));
+    setState(() {
+      _routes = points;
+    });
+    return points;
+
+  }
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getRoutes();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,6 +84,14 @@ class _TrackBuyerState extends State<TrackBuyer> {
                  builder: (context, snapshot) {
                    if (snapshot.hasData) {
                      return GoogleMap(
+                       polylines: {
+                         Polyline(
+                             polylineId: PolylineId('route'),
+                             visible: true,
+                             points: _routes,
+                             color: Colors.blue,
+                             width: 4),
+                       },
                        markers: {
                          Marker(
                              markerId: MarkerId('User'),
@@ -73,6 +99,7 @@ class _TrackBuyerState extends State<TrackBuyer> {
                              position: LatLng(
                                  widget.Latitude,
                                  widget.Longitude)),
+
                        },
                        circles: Set(),
                        mapToolbarEnabled: true,
@@ -102,7 +129,7 @@ class _TrackBuyerState extends State<TrackBuyer> {
                        ),
                      );
                    }
-                   return Center( child: NewSearchLoadingOutLook(),);
+                   return Center( child: CustomLoGoLoading(),);
                  }),
 
            ),

@@ -10,9 +10,13 @@ class OrderInfo {
   final DateTime time;
   final bool delivered;
   final bool courier;
+  final String CourierId;
+  final String CourierName;
+  final String CourierContact;
   final bool served;
   final String adminEmail;
   final int adminContact;
+
 
 
   OrderInfo({
@@ -27,9 +31,13 @@ class OrderInfo {
     required this.time,
     required this.served,
     required this.courier,
+    required this.CourierId,
+    required this.CourierName,
+    required this.CourierContact,
     required this.delivered,
     required this.adminEmail,
-    required  this.adminContact
+    required  this.adminContact,
+
   });
 
   Map<String, dynamic> toMap() {
@@ -48,6 +56,10 @@ class OrderInfo {
       'delivered': delivered,
       'adminEmail': adminEmail,
       'adminContact': adminContact,
+      'CourierId': CourierId,
+      'CourierName': CourierName,
+      'CourierContact': CourierContact,
+
     };
   }
 
@@ -64,6 +76,9 @@ class OrderInfo {
       time: data['time'].toDate(),
       served: data['served']?? false,
       courier: data['courier']?? false,
+      CourierId: data['CourierId']?? '',
+      CourierName: data['CourierName']?? '',
+      CourierContact: data['CourierContact']?? '',
       delivered: data['delivered']?? false,
       adminEmail:  data['adminEmail']?? '',
         adminContact: data['adminContact'] ?? '',

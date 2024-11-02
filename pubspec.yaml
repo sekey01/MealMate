@@ -61,6 +61,7 @@ dependencies:
   url_launcher: ^6.3.0
   easy_url_launcher: ^0.0.7
   flutter_skeleton_ui: ^0.0.6
+  lottie: ^3.1.3
 
 dev_dependencies:
 
@@ -100,6 +101,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+     - assets/Icon/online.json
+     - assets/Icon/courier.json
      - assets/images/logo.png
      - assets/images/mealmate.png
      - assets/images/delivery.jpg
@@ -122,6 +125,7 @@ flutter:
      - assets/Icon/paymentdone.png
      - assets/Icon/change.png
      - assets/Icon/Order.png
+     - assets/Icon/delivery_man.png
      - assets/Icon/Orders.png
      - assets/Icon/uploads.png
      - assets/Icon/no-connection.png

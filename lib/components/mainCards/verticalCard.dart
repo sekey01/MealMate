@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../theme/styles.dart';
 
@@ -251,7 +252,7 @@ Container NewVerticalCard(
             ),
 
             Positioned(
-                right: 10,
+                right: 15,
                 bottom: 10,
                 child: Container(
                   height: 30,
@@ -261,15 +262,18 @@ Container NewVerticalCard(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: Row(
-                children: [
-                  ImageIcon(
-                    AssetImage('assets/Icon/cedi.png'),
-                    color: Colors.black,
-                    size: 10.sp,
-                  ),
-                  Text(price.toStringAsFixed(2), style: TextStyle(color: Colors.redAccent, fontSize: 10.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous'),),
-                ],
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    ImageIcon(
+                      AssetImage('assets/Icon/cedi.png'),
+                      color: Colors.black,
+                      size: 10.sp,
+                    ),
+                    Text(price.toStringAsFixed(2), style: TextStyle(color: Colors.redAccent, fontSize: 8.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous'),),
+                  ],
+                ),
               ),
             )),
             Positioned(
@@ -385,6 +389,68 @@ decorationColor: Colors.black,
           ),
         ),
 
+      ],
+    ),
+  );
+}
+
+///NO COURIER FOUND WIDGET
+Center NoCouriersFound() {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+
+
+        Padding(
+          padding: const EdgeInsets.only(top: 50),
+          child: Lottie.asset('assets/Icon/courier.json', height: 200.h, width: 200.w),
+        ),
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: "No " ,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20.spMin,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Righteous',
+                ),
+              ),
+              TextSpan(
+                text: "Couriers ",
+                style: TextStyle(
+                  color: Colors.deepOrangeAccent,
+                  fontSize: 20.spMin,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Righteous',
+                ),
+              ),
+              TextSpan(
+                text: "Available",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20.spMin,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Righteous',
+                ),
+              ),
+
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8),
+          child: Text(
+            'No courier is available at the moment, please check back later',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: Colors.grey.shade600,
+            ),
+          ),
+        )
       ],
     ),
   );
