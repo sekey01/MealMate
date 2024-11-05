@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mealmate/Courier/courierInit.dart';
 import '../components/Notify.dart';
 
@@ -82,78 +83,103 @@ class _CourierLoginPageState extends State<CourierLoginPage> {
         ),
         centerTitle: true,
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(1),
-                      child: Image(
-                        image: AssetImage('assets/images/logo.png'),
-                        height: 150,
-                        width: 250,
-                      ),
-                    ),
-                    SizedBox(height: 30.h),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextFormField(
-                        keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter Courier Id';
-                          }
-                          return null;
-                        },
-                        obscureText: true,
-                        style: TextStyle(color: Colors.black),
-                        controller: CourierIdController,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.deepOrange.shade50,
-                          hintStyle: TextStyle(color: Colors.black),
-                          labelStyle: TextStyle(color: Colors.black),
-                          labelText: 'Courier Id',
-                          hintText: 'Enter Courier Id for verification',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.deepOrangeAccent),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 30.h),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 3,
-                        backgroundColor: Colors.deepOrangeAccent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          String VerifycourierId = CourierIdController.text.toString();
-                          bool isAuthenticated = await authenticateUser(context, VerifycourierId);
-                          if (isAuthenticated) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CourierInit(),
-                              ),
-                            );
-                          }
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Stack(
+              children:[
+                Padding(
+                  padding: EdgeInsets.only(top:10),
+                  child: LottieBuilder.asset('assets/Icon/courier.json',height: 300.h,width: 200.h,),
+
+                ),
+                Positioned(
+                  top: 10,
+                    left: 50,
+                    child: Image(image: AssetImage('assets/images/logo.png'),height: 150,width: 150,))
+
+              ]
+            ),
+            Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, bottom: 10),
+                    child: RichText(text: TextSpan(
+                        children: [
+                          TextSpan(text: "Please enter your ", style: TextStyle(color: Colors.black, fontSize: 20.sp, fontWeight: FontWeight.bold,fontFamily: 'Poppins',)),
+                          TextSpan(text: "Courier ID", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp, fontWeight: FontWeight.bold,fontFamily: 'Poppins',)),
+                          TextSpan(text: " in Order to continue...", style: TextStyle(color: Colors.black, fontSize: 20.sp, fontWeight: FontWeight.bold,fontFamily: 'Poppins',)),
+
+
+
+                        ]
+                    )),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15,right: 15),
+                    child: TextFormField(
+                      keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Courier Id';
                         }
-                        CourierIdController.clear();
+                        return null;
                       },
+                      obscureText: true,
+                      style: TextStyle(color: Colors.black),
+                      controller: CourierIdController,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.deepOrange.shade50,
+                        hintStyle: TextStyle(color: Colors.black),
+                        labelStyle: TextStyle(color: Colors.black),
+                        labelText: 'Courier Id',
+                        hintText: 'Enter Courier Id for verification',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30.h),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+
+                      elevation: 3,
+                      backgroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+
+                      ),
+                    ),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        bool isAuthenticated = await authenticateUser(context, CourierIdController.text.toString());
+                        if (isAuthenticated) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CourierInit(),
+                            ),
+                          );
+                        }
+                      }
+                      CourierIdController.clear();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Verify Id',
+                        'Clock In !',
                         style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
@@ -163,11 +189,11 @@ class _CourierLoginPageState extends State<CourierLoginPage> {
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

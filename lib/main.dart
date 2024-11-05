@@ -8,6 +8,7 @@ import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import 'package:mealmate/Notification/notification_Provider.dart';
 import 'package:mealmate/Other_Providers/Url_Launcher.dart';
+import 'package:mealmate/PaymentProvider/paystack_payment.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/firebase_options.dart';
 import 'package:mealmate/models&ReadCollectionModel/sendOrderFunctionProvider.dart';
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context)=> IncomingOrdersProvider()),
           ChangeNotifierProvider(create: (context)=> NotificationProvider()),
           ChangeNotifierProvider(create: (context)=> NetworkImageProvider()),
+          ChangeNotifierProvider(create: (context)=> PaystackPaymentProvider())
          // ChangeNotifierProvider(create: (context)=> UrlLauncherProvider())
 
         ],

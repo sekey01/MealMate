@@ -455,3 +455,53 @@ Center NoCouriersFound() {
     ),
   );
 }
+
+
+
+
+class InitRow extends StatelessWidget {
+  const InitRow({
+    super.key, required this.imageUrl, required this.name,
+  });
+final String imageUrl;
+final String name;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 5,right: 5),
+      child: Container(
+       // height: 70,
+        width: 70,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade200,
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 1,right: 1),
+              child: ClipRRect(borderRadius:BorderRadius.circular(10) ,child: Image(image: AssetImage(imageUrl),height: 60,width: 50,)),
+            ),
+            RichText(text: TextSpan(
+                children: [
+                  TextSpan(text: "$name ", style: TextStyle(color: Colors.black, fontSize: 10.sp, fontWeight: FontWeight.bold,fontFamily: 'Poppins',)),
+                  TextSpan(text: "...", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 10.sp, fontWeight: FontWeight.bold,fontFamily: 'poppins',)),
+
+
+                ]
+            ))
+          ],
+        ),
+      ),
+    );
+  }
+}

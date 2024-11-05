@@ -864,6 +864,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.0"
+  paystack:
+    dependency: "direct main"
+    description:
+      name: paystack
+      sha256: "2690af85e04be655f462b0f3fa7453daffc199d0a73444a6ada855bdbb900b6b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   permission_handler:
     dependency: "direct main"
     description:

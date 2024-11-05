@@ -45,3 +45,24 @@ Container EmptyHistory() {
     ),
   );
 }
+
+Container EmptyFavourite() {
+  return Container(
+    child: Column(
+      children: [
+        SizedBox(
+          height: 100.h,
+        ),
+        Image(image: AssetImage("assets/Icon/no_food_found.png"), height: 150, width: 200,),
+        SizedBox(
+          height: 10.h,
+        ),
+        RichText(text: TextSpan(
+            children: [
+              TextSpan(text: " Empty", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+              TextSpan(text: " Favourites", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+            ]
+        )),      ],
+    ),
+  );
+}

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../models&ReadCollectionModel/cartmodel.dart';
+import '../pages/searchfooditem/init_row_search.dart';
 
 Padding cartList(
     String imgUrl, String restaurant, String foodName, double price, int id) {
@@ -9,63 +11,62 @@ Padding cartList(
     padding: const EdgeInsets.all(1.0),
     child: ExpansionTile(
       minTileHeight: 70,
-      shape: Border.all(color: Colors.black),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       textColor: Colors.black,
-      collapsedBackgroundColor: Colors.deepOrange.shade100,
+      collapsedBackgroundColor: Colors.deepOrange.shade50,
       collapsedTextColor: Colors.black,
-      backgroundColor: Colors.white,
-      leading: ClipRRect(
-        borderRadius: BorderRadius.circular(5),
-        child: Image.network(
-          imgUrl,
-          fit: BoxFit.fill,
+      collapsedShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      backgroundColor: Colors.blueGrey.shade50,
+      leading: InkWell(
+
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: Image.network(
+            imgUrl,
+            height: 60,
+            width: 100,
+            fit: BoxFit.fill,
+          ),
         ),
       ),
       title: Text(
         ' $restaurant ',
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10.sp,fontFamily: 'Poppins'),
       ),
       subtitle: Text(
         '$foodName',
         style: TextStyle(
-            letterSpacing: 2, fontWeight: FontWeight.w300, fontSize: 14),
+            fontWeight: FontWeight.w300, fontSize: 10,fontFamily: 'Poppins'),
       ),
-      trailing: Consumer<CartModel>(builder: (context, value, child) {
-        return IconButton(
-            onPressed: () {
-              value.remove(id);
-            },
-            icon: Text(
-              'Remove',
-              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-            ));
-      }),
+
       children: <Widget>[
         Consumer<CartModel>(builder: (context, value, child) {
           return ListTile(
-            leading: Icon(
-              Icons.payments_outlined,
-              color: Colors.black,
-            ),
-            textColor: Colors.blueGrey,
-            titleTextStyle:
-                TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-            title: Text('$price'),
-            trailing: Text(
-              {value.tPrice}.toString(),
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
+         subtitle: Consumer<CartModel>(builder: (context, value, child) {
+           return IconButton(
+               onPressed: () {
+                 value.remove(id);
+               },
+               icon: Text(
+                 'Remove',
+                 style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+               ));
+         }),
+            title: IconButton(onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => InitRowSearch(searchItem: foodName,)));
+            }, icon: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(width: 110.w,),
+                Text('Buy now', style: TextStyle(color: Colors.deepOrangeAccent, fontWeight: FontWeight.bold,fontFamily: 'Poppins'),),
+                Icon(Icons.ads_click_outlined, color: Colors.deepOrangeAccent,size: 20.sp,)
+              ],
+            )),
           );
         }),
-        ListTile(
-          textColor: Colors.blueGrey,
-          leading: Icon(
-            Icons.call,
-            color: Colors.black,
-          ),
-          titleTextStyle: TextStyle(fontWeight: FontWeight.bold),
-          title: Text('$id'),
-        ),
+
       ],
     ),
   );

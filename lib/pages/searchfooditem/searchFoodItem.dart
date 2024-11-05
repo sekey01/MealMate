@@ -10,6 +10,7 @@ import '../../models&ReadCollectionModel/ListFoodItemModel.dart';
 import '../../searchFoodItemProvider/searchFoodItemFunctionProvider.dart';
 import '../../UserLocation/LocationProvider.dart';
 import '../detail&checkout/detail.dart';
+import 'filters.dart';
 
 class SearchFoodItem extends StatefulWidget {
   const SearchFoodItem({super.key});
@@ -77,7 +78,12 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                     filled: true,
                     prefixIcon:  Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: ImageIcon(AssetImage('assets/Icon/filter.png'), color: Colors.blueGrey,size: 20,),
+                      child: InkWell(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchByFilters()));
+
+                      }
+                      ,child: ImageIcon(AssetImage('assets/Icon/filter.png'), color: Colors.blueGrey,size: 20,)),
                     ),
 
                 suffixIcon: IconButton(

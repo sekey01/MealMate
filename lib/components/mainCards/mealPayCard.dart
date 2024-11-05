@@ -57,8 +57,9 @@ Widget MatePayCard(
                 )),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MealMate(),
+                //MealMate(),
                 Text(
                   'NAME: ${CardHolderName.toUpperCase()}',
                   style: TextStyle(
@@ -72,7 +73,8 @@ Widget MatePayCard(
                   height: 5.h,
                 ),
                 Text(
-                  'Promo Code :'+"$CardNumber",
+                  'P'
+                      'P-Code :'+"$CardNumber",
                   style: TextStyle(
                       //fontWeight: FontWeight.bold,
                       fontSize: 15.sp,

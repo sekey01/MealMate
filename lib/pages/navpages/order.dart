@@ -1,10 +1,18 @@
+import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/storeOrderModel.dart';
 import 'package:mealmate/components/NoFoodFound.dart';
 import 'package:mealmate/components/mainCards/mealPayCard.dart';
+import 'package:mealmate/pages/navpages/home.dart';
+import 'package:mealmate/pages/navpages/index.dart';
 import 'package:provider/provider.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+import '../detail&checkout/orderSent.dart';
+
 
 class OrderList extends StatefulWidget {
   const OrderList({super.key});
@@ -15,139 +23,214 @@ class OrderList extends StatefulWidget {
 
 class _OrderListState extends State<OrderList> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:Colors.grey.shade100,
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text('Order List'),
         titleTextStyle: const TextStyle(
           fontFamily: 'Righteous',
-            color: Colors.blueGrey,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 3
+          color: Colors.blueGrey,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 3,
         ),
         backgroundColor: Colors.white,
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          //A user profile page with a profile picture, name, and email address, logout button, and a list of orders.
           children: [
             SizedBox(
               height: 10.h,
             ),
-            MatePayCard(
-                'Coming Soon', ' XXXX - 0123', Provider.of<LocalStorageProvider>(context, listen: true).userName,Provider.of<LocalStorageProvider>(context, listen: true).phoneNumber.toString()),
+            Builder(builder: (context) {
+              return MatePayCard(
+                'Coming Soon',
+                ' XXXX - 0123',
+                Provider.of<LocalStorageProvider>(context, listen: true).userName,
+                Provider.of<LocalStorageProvider>(context, listen: true).phoneNumber.toString(),
+              );
+            }),
             SizedBox(height: 40),
-
-
-///ROW FOR 'ORDER HISTORY' AND 'DELETE ALL' BUTTON
-            ///
-            ///
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                RichText(text: TextSpan(
+                RichText(
+                  text: TextSpan(
                     children: [
-                      TextSpan(text: " Order", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
-                      TextSpan(text: " History", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold, fontFamily: 'Righteous')),
-
-
-                    ]
-                )),
-SizedBox(width: 20.w,),
-
-                /// DELETE ALL BUTTON
+                      TextSpan(
+                        text: "Meal",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                        text: "Mate",
+                        style: TextStyle(
+                          color: Colors.deepOrangeAccent,
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 20.w),
+                TextButton(
+                  onPressed: () {
+                   /* final paymentHandler = PaystackPaymentHandler();
+                    paymentHandler.startPayment(context).then((result) {
+                      if (result.success) {
+                        print('wwwwwwwwwwwwwwwwwwwwwwwwww');
+                        // Handle success
+                      }
+                    });*/
+                  },
+                  child: Text(
+                    'Pay Now',
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      color: Colors.deepOrangeAccent,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 Container(
-height: 30.h,
+                  height: 30.h,
                   width: 100.w,
                   decoration: BoxDecoration(
-
-                      color: Colors.deepOrangeAccent,
-                      borderRadius: BorderRadius.circular(10)
+                    color: Colors.deepOrangeAccent,
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  child: TextButton(onPressed: (){
-                    setState(() {
-                      Provider.of<LocalStorageProvider>(context,listen: false).deleteAllOrders();
-
-                    });
-                  }, child: Text('Delete all', style: TextStyle(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold),)),
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        // Handle delete all
+                      });
+                    },
+                    child: Text(
+                      'Delete all',
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
-
-
-
           ],
         ),
       ),
-
       bottomSheet: Container(
         width: double.infinity,
         height: 300.h,
-decoration:BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30),
-) ,),
-
-        child:   ///BELLOW IS THE LIST OF ORDERS
-        ///
-        ///
-        Expanded(
-            child: FutureBuilder<List<StoreOrderLocally>>(
-                future:  Provider.of<LocalStorageProvider>(context, listen: true).loadOrders(),
-
-                builder: (context, snapshot) {
-                  if(snapshot.hasData && snapshot.data!.isNotEmpty){
-                    return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context,index) {
-                          final storedOder = snapshot.data![index];
-                          final storedOrderNUmber = index+1;
-                          return  Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ExpansionTile(
-                                //showTrailingIcon: true,
-                                iconColor: Colors.black,
-                                collapsedBackgroundColor: Colors.grey.shade200,
-                                leading: Text('Order : '+ '$storedOrderNUmber', style: TextStyle(color: Colors.black, fontSize: 15.spMin,)),
-                                title:RichText(text: TextSpan(
-                                    children: [
-                                      TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 15.spMin, fontWeight: FontWeight.bold)),
-                                      TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.spMin, fontWeight: FontWeight.bold)),
-
-
-                                    ]
-                                )),
-                                children: [
-                                  Text(storedOder.item, style: TextStyle(color: Colors.black, fontSize: 15.spMin,)),
-                                  Text(storedOder.id, style: TextStyle(color: Colors.black, fontSize: 15.spMin,)),
-                                  Text('GHC '+'${storedOder.price.toString()}''0', style: TextStyle(color: Colors.black, fontSize: 15.spMin,)),
-                                  Text(storedOder.time.toString(), style: TextStyle(color: Colors.black, fontSize: 15.spMin,))
-
-
-
-
-                                ],
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+        ),
+        child: Expanded(
+          child: FutureBuilder<List<StoreOrderLocally>>(
+            future: Provider.of<LocalStorageProvider>(context, listen: true).loadOrders(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    final storedOrder = snapshot.data![index];
+                    final storedOrderNumber = index + 1;
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ExpansionTile(
+                          iconColor: Colors.black,
+                          collapsedBackgroundColor: Colors.grey.shade200,
+                          leading: Text(
+                            'Order : $storedOrderNumber',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15.spMin,
+                            ),
+                          ),
+                          title: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "Meal",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15.spMin,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: "Mate",
+                                  style: TextStyle(
+                                    color: Colors.deepOrangeAccent,
+                                    fontSize: 15.spMin,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          children: [
+                            Text(
+                              storedOrder.item,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15.spMin,
                               ),
                             ),
-                          );
-
-                        });
-                  }
-
-                  else{
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: EmptyHistory(),
+                            Text(
+                              storedOrder.id,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15.spMin,
+                              ),
+                            ),
+                            Text(
+                              'GHC ${storedOrder.price.toString()}0',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15.spMin,
+                              ),
+                            ),
+                            Text(
+                              storedOrder.time.toString(),
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15.spMin,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     );
-                  }
-
-                })
+                  },
+                );
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: EmptyHistory(),
+                );
+              }
+            },
+          ),
         ),
       ),
     );

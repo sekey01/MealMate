@@ -11,6 +11,8 @@ import 'package:mealmate/components/mainCards/promotion_ads_card.dart';
 import 'package:mealmate/pages/detail&checkout/detail.dart';
 import 'package:mealmate/pages/navpages/profile.dart';
 import 'package:mealmate/pages/navpages/searchByCollection.dart';
+import 'package:mealmate/pages/searchfooditem/filters.dart';
+import 'package:mealmate/pages/searchfooditem/init_row_search.dart';
 import 'package:mealmate/pages/searchfooditem/searchFoodItem.dart';
 import 'package:provider/provider.dart';
 
@@ -166,37 +168,83 @@ checkInternet();
                   ///
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Icon(Icons.location_on_outlined, size: 20.sp,color: Colors.blueGrey,),
-                        FutureBuilder(
-                            future:
-                            Provider.of<LocationProvider>(context, listen: false).determinePosition(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: Text(snapshot.data.toString(),
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          overflow: TextOverflow.ellipsis,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12.sp)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(Icons.location_on_outlined, size: 20.sp,color: Colors.blueGrey,),
+                          FutureBuilder(
+                              future:
+                              Provider.of<LocationProvider>(context, listen: false).determinePosition(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Text(snapshot.data.toString(),
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            overflow: TextOverflow.ellipsis,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12.sp)),
+                                  );
+                                }
+                                return Text(
+                                  'locating you...',
+                                  style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.normal,fontSize: 10.spMin),
                                 );
-                              }
-                              return Text(
-                                'locating you...',
-                                style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.normal,fontSize: 10.spMin),
-                              );
-                            }),
-                      ],
+                              }),
+                        ],
+                      ),
                     ),
                   ),
 
 
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 0,right: 0),
+                    child: Container(
+                      //height: 80.h,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100,
+                        borderRadius: BorderRadius.circular(10)
+                      ),
 
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            InkWell(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> InitRowSearch(searchItem: 'chilzy')));
+                            },
+                                child: InitRow(imageUrl: 'assets/images/jollof.png',name: 'Jollof',)),
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=> InitRowSearch(searchItem: 'Pizza')));
+                              }
+                            ,child: InitRow(imageUrl: 'assets/images/burger.png',name: 'Snacks',)),
+
+                            InkWell(onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> InitRowSearch(searchItem: 'groceries')));
+                            }
+                            ,child: InitRow(imageUrl: 'assets/images/shops.jpg',name: 'Grocery',)),
+
+                            InkWell(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> InitRowSearch(searchItem: 'Drinks')));
+                            },
+                            child: InitRow(imageUrl: 'assets/images/burger.png',name: 'Drinks',)),
+
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
 
                 //  SizedBox(height: 30.h,),
 
@@ -491,7 +539,7 @@ SizedBox(height: 30.h,),
                     height: 30.h,
                   ),
                   ///CARD SHOWING THE INTRODUCTION OF THE APP AND COUROSEL OF IMAGES
-                  initCard(),
+                  //initCard(),
 
                   SizedBox(
                     height: 30.h,
@@ -1094,3 +1142,4 @@ SizedBox(height: 30.h,),
     );
   }
 }
+

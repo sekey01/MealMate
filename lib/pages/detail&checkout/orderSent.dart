@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mealmate/pages/detail&checkout/track_Order.dart';
 
 class OrderSent extends StatefulWidget {
@@ -26,34 +27,15 @@ class _OrderSentState extends State<OrderSent> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
 
-                Padding(padding: EdgeInsets.all(18),
-                child: Image(image: AssetImage('assets/images/logo.png'), height: 150,width: 150,),),
-                Padding(
-                  padding: EdgeInsets.all(0),
-                  child: Text(
-                    'Order Sent ',
-                    style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                SizedBox(height: 30,),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image(
-                          image: AssetImage('assets/images/delivery.jpg'), height: 100,)),
-                ),
+               // Image(image: AssetImage('assets/images/logo.png'), height: 250,width: 150,),
 
-                SizedBox(
-                  height: 30,
-                ),
+                SizedBox(height: 30,),
+              LottieBuilder.asset('assets/Icon/success.json', height: 200, width: 200),
+
                 Padding(
                   padding: EdgeInsets.all(10),
                   child: Text(
-                    " Your Order will Arrive Soon..",
+                    " Order Sent ...",
                     style: TextStyle(
                         color: Colors.green,
                         fontWeight: FontWeight.bold,
@@ -61,16 +43,16 @@ class _OrderSentState extends State<OrderSent> {
                   ),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 10,
                 ),
 
-                Text('Please don\'t leave the order tracking page Until order is received ...', style: TextStyle(fontSize: 15.sp,color: Colors.blueGrey),),
+                Center(child: Text('Please don\'t leave the order tracking page Until order is received ...', style: TextStyle(fontSize: 15.sp,color: Colors.red,),textAlign: TextAlign.center,)),
                 SizedBox(
                   height: 30,
                 ),
                 Material(
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.deepOrange,
+                  color: Colors.green,
                   elevation: 3,
                   child: TextButton(
                       onPressed: () {
@@ -79,9 +61,10 @@ class _OrderSentState extends State<OrderSent> {
                       child: Text(
                         'Track Order Now',
                         style: TextStyle(
+                          fontFamily: 'Righteous',
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 15.spMin),
+                            fontSize: 15.sp),
                       )),
                 )
               ],

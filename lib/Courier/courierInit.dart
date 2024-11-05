@@ -120,12 +120,19 @@ final CourierID = Provider.of<LocalStorageProvider>(context, listen: false).cour
         )),
         centerTitle: true,
         actions: [
-          InkWell(
-              onTap: (){
-Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateDetails()));
-              },
-              child: ImageIcon(AssetImage('assets/Icon/refresh.png'),size: 30.sp,color: Colors.blueGrey,)),
-          SizedBox(width: 10.w,),
+       Row(
+         mainAxisAlignment: MainAxisAlignment.center,
+         children: [
+           IconButton(onPressed: (){},
+               icon: Icon(Icons.online_prediction_outlined, color: CupertinoColors.activeGreen,size: 33,)),
+           InkWell(
+               onTap: (){
+                 Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateDetails()));
+               },
+               child: ImageIcon(AssetImage('assets/Icon/refresh.png'),size: 30.sp,color: Colors.blueGrey,)),
+         ],
+       ),
+          SizedBox(width: 20.w,)
         ],
       ),
       body: Padding(
@@ -174,80 +181,84 @@ Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateDetails()));
                 ///
                 ///
 
-                FutureBuilder(future: getCourierDetails(context, CourierID),
-                        builder: (context,snapshot){
-                if(snapshot.connectionState == ConnectionState.waiting){
-                  return CourierDetailsLoading();
-                }
-                if(snapshot.hasError){
-                  return Text('Error: ${snapshot.error}');
-                }
-                if(snapshot.hasData){
-                  CourierModel courier = snapshot.data as CourierModel;
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(0.0, 1.0), //(x,y)
-                            blurRadius: 6.0,
+                Builder(
+                  builder: (context) {
+                    return FutureBuilder(future: getCourierDetails(context, CourierID),
+                            builder: (context,snapshot){
+                    if(snapshot.connectionState == ConnectionState.waiting){
+                      return CourierDetailsLoading();
+                    }
+                    if(snapshot.hasError){
+                      return Text('Error: ${snapshot.error}');
+                    }
+                    if(snapshot.hasData){
+                      CourierModel courier = snapshot.data as CourierModel;
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(0.0, 1.0), //(x,y)
+                                blurRadius: 6.0,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          ListTile(
-                            leading: CircleAvatar(radius: 30.r,backgroundImage: NetworkImage(courier.CourierGhanaCardPictureUrl),),
-                            title: Text(courier.CourierName,style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 15.sp,fontFamily: 'Righteous'),),
-                            subtitle: Text(courier.CourierEmail,style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 10.sp, fontFamily: 'Poppins'),),
-                            trailing: courier.isCourierOnline ? LottieBuilder.asset('assets/Icon/online.json', height: 50.h, width: 30.w,): Icon(Icons.offline_bolt, color: Colors.red),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                leading: CircleAvatar(radius: 30.r,backgroundImage: NetworkImage(courier.CourierGhanaCardPictureUrl),),
+                                title: Text(courier.CourierName,style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 15.sp,fontFamily: 'Righteous'),),
+                                subtitle: Text(courier.CourierEmail,style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 10.sp, fontFamily: 'Poppins'),),
+                                trailing: courier.isCourierOnline ? LottieBuilder.asset('assets/Icon/online.json', height: 50.h, width: 30.w,): Icon(Icons.offline_bolt, color: Colors.red),
 
+                              ),
+                              ListTile(
+                                leading: Icon(Icons.phone_android_outlined, color: Colors.blueGrey,),
+                                title: Text('+233' + courier.CourierContact.toString(),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 15.sp,fontFamily: 'Poppins'),),
+                                subtitle: Text('Contact',style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.bold,fontSize: 12.sp, fontFamily: 'Poppins'),),
+
+                              ),
+                              ListTile(
+                                leading: Icon(Icons.connect_without_contact, color: Colors.blueGrey,),
+                                title: LiteRollingSwitch(
+                                  //initial value
+                                  value: courier.isCourierOnline,
+                                  width: 250.w,
+                                  textOn: 'Online',
+                                  textOnColor: Colors.white,
+                                  textOff: 'Offline',
+                                  textOffColor: Colors.white,
+                                  colorOn: CupertinoColors.activeGreen,
+                                  colorOff: Colors.redAccent,
+                                  iconOn: Icons.done,
+                                  iconOff: Icons.remove_circle_outline,
+                                  textSize: 20.0,
+                                  onChanged: (bool state) {
+                                    switchCourierOnlineStatus(courier.CourierId);
+                                  },
+                                  onTap: () {
+
+                                  },
+                                  onDoubleTap: () {},
+                                  onSwipe: () {},
+                                ),
+                                subtitle: Text('   Toggle to switch Online and Offline',style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.bold,fontSize: 12.sp, fontFamily: 'Poppins'),),
+
+                              ),
+
+                            ],
                           ),
-                          ListTile(
-                            leading: Icon(Icons.phone_android_outlined, color: Colors.blueGrey,),
-                            title: Text('+233' + courier.CourierContact.toString(),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 15.sp,fontFamily: 'Poppins'),),
-                            subtitle: Text('Contact',style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.bold,fontSize: 12.sp, fontFamily: 'Poppins'),),
-
-                          ),
-                          ListTile(
-                            leading: Icon(Icons.connect_without_contact, color: Colors.blueGrey,),
-                            title: LiteRollingSwitch(
-                              //initial value
-                              value: courier.isCourierOnline,
-                              width: 250.w,
-                              textOn: 'Online',
-                              textOnColor: Colors.white,
-                              textOff: 'Offline',
-                              textOffColor: Colors.white,
-                              colorOn: CupertinoColors.activeGreen,
-                              colorOff: Colors.redAccent,
-                              iconOn: Icons.done,
-                              iconOff: Icons.remove_circle_outline,
-                              textSize: 20.0,
-                              onChanged: (bool state) {
-                                switchCourierOnlineStatus(courier.CourierId);
-                              },
-                              onTap: () {
-
-                              },
-                              onDoubleTap: () {},
-                              onSwipe: () {},
-                            ),
-                            subtitle: Text('   Toggle to switch Online and Offline',style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.bold,fontSize: 12.sp, fontFamily: 'Poppins'),),
-
-                          ),
-
-                        ],
-                      ),
-                    ),
-                  );
-                }
-                return Text('No data');
-    }),
+                        ),
+                      );
+                    }
+                    return Text('No data');
+                        });
+                  }
+                ),
 
 
 
@@ -267,7 +278,7 @@ Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateDetails()));
 
                 SizedBox(height: 20.h,),
                 
-                /// CONTAINER SHOWING LIST OF RESTAURANTS THAT HAVE ORDER TO DELIVER TO BUYER 
+             /*   /// CONTAINER SHOWING LIST OF RESTAURANTS THAT HAVE ORDER TO DELIVER TO BUYER
                 Container(
                   height: 0.5.sh,
                   width: 1.sw,
@@ -321,46 +332,49 @@ Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateDetails()));
 
                     ],
                   )),
-                ),
+                ),*/
 
 SizedBox(height: 20.h,),
                 ///TRACK BUYER ROUTE ALERT
                 ///
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Track Buyer',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Righteous',
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Track Buyer',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Righteous',
+                            ),
                           ),
-                        ),
-                        TextSpan(
-                          text: ' Route',
-                          style: TextStyle(
-                            color: Colors.deepOrangeAccent,
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Righteous',
+                          TextSpan(
+                            text: ' Route',
+                            style: TextStyle(
+                              color: Colors.deepOrangeAccent,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Righteous',
+                            ),
                           ),
-                        ),
-
-                        TextSpan(
-                          text: ' By Entering:',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Righteous',
+                    
+                          TextSpan(
+                            text: ' By Entering:',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Righteous',
+                            ),
                           ),
-                        ),
-
-                      ],
+                    
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -372,7 +386,7 @@ SizedBox(height: 20.h,),
               children: [
                 ///TEXTFIELD FOR BUYER PHONE NUMBER
                 Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(top: 8,left: 8,right: 8),
                     child: TextFormField(
                         keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
                         maxLength: 10,
@@ -451,7 +465,7 @@ SizedBox(height: 20.h,),
 
                 ///TEXTFIELD FOR LONGITUDE
                 Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(left: 8,top: 16,right: 8),
                     child: TextFormField(
                         keyboardType: TextInputType.numberWithOptions(decimal: true, signed: true),
                         validator: (value) {
@@ -488,10 +502,10 @@ SizedBox(height: 20.h,),
                 SizedBox(height: 20.h,),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    elevation: 3,
-                    backgroundColor: Colors.redAccent,
+                    elevation: 2,
+                    backgroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(30),
                     ),
                   ),
                   onPressed: () {
@@ -506,7 +520,10 @@ SizedBox(height: 20.h,),
 
                     }
                   },
-                  child: Text('Track Route ',style: TextStyle(fontSize: 20.sp,fontWeight: FontWeight.bold,color: Colors.white,fontFamily: 'Righteous', letterSpacing: 2),),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Track Route ',style: TextStyle(fontSize: 20.sp,fontWeight: FontWeight.bold,color: Colors.white,fontFamily: 'Righteous', letterSpacing: 2),),
+                  ),
 
                 ),
                 SizedBox(height: 50.h,),

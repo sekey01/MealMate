@@ -10,12 +10,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
+import 'package:mealmate/pages/detail&checkout/payment_unsuccessful.dart';
 import 'package:mealmate/pages/navpages/searchByCollection.dart';
 import 'package:mealmate/pages/searchfooditem/searchFoodItem.dart';
 import 'package:mealmate/theme/styles.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import '../../PaymentProvider/paystack_payment.dart';
 import '../../components/Notify.dart';
 import '../../components/mainCards/verticalCard.dart';
 import '../../models&ReadCollectionModel/ListFoodItemModel.dart';
@@ -233,6 +235,35 @@ class _DetailedCardState extends State<DetailedCard> {
                           ),
 
                         ))),
+
+/// FAVOURITE
+                Positioned(
+                  top: 5,
+                  right: 140,
+                  child:  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Badge(
+                      backgroundColor: Colors.red,
+                      label: Consumer<CartModel>(
+                          builder: (context, value, child) => Text(
+                            value.cart.length.toString(),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )),
+                      child: ImageIcon(
+                        AssetImage('assets/Icon/favourite.png'),
+                        size: 20,
+                        color: Colors.blueGrey,
+                      ),
+                                      ),
+                    ),
+                  ),),
 /// SEND GMAIL
                 Positioned(
                     top: 5,
@@ -799,7 +830,17 @@ class _DetailedCardState extends State<DetailedCard> {
                                 restaurant: widget.restaurant,
                                 foodName: widget.foodName,
                                 price: widget.price,
+                                location: widget.location,
+                                time: widget.time,
+                                vendorId: widget.vendorid,
+                                isAvailable: false,
+                                adminEmail: widget.adminEmail,
+                                adminContact: widget.adminContact,
+                                maxDistance: widget.maxDistance,
                                 id: widget.vendorid,
+
+
+
                               ));
 
                               Alert(
@@ -1130,28 +1171,19 @@ else if (snapshot.hasData) {
                                   ),
                                 ),
                                 onPressed: () {
-                                  print(widget.latitude);
+                                 /* print(widget.latitude);
                                   print(widget.longitude);
                                   print(Provider.of<LocationProvider>(context, listen: false).Lat);
-                                  print(Provider.of<LocationProvider>(context, listen: false).Long);
-                                  Provider.of<LocationProvider>(context, listen: false).calculateDistance(
+                                  print(Provider.of<LocationProvider>(context, listen: false).Long);*/
+                                  ///Get the Time
+                                  DateTime time = DateTime.now();
 
-                                      LatLng(widget.latitude, widget.longitude),
-
-                                      LatLng(Provider.of<LocationProvider>(context, listen: false).Lat,
-                                          Provider.of<LocationProvider>(context, listen: false).Lat)
-
-
-                                  );
-                                  // Provider.of<LocationProvider>(context, listen: false).isFareDistance
-
-                                  if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty) {
-                                    DateTime time = DateTime.now();
-                                    //  print(time);
-                                    Provider.of<SendOrderProvider>(context,
-                                        listen: false)
-                                        .sendOrder(
-                                      OrderInfo(
+                                  if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
+                                  {
+                                    final paymentProvider = Provider.of<PaystackPaymentProvider>(context, listen: false).
+                                    startPayment(context).then((result){
+                                       if(result.success){
+                                           Provider.of<SendOrderProvider>(context, listen: false).sendOrder(OrderInfo(
                                           time: time,
                                           foodName: widget.foodName,
                                           quantity: Provider.of<CartModel>(context,
@@ -1178,35 +1210,47 @@ else if (snapshot.hasData) {
                                           delivered: false,
                                           adminEmail: widget.adminEmail,
                                           adminContact: widget.adminContact,
-                                        CourierContact: '',
-                                        CourierId: '',
-                                        CourierName: '',
-                                      ),
-                                    );
+                                          CourierContact: '',
+                                          CourierId: '',
+                                          CourierName: '',
+                                        )).then((_){
+                                             Navigator.push(
+                                               context,
+                                               MaterialPageRoute(
+                                                 builder: (context) => OrderSent(
+                                                     vendorId: widget.vendorid,
+                                                     time: time,
+                                                     restaurant: widget.restaurant,
+                                                     adminEmail: widget.adminEmail,
+                                                     adminContact: widget.adminContact),
+                                               ),
+                                             );
+                                           });
+                                       }
+                                       else{
+                                         Notify(context, 'Payment Failed', Colors.red);
+                                         Navigator.push(context, MaterialPageRoute(builder: (context)=> PaymentUnsuccessful()));
+                                       }
 
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => OrderSent(
-                                            vendorId: widget.vendorid,
-                                            time: time,
-                                            restaurant: widget.restaurant,
-                                            adminEmail: widget.adminEmail,
-                                            adminContact: widget.adminContact),
-                                      ),
-                                    );
-                                  } else {
+                                    });
 
-                                    Notify(context, 'Please add Telephone number',
-                                        Colors.red);
+
+
+
 
                                   }
+                                  else {
+                                    Notify(context, 'Please add Telephone number',
+                                        Colors.red);
+                                  }
                                 },
-
-                                child: Text(
-                                  'CheckOut',
-                                  style:
-                                  TextStyle(color: Colors.white, fontSize: 20.spMin , fontWeight: FontWeight.bold, fontFamily: 'Righteous'),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'CheckOut',
+                                    style:
+                                    TextStyle(color: Colors.white, fontSize: 20.spMin , fontWeight: FontWeight.bold, fontFamily: 'Righteous'),
+                                  ),
                                 ),
                               ),
                             ],
@@ -1228,6 +1272,7 @@ else if (snapshot.hasData) {
             );
           }
     ),
+
     );
   }
 }

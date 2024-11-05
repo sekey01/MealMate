@@ -96,8 +96,8 @@ class _TrackOrderState extends State<TrackOrder> {
     return  Scaffold(
       appBar: AppBar(title: RichText(text: TextSpan(
           children: [
-            TextSpan(text: "Tracking ", style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
-            TextSpan(text: "Order ...", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
+            TextSpan(text: "Tracking ", style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+            TextSpan(text: "Order ...", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous') ,),
 
 
           ]
@@ -140,14 +140,15 @@ class _TrackOrderState extends State<TrackOrder> {
              ///MEALMATE HERE
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: RichText(text: TextSpan(
-                        children: [
-                          TextSpan(text: "GHC ", style: TextStyle(color: Colors.black, fontSize: 20.spMin, )),
-                          TextSpan(text: '${Order?.price.toString()}''0', style: TextStyle(color: Colors.black, fontSize: 25.spMin, fontWeight: FontWeight.bold)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ImageIcon(AssetImage('assets/Icon/cedi.png'),size: 20.sp,color: Colors.deepOrangeAccent,),
+                        Text( '${Order?.price.toString()}''0', style: TextStyle(color: Colors.black, fontSize: 15.spMin, fontWeight: FontWeight.bold)),
 
-
-                        ]
-                    )),
+                      ],
+                    ),
                   ),
 
                   ///VENDOR CONTACT
@@ -167,14 +168,14 @@ class _TrackOrderState extends State<TrackOrder> {
 
                           children: [
 
-                            Text('Tap here to Call Vendor ', style:TextStyle(color: Colors.blueGrey, fontSize: 15.sp, ) ,),
+                            Text('Tap here to Call Vendor ', style:TextStyle(color: Colors.blueGrey, fontSize: 15.sp, fontFamily: 'Poppins') ,),
                             ImageIcon(AssetImage('assets/Icon/customer-service.png'),size: 25.sp,color: Colors.green,)
                           ],
                         ),
                       ),
                     ),
                   ),
-            Text('Order In progress...', style: TextStyle(color: Colors.blueGrey, fontSize: 25, fontWeight: FontWeight.bold),),
+            Text('Order In progress...', style: TextStyle(color: Colors.blueGrey, fontSize: 25, fontWeight: FontWeight.bold,fontFamily: 'Righteous'),),
 
                   ///TIMER
                   Padding(padding: EdgeInsets.all(16), child: CustomLoGoLoading(),),
@@ -193,8 +194,8 @@ class _TrackOrderState extends State<TrackOrder> {
                           child: RichText(textAlign: TextAlign.center,text: TextSpan(
                               children: [
                                 TextSpan(text: " Order will be served in :  ", style: TextStyle(color: Colors.blueGrey, fontSize: 10.sp,)),
-                                TextSpan(text: "${snapshot.data} seconds \n ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.sp,fontWeight: FontWeight.bold)),
-                                TextSpan(text: "if the Order Served  Icon is not ticked green, try calling the vendor ", style: TextStyle(color: Colors.blueGrey, fontSize: 10.sp,)),
+                                TextSpan(text: "${snapshot.data} seconds \n ", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+                                TextSpan(text: "if the Order Served  Icon is not ticked green, try calling the vendor ", style: TextStyle(color: Colors.blueGrey, fontSize: 10.sp,fontFamily: 'Poppins')),
 
 
                               ]
@@ -250,7 +251,7 @@ class _TrackOrderState extends State<TrackOrder> {
 
 
             Material(  borderRadius: BorderRadius.circular(10),
-                color: Colors.deepOrangeAccent,
+                color: Colors.green,
                 elevation: 3,
                 child: TextButton(onPressed: (){
                   if(
@@ -298,7 +299,7 @@ class _TrackOrderState extends State<TrackOrder> {
 
 
 
-                }, child: Text('Order Received', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,letterSpacing: 3),))),
+                }, child: Text('Order Received', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,letterSpacing: 1,fontFamily: 'Righteous'),))),
 
 
             SizedBox(height: 30.h,)

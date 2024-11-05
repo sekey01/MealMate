@@ -316,26 +316,29 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
 
                     Image(image: AssetImage('assets/Icon/gmail.png'),height: 20.h,width: 20.h,),
                     SizedBox(width: 10.w,),
-                    FutureBuilder(
-                        future: Provider.of<LocalStorageProvider>(context, listen: false).getAdminEmail() ,
-                        builder: (context, snapshot){
-                          if(snapshot.hasData){
-                            return Text(snapshot.data.toString(),  style: TextStyle(
-                              letterSpacing: 1,
-                              color: Colors.black,
-                              fontSize: 15.sp,
-                              fontFamily: 'Poppins'
-                            ),
-                            );
-                          }else{
-                            return Text('adminemail@gmail.com ',  style: TextStyle(
-                              letterSpacing: 1,
-                              color: Colors.black,
-                              fontSize: 15.spMin,
-                              fontWeight: FontWeight.bold,
-                            ),);
-                          }
-                        }),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: FutureBuilder(
+                          future: Provider.of<LocalStorageProvider>(context, listen: false).getAdminEmail() ,
+                          builder: (context, snapshot){
+                            if(snapshot.hasData){
+                              return Text(snapshot.data.toString(),  style: TextStyle(
+                                letterSpacing: 1,
+                                color: Colors.black,
+                                fontSize: 15.sp,
+                                fontFamily: 'Poppins'
+                              ),
+                              );
+                            }else{
+                              return Text('adminemail@gmail.com ',  style: TextStyle(
+                                letterSpacing: 1,
+                                color: Colors.black,
+                                fontSize: 15.spMin,
+                                fontWeight: FontWeight.bold,
+                              ),);
+                            }
+                          }),
+                    ),
                   ],
                 ),
                 ///LOCATION DISPLAYED HERE
@@ -348,24 +351,27 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                     children: [
                       Image(image: AssetImage('assets/Icon/map.png'),height: 20.h,width: 20.h,),
                       SizedBox(width: 10.w,),
-                      FutureBuilder(
-                          future:
-                              Provider.of<LocationProvider>(context, listen: false)
-                                  .determinePosition(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return Text(snapshot.data.toString(),
-                                  style: TextStyle(
-                                      overflow: TextOverflow.ellipsis,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10.sp));
-                            }
-                            return Text(
-                              'locating you...',
-                              style: TextStyle(color: Colors.deepOrangeAccent,fontSize: 10.spMin, fontWeight: FontWeight.bold),
-                            );
-                          }),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: FutureBuilder(
+                            future:
+                                Provider.of<LocationProvider>(context, listen: false)
+                                    .determinePosition(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Text(snapshot.data.toString(),
+                                    style: TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 10.sp));
+                              }
+                              return Text(
+                                'locating you...',
+                                style: TextStyle(color: Colors.deepOrangeAccent,fontSize: 10.spMin, fontWeight: FontWeight.bold),
+                              );
+                            }),
+                      ),
                     ],
                   ),
                 ),
@@ -380,7 +386,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                     height: 65.h,
                     width: 10.sw,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.blueGrey.shade50,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(

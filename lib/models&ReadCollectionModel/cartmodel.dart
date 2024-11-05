@@ -6,6 +6,13 @@ class CartFood extends ChangeNotifier {
   final String foodName;
   final double price;
   final int id;
+  final String location;
+  final String time;
+  final int vendorId;
+  final bool isAvailable;
+  final String adminEmail;
+  final int adminContact;
+  final int maxDistance;
 
   CartFood({
     required this.imgUrl,
@@ -13,6 +20,13 @@ class CartFood extends ChangeNotifier {
     required this.foodName,
     required this.price,
     required this.id,
+    required this.location,
+    required this.time,
+    required this.vendorId,
+    required this.isAvailable,
+    required this.adminEmail,
+    required this.adminContact,
+    required this.maxDistance,
   });
 }
 
@@ -50,27 +64,25 @@ class CartModel extends ChangeNotifier {
     }
   }
 
-  /// THESE FUNCTIONS ARE USED TO INCREASE AND DECREASE THE QUANTITY OF FOOD ITEM IN THE DETAIL PAGE AND NOT THE CART PAGE
-  ///
-  ///
-  ///
+  void clearCart() {
+    cart.clear();
+    notifyListeners();
+  }
+
   int quantity = 1;
-  // getter for quantity
+
   int get getQuantity => quantity;
 
-  //setter for quantity
   set setQuantity(int totalQuantity) {
     quantity = totalQuantity;
     notifyListeners();
   }
 
-  //function to increase quantity
   void incrementQuantity() {
     quantity++;
     notifyListeners();
   }
 
-  //function to decrease quantity
   void decrementQuantity() {
     if (quantity > 1) {
       quantity--;
