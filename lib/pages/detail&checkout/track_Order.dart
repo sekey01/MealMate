@@ -13,7 +13,7 @@ import '../../components/Notify.dart';
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
 
 class TrackOrder extends StatefulWidget {
-  final int vendorId;
+  final String vendorId;
   final DateTime time;
   final String restaurant;
   final adminEmail;
@@ -33,7 +33,7 @@ class _TrackOrderState extends State<TrackOrder> {
     }
   }
 
-  Stream<OrderInfo> trackOrder(int id, String phoneNumber, DateTime time) {
+  Stream<OrderInfo> trackOrder(String id, String phoneNumber, DateTime time) {
     return FirebaseFirestore.instance
         .collection('OrdersCollection')
         .where('vendorId', isEqualTo: id)
@@ -62,7 +62,7 @@ class _TrackOrderState extends State<TrackOrder> {
 
 /// THIS CHANGES TOGGLES THE BOOL OF DELIVERED TO TRUE AND CHANGES THE INCOMPLETE ORDER FROM THE ADMIN TO TRUE AND ALERTS THE ADMIN THAT THE BUYER HAS RECEIVED
   /// THE FOOD OR ITEM 😊😊😊😊😊😊😊😊😊
-  Future<void> switchDelivered(BuildContext context, int id, String phoneNumber, bool isDelivered,DateTime time ) async {
+  Future<void> switchDelivered(BuildContext context, String id, String phoneNumber, bool isDelivered,DateTime time ) async {
     final CollectionReference collectionRef = FirebaseFirestore.instance.collection('OrdersCollection');
 
     try {

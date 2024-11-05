@@ -5,10 +5,10 @@ class CartFood extends ChangeNotifier {
   final String restaurant;
   final String foodName;
   final double price;
-  final int id;
+  final String id;
   final String location;
   final String time;
-  final int vendorId;
+  final String vendorId;
   final bool isAvailable;
   final String adminEmail;
   final int adminContact;
@@ -41,7 +41,7 @@ class CartModel extends ChangeNotifier {
     return total;
   }
 
-  int getId(int index) {
+  String getId(int index) {
     if (index >= 0 && index < cart.length) {
       return cart[index].id;
     } else {

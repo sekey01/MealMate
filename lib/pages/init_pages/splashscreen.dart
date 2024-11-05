@@ -1,5 +1,6 @@
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mealmate/pages/authpages/login.dart';
 import 'package:mealmate/pages/navpages/home.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -54,8 +55,10 @@ bool isLoggedIn = false;
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Center(child: Image(image: AssetImage('assets/Announcements/OrderNow.png'), height: 250.h, width: double.infinity.w)),
-                  SizedBox(
-                    height: 20,
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: LottieBuilder.asset('assets/Icon/loading.json'),
                   ),
                   RichText(text: TextSpan(
                       children: [
@@ -65,10 +68,6 @@ bool isLoggedIn = false;
 
                       ]
                   )),
-
-                  SizedBox(
-                    height: 20,
-                  ),
                 ],
               );
             }

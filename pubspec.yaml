@@ -105,6 +105,7 @@ flutter:
      - assets/Icon/online.json
      - assets/Icon/courier.json
      - assets/Icon/success.json
+     - assets/Icon/loading.json
      - assets/Icon/no_internet.json
      - assets/Icon/unsuccessful.json
      - assets/images/logo.png

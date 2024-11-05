@@ -7,7 +7,7 @@ class UploadModel {
   final double price;
   final String location;
   final String time;
-  final int vendorId;
+  final String vendorId;
   final bool isAvailable;
   final double latitude;
   final double longitude;

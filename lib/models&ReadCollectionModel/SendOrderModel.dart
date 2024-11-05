@@ -1,5 +1,5 @@
 class OrderInfo {
-  final int vendorId;
+  final String vendorId;
   final String foodName;
   final double price;
   final String phoneNumber;

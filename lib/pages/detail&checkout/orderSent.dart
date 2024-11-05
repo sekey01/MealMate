@@ -4,7 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:mealmate/pages/detail&checkout/track_Order.dart';
 
 class OrderSent extends StatefulWidget {
-  final int vendorId;
+  final String vendorId;
   final DateTime time;
   final String restaurant;
   final adminEmail;

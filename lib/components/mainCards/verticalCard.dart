@@ -456,6 +456,78 @@ Center NoCouriersFound() {
   );
 }
 
+Center WaitingPayment() {
+  Stream<int> countdownTimer(int start) async* {
+    for (int i = start; i >= 0; i--) {
+      await Future.delayed(Duration(seconds: 1));
+      yield i;
+    }
+  }
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        //logo hewe
+        Padding(
+          padding: const EdgeInsets.only(top: 0),
+          child: Image.asset('assets/images/logo.png', height: 100.h, width: 150.w),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.only(top: 1),
+          child: Lottie.asset('assets/Icon/loading.json', height: 200.h, width: 200.w),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Text('Please don\'t leave this page ', style: TextStyle(color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.bold,fontFamily: 'Poppins'),),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: RichText(textAlign: TextAlign.center,text: TextSpan(
+              children: [
+                TextSpan(text: " Verifying  ", style: TextStyle(color: Colors.blueGrey, fontSize: 15.sp,fontFamily: 'Righteous')),
+                TextSpan(text: "Payment...", style: TextStyle(color: Colors.blueGrey, fontSize: 15.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+                TextSpan(text: "... ", style: TextStyle(color: Colors.blueGrey, fontSize: 10.sp,fontFamily: 'Poppins')),
+              ]
+          )),
+        ),
+        StreamBuilder<int>(
+          stream: countdownTimer(60), // Countdown from 60 seconds
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text(
+                'Wait...',
+                style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+              );
+            } else if (snapshot.hasData) {
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: RichText(textAlign: TextAlign.center,text: TextSpan(
+                    children: [
+                      TextSpan(text: " Time Remaining :  ", style: TextStyle(color: Colors.black, fontSize: 10.sp,fontFamily: 'Poppins')),
+                      TextSpan(text: "${snapshot.data} seconds \n ", style: TextStyle(color: Colors.red, fontSize: 15.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+                      TextSpan(text: "... ", style: TextStyle(color: Colors.red, fontSize: 10.sp,fontFamily: 'Poppins')),
+                    ]
+                )),
+              );
+            } else if (snapshot.data == 0) {
+              Navigator.pop(context);
+              return Text(
+                'Doe: ${snapshot.data}',
+                style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+              );
+            } else {
+              return Text(
+                'Done!',
+                style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+              );
+            }
+          },
+        ),
+      ],
+    ),
+  );
+}
 
 
 

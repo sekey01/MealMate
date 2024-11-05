@@ -76,7 +76,7 @@ class AdminFunctions extends ChangeNotifier {
 
   /// THIS FUNCTION SWITCH THE SERVED TO TRUE
 
-  Future<void> switchServedFood(BuildContext context, int id, String phoneNumber, bool isServed, DateTime time) async {
+  Future<void> switchServedFood(BuildContext context, String id, String phoneNumber, bool isServed, DateTime time) async {
     final CollectionReference collectionRef = FirebaseFirestore.instance.collection('OrdersCollection');
 
     try {
@@ -107,7 +107,7 @@ class AdminFunctions extends ChangeNotifier {
 
 
 
-  Future<void> switchCourier(BuildContext context, int id, String phoneNumber, bool isCourier, DateTime time) async {
+  Future<void> switchCourier(BuildContext context, String id, String phoneNumber, bool isCourier, DateTime time) async {
     final CollectionReference collectionRef = FirebaseFirestore.instance.collection('OrdersCollection');
 
     try {

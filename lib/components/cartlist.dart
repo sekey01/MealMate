@@ -6,7 +6,7 @@ import '../models&ReadCollectionModel/cartmodel.dart';
 import '../pages/searchfooditem/init_row_search.dart';
 
 Padding cartList(
-    String imgUrl, String restaurant, String foodName, double price, int id) {
+    String imgUrl, String restaurant, String foodName, double price, String id) {
   return Padding(
     padding: const EdgeInsets.all(1.0),
     child: ExpansionTile(
@@ -47,7 +47,7 @@ Padding cartList(
          subtitle: Consumer<CartModel>(builder: (context, value, child) {
            return IconButton(
                onPressed: () {
-                 value.remove(id);
+                // value.remove(id );
                },
                icon: Text(
                  'Remove',

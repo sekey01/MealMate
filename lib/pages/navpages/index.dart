@@ -3,23 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
-
 import 'package:mealmate/Notification/notification_Provider.dart';
 import 'package:mealmate/components/NoInternet.dart';
 import 'package:mealmate/components/mainCards/promotion_ads_card.dart';
 import 'package:mealmate/pages/detail&checkout/detail.dart';
 import 'package:mealmate/pages/navpages/profile.dart';
 import 'package:mealmate/pages/navpages/searchByCollection.dart';
-import 'package:mealmate/pages/searchfooditem/filters.dart';
 import 'package:mealmate/pages/searchfooditem/init_row_search.dart';
 import 'package:mealmate/pages/searchfooditem/searchFoodItem.dart';
 import 'package:provider/provider.dart';
-
 import '../../UserLocation/LocationProvider.dart';
 import '../../components/Notify.dart';
-import '../../components/adsCouressel.dart';
-import '../../components/card1.dart';
 import '../../components/mainCards/verticalCard.dart';
 import '../../models&ReadCollectionModel/ListFoodItemModel.dart';
 import '../searchfooditem/init_page_search.dart';

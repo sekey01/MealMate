@@ -5,13 +5,14 @@ import 'dart:math';
 import 'package:card_loading/card_loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_url_launcher/easy_url_launcher.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/pages/detail&checkout/payment_unsuccessful.dart';
-import 'package:mealmate/pages/navpages/searchByCollection.dart';
 import 'package:mealmate/pages/searchfooditem/searchFoodItem.dart';
 import 'package:mealmate/theme/styles.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,7 @@ class DetailedCard extends StatefulWidget {
   final String foodName;
   final double price;
   final String location;
-  final int vendorid;
+  final String vendorid;
   final String time;
   final double latitude;
   final double longitude;
@@ -362,16 +363,7 @@ class _DetailedCardState extends State<DetailedCard> {
                   children: [
                     SizedBox(height: 10.h),
 
-                    /*RichText(text: TextSpan(
-                        children: [
-                          TextSpan(text: "Meal", style: TextStyle(fontFamily: 'Righteous',color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
-                          TextSpan(text: "Mate", style: TextStyle(fontFamily: 'Righteous',color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold)),
 
-
-                        ]
-                    )),*/
-
-                    //SizedBox(height: 10.h),
                     /// RESTAURANT ICON AND NAME
                     ///
                     SingleChildScrollView(
@@ -526,7 +518,6 @@ class _DetailedCardState extends State<DetailedCard> {
 
 
 
-                   // SizedBox(height: 5.h),
 
                     ///FOOD NAME
                     ///
@@ -883,7 +874,7 @@ class _DetailedCardState extends State<DetailedCard> {
                     Consumer<CartModel>(
                       builder: (context, value, child) => Container(
                         margin: EdgeInsets.all(10),
-                        height: 700.h,
+                       // height: 700.h,
                         width: double.infinity,
                         child: Center(
                           child: Column(
@@ -1162,7 +1153,7 @@ else if (snapshot.hasData) {
                               ),
 
                               SizedBox(height: 15.h),
-                              ElevatedButton(
+                             /* ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   elevation: 3,
                                   backgroundColor: Colors.redAccent,
@@ -1171,17 +1162,14 @@ else if (snapshot.hasData) {
                                   ),
                                 ),
                                 onPressed: () {
-                                 /* print(widget.latitude);
-                                  print(widget.longitude);
-                                  print(Provider.of<LocationProvider>(context, listen: false).Lat);
-                                  print(Provider.of<LocationProvider>(context, listen: false).Long);*/
+
                                   ///Get the Time
                                   DateTime time = DateTime.now();
 
                                   if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
                                   {
                                     final paymentProvider = Provider.of<PaystackPaymentProvider>(context, listen: false).
-                                    startPayment(context).then((result){
+                                    startPayment(context, widget.vendorid, overAllPrice.toInt()).then((result){
                                        if(result.success){
                                            Provider.of<SendOrderProvider>(context, listen: false).sendOrder(OrderInfo(
                                           time: time,
@@ -1252,7 +1240,187 @@ else if (snapshot.hasData) {
                                     TextStyle(color: Colors.white, fontSize: 20.spMin , fontWeight: FontWeight.bold, fontFamily: 'Righteous'),
                                   ),
                                 ),
-                              ),
+                              ),*/
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text('Swipe to Checkout', style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold, fontFamily: 'Righteous'),),
+      ),
+                             Padding(
+                               padding: const EdgeInsets.all(8.0),
+                               child: Text('make sure paymen is done within 30 seconds after swipe', style: TextStyle(color: Colors.red, fontSize: 10.sp, fontWeight: FontWeight.bold, fontFamily: 'Righteous'),),
+                             ),
+                              LiteRollingSwitch(
+                                //initial value
+                                value: false,
+                                width: 220.sp,
+                                textOn: 'CheckOut',
+                                textOnColor: Colors.white,
+                                textOff: 'CheckOut',
+                                textOffColor: Colors.white,
+                                colorOn: CupertinoColors.activeGreen,
+                                colorOff: Colors.redAccent,
+                                iconOn: Icons.done,
+                                iconOff: Icons.shopping_cart_checkout_outlined,
+                                textSize: 20.0,
+                                onChanged: (bool state) {
+
+                                },
+                                onTap: ()  {
+                                  Alert(context: context,
+                                    style: AlertStyle(
+                                      backgroundColor: Colors.white,
+                                    ),
+                                    content: WaitingPayment(),
+                                  ).show();
+
+                                  ///Get the Time
+                                  DateTime time = DateTime.now();
+
+                                  if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
+                                  {
+                                    final paymentProvider = Provider.of<PaystackPaymentProvider>(context, listen: false).
+                                    startPayment(context, widget.vendorid, overAllPrice.toInt()).then((result){
+                                      if(result.success){
+                                        Provider.of<SendOrderProvider>(context, listen: false).sendOrder(OrderInfo(
+                                          time: time,
+                                          foodName: widget.foodName,
+                                          quantity: Provider.of<CartModel>(context,
+                                              listen: false)
+                                              .getQuantity,
+                                          price: widget.price,
+                                          message: messageController.text.toString(),
+                                          Latitude: Provider.of<LocationProvider>(
+                                              context,
+                                              listen: false)
+                                              .Lat,
+                                          Longitude: Provider.of<LocationProvider>(
+                                              context,
+                                              listen: false)
+                                              .Long,
+                                          phoneNumber:
+                                          Provider.of<LocalStorageProvider>(
+                                              context,
+                                              listen: false)
+                                              .phoneNumber,
+                                          vendorId: widget.vendorid,
+                                          served: false,
+                                          courier: false,
+                                          delivered: false,
+                                          adminEmail: widget.adminEmail,
+                                          adminContact: widget.adminContact,
+                                          CourierContact: '',
+                                          CourierId: '',
+                                          CourierName: '',
+                                        )).then((_){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => OrderSent(
+                                                  vendorId: widget.vendorid,
+                                                  time: time,
+                                                  restaurant: widget.restaurant,
+                                                  adminEmail: widget.adminEmail,
+                                                  adminContact: widget.adminContact),
+                                            ),
+                                          );
+                                        });
+                                      }
+                                      else{
+                                        Notify(context, 'Payment Failed', Colors.red);
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> PaymentUnsuccessful()));
+                                      }
+
+                                    });
+
+
+
+
+
+                                  }
+                                  else {
+                                    Notify(context, 'Please add Telephone number',
+                                        Colors.red);
+                                  }
+                                },
+                                onDoubleTap: () {},
+                                onSwipe: ()   {
+                                  Alert(context: context,
+                                    style: AlertStyle(
+                                      backgroundColor: Colors.white,
+                                    ),
+                                    content: WaitingPayment(),
+                                  ).show();
+
+                                  ///Get the Time
+                                  DateTime time = DateTime.now();
+
+                                  if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
+                                  {
+                                    final paymentProvider = Provider.of<PaystackPaymentProvider>(context, listen: false).
+                                    startPayment(context, widget.vendorid, overAllPrice.toInt()).then((result){
+                                      if(result.success){
+                                        Provider.of<SendOrderProvider>(context, listen: false).sendOrder(OrderInfo(
+                                          time: time,
+                                          foodName: widget.foodName,
+                                          quantity: Provider.of<CartModel>(context,
+                                              listen: false)
+                                              .getQuantity,
+                                          price: widget.price,
+                                          message: messageController.text.toString(),
+                                          Latitude: Provider.of<LocationProvider>(
+                                              context,
+                                              listen: false)
+                                              .Lat,
+                                          Longitude: Provider.of<LocationProvider>(
+                                              context,
+                                              listen: false)
+                                              .Long,
+                                          phoneNumber:
+                                          Provider.of<LocalStorageProvider>(
+                                              context,
+                                              listen: false)
+                                              .phoneNumber,
+                                          vendorId: widget.vendorid,
+                                          served: false,
+                                          courier: false,
+                                          delivered: false,
+                                          adminEmail: widget.adminEmail,
+                                          adminContact: widget.adminContact,
+                                          CourierContact: '',
+                                          CourierId: '',
+                                          CourierName: '',
+                                        )).then((_){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => OrderSent(
+                                                  vendorId: widget.vendorid,
+                                                  time: time,
+                                                  restaurant: widget.restaurant,
+                                                  adminEmail: widget.adminEmail,
+                                                  adminContact: widget.adminContact),
+                                            ),
+                                          );
+                                        });
+                                      }
+                                      else{
+                                        Notify(context, 'Payment Failed', Colors.red);
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> PaymentUnsuccessful()));
+                                      }
+
+                                    });
+
+
+
+
+
+                                  }
+                                  else {
+                                    Notify(context, 'Please add Telephone number',
+                                        Colors.red);
+                                  }
+                                },
+                              )
                             ],
                           ),
                         ),

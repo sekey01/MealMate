@@ -4,7 +4,7 @@ class FoodItem {
   final String foodName;
   final double price;
   final String location;
-  final int vendorId;
+  final String vendorId;
   final String time;
   final bool isAvailable;
   final double latitude;
@@ -13,7 +13,7 @@ class FoodItem {
   final int adminContact;
   final int maxDistance;
 
-  FoodItem( {
+  FoodItem({
     required this.vendorId,
     required this.restaurant,
     required this.foodName,
@@ -26,7 +26,7 @@ class FoodItem {
     required this.longitude,
     required this.adminEmail,
     required this.adminContact,
-    required this.maxDistance
+    required this.maxDistance,
   });
 
   factory FoodItem.fromMap(Map<String, dynamic> data, String documentId) {
@@ -35,15 +35,15 @@ class FoodItem {
       time: data['time'] ?? '',
       restaurant: data['restaurant'] ?? '',
       foodName: data['foodName'] ?? '',
-      price: data['price'] ?? 0,
+      price: (data['price'] ?? 0).toDouble(),
       location: data['location'] ?? '',
-      vendorId: data['vendorId'],
+      vendorId: data['vendorId']?.toString() ?? '',
       isAvailable: data['isActive'] ?? true,
-      latitude: data['latitude'] ?? 0,
-      longitude: data['longitude']??0,
-      adminEmail: data['adminEmail']?? '',
-        adminContact: data['adminContact']??'',
-        maxDistance: data['maxDistance']??''
+      latitude: (data['latitude'] ?? 0).toDouble(),
+      longitude: (data['longitude'] ?? 0).toDouble(),
+      adminEmail: data['adminEmail'] ?? '',
+      adminContact: int.tryParse(data['adminContact'].toString()) ?? 0,
+      maxDistance: int.tryParse(data['maxDistance'].toString()) ?? 0,
     );
   }
 }

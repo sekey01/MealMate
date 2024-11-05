@@ -10,7 +10,7 @@ Column horizontalCard(
   double price,
   String location,
   String time,
-  int id,
+  String id,
     double latitude,
     double longitude,
     String adminEmail,

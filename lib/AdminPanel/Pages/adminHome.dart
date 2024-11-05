@@ -909,7 +909,7 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                                   price: double.parse(priceController.text.trim()),
                                   location: locationController.text.toLowerCase().trim(),
                                   time: timeController.text.trim(),
-                                  vendorId: int.parse(idController.text.trim()),
+                                  vendorId: idController.text.trim(),
                                     adminEmail: Provider.of<LocalStorageProvider>(context,listen: false).adminEmail ,
                                     adminContact: int.parse(adminContactController.text),
                                     maxDistance: maxDistance

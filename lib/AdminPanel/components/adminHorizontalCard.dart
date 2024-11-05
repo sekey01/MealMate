@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 ListView adminHorizontalCard(String imgUrl, String restaurant, String location,
-    String foodName, double price, int id, String time, bool isAvailable) {
+    String foodName, double price, String id, String time, bool isAvailable) {
   return ListView.builder(
     itemBuilder: (context, index) {
       return Padding(

@@ -19,12 +19,13 @@ class PaymentResult {
 
 class PaystackPaymentProvider extends ChangeNotifier {
   static const String _baseUrl = 'https://api.paystack.co';
-  final String _secretKey = 'sk_test_a7c0bd30257ef8353e344b6c5a7d2ba683c11b7c';
+  final String _secretKey = 'sk_live_841205f21f17b0ef08f38682f2d99abbadd9407d';
 
-  Future<PaymentResult> startPayment(BuildContext context) async {
+  Future<PaymentResult> startPayment(BuildContext context,String vendorAccount,int amount) async {
     try {
-      final response = await _initializeTransaction();
+      final response = await _initializeTransaction(vendorAccount,amount);
       if (response.statusCode == 200) {
+        print('Payment initialized: ${response.body}');
         final responseData = jsonDecode(response.body);
         final authorizationUrl = responseData['data']['authorization_url'];
         final reference = responseData['data']['reference'];
@@ -33,7 +34,7 @@ class PaystackPaymentProvider extends ChangeNotifier {
         await EasyLauncher.url(url: authorizationUrl);
 
         // Wait for a few seconds before verifying the transaction
-        await Future.delayed(const Duration(seconds: 10));
+        await Future.delayed(const Duration(seconds: 60));
 
         // Verify the transaction
         final result = await _verifyTransaction(reference);
@@ -44,20 +45,23 @@ class PaystackPaymentProvider extends ChangeNotifier {
 
         return result;
       } else {
+        print('Payment initialization failed: ${response.body}');
         return PaymentResult(
           success: false,
           message: 'Payment initialization failed: ${response.body}',
         );
       }
     } catch (e) {
+      print('Payment error: ${e.toString()}');
       return PaymentResult(
         success: false,
         message: 'Payment error: ${e.toString()}',
+
       );
     }
   }
 
-  Future<http.Response> _initializeTransaction() async {
+  Future<http.Response> _initializeTransaction(String vendorAccount,int amount) async {
     final url = Uri.parse('$_baseUrl/transaction/initialize');
     final headers = {
       'Authorization': 'Bearer $_secretKey',
@@ -65,7 +69,7 @@ class PaystackPaymentProvider extends ChangeNotifier {
     };
     final body = jsonEncode({
       'email': 'customer@email.com',
-      'amount': 1000,
+      'amount': amount*100,
       'currency': 'GHS',
       'reference': _generateReference(),
       'callback_url': 'myapp://payment-success',
@@ -73,6 +77,18 @@ class PaystackPaymentProvider extends ChangeNotifier {
         'phone': '0553767177',
         'provider': 'MTN',
       },
+      'split': {
+        'type': 'percentage',
+        'bearer_type': 'account',
+        'subaccounts': [
+          {
+
+            'subaccount': vendorAccount,
+            'share': 90,
+          },
+        ],
+      },
+
     });
 
     return await http.post(url, headers: headers, body: body);
