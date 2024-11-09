@@ -267,7 +267,7 @@ final CourierID = Provider.of<LocalStorageProvider>(context, listen: false).cour
                 SizedBox(height: 10.h,),
                 Padding(padding: EdgeInsets.only(top: 20,bottom: 20),
                     child: PromotionAdsCard(
-                      image: 'assets/images/MealmateDress.png',
+                      image: 'assets/Announcements/OrderNow.png',
                       heading:'Welcome to Courier Panel',
                       content: 'Track buyer by entering the phone number and the latitude and longitude of the buyer',
                       contentColor: Colors.white70,

@@ -43,16 +43,22 @@ class _NoticeState extends State<Notice> {
                   final notice = snapshot.data![index];
 
                   return ListTile(
-                    leading: Text(notice.time, style: TextStyle(color: Colors.black, fontSize: 10.sp,fontWeight: FontWeight.bold)),
+                    leading:CircleAvatar(
+                      radius: 20.sp,
+                      backgroundColor: Colors.deepOrangeAccent,
+                      child: Icon(Icons.notifications_active, color: Colors.white,size: 20.sp,),
+                    ),
                     title: RichText(text: TextSpan(
                         children: [
-                          TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold)),
-                          TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.sp, fontWeight: FontWeight.bold)),
+                          TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+                          TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+                          TextSpan(text: "      ${notice.time}", style: TextStyle(color: Colors.black, fontSize: 10.sp,fontFamily: 'Poppins')),
 
 
                         ]
                     )),
-                    subtitle: Text(notice.notification, style: TextStyle(color: Colors.black, fontSize: 15.sp)),
+                    subtitle: Text(notice.notification, style: TextStyle(color: Colors.black, fontSize: 12.sp)),
+
                   );
                 },
               );

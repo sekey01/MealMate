@@ -154,6 +154,7 @@ class _InitPageSearchState extends State<InitPageSearch> {
                                           adminEmail: foodItem.adminEmail,
                                           adminContact: foodItem.adminContact,
                                           maxDistance: foodItem.maxDistance,
+                                          vendorAccount: foodItem.vendorAccount,
                                         ),
                                       ),
                                     );

@@ -108,6 +108,7 @@ flutter:
      - assets/Icon/loading.json
      - assets/Icon/no_internet.json
      - assets/Icon/unsuccessful.json
+     - assets/Icon/location.json
      - assets/images/logo.png
      - assets/images/mealmate.png
      - assets/images/delivery.jpg

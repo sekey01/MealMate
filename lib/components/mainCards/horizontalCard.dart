@@ -16,6 +16,7 @@ Column horizontalCard(
     String adminEmail,
     int adminContact,
     int maxDistance
+    ,String vendorAccount
 ) {
   return Column(
     children: [
@@ -38,7 +39,8 @@ Column horizontalCard(
                         longitude: longitude,
                         adminEmail: adminEmail,
                         adminContact: adminContact,
-                        maxDistance: maxDistance
+                        maxDistance: maxDistance,
+                        vendorAccount: vendorAccount,
 
 
                       )));

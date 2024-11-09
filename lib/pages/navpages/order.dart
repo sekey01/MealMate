@@ -70,41 +70,25 @@ class _OrderListState extends State<OrderList> {
                         text: "Meal",
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 15.sp,
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
+                          fontFamily: 'Righteous',
                         ),
                       ),
                       TextSpan(
                         text: "Mate",
                         style: TextStyle(
                           color: Colors.deepOrangeAccent,
-                          fontSize: 15.sp,
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
+                          fontFamily: 'Righteous',
                         ),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(width: 20.w),
-                TextButton(
-                  onPressed: () {
-                   /* final paymentHandler = PaystackPaymentHandler();
-                    paymentHandler.startPayment(context).then((result) {
-                      if (result.success) {
-                        print('wwwwwwwwwwwwwwwwwwwwwwwwww');
-                        // Handle success
-                      }
-                    });*/
-                  },
-                  child: Text(
-                    'Pay Now',
-                    style: TextStyle(
-                      fontSize: 15.sp,
-                      color: Colors.deepOrangeAccent,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+
                 Container(
                   height: 30.h,
                   width: 100.w,

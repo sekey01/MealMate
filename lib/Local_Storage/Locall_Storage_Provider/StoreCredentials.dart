@@ -480,6 +480,46 @@ print(phoneNumber);
   }
 
 
+
+  ///ADMIN LOGIN STATE
+///
+
+  Future<void> storeAdminLoginState(bool isLoggedIn) async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final filepath = '${directory.path}/adminLoginState.txt';
+      final file = File(filepath);
+
+      if (!await file.exists()) {
+        await file.create(recursive: true);
+      }
+
+      await file.writeAsString(isLoggedIn.toString());
+      notifyListeners();
+    } catch (e) {
+      print("Error storing admin login state: $e");
+    }
+  }
+
+  Future<bool> getAdminLoginState() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final filepath = '${directory.path}/adminLoginState.txt';
+      final file = File(filepath);
+
+      if (await file.exists()) {
+        String contents = await file.readAsString();
+        return contents == 'true';
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print("Error retrieving admin login state: $e");
+      return false;
+    }
+  }
+
+
   }
 
 

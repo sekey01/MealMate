@@ -5,6 +5,7 @@ import 'package:mealmate/AdminPanel/Pages/adminHome.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:provider/provider.dart';
 
+import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../components/Notify.dart';
 import '../OtherDetails/ID.dart';
 
@@ -17,6 +18,7 @@ class AdminLogin extends StatefulWidget {
 
 class _AdminLoginState extends State<AdminLogin> {
   bool isLoading = false;
+  bool waiting = false;
 
   Future<void> adminSignIn() async {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
@@ -33,6 +35,9 @@ class _AdminLoginState extends State<AdminLogin> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+
+      // Save login state
+      await Provider.of<LocalStorageProvider>(context, listen: false).storeAdminLoginState(true);
 
       // If we reach here, sign in was successful
       Navigator.pushReplacement(
@@ -52,12 +57,11 @@ class _AdminLoginState extends State<AdminLogin> {
           errorMessage = 'The email address is badly formatted.';
           break;
         default:
-          errorMessage = ' Wrong Credentials, make sure you are connected';
+          errorMessage = 'Wrong Credentials, make sure you are connected';
       }
-     Notify(context, errorMessage, Colors.red);
+      Notify(context, errorMessage, Colors.red);
       print('Error during sign in: ${e.code} - ${e.message}');
     } catch (e) {
-    //  print('Unexpected error during sign in: $e');
       Notify(context, 'Wrong Credentials', Colors.red);
     } finally {
       setState(() {
@@ -65,9 +69,26 @@ class _AdminLoginState extends State<AdminLogin> {
       });
     }
   }
+  Future<void> _checkLoginStatus() async {
+    bool isLoggedIn = await Provider.of<LocalStorageProvider>(context, listen: false).getAdminLoginState();
+
+    if (isLoggedIn) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => adminHome()),
+      );
+    }
+  }
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _checkLoginStatus();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,13 +120,29 @@ class _AdminLoginState extends State<AdminLogin> {
                         height: 10,
                       ),
                       Center(
-                        child: Text(
-                          'Admin Login',
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontFamily: 'Righteous',
-                              color: Colors.black87,
-                              fontWeight: FontWeight.bold),
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Admin",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 27.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Righteous'
+                                ),
+                              ),
+                              TextSpan(
+                                text: "Login",
+                                style: TextStyle(
+                                  color: Colors.deepOrangeAccent,
+                                  fontSize: 27.sp,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Righteous'
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -190,7 +227,7 @@ class _AdminLoginState extends State<AdminLogin> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.deepOrangeAccent
+                              backgroundColor: Colors.black
 
 
             ),
@@ -205,6 +242,7 @@ class _AdminLoginState extends State<AdminLogin> {
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 20.sp,
+                              fontFamily: 'Righteous'
                             ),
                           ),
                         ),
@@ -218,13 +256,16 @@ class _AdminLoginState extends State<AdminLogin> {
                         children: [
                           Text(
                             "Forgot your restaurant Credentials ?",
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.black,fontFamily: 'Poppins'),
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+
+                            },
                             child: Text(
-                              ' Click here',
+                              ' Call Us for Verification...',
                               style: TextStyle(
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.deepOrangeAccent
 

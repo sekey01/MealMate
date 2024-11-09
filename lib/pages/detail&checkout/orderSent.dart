@@ -9,7 +9,7 @@ class OrderSent extends StatefulWidget {
   final String restaurant;
   final adminEmail;
   final adminContact;
-  const OrderSent({super.key, required this.vendorId, required this.time, required this.restaurant, required this.adminEmail, required this.adminContact} );
+  const OrderSent({super.key, required this.vendorId, required this.time, required this.restaurant, required this.adminEmail, required this.adminContact, } );
 
   @override
   State<OrderSent> createState() => _OrderSentState();

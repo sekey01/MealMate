@@ -105,6 +105,34 @@ class AdminFunctions extends ChangeNotifier {
     }
   }
 
+  Future<void> UpdateCourier(BuildContext context, String id, String phoneNumber, int CourierId, DateTime time) async {
+    final CollectionReference collectionRef = FirebaseFirestore.instance.collection('OrdersCollection');
+
+    try {
+      // First, get the documents that match the criteria
+      QuerySnapshot querySnapshot = await collectionRef
+          .where('vendorId', isEqualTo: id)
+          .where('phoneNumber', isEqualTo: phoneNumber)
+          .where('time', isEqualTo: time)
+          .get();
+
+      // Check if any documents were found
+      if (querySnapshot.docs.isEmpty) {
+        print('No matching documents found');
+        return;
+      }
+
+      // Update each matching document
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        await doc.reference.update({'CourierId': CourierId});
+      }
+
+      print('isCourier updated successfully');
+    } catch (e) {
+      print('Error updating document(s): $e');
+      // You might want to show an error message to the user here
+    }
+  }
 
 
   Future<void> switchCourier(BuildContext context, String id, String phoneNumber, bool isCourier, DateTime time) async {

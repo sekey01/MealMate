@@ -586,12 +586,12 @@ SizedBox(height: 30.h,),
                   ),
 
                   _hasInternet? SizedBox(
-  width: double.infinity,
-  height: 200.h,
-  child: FutureBuilder<List<FoodItem>>(
-  future: fetchFoodItems('Food 🍔'),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+                    width: double.infinity,
+                    height: 200.h,
+                    child: FutureBuilder<List<FoodItem>>(
+                    future: fetchFoodItems('Food 🍔'),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
                   return ListView.builder(
                     itemCount: 5,
                     itemBuilder: (context, index) {
@@ -602,9 +602,9 @@ SizedBox(height: 30.h,),
                     },
                     scrollDirection: Axis.horizontal,
                   );
-                } else if (snapshot.hasError) {
+                                  } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return ListView.builder(
                     itemCount: 5,
                     itemBuilder: (context, index) {
@@ -615,7 +615,7 @@ SizedBox(height: 30.h,),
                     },
                     scrollDirection: Axis.horizontal,
                   );
-                } else {
+                                  } else {
                   return FutureBuilder<LatLng>(
                     future: Provider.of<LocationProvider>(context, listen: false).getPoints(),
                     builder: (context, locationSnapshot) {
@@ -667,6 +667,7 @@ SizedBox(height: 30.h,),
                                         adminEmail: foodItem.adminEmail,
                                         adminContact: foodItem.adminContact,
                                         maxDistance: foodItem.maxDistance,
+                                        vendorAccount: foodItem.vendorAccount,
                                       ),
                                     ),
                                   )
@@ -693,10 +694,10 @@ SizedBox(height: 30.h,),
                       }
                     },
                   );
-                }
-              },
-            ),
-): NoInternetConnection(),
+                                  }
+                                },
+                              ),
+                  ): NoInternetConnection(),
                   ///CONTAINER OF HRORINZAOL LIST OF FOODS
                   ///
                   ///
@@ -785,6 +786,7 @@ SizedBox(height: 30.h,),
                                                 adminEmail: foodItem.adminEmail,
                                                 adminContact: foodItem.adminContact,
                                                 maxDistance: foodItem.maxDistance,
+                                                vendorAccount: foodItem.vendorAccount,
                                               ),
                                             ),
                                           )
@@ -953,7 +955,8 @@ SizedBox(height: 30.h,),
                                                       longitude: foodItem.longitude,
                                                       adminEmail: foodItem.adminEmail,
                                                       adminContact: foodItem.adminContact,
-                                                      maxDistance: foodItem.maxDistance
+                                                      maxDistance: foodItem.maxDistance,
+                                                      vendorAccount: foodItem.vendorAccount,
                                                     ))):Notify(context, 'This item is not Available now', Colors.red);
                                       },
                                       child: verticalCard(
@@ -1102,7 +1105,8 @@ SizedBox(height: 30.h,),
                                                         longitude: foodItem.longitude,
                                                         adminEmail: foodItem.adminEmail,
                                                         adminContact: foodItem.adminContact,
-                                                        maxDistance: foodItem.maxDistance
+                                                        maxDistance: foodItem.maxDistance,
+                                                        vendorAccount: foodItem.vendorAccount,
                                                     ))):Notify(context, 'This item is not Available now', Colors.red);
                                       },
                                       child: verticalCard(

@@ -62,7 +62,7 @@ class _CartState extends State<Cart> {
                   itemBuilder: (context, index) {
                     final CartFood food = value.cart[index];
                     return cartList(
-                        food.imgUrl, food.restaurant, food.foodName, food.price, food.id);
+                        food.imgUrl, food.restaurant, food.foodName, food.price, index);
                   }),
             ),
           ),

@@ -54,9 +54,17 @@ class CartModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void remove(int id) {
+  void removeAt(int index) {
+    if (index >= 0 && index < cart.length) {
+      cart.removeAt(index);
+      notifyListeners();
+    } else {
+      throw RangeError('Index out of bounds');
+    }
+  }
+  void remove(int index) {
     for (int i = 0; i < cart.length; i++) {
-      if (cart[i].id == id) {
+      if (cart[i].id == index) {
         cart.removeAt(i);
         notifyListeners();
         break; // Remove only the first match

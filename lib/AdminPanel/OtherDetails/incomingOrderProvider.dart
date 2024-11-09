@@ -27,12 +27,12 @@ class IncomingOrdersProvider extends ChangeNotifier {
   /// FETCH INCOMPLETE OR CURRENT INCOMING ORDERS
   ///
   ///
-  Stream<List<OrderInfo>> fetchOrders(dynamic id) {
+  Stream<List<OrderInfo>> fetchOrders(String id) {
     _startFetchingOrders(id);
     return _ordersController.stream;
   }
 
-  void _startFetchingOrders(dynamic id) async {
+  void _startFetchingOrders(String id) async {
     int retryCount = 0;
     const maxRetries = 3;
     const retryDelay = Duration(seconds: 60);
@@ -43,15 +43,11 @@ class IncomingOrdersProvider extends ChangeNotifier {
           throw SocketException('No internet connection');
         }
 
-        // Ensure id is an int
-        int vendorId = (id is int) ? id : int.tryParse(id.toString()) ?? 0;
-        if (vendorId == 0) {
-          throw FormatException('Invalid vendor ID: $id');
-        }
+
 
         QuerySnapshot snapshot = await FirebaseFirestore.instance
             .collection('OrdersCollection')
-            .where('vendorId', isEqualTo: vendorId)
+            .where('vendorId', isEqualTo: id)
             .where('delivered', isEqualTo: false)
             .get();
 
@@ -85,7 +81,7 @@ class IncomingOrdersProvider extends ChangeNotifier {
           await Future.delayed(retryDelay);
         } else {
           _ordersController.addError('An unexpected error occurred: $e');
-          //print('ERROR: $e');
+          print('ERROR: $e');
           return;
         }
       }
@@ -104,11 +100,11 @@ class IncomingOrdersProvider extends ChangeNotifier {
 ///
 ///
 ///
-  Stream<List<OrderInfo>> fetchCompleteOrders(dynamic id) {
+  Stream<List<OrderInfo>> fetchCompleteOrders(String id) {
     _startFetchingCompleteOrders(id);
     return _CompletedordersController.stream;
   }
-  void _startFetchingCompleteOrders(dynamic id) async {
+  void _startFetchingCompleteOrders(String id) async {
     int retryCount = 0;
     const maxRetries = 3;
     const retryDelay = Duration(seconds: 60);
@@ -119,16 +115,11 @@ class IncomingOrdersProvider extends ChangeNotifier {
           throw SocketException('No internet connection');
         }
 
-        // Ensure id is an int
-        int vendorId = (id is int) ? id : int.tryParse(id.toString()) ?? 0;
-        if (vendorId == 0) {
-          throw FormatException('Invalid vendor ID: $id');
-        }
 
         QuerySnapshot snapshot = await FirebaseFirestore.instance
             .collection('OrdersCollection')
             // set two conditions to get the completed orders
-            .where('vendorId', isEqualTo: vendorId)
+            .where('vendorId', isEqualTo: id)
             .where('delivered', isEqualTo: true)
 
             .get();
@@ -150,7 +141,7 @@ class IncomingOrdersProvider extends ChangeNotifier {
         _CompletedordersController.add(orders);
 
         retryCount = 0; // Reset retry count on successful fetch
-        await Future.delayed(Duration(seconds: 15));
+        await Future.delayed(Duration(seconds: 60));
       } catch (e) {
         if (e is SocketException || e is FirebaseException || e is FormatException) {
           retryCount++;

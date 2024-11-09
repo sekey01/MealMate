@@ -1,6 +1,7 @@
 import 'package:card_loading/card_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mealmate/AdminPanel/Pages/adminlogin.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +21,32 @@ class _ChangeAdminCredentialsState extends State<ChangeAdminCredentials> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title:RichText(text: TextSpan(
+            children: [
+              TextSpan(text: "Admin", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous',
+              )),
+              TextSpan(text: "Credentials", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin,fontWeight: FontWeight.bold,fontFamily: 'Righteous',
+              )),
+
+
+            ]
+        )),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Provider.of<LocalStorageProvider>(context, listen: false)
+                  .storeAdminLoginState(false).then((_){
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AdminLogin()));
+
+              } );
+            },
+            icon: Text('Logout', style: TextStyle(fontSize: 13,fontFamily: 'Poppins',color: Colors.red,fontWeight: FontWeight.bold),),
+          )
+        ],
+      ),
       body:
 
        SingleChildScrollView(
@@ -35,33 +62,19 @@ class _ChangeAdminCredentialsState extends State<ChangeAdminCredentials> {
                        height: 30.h,
                      ),
 
-                     CardLoading(
-                       borderRadius: BorderRadius.circular(10),
-                       height: 80,
-                       child: Image(
-                         image: AssetImage("assets/images/logo.png"),
-                         height: 50.h,
-                         width: 150.w,
-                       ),
+                     Padding(padding: EdgeInsets.only(top: 20.h),
+                       child: Image(image: AssetImage('assets/images/enter_number.png'), height: 250, width: 200,),
                      ),
+
+                     Text('Change your Admin Credentials', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15.sp),),
                      SizedBox(
-                       height: 30.h,
+                       height: 20.h,
                      ),
-                     Text(
-                       "Change Admin ID ",
-                       style: TextStyle(
-                           color: Colors.black,
-                           letterSpacing: 2,
-                           fontWeight: FontWeight.bold,
-                           fontSize: 15.sp),
-                     ),
-                     SizedBox(
-                       height: 30.h,
-                     ),
+
                      ///CHANGE ID HERE
                      TextField(
                        onSubmitted: (value){
-                         Provider.of<AdminId>(context,listen: false).changeId(int.parse(value));
+                         Provider.of<AdminId>(context,listen: false).changeId(value.toString());
                          Provider.of<AdminId>(context,listen: false).loadId();
     Notify(context, 'Id changed successfully', Colors.green);
                          setState(() {});
@@ -69,18 +82,18 @@ class _ChangeAdminCredentialsState extends State<ChangeAdminCredentials> {
                        },
                        controller: changeIdController,
                        keyboardType: TextInputType.number,
-                       style: TextStyle(color: Colors.deepOrange),
+                       style: TextStyle(color: Colors.black),
                        decoration: InputDecoration(
                            enabledBorder: OutlineInputBorder(
                                borderRadius: BorderRadius.circular(10),
-                               borderSide: BorderSide(color: Colors.red)),
+                               borderSide: BorderSide(color: Colors.black)),
                            hintStyle: TextStyle(
-                               color: Colors.red, fontSize: 20.sp, letterSpacing: 2),
+                               color: Colors.black, fontSize: 20.sp, letterSpacing: 2),
                            border: OutlineInputBorder(
                                borderRadius: BorderRadius.circular(10),
                                borderSide: BorderSide(
-                                   color: Colors.red, style: BorderStyle.solid)),
-                           label: Text('enter ID '),
+                                   color: Colors.black, style: BorderStyle.solid)),
+                           label: Text('Enter ID '),
                            labelStyle: TextStyle(
                              color: Colors.black,
                            )),
@@ -103,14 +116,14 @@ class _ChangeAdminCredentialsState extends State<ChangeAdminCredentials> {
                        decoration: InputDecoration(
                            enabledBorder: OutlineInputBorder(
                                borderRadius: BorderRadius.circular(10),
-                               borderSide: BorderSide(color: Colors.red)),
+                               borderSide: BorderSide(color: Colors.black)),
                            hintStyle: TextStyle(
-                               color: Colors.red, fontSize: 20.sp, letterSpacing: 2),
+                               color: Colors.black, fontSize: 20.sp, letterSpacing: 2),
                            border: OutlineInputBorder(
                                borderRadius: BorderRadius.circular(10),
                                borderSide: BorderSide(
-                                   color: Colors.red, style: BorderStyle.solid)),
-                           label: Text('enter email  '),
+                                   color: Colors.black, style: BorderStyle.solid)),
+                           label: Text('Enter email  '),
                            labelStyle: TextStyle(
                              color: Colors.black,
                            )),

@@ -123,7 +123,7 @@ Notify(context, 'Item Uploaded Successfully', Colors.green);
 
 
   Widget build(BuildContext context) {
-final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
+final String adminId = Provider.of<AdminId>(context, listen: false).adminID;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -383,10 +383,9 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                         context, MaterialPageRoute(builder: (context) => CouriersAvailable()));
                   },
                   child: Container(
-                    height: 65.h,
-                    width: 10.sw,
+
                     decoration: BoxDecoration(
-                      color: Colors.blueGrey.shade50,
+                      color: Colors.green,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
@@ -396,15 +395,11 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                         ),
                       ],
                     ),
-                    child: Column(
-                      children: [
-
-                        SizedBox(height: 5.h,),
-                        Text('Tap to view Available Couriers', style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold),),
-                        LottieBuilder.asset('assets/Icon/courier.json',height: 40.h,width: 30.h,),
-                        //Image(image: AssetImage('assets/Icon/courier.png'),height: 40.h,width: 30.h,),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Tap to view Available Couriers', style: TextStyle(color: Colors.white, fontSize: 15.sp, fontWeight: FontWeight.bold,fontFamily: 'Poppins'),),
                     ),
+
                   ),
                 ),
 
@@ -483,7 +478,9 @@ final int adminId = Provider.of<AdminId>(context, listen: false).adminID;
                       itemBuilder: (context, index) {
                         return GestureDetector(
                             onTap: () {
-                              value.changeIndex(index);
+                              setState(() {
+                                value.changeIndex(index);
+                              });
                             },
                             child: adminCollectionItemsRow(
                                 value.collectionList[index]));

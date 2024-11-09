@@ -24,10 +24,12 @@ class IncomingOrders extends StatefulWidget {
 
 class _IncomingOrdersState extends State<IncomingOrders> {
   final Completer<GoogleMapController> _Usercontroller = Completer<GoogleMapController>();
+  final formKey = GlobalKey<FormState>();
+  final courierIdController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final  adminId = Provider.of<AdminId>(context, listen: false).id;
+    final String adminId = Provider.of<AdminId>(context, listen: false).id;
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -232,7 +234,68 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                     )),
                               ),
                     SizedBox(height: 10,),
-                    
+
+                    //TEXTFIEILD TO TAKE COURIER ID
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Form(
+                                  key: formKey,
+
+                                  child: TextFormField(
+                                    controller: courierIdController,
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Please enter Courier ID';
+                                      }
+                                      return null;
+                                    },
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    decoration: InputDecoration(
+                                      hintText: 'Courier ID',
+                                      labelText: 'Courier ID',
+                                      labelStyle: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      hintStyle: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(
+                                          color: Colors.black,
+                                          width: 2,
+                                        ),
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(
+                                          color: Colors.black,
+                                          width: 2,
+                                        ),
+                                      ),
+                                    ),
+                                    keyboardType: TextInputType.number,
+                                    onFieldSubmitted: (value) {
+                                      if (formKey.currentState!.validate()) {
+                                        Provider.of<AdminFunctions>(context, listen: false).UpdateCourier(context, Orders.vendorId, Orders.phoneNumber,int.parse(value) , Orders.time);
+                                                }
+                                    },
+
+                                  ),
+                                ),
+                              ),
+
+
+
+
                     /// ROW FOR SERVED AND COURIER
                               ///
                     
@@ -281,8 +344,13 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                           iconOff: Icons.remove_circle_outline,
                           textSize: 8.0,
                           onChanged: (bool state) {
-                            print('Given to Courier');
-                            Provider.of<AdminFunctions>(context, listen: false).switchCourier(context,Orders.vendorId , Orders.phoneNumber, state, Orders.time);
+
+                            if(formKey.currentState!.validate()){
+
+                              Provider.of<AdminFunctions>(context, listen: false).switchCourier(context,Orders.vendorId , Orders.phoneNumber, state, Orders.time);
+                              print('Given to Courier');                            }
+
+
 
                             ///Use it to manage the different states
                             //print('Current State of SWITCH IS: $state');

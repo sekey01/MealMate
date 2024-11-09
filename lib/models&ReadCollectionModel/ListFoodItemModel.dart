@@ -12,6 +12,7 @@ class FoodItem {
   final String adminEmail;
   final int adminContact;
   final int maxDistance;
+  final String vendorAccount;
 
   FoodItem({
     required this.vendorId,
@@ -27,6 +28,7 @@ class FoodItem {
     required this.adminEmail,
     required this.adminContact,
     required this.maxDistance,
+    required this.vendorAccount,
   });
 
   factory FoodItem.fromMap(Map<String, dynamic> data, String documentId) {
@@ -44,6 +46,7 @@ class FoodItem {
       adminEmail: data['adminEmail'] ?? '',
       adminContact: int.tryParse(data['adminContact'].toString()) ?? 0,
       maxDistance: int.tryParse(data['maxDistance'].toString()) ?? 0,
+      vendorAccount: data['vendorAccount'] ?? '',
     );
   }
 }

@@ -150,6 +150,7 @@ class _InitRowSearchState extends State<InitRowSearch> {
                                           adminEmail: foodItem.adminEmail,
                                           adminContact: foodItem.adminContact,
                                           maxDistance: foodItem.maxDistance,
+                                          vendorAccount: foodItem.vendorAccount,
                                         ),
                                       ),
                                     );

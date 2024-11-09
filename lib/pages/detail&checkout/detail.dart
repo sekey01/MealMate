@@ -40,6 +40,7 @@ class DetailedCard extends StatefulWidget {
   final String adminEmail;
   final int adminContact;
   final int maxDistance;
+  final String vendorAccount;
 
 
 
@@ -56,6 +57,7 @@ class DetailedCard extends StatefulWidget {
     required this.adminEmail,
     required this.adminContact,
     required this.maxDistance,
+    required this.vendorAccount,
 
   });
 
@@ -113,7 +115,8 @@ class _DetailedCardState extends State<DetailedCard> {
 
   }
 
-
+  /// CHECKOUT INITIATED OR NOT
+bool checkOutInitiated = false;
 
 
   double overAllPrice = 0.00;
@@ -947,7 +950,7 @@ class _DetailedCardState extends State<DetailedCard> {
                                       ///MAP
                               ///
                               ///
-    FutureBuilder<BitmapDescriptor>(
+                              FutureBuilder<BitmapDescriptor>(
     future: _loadCustomIcon(context),
     builder: (context, snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -1251,7 +1254,7 @@ else if (snapshot.hasData) {
                              ),
                               LiteRollingSwitch(
                                 //initial value
-                                value: false,
+                                value: checkOutInitiated,
                                 width: 220.sp,
                                 textOn: 'CheckOut',
                                 textOnColor: Colors.white,
@@ -1273,13 +1276,15 @@ else if (snapshot.hasData) {
                                     content: WaitingPayment(),
                                   ).show();
 
+
+
                                   ///Get the Time
                                   DateTime time = DateTime.now();
 
                                   if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
                                   {
                                     final paymentProvider = Provider.of<PaystackPaymentProvider>(context, listen: false).
-                                    startPayment(context, widget.vendorid, overAllPrice.toInt()).then((result){
+                                    startPayment(context, widget.vendorAccount, overAllPrice.toInt()).then((result){
                                       if(result.success){
                                         Provider.of<SendOrderProvider>(context, listen: false).sendOrder(OrderInfo(
                                           time: time,
@@ -1309,13 +1314,15 @@ else if (snapshot.hasData) {
                                           adminEmail: widget.adminEmail,
                                           adminContact: widget.adminContact,
                                           CourierContact: '',
-                                          CourierId: '',
+                                          CourierId: 0,
                                           CourierName: '',
+                                          VendorAccount: '',
                                         )).then((_){
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) => OrderSent(
+
                                                   vendorId: widget.vendorid,
                                                   time: time,
                                                   restaurant: widget.restaurant,
@@ -1340,6 +1347,7 @@ else if (snapshot.hasData) {
                                   else {
                                     Notify(context, 'Please add Telephone number',
                                         Colors.red);
+                                    checkOutInitiated = false;
                                   }
                                 },
                                 onDoubleTap: () {},
@@ -1353,11 +1361,12 @@ else if (snapshot.hasData) {
 
                                   ///Get the Time
                                   DateTime time = DateTime.now();
+                                  checkOutInitiated = false;
 
                                   if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
                                   {
                                     final paymentProvider = Provider.of<PaystackPaymentProvider>(context, listen: false).
-                                    startPayment(context, widget.vendorid, overAllPrice.toInt()).then((result){
+                                    startPayment(context, widget.vendorAccount, overAllPrice.toInt()).then((result){
                                       if(result.success){
                                         Provider.of<SendOrderProvider>(context, listen: false).sendOrder(OrderInfo(
                                           time: time,
@@ -1387,14 +1396,16 @@ else if (snapshot.hasData) {
                                           adminEmail: widget.adminEmail,
                                           adminContact: widget.adminContact,
                                           CourierContact: '',
-                                          CourierId: '',
+                                          CourierId: 0,
                                           CourierName: '',
+                                          VendorAccount: '',
                                         )).then((_){
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) => OrderSent(
                                                   vendorId: widget.vendorid,
+
                                                   time: time,
                                                   restaurant: widget.restaurant,
                                                   adminEmail: widget.adminEmail,
@@ -1418,6 +1429,7 @@ else if (snapshot.hasData) {
                                   else {
                                     Notify(context, 'Please add Telephone number',
                                         Colors.red);
+                                    checkOutInitiated = false;
                                   }
                                 },
                               )

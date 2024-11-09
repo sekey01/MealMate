@@ -31,18 +31,17 @@ class _UploadedState extends State<Uploaded> {
   bool NoInternet = false;
 
   ///FUNCTION TO READ ALL ADMIN UPLOADS BASE ON THE ID PROVIDED
-  Future<List<FoodItem>> fetchFoodItems(String collection, int id) async {
+  Future<List<FoodItem>> fetchFoodItems(String collection, String id) async {
     int retryCount = 3;
     int attempt = 0;
     while (attempt < retryCount) {
       try {
-        QuerySnapshot snapshot =
-            await FirebaseFirestore.instance.collection(collection)
-                .where('vendorId', isEqualTo:id )
-                .get();
+        QuerySnapshot snapshot = await FirebaseFirestore.instance
+            .collection(collection)
+            .where('vendorId', isEqualTo: id)
+            .get();
         return snapshot.docs
-            .map((doc) =>
-                FoodItem.fromMap(doc.data() as Map<String, dynamic>, doc.id))
+            .map((doc) => FoodItem.fromMap(doc.data() as Map<String, dynamic>, doc.id))
             .toList();
       } on SocketException catch (e) {
         attempt++;
@@ -50,13 +49,12 @@ class _UploadedState extends State<Uploaded> {
           print("Internet Problem: $e");
           return [];
         }
-        await Future.delayed(Duration(seconds: 2)); // wait before retrying
+        await Future.delayed(Duration(seconds: 2));
       } catch (e) {
         print("Error fetching food items: $e");
         return [];
       }
     }
-    print('noooooooooooooo');
     return [];
   }
 

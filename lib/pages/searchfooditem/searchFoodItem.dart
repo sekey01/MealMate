@@ -208,6 +208,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                                           adminEmail: foodItem.adminEmail,
                                           adminContact: foodItem.adminContact,
                                           maxDistance: foodItem.maxDistance,
+                                          vendorAccount: foodItem.vendorAccount,
                                         ),
                                       ),
                                     );

@@ -280,7 +280,7 @@ class _ProfileState extends State<Profile> {
                         //leading:Icon(Icons.login_outlined, color: Colors.deepOrangeAccent, size: 30,),
                         children: [
                           ListTile(
-                            title: Text('Buy something before logging out 😊', style: TextStyle(color: Colors.blueGrey,fontSize: 10.spMin),),
+                            title: Text('MealMate is the bet food Ordering App', style: TextStyle(color: Colors.blueGrey,fontSize: 10.spMin),),
                             subtitle: TextButton(onPressed: () async{
                               final GoogleSignIn _googleSignIn = GoogleSignIn();
                               await _googleSignIn.signOut();
@@ -289,7 +289,16 @@ class _ProfileState extends State<Profile> {
                               );
                               Notify(context, 'Logout Successfully', Colors.green);
 
-                            }, child: Text('Logout', style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold,fontSize: 15.spMin),)),
+                            }, child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.deepOrangeAccent,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Logout', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20.sp, fontFamily: 'Righteous',letterSpacing: 2),),
+                              ),
+                            )),
                           )
                         ],
                       ),

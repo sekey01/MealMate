@@ -240,6 +240,7 @@ class _SearchState extends State<Search> {
                                       adminEmail: data.adminEmail,
                                       adminContact: data.adminContact,
                                       maxDistance: data.maxDistance,
+                                      vendorAccount: data.vendorAccount,
                                     ),
                                   ),
                                 )

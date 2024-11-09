@@ -10,12 +10,13 @@ class OrderInfo {
   final DateTime time;
   final bool delivered;
   final bool courier;
-  final String CourierId;
+  final int CourierId;
   final String CourierName;
   final String CourierContact;
   final bool served;
   final String adminEmail;
   final int adminContact;
+  final String VendorAccount ;
 
 
 
@@ -37,6 +38,7 @@ class OrderInfo {
     required this.delivered,
     required this.adminEmail,
     required  this.adminContact,
+    required this.VendorAccount,
 
   });
 
@@ -59,6 +61,7 @@ class OrderInfo {
       'CourierId': CourierId,
       'CourierName': CourierName,
       'CourierContact': CourierContact,
+      'VendorAccount': VendorAccount,
 
     };
   }
@@ -82,6 +85,7 @@ class OrderInfo {
       delivered: data['delivered']?? false,
       adminEmail:  data['adminEmail']?? '',
         adminContact: data['adminContact'] ?? '',
+      VendorAccount: data['VendorAccount']?? '',
     );
   }
 }

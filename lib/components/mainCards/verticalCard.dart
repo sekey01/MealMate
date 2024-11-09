@@ -1,9 +1,7 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../theme/styles.dart';
 
 
@@ -199,7 +197,9 @@ Material verticalCard(
   );
 }
 
-
+///
+///
+///
 Container NewVerticalCard(
     String imgUrl,
     String restaurant,
@@ -214,7 +214,6 @@ Container NewVerticalCard(
     int maxDistance,
     ) {
   final deliveryFee = (price * 0.2).toStringAsFixed(2);
-  final foodPrice = (price*0.8).toStringAsFixed(2);
   return Container(
     height: 200.h,
     width: 250.w,
@@ -295,7 +294,7 @@ Container NewVerticalCard(
                 color: Colors.red,
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: Text('-10%', style: TextStyle(color: Colors.white, fontSize: 10.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous'),),
+              child: Text('- 10%', style: TextStyle(color: Colors.white, fontSize: 10.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous'),),
             )),
           ],
         ),
@@ -394,7 +393,10 @@ decorationColor: Colors.black,
   );
 }
 
-///NO COURIER FOUND WIDGET
+
+/// NO COURIER FOUND WIDGET
+///
+///
 Center NoCouriersFound() {
   return Center(
     child: Column(
@@ -456,6 +458,9 @@ Center NoCouriersFound() {
   );
 }
 
+/// PAYMENT VERIFICATION LOADING
+///
+///
 Center WaitingPayment() {
   Stream<int> countdownTimer(int start) async* {
     for (int i = start; i >= 0; i--) {
