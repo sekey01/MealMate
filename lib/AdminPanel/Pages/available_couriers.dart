@@ -43,7 +43,9 @@ Future<List<CourierModel>> getNearbyCouriers(BuildContext context, double maxDis
       double distance = Provider.of<LocationProvider>(context, listen: false).calculateDistance(currentLocation, courierLocation);
 
       if (distance <= maxDistance) {
+print(courier.CourierLatitude);
         nearbyCouriers.add(courier);
+
       }
     }
 
@@ -325,45 +327,51 @@ class _CouriersAvailableState extends State<CouriersAvailable> {
                   ),
                 ],
               ),
-              child: FutureBuilder(future: _loadCustomIcon(context),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator( color: Colors.red,));
-                    } else if (snapshot.hasError) {
-                      print(snapshot.error);
-                      return Center(child: Text('Error loading icon',));
-                    }
-                    else if (snapshot.hasData) {
+                child: FutureBuilder<List<CourierModel>>(future: getNearbyCouriers(context, 10),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CustomLoGoLoading());
+                      } else if (snapshot.hasError) {
+                        print(snapshot.error);
+                        return Center(child: Text('Error loading icon',));
+                      } else if (snapshot.hasData) {
+                        final nearbyCouriers = snapshot.data!;
 
-                      final customMapIcon = snapshot.data;
+                        return gmaps.GoogleMap(
+                          onCameraMove: (gmaps.CameraPosition cameraPosition) {
+                            print(cameraPosition.target);
+                          },
+                          mapToolbarEnabled: true,
 
-                      return gmaps.GoogleMap(
-                        mapType: gmaps.MapType.terrain,
-
-                        initialCameraPosition: gmaps.CameraPosition(
-                          target: gmaps.LatLng(5.6037, -0.1870),
-                          zoom: 12,
-                        ),
-                        markers: nearbyCouriers
-                            .map(
-                              (courier) => gmaps.Marker(
-                            icon: customMapIcon as BitmapDescriptor,
-                            markerId: gmaps.MarkerId(courier.CourierName),
-                            position: gmaps.LatLng(courier.CourierLatitude, courier.CourierLongitude),
-                            infoWindow: gmaps.InfoWindow(
-                              title: courier.CourierName,
-                              snippet: courier.CourierContact.toString(),
-                            ),
+                          mapType: gmaps.MapType.normal,
+                          initialCameraPosition: gmaps.CameraPosition(
+                            target: gmaps.LatLng(5.6037, -0.1870),
+                            zoom: 11,
                           ),
-                        )
-                            .toSet(),
-                      );
-                    }
-                    return Text('AAAAAAA', style: TextStyle(
-                      color: Colors.black,
-                    ),);
-                  }),
+                          myLocationButtonEnabled: true,
+                          compassEnabled: true,
+                          myLocationEnabled: true,
 
+                          markers: nearbyCouriers
+                              .map(
+                                (courier) => gmaps.Marker(
+                              icon: gmaps.AssetMapBitmap('assets/Icon/courier.png', imagePixelRatio: 2.5),
+                              markerId: gmaps.MarkerId(courier.CourierName),
+                              position: gmaps.LatLng(courier.CourierLatitude, courier.CourierLongitude),
+                              infoWindow: gmaps.InfoWindow(
+                                title: courier.CourierName,
+                                snippet: courier.CourierContact.toString(),
+                              ),
+                            ),
+                          )
+                              .toSet(),
+                        );
+                      }
+                      return Text('No couriers available', style: TextStyle(
+                        color: Colors.black,
+                      ),);
+                    }
+                )
               /*gmaps.GoogleMap(
             initialCameraPosition: gmaps.CameraPosition(
               target: gmaps.LatLng(5.6037, -0.1870),

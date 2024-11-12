@@ -12,6 +12,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
+import 'package:mealmate/components/NoFoodFound.dart';
 import 'package:mealmate/pages/detail&checkout/payment_unsuccessful.dart';
 import 'package:mealmate/pages/searchfooditem/searchFoodItem.dart';
 import 'package:mealmate/theme/styles.dart';
@@ -70,15 +71,20 @@ class DetailedCard extends StatefulWidget {
 
 class _DetailedCardState extends State<DetailedCard> {
 
-
-  Future<List<FoodItem>> fetchFoodItems(String Collection) async {
+  Future<List<FoodItem>> fetchSimilarFoodItems(List<String> collections, String vendorId) async {
+    List<FoodItem> allFoodItems = [];
     try {
-      QuerySnapshot snapshot =
-      await FirebaseFirestore.instance.collection(Collection).get();
-      return snapshot.docs
-          .map((doc) =>
-          FoodItem.fromMap(doc.data() as Map<String, dynamic>, doc.id))
-          .toList();
+      for (String collection in collections) {
+        QuerySnapshot snapshot = await FirebaseFirestore.instance
+            .collection(collection)
+            .where('vendorId', isEqualTo: vendorId)
+            .get();
+        List<FoodItem> foodItems = snapshot.docs
+            .map((doc) => FoodItem.fromMap(doc.data() as Map<String, dynamic>, doc.id))
+            .toList();
+        allFoodItems.addAll(foodItems);
+      }
+      return allFoodItems;
     } catch (e) {
       print("Error fetching food items: $e");
       return [];
@@ -554,14 +560,10 @@ bool checkOutInitiated = false;
 
 
 
-
-
-
-
                     SizedBox(height: 10.h),
 
 
-
+                     /// VENDOR LOCATION
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -575,7 +577,10 @@ bool checkOutInitiated = false;
                             SizedBox(
                               width: 10.w,
                             ),
-                            ImageIcon(AssetImage('assets/Icon/VendorLocation.png'), color: Colors.black, size: 25.sp,),
+
+
+
+                           ImageIcon(AssetImage('assets/Icon/VendorLocation.png'), color: Colors.black, size: 25.sp,),
 
                             SizedBox(width: 10.h),
                             Column(
@@ -625,14 +630,114 @@ bool checkOutInitiated = false;
                       ),
                     ),
 
-                    SizedBox(height: 10.h),
+
+                    /// SIMILAR PRODUCTS BY THIS VENDOR
+                    /// SIMILAR PRODUCTS BY THIS VENDOR
+                    Padding(padding: EdgeInsets.only(left: 5, right: 5,top: 15),
+                      child: Text('Similar Products by this Vendor', style: TextStyle(
+                          fontSize: 15.sp,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold
+                      ),),),
+                    Container(
+                     // color: Colors.white,
+                      width: double.infinity,
+                      height: 170.h,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: FutureBuilder<List<FoodItem>>(
+                        future: fetchSimilarFoodItems( ["Food 🍔", "Drinks 🍷", "Clothing 👗"], widget.vendorid),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return ListView.builder(
+                              itemCount: 5,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: NewSearchLoadingOutLook());
+                              },
+                              scrollDirection: Axis.horizontal,
+                            );
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text('Error: ${snapshot.error}'));
+                          } else if (!snapshot.hasData ||
+                              snapshot.data!.isEmpty) {
+                            return ListView.builder(
+                              itemCount: 5,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: EmptySimilarProducts());
+                              },
+                              scrollDirection: Axis.horizontal,
+                            );
+                          } else {
+                            return ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                final foodItem = snapshot.data![index];
+                                return Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Material(
+                                      elevation: 2,
+                                      child: GestureDetector(
+                                        onTap: () {
+
+                                          foodItem.isAvailable?Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DetailedCard(
+
+                                                        imgUrl:
+                                                        foodItem.imageUrl,
+                                                        restaurant:
+                                                        foodItem.restaurant,
+                                                        foodName:
+                                                        foodItem.foodName,
+                                                        price: foodItem.price,
+                                                        location:
+                                                        foodItem.location,
+                                                        vendorid:
+                                                        foodItem.vendorId,
+                                                        time: foodItem.time,
+                                                        latitude: foodItem.latitude,
+                                                        longitude: foodItem.longitude,
+                                                        adminEmail: foodItem.adminEmail,
+                                                        adminContact: foodItem.adminContact,
+                                                        maxDistance: foodItem.maxDistance,
+                                                        vendorAccount: foodItem.vendorAccount,
+                                                      ))):Notify(context, 'This item is not Available now', Colors.red);
+                                        },
+                                        child: NewVerticalCard(foodItem.imageUrl, foodItem.restaurant, foodItem.foodName,
+                                            foodItem.price, foodItem.location, foodItem.time, foodItem.vendorId,
+                                            foodItem.isAvailable, foodItem.adminEmail,foodItem.adminContact, foodItem.maxDistance),
+                                      ),
+                                    ));
+                              },
+                              scrollDirection: Axis.horizontal,
+                            );
+                          }
+                        },
+                      ),
+                    ),
+
 
 
                     /// CALL BUTTON, SMS MESSAGE FUNCTIONALITY, WHATSAPP FUNCTIONALITY
                     Column(
                       children: [
+                        Padding(padding: EdgeInsets.only(left: 5, right: 5,top: 15),
+                          child: Text('Take Note: ', style: TextStyle(
+                              fontSize: 15.sp,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold
+                          ),),),
                         ///TEXT TO ALERT USER TO CALL VENDOR IF ANY ALLERGIES
-                        Padding(padding: EdgeInsets.all(8),
+                        Padding(padding: EdgeInsets.only(left: 5, right: 5),
                           child: Text(' Do you have any allergies ? '
                               'Or would you like to give specification to what you\'re Ordering ?...\n'
                               'Please call us now Or Leave a message in the Comment box.',
@@ -711,14 +816,6 @@ bool checkOutInitiated = false;
 
 
 
-
-
-
-
-
-
-
-                    SizedBox(height: 10.h),
                     Row(
                       ///ROW FOR TIME AND PHONE NUMBER
                       ///
@@ -1269,20 +1366,18 @@ else if (snapshot.hasData) {
 
                                 },
                                 onTap: ()  {
-                                  Alert(context: context,
-                                    style: AlertStyle(
-                                      backgroundColor: Colors.white,
-                                    ),
-                                    content: WaitingPayment(),
-                                  ).show();
-
-
 
                                   ///Get the Time
                                   DateTime time = DateTime.now();
 
                                   if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
                                   {
+                                    Alert(context: context,
+                                      style: AlertStyle(
+                                        backgroundColor: Colors.white,
+                                      ),
+                                      content: WaitingPayment(),
+                                    ).show();
                                     final paymentProvider = Provider.of<PaystackPaymentProvider>(context, listen: false).
                                     startPayment(context, widget.vendorAccount, overAllPrice.toInt()).then((result){
                                       if(result.success){
@@ -1432,7 +1527,10 @@ else if (snapshot.hasData) {
                                     checkOutInitiated = false;
                                   }
                                 },
-                              )
+                              ),
+
+
+
                             ],
                           ),
                         ),

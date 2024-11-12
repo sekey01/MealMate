@@ -13,7 +13,6 @@ import 'package:provider/provider.dart';
 
 import '../UserLocation/LocationProvider.dart';
 import '../components/Notify.dart';
-import '../components/card1.dart';
 import '../components/mainCards/promotion_ads_card.dart';
 
 class CourierInit extends StatefulWidget {
@@ -278,61 +277,7 @@ final CourierID = Provider.of<LocalStorageProvider>(context, listen: false).cour
 
                 SizedBox(height: 20.h,),
                 
-             /*   /// CONTAINER SHOWING LIST OF RESTAURANTS THAT HAVE ORDER TO DELIVER TO BUYER
-                Container(
-                  height: 0.5.sh,
-                  width: 1.sw,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(0.0, 1.0), //(x,y)
-                        blurRadius: 6.0,
-                      ),
-                    ],
-                  ),
-                  
-                  child: Expanded(child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 50,top: 20),
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Restaurants',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Righteous',
-                                ),
-                              ),
-                              TextSpan(
-                                text: ' Requesting Delivery',
-                                style: TextStyle(
-                                  color: Colors.deepOrangeAccent,
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Righteous',
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        ),
-                    Image(
-                      image: AssetImage("assets/Icon/no_food_found.png"),
-                      height: 200, width: 200,
 
-                    )
-
-                    ],
-                  )),
-                ),*/
 
 SizedBox(height: 20.h,),
                 ///TRACK BUYER ROUTE ALERT

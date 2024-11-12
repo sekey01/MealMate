@@ -34,7 +34,7 @@ class PaystackPaymentProvider extends ChangeNotifier {
         await EasyLauncher.url(url: authorizationUrl);
 
         // Wait for a few seconds before verifying the transaction
-        await Future.delayed(const Duration(seconds: 60));
+        await Future.delayed(const Duration(seconds: 45));
 
         // Verify the transaction
         final result = await _verifyTransaction(reference);

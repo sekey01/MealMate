@@ -66,3 +66,16 @@ Container EmptyFavourite() {
     ),
   );
 }
+
+Container EmptySimilarProducts(){
+  return Container(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+
+        Image(image: AssetImage("assets/Icon/no_food_found.png"), height: 150.h, width: 150.w,),
+
+      ],
+    ),
+  );
+}

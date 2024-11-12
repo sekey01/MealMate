@@ -58,7 +58,10 @@ bool isLoggedIn = false;
 
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
-                    child: LottieBuilder.asset('assets/Icon/loading.json'),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: LottieBuilder.asset('assets/Icon/loading.json'),
+                    ),
                   ),
                   RichText(text: TextSpan(
                       children: [
