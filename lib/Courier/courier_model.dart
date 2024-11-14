@@ -3,6 +3,7 @@ class CourierModel {
   final double CourierLatitude;
   final double CourierLongitude;
   final String CourierGhanaCardPictureUrl;
+  final String CourierPictureUrl;
   final String CourierName;
   final int CourierContact;
   final String CourierEmail;
@@ -15,6 +16,7 @@ class CourierModel {
     required this.CourierLatitude,
     required this.CourierLongitude,
     required this.CourierGhanaCardPictureUrl,
+    required this.CourierPictureUrl,
     required this.CourierName,
     required this.CourierContact,
     required this.CourierEmail,
@@ -29,6 +31,7 @@ class CourierModel {
       'CourierLatitude': CourierLatitude,
       'CourierLongitude': CourierLongitude,
       'CourierGhanaCardPictureUrl': CourierGhanaCardPictureUrl,
+      'CourierPictureUrl': CourierPictureUrl,
       'CourierName': CourierName,
       'CourierContact': CourierContact,
       'CourierEmail': CourierEmail,
@@ -44,6 +47,7 @@ class CourierModel {
       CourierLatitude: (data['CourierLatitude'] ?? 0.0).toDouble(),
       CourierLongitude: (data['CourierLongitude'] ?? 0.0).toDouble(),
       CourierGhanaCardPictureUrl: data['CourierGhanaCardPictureUrl'] ?? '',
+      CourierPictureUrl: data['CourierPictureUrl'] ?? '',
       CourierName: data['CourierName'] ?? '',
       CourierContact: data['CourierContact'] ?? 0,
       CourierEmail: data['CourierEmail'] ?? '',

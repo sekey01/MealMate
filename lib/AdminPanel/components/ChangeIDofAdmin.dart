@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mealmate/AdminPanel/Pages/adminlogin.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import 'package:mealmate/pages/authpages/login.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/Notify.dart';
@@ -35,15 +36,24 @@ class _ChangeAdminCredentialsState extends State<ChangeAdminCredentials> {
         centerTitle: true,
         backgroundColor: Colors.white,
         actions: [
-          IconButton(
-            onPressed: () {
-              Provider.of<LocalStorageProvider>(context, listen: false)
-                  .storeAdminLoginState(false).then((_){
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AdminLogin()));
-
-              } );
-            },
-            icon: Text('Logout', style: TextStyle(fontSize: 13,fontFamily: 'Poppins',color: Colors.red,fontWeight: FontWeight.bold),),
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(
+              onPressed: () {
+      Provider.of<LocalStorageProvider>(context, listen: false)
+          .storeAdminLoginState(false).then((_) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WillPopScope(
+              onWillPop: () async => false,
+              child: Login(),
+            ),
+          ),
+        );
+      });},
+              icon: Text('Logout', style: TextStyle(fontSize: 13,fontFamily: 'Poppins',color: Colors.red,fontWeight: FontWeight.bold),),
+            ),
           )
         ],
       ),

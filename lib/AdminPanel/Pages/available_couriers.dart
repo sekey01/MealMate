@@ -31,7 +31,7 @@ Future<List<CourierModel>> getNearbyCouriers(BuildContext context, double maxDis
   try {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     QuerySnapshot querySnapshot = await firestore
-        .collection('CourierId')
+        .collection('Couriers')
         .where('isCourierOnline', isEqualTo: true)
         .get();
 
@@ -57,6 +57,9 @@ print(courier.CourierLatitude);
   }
 }
 
+//Stream function
+
+
 class _CouriersAvailableState extends State<CouriersAvailable> {
 
   late final customMapIcon;
@@ -65,7 +68,7 @@ class _CouriersAvailableState extends State<CouriersAvailable> {
   //  setState(() async {
      // customMapIcon =  await BitmapDescriptor.asset(configuration, 'assets/Icon/courier.png');
    // });
-    return await BitmapDescriptor.asset(configuration, 'assets/Icon/courier.png');
+    return await BitmapDescriptor.asset(configuration, 'assets/Icon/courier.png', imagePixelRatio: 3.5);
   }
   @override
   void initState() {
@@ -115,7 +118,7 @@ class _CouriersAvailableState extends State<CouriersAvailable> {
         centerTitle: true,
       ),
       body: FutureBuilder<List<CourierModel>>(
-        future: getNearbyCouriers(context, 10.0),
+        future: getNearbyCouriers(context, 20.0),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -168,7 +171,7 @@ class _CouriersAvailableState extends State<CouriersAvailable> {
                       ListTile(
                         leading: CircleAvatar(
                           radius: 30.r,
-                          backgroundImage: NetworkImage(courier.CourierGhanaCardPictureUrl),
+                          backgroundImage: NetworkImage(courier.CourierPictureUrl),
                         ),
                         title: Text(
                           courier.CourierName,
@@ -330,7 +333,18 @@ class _CouriersAvailableState extends State<CouriersAvailable> {
                 child: FutureBuilder<List<CourierModel>>(future: getNearbyCouriers(context, 10),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CustomLoGoLoading());
+                        return Center(child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(height: 50.h,),
+                            CustomLoGoLoading(),
+                            Text('Loading couriers', style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Righteous',
+                            ),),
+                          ],
+                        ));
                       } else if (snapshot.hasError) {
                         print(snapshot.error);
                         return Center(child: Text('Error loading icon',));
@@ -338,15 +352,16 @@ class _CouriersAvailableState extends State<CouriersAvailable> {
                         final nearbyCouriers = snapshot.data!;
 
                         return gmaps.GoogleMap(
+
                           onCameraMove: (gmaps.CameraPosition cameraPosition) {
-                            print(cameraPosition.target);
+                            //print(cameraPosition.target);
                           },
                           mapToolbarEnabled: true,
 
                           mapType: gmaps.MapType.normal,
                           initialCameraPosition: gmaps.CameraPosition(
                             target: gmaps.LatLng(5.6037, -0.1870),
-                            zoom: 11,
+                            zoom: 11.5,
                           ),
                           myLocationButtonEnabled: true,
                           compassEnabled: true,
@@ -355,7 +370,7 @@ class _CouriersAvailableState extends State<CouriersAvailable> {
                           markers: nearbyCouriers
                               .map(
                                 (courier) => gmaps.Marker(
-                              icon: gmaps.AssetMapBitmap('assets/Icon/courier.png', imagePixelRatio: 2.5),
+                              icon: gmaps.AssetMapBitmap('assets/Icon/courier.png',),
                               markerId: gmaps.MarkerId(courier.CourierName),
                               position: gmaps.LatLng(courier.CourierLatitude, courier.CourierLongitude),
                               infoWindow: gmaps.InfoWindow(

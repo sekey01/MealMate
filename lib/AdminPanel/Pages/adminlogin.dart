@@ -69,7 +69,7 @@ class _AdminLoginState extends State<AdminLogin> {
       });
     }
   }
-  Future<void> _checkLoginStatus() async {
+/*  Future<void> _checkLoginStatus() async {
     bool isLoggedIn = await Provider.of<LocalStorageProvider>(context, listen: false).getAdminLoginState();
 
     if (isLoggedIn) {
@@ -78,7 +78,7 @@ class _AdminLoginState extends State<AdminLogin> {
         MaterialPageRoute(builder: (context) => adminHome()),
       );
     }
-  }
+  }*/
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -87,7 +87,7 @@ class _AdminLoginState extends State<AdminLogin> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _checkLoginStatus();
+    //_checkLoginStatus();
   }
 
   @override

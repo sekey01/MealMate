@@ -12,7 +12,7 @@ Future<bool> authenticateUser(BuildContext context, String CourierId) async {
 
     // Query the 'CourierId' collection for the document with matching ID
     QuerySnapshot querySnapshot = await firestore
-        .collection('CourierId')
+        .collection('Couriers')
         .where('CourierId', isEqualTo: CourierId)
         .limit(1)
         .get();

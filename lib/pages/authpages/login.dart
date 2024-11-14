@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mealmate/AdminPanel/Pages/adminSplashScreen.dart';
 import 'package:mealmate/AdminPanel/Pages/adminlogin.dart';
 import 'package:mealmate/Courier/courierLogin.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
@@ -178,7 +179,7 @@ class _LoginState extends State<Login> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            " Are you an Admin ?  ",
+                            " Are you an  ",
                             style: TextStyle(
                                 color: Colors.black, fontStyle: FontStyle.italic, fontSize: 10.sp),
                           ),
@@ -187,7 +188,7 @@ class _LoginState extends State<Login> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: ((context) => AdminLogin())));
+                                      builder: ((context) => AdminsplashScreen())));
                             },
                             child: Text(
                               ' Admin   /',

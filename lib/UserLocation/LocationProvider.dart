@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -9,8 +10,8 @@ import 'package:http/http.dart' as http;
 
 class LocationProvider extends ChangeNotifier {
   final String googleMapsApiKey = 'AIzaSyCO2v58cOsSM5IKXwyGa172U_YHrmRK9ks';
-  late double Lat ;
-  late double Long;
+   double Lat = 0.0 ;
+   double Long = 0.0;
 
   Future<String> determinePosition() async {
     bool serviceEnabled;
@@ -148,6 +149,8 @@ class LocationProvider extends ChangeNotifier {
     }
     return points;
   }
+
+
 
 
 

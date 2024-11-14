@@ -29,7 +29,7 @@ Future<CourierModel?> getCourierDetails(BuildContext context, String courierId) 
 
     // Query the 'CourierId' collection for the document with matching ID
     QuerySnapshot querySnapshot = await firestore
-        .collection('CourierId')
+        .collection('Couriers')
         .where('CourierId', isEqualTo: courierId)
         .limit(1)
         .get();
@@ -51,15 +51,14 @@ Future<CourierModel?> getCourierDetails(BuildContext context, String courierId) 
     return null;
   }
 }
-
-
+//sream function
 Future<void> switchCourierOnlineStatus(String courierId) async {
   try {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     // Query the 'CourierId' collection for the document with matching CourierId
     QuerySnapshot querySnapshot = await firestore
-        .collection('CourierId')
+        .collection('Couriers')
         .where('CourierId', isEqualTo: courierId)
         .limit(1)
         .get();
@@ -80,6 +79,29 @@ Future<void> switchCourierOnlineStatus(String courierId) async {
   }
 }
 class _CourierInitState extends State<CourierInit> {
+  Stream<void> updateCourierLocationStream(String courierId) async* {
+    if (courierId.isEmpty) {
+      print('Error: courierId is empty');
+      return;
+    }
+    while (true) {
+      try {
+        double Lat = Provider.of<LocationProvider>(context, listen: false).Lat;
+        double Long = Provider.of<LocationProvider>(context, listen: false).Long;
+
+        FirebaseFirestore firestore = FirebaseFirestore.instance;
+        await firestore.collection('Couriers').doc(courierId).update({
+          'CourierLatitude': Lat,
+          'CourierLongitude': Long,
+        });
+        print('Courier location updated successfully');
+      } catch (e) {
+        print('Error updating courier location: $e');
+      }
+      await Future.delayed(Duration(seconds: 10));
+    }
+  }
+
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController LatitudeController = TextEditingController();
@@ -89,18 +111,20 @@ class _CourierInitState extends State<CourierInit> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    ///I RUN THE DETERMINE LOCATION HERE TO GET THE LAT AND LONG QUICKLY
+    Provider.of<LocationProvider>(
+        context,
+        listen: false).determinePosition();
     Provider.of<LocalStorageProvider>(context, listen: false).getCourierID();
-
 
 }
 
   @override
   Widget build(BuildContext context) {
+
 final CourierID = Provider.of<LocalStorageProvider>(context, listen: false).courierId;
-    ///I RUN THE DETERMIN LOCATION HERE TO GET THE LAT AND LONG QUICKLY
-    Provider.of<LocationProvider>(
-        context,
-        listen: false).determinePosition();
+
+
 
     return  Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -209,7 +233,7 @@ final CourierID = Provider.of<LocalStorageProvider>(context, listen: false).cour
                           child: Column(
                             children: [
                               ListTile(
-                                leading: CircleAvatar(radius: 30.r,backgroundImage: NetworkImage(courier.CourierGhanaCardPictureUrl),),
+                                leading: CircleAvatar(radius: 30.r,backgroundImage: NetworkImage(courier.CourierPictureUrl),),
                                 title: Text(courier.CourierName,style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 15.sp,fontFamily: 'Righteous'),),
                                 subtitle: Text(courier.CourierEmail,style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 10.sp, fontFamily: 'Poppins'),),
                                 trailing: courier.isCourierOnline ? LottieBuilder.asset('assets/Icon/online.json', height: 50.h, width: 30.w,): Icon(Icons.offline_bolt, color: Colors.red),
@@ -487,9 +511,10 @@ SizedBox(height: 20.h,),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-
-          });
+   setState(() {
+     Stream<void> locationStream = updateCourierLocationStream(CourierID);
+     locationStream.listen((_) {});
+   });
         },
         child: Icon(Icons.refresh_outlined),
         backgroundColor: Colors.white,
