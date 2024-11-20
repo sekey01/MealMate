@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
-import 'package:lottie/lottie.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/AdminFunctionsProvider.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
 import 'package:mealmate/AdminPanel/Pages/Completed_Orders_Page.dart';
@@ -16,10 +15,8 @@ import 'package:mealmate/AdminPanel/Pages/uploads.dart';
 import 'package:mealmate/AdminPanel/collectionUploadModelProvider/collectionProvider.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
-import 'package:mealmate/components/card1.dart';
 import 'package:provider/provider.dart';
 import 'package:mealmate/components/NoInternet.dart';
-import '../../Courier/courier_model.dart';
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../Notification/notification_Provider.dart';
 import '../../components/Notify.dart';
@@ -28,7 +25,6 @@ import '../OtherDetails/ID.dart';
 import '../components/ChangeIDofAdmin.dart';
 import '../components/adminCollectionRow.dart';
 import 'IncomingOrdersPage.dart';
-import 'Completed_Orders_Page.dart';
 import 'available_couriers.dart';
 
 
@@ -49,36 +45,87 @@ class _adminHomeState extends State<adminHome> {
   TextEditingController priceController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   TextEditingController adminContactController = TextEditingController();
+  TextEditingController paymentKeyController = TextEditingController();
+
   int maxDistance = 0;
-  File? _image;
-  String imageUrl = '';
+  bool hasCourier = false;
   late int numberOfOrders ;
 
-///IMAGE PICKER FUNCTION HERE
-  Future<void> _pickImage() async {
+
+  File? _productImage;
+  File? _shopImage;
+  String shopImageUrl = '';
+  String productImageUrl = '';
+
+  ///PROFILE IMAGE PICKER  HERE
+  Future<void> _pickProductImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? pickedFile =
-        await picker.pickImage(source: ImageSource.gallery);
+    await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        _productImage = File(pickedFile.path);
       });
 
       try {
         String fileName =
-            '${idController.text}/ ${foodNameController.text}/${DateTime.now().microsecondsSinceEpoch}';
+            '${DateTime.timestamp().toString()}/${DateTime.now().microsecondsSinceEpoch}';
         UploadTask uploadTask = FirebaseStorage.instance
             .ref()
             .child(fileName)
-            .putFile(File(_image!.path));
+            .putFile(File(_productImage!.path));
         TaskSnapshot snapshot = await uploadTask;
         String downloadUrl = await snapshot.ref.getDownloadURL();
 
         setState(() {
-          imageUrl = downloadUrl;
+          productImageUrl = downloadUrl;
 
-          /// print(imageUrl);
+          print(productImageUrl);
+        });
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          elevation: 20.sp,
+          content: Center(
+            child: Text(
+              '$e',
+              style: TextStyle(color: Colors.deepOrange, fontSize: 20),
+            ),
+          ),
+          backgroundColor: Colors.black.withOpacity(0.5),
+        ));
+        // if (kDebugMode) {
+        //   print("Failed to upload image: $e");
+        // }
+      }
+    }
+  }
+
+  ///ID CARD IMAGE PICKER
+  Future<void> _pickShopImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile =
+    await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _shopImage = File(pickedFile.path);
+      });
+
+      try {
+        String fileName =
+            '${DateTime.timestamp().toString()}/${DateTime.now().microsecondsSinceEpoch}';
+        UploadTask uploadTask = FirebaseStorage.instance
+            .ref()
+            .child(fileName)
+            .putFile(File(_shopImage!.path));
+        TaskSnapshot snapshot = await uploadTask;
+        String downloadUrl = await snapshot.ref.getDownloadURL();
+
+        setState(() {
+          shopImageUrl = downloadUrl;
+
+          print(shopImageUrl);
         });
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -121,9 +168,11 @@ Notify(context, 'Item Uploaded Successfully', Colors.green);
   bool _hasInternet = true;
 
 
-
   Widget build(BuildContext context) {
-final String adminId = Provider.of<AdminId>(context, listen: false).adminID;
+ //   Provider.of<IncomingOrdersProvider>(context,listen: false).sendMessageToToken( 'title', 'body');
+
+   // Provider.of<IncomingOrdersProvider>(context,listen: false).IncomingOrdersProviderNotification();
+    final String adminId = Provider.of<AdminId>(context, listen: false).adminID;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -308,73 +357,80 @@ final String adminId = Provider.of<AdminId>(context, listen: false).adminID;
 
                     )),
 
-               // SizedBox(height: 10.h,),
-                /// GET ADMIN EMAIL
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
 
-                    Image(image: AssetImage('assets/Icon/gmail.png'),height: 20.h,width: 20.h,),
-                    SizedBox(width: 10.w,),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: FutureBuilder(
-                          future: Provider.of<LocalStorageProvider>(context, listen: false).getAdminEmail() ,
-                          builder: (context, snapshot){
-                            if(snapshot.hasData){
-                              return Text(snapshot.data.toString(),  style: TextStyle(
-                                letterSpacing: 1,
-                                color: Colors.black,
-                                fontSize: 15.sp,
-                                fontFamily: 'Poppins'
-                              ),
-                              );
-                            }else{
-                              return Text('adminemail@gmail.com ',  style: TextStyle(
-                                letterSpacing: 1,
-                                color: Colors.black,
-                                fontSize: 15.spMin,
-                                fontWeight: FontWeight.bold,
-                              ),);
-                            }
-                          }),
-                    ),
-                  ],
-                ),
-                ///LOCATION DISPLAYED HERE
-                ///
-                ///LOCATION OF THE ADMIN
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
+                /// GET ADMIN EMAIL
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Image(image: AssetImage('assets/Icon/map.png'),height: 20.h,width: 20.h,),
+
+                      Image(image: AssetImage('assets/Icon/gmail.png'),height: 20.h,width: 20.h,),
                       SizedBox(width: 10.w,),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: FutureBuilder(
-                            future:
-                                Provider.of<LocationProvider>(context, listen: false)
-                                    .determinePosition(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return Text(snapshot.data.toString(),
-                                    style: TextStyle(
-                                        overflow: TextOverflow.ellipsis,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.sp));
+                            future: Provider.of<LocalStorageProvider>(context, listen: false).getAdminEmail() ,
+                            builder: (context, snapshot){
+                              if(snapshot.hasData){
+                                return Text(snapshot.data.toString(),  style: TextStyle(
+                                  letterSpacing: 1,
+                                  color: Colors.black,
+                                  fontSize: 15.sp,
+                                  fontFamily: 'Poppins'
+                                ),
+                                );
+                              }else{
+                                return Text('adminemail@gmail.com ',  style: TextStyle(
+                                  letterSpacing: 1,
+                                  color: Colors.black,
+                                  fontSize: 15.spMin,
+                                  fontWeight: FontWeight.bold,
+                                ),);
                               }
-                              return Text(
-                                'locating you...',
-                                style: TextStyle(color: Colors.deepOrangeAccent,fontSize: 10.spMin, fontWeight: FontWeight.bold),
-                              );
                             }),
                       ),
                     ],
                   ),
                 ),
+
+
+                ///LOCATION OF THE ADMIN
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image(image: AssetImage('assets/Icon/map.png'),height: 20.h,width: 20.h,),
+                        SizedBox(width: 10.w,),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: FutureBuilder(
+                              future:
+                                  Provider.of<LocationProvider>(context, listen: false)
+                                      .determinePosition(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Text(snapshot.data.toString(),
+                                      style: TextStyle(
+                                          overflow: TextOverflow.ellipsis,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10.sp));
+                                }
+                                return Text(
+                                  'locating you...',
+                                  style: TextStyle(color: Colors.deepOrangeAccent,fontSize: 10.spMin, fontWeight: FontWeight.bold),
+                                );
+                              }),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
 
                 /// AVAILABLE COURIERS
                 InkWell(
@@ -457,6 +513,7 @@ final String adminId = Provider.of<AdminId>(context, listen: false).adminID;
                   height: 10.h,
                 ),
 
+
                 ///ROW OF BUTTONS TO SELECT THE FOOD COLLECTION YOU WAN TO UPLOAD
 
                 Text('Please Select Collection bellow before Uploading Product and to view your uploads',
@@ -530,40 +587,114 @@ final String adminId = Provider.of<AdminId>(context, listen: false).adminID;
                   height: 30.h,
                 ),
 
-                ///PICK YOUR IMAGE OF FOOD HERE
-                GestureDetector(
-                  onTap: () {
-                    _pickImage();
 
-                    ///IMAGE PICKER FUNCTION HERE
-                  },
-                  child: Badge(
-                    label: Text('Select Product Image'),
-                    textStyle: TextStyle(letterSpacing: 3, fontSize: 10),
-                    alignment: Alignment.topLeft,
-                    backgroundColor: Colors.black,
-                    textColor: Colors.white,
-                    child: Material(
-                      elevation: 4,
-                      borderRadius: BorderRadius.circular(35),
-                      color: Colors.white,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: _image != null
-                            ? Image.file(
-                                height: 190,
-                                width: 190,
-                                _image!,
-                                fit: BoxFit.fill,
-                              )
-                            : Image(
-                                image:
-                                    AssetImage('assets/Icon/selectImage.png'),
-                                height: 150.h,
-                                width: 150.h,
+
+
+
+
+                ///IMAGE PICKER (SHOP PICTURE AND ID CARD)
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ///PICK YOUR IMAGE OF THE PRODUCT
+                      Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              _pickProductImage();
+
+                              ///IMAGE PICKER FUNCTION HERE
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Material(
+                                elevation: 4,
+                                borderRadius: BorderRadius.circular(25),
+                                color: Colors.white,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: _productImage != null
+                                      ? Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Image.file(
+                                                                            height: 100,
+                                                                            width: 100,
+                                                                            _productImage!,
+                                                                            fit: BoxFit.fill,
+                                                                          ),
+                                      )
+                                      : Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Image(
+                                                                            image:
+                                                                            const AssetImage('assets/Icon/restaurant.png'),
+                                                                            height: 100.h,
+                                                                            width: 100.h,
+                                                                          ),
+                                      ),
+                                ),
                               ),
+                            ),
+                          ),
+                          Text('Product Image', style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins',), textAlign: TextAlign.center),
+                        ],
                       ),
-                    ),
+                      SizedBox(width: 10.w,),
+                      Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              _pickShopImage();
+
+                              ///IMAGE PICKER FUNCTION HERE
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Material(
+                                elevation: 4,
+                                borderRadius: BorderRadius.circular(35),
+                                color: Colors.white,
+                                child: Center(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: _shopImage != null
+                                        ? Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Image.file(
+                                                                                height: 100,
+                                                                                width: 100,
+                                                                                _shopImage!,
+                                                                                fit: BoxFit.fill,
+                                                                              ),
+                                        )
+                                        : Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Image(
+                                                                                image:
+                                                                                const AssetImage('assets/Icon/VendorLocation.png'),
+                                                                                height: 100.h,
+                                                                                width: 100.h,
+                                                                              ),
+                                        ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Text('Shop Image', style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins',), textAlign: TextAlign.center),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
 
@@ -571,7 +702,7 @@ final String adminId = Provider.of<AdminId>(context, listen: false).adminID;
                   /// COLUMN THAT TAKES ALL THE TEXTFIELDS
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(top: 8,bottom: 8),
                       child: Form(
                         key: _formkey,
                         child: Column(
@@ -589,10 +720,10 @@ final String adminId = Provider.of<AdminId>(context, listen: false).adminID;
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Colors.deepOrange.shade50,
-                                  labelText: 'Merchant ID',
+                                  labelText: 'Vendor ID',
                                   labelStyle: TextStyle(color: Colors.black),
                                   hintStyle: TextStyle(color: Colors.black),
-                                  hintText: 'Merchant ID',
+                                  hintText: 'Vendor ID',
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
@@ -605,6 +736,40 @@ final String adminId = Provider.of<AdminId>(context, listen: false).adminID;
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Please Enter ID';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            SizedBox(height: 20.h,),
+                            ///PAYMENT KEY/ACCOUNT
+                            Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: TextFormField(
+
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                                controller: paymentKeyController,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.deepOrange.shade50,
+                                  labelText: 'Payment Key',
+                                  labelStyle: TextStyle(color: Colors.black),
+                                  hintStyle: TextStyle(color: Colors.black),
+                                  hintText: 'Payment Key',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                        color: Colors.deepOrangeAccent
+
+
+                                    ),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please Enter Payment Key';
                                   }
                                   return null;
                                 },
@@ -764,8 +929,8 @@ final String adminId = Provider.of<AdminId>(context, listen: false).adminID;
                               child: DropdownButtonFormField(
                                 dropdownColor: Colors.white,
                                   validator: (value){
-                                    if(value!.isEmpty){
-                                      return 'Please select Max Distance';
+                                    if(value == null){
+                                      return 'Please select if you have a Courier';
                                     }
                                     return null;
                                   },
@@ -774,8 +939,8 @@ final String adminId = Provider.of<AdminId>(context, listen: false).adminID;
                                   decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Colors.deepOrange.shade50,
-                                    label: Text('Max distance you can deliver(km)', style: TextStyle(color: Colors.black),),
-                                    hintText: 'Select Max Distance in KM',
+                                    label: Text('Do you have a Courier ?', style: TextStyle(color: Colors.black),),
+                                    hintText: 'Do you have a Courier ?',
                                     hintStyle: TextStyle(color: Colors.black),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
@@ -789,11 +954,21 @@ final String adminId = Provider.of<AdminId>(context, listen: false).adminID;
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                   ),
-                                  items: const [
-                                    DropdownMenuItem(value: '5',child: Text('5 km'),),
-                                    DropdownMenuItem(value: '10',child: Text('10 km'),),
-                                    DropdownMenuItem(value: '15',child: Text('15 km'),),
-                                    DropdownMenuItem(value: '20',child: Text('20 km '),),
+                                  items: [
+                                    DropdownMenuItem(value: false ,child: const Text('I don\'nt have a Courier'),
+                                       onTap: () {
+                                        setState(() {
+                                          hasCourier = false;
+                                        });
+                                        },
+                                    ),
+                                    DropdownMenuItem(value: true,child: Text('I have a Courier'),
+                                    onTap: () {
+                                      setState(() {
+                                        hasCourier = true;
+                                      });
+                                    },
+                                    ),
 
                                   ],
                                   onChanged: (value){
@@ -894,13 +1069,15 @@ final String adminId = Provider.of<AdminId>(context, listen: false).adminID;
                           ),
                           onPressed: () {
                             if (_formkey.currentState!.validate() &&
-                                _image?.path != null) {
+                                _shopImage?.path != null && _productImage?.path != null) {
                               uploadFood(
                                   UploadModel(
                                   latitude : Provider.of<LocationProvider>(context,listen: false).Lat.toDouble(),
                                   longitude: Provider.of<LocationProvider>(context,listen: false).Long.toDouble() ,
                                   isAvailable: true,
-                                  imageUrl: imageUrl,
+                                 shopImageUrl: shopImageUrl,
+                                  ProductImageUrl: productImageUrl,
+                                  hasCourier: hasCourier,
                                   restaurant: restaurantController.text.toLowerCase().trim(),
                                   foodName: foodNameController.text.toLowerCase().trim(),
                                   price: double.parse(priceController.text.trim()),
@@ -909,7 +1086,8 @@ final String adminId = Provider.of<AdminId>(context, listen: false).adminID;
                                   vendorId: idController.text.trim(),
                                     adminEmail: Provider.of<LocalStorageProvider>(context,listen: false).adminEmail ,
                                     adminContact: int.parse(adminContactController.text),
-                                    maxDistance: maxDistance
+                                    maxDistance: maxDistance,
+                                    paymentKey: paymentKeyController.text.trim(),
 
                               )).then((_){
 
@@ -921,8 +1099,10 @@ final String adminId = Provider.of<AdminId>(context, listen: false).adminID;
                                 locationController.clear();
                                 timeController.clear();
                                 adminContactController.clear();
+                                paymentKeyController.clear();
                                 setState(() {
-                                  _image = null;
+                                  _productImage= null;
+                                  _shopImage = null;
                                 });
                               });
 

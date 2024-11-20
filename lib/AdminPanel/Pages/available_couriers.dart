@@ -3,13 +3,11 @@ import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as gmaps;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:provider/provider.dart';
-
 import '../../Courier/courier_model.dart';
 import '../../UserLocation/LocationProvider.dart';
 import '../../components/Notify.dart';
@@ -311,8 +309,8 @@ class _CouriersAvailableState extends State<CouriersAvailable> {
               topLeft: Radius.circular(30),
               topRight: Radius.circular(30),
             ),
-          )
-          ,context: context, builder: (context){
+          ),
+              context: context, builder: (context){
             return Container(
               height: 500.h,
               width: double.infinity,
@@ -370,7 +368,7 @@ class _CouriersAvailableState extends State<CouriersAvailable> {
                           markers: nearbyCouriers
                               .map(
                                 (courier) => gmaps.Marker(
-                              icon: gmaps.AssetMapBitmap('assets/Icon/courier.png',),
+                              icon: gmaps.AssetMapBitmap('assets/Icon/courier.png',height: 40,width: 40),
                               markerId: gmaps.MarkerId(courier.CourierName),
                               position: gmaps.LatLng(courier.CourierLatitude, courier.CourierLongitude),
                               infoWindow: gmaps.InfoWindow(

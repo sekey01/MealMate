@@ -6,7 +6,7 @@ import '../../theme/styles.dart';
 
 
 Material verticalCard(
-  String imgUrl,
+  String productImageUrl,
   String restaurant,
   String foodName,
   double price,
@@ -48,7 +48,7 @@ Material verticalCard(
                 width: 180.h,
                 margin: EdgeInsets.all(5),
                 //margin: EdgeInsets.fromLTRB(0, 1, 0, 1),
-                child: imgUrl.isEmpty
+                child: productImageUrl.isEmpty
                     ? Center(
                         child: Icon(
                           ///NO IMAGE ICON WHEN THE IMAGE URL IS EMPTY
@@ -62,7 +62,7 @@ Material verticalCard(
                         borderRadius: BorderRadius.circular(13),
                         child: Image(
                           fit: BoxFit.fill,
-                          image: NetworkImage(imgUrl),
+                          image: NetworkImage(productImageUrl),
                           height: 90.h,
                           width: 120.w,
                         ),
@@ -201,7 +201,7 @@ Material verticalCard(
 ///
 ///
 Container NewVerticalCard(
-    String imgUrl,
+    String productImageUrl,
     String restaurant,
     String foodName,
     double price,
@@ -225,7 +225,7 @@ Container NewVerticalCard(
         Stack(
           children: [
 
-            imgUrl.isEmpty
+            productImageUrl.isEmpty
                 ? Center(
               child: Icon(
                 ///NO IMAGE ICON WHEN THE IMAGE URL IS EMPTY
@@ -242,7 +242,7 @@ Container NewVerticalCard(
                 child: Image(
 
                   fit: BoxFit.fill,
-                  image: NetworkImage(imgUrl),
+                  image: NetworkImage(productImageUrl),
             
                   height: 120.h,
                   width: 250.w,

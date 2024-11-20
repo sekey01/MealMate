@@ -79,34 +79,58 @@ Future<void> switchCourierOnlineStatus(String courierId) async {
   }
 }
 class _CourierInitState extends State<CourierInit> {
-  Stream<void> updateCourierLocationStream(String courierId) async* {
+
+  bool _isDisposed = false;
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
+
+
+  Future<void> updateCourierLocation(String courierId) async {
     if (courierId.isEmpty) {
-      print('Error: courierId is empty');
+      Notify(context, "Add your ID", Colors.red);
       return;
     }
-    while (true) {
-      try {
-        double Lat = Provider.of<LocationProvider>(context, listen: false).Lat;
-        double Long = Provider.of<LocationProvider>(context, listen: false).Long;
+    if (_isDisposed) return;
 
-        FirebaseFirestore firestore = FirebaseFirestore.instance;
-        await firestore.collection('Couriers').doc(courierId).update({
+    try {
+      double Lat = Provider.of<LocationProvider>(context, listen: false).Lat;
+      double Long = Provider.of<LocationProvider>(context, listen: false).Long;
+
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      DocumentReference docRef = firestore.collection('Couriers').doc(courierId);
+
+      // Check if the document exists
+      DocumentSnapshot docSnapshot = await docRef.get();
+      if (docSnapshot.exists) {
+        // Update the document if it exists
+        await docRef.update({
           'CourierLatitude': Lat,
           'CourierLongitude': Long,
         });
         print('Courier location updated successfully');
-      } catch (e) {
-        print('Error updating courier location: $e');
+      } else {
+        print('Error: Courier document does not exist');
       }
-      await Future.delayed(Duration(seconds: 10));
+    } catch (e) {
+      print('Error updating courier location: $e');
     }
-  }
 
-  final _formKey = GlobalKey<FormState>();
+    // Call the function again after 10 seconds
+    if (!_isDisposed) {
+      await Future.delayed(Duration(seconds: 10));
+      updateCourierLocation(courierId);
+    }
+  }  final _formKey = GlobalKey<FormState>();
 
   final TextEditingController LatitudeController = TextEditingController();
   final TextEditingController LongitudeController = TextEditingController();
   final TextEditingController PhoneNumberController = TextEditingController();
+
+
+
 @override
   void initState() {
     // TODO: implement initState
@@ -512,8 +536,8 @@ SizedBox(height: 20.h,),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
    setState(() {
-     Stream<void> locationStream = updateCourierLocationStream(CourierID);
-     locationStream.listen((_) {});
+    /* Stream<void> locationStream = */updateCourierLocation(CourierID);
+     //locationStream.listen((_) {});
    });
         },
         child: Icon(Icons.refresh_outlined),

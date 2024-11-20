@@ -138,7 +138,10 @@ class _InitRowSearchState extends State<InitRowSearch> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => DetailedCard(
-                                          imgUrl: foodItem.imageUrl,
+                                          paymentKey: foodItem.paymentKey,
+                                          hasCourier: foodItem.hasCourier,
+                                          productImageUrl: foodItem.ProductImageUrl,
+                                          shopImageUrl: foodItem.shopImageUrl,
                                           restaurant: foodItem.restaurant,
                                           foodName: foodItem.foodName,
                                           price: foodItem.price,
@@ -156,7 +159,7 @@ class _InitRowSearchState extends State<InitRowSearch> {
                                     );
                                   },
                                   child: NewVerticalCard(
-                                    foodItem.imageUrl,
+                                    foodItem.ProductImageUrl,
                                     foodItem.restaurant,
                                     foodItem.foodName,
                                     foodItem.price,

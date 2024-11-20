@@ -142,7 +142,10 @@ class _InitPageSearchState extends State<InitPageSearch> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => DetailedCard(
-                                          imgUrl: foodItem.imageUrl,
+                                          paymentKey: foodItem.paymentKey,
+                                          hasCourier: foodItem.hasCourier,
+                                          productImageUrl: foodItem.ProductImageUrl,
+                                          shopImageUrl: foodItem.shopImageUrl,
                                           restaurant: foodItem.restaurant,
                                           foodName: foodItem.foodName,
                                           price: foodItem.price,
@@ -160,7 +163,7 @@ class _InitPageSearchState extends State<InitPageSearch> {
                                     );
                                   },
                                   child: NewVerticalCard(
-                                    foodItem.imageUrl,
+                                    foodItem.ProductImageUrl,
                                     foodItem.restaurant,
                                     foodItem.foodName,
                                     foodItem.price,

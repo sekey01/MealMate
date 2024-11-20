@@ -14,6 +14,8 @@ import '../../Courier/courier_model.dart';
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../components/Notify.dart';
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as gmaps;
+
 
 class TrackOrder extends StatefulWidget {
   final String vendorId;
@@ -33,6 +35,36 @@ class _TrackOrderState extends State<TrackOrder> {
     for (int i = start; i >= 0; i--) {
       await Future.delayed(Duration(seconds: 1));
       yield i;
+    }
+  }
+
+  Future<CourierModel?> getCourierDetails(BuildContext context, String courierId) async {
+    try {
+      // Get a reference to the Firestore instance
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      // Query the 'CourierId' collection for the document with matching ID
+      QuerySnapshot querySnapshot = await firestore
+          .collection('Couriers')
+          .where('CourierId', isEqualTo: courierId)
+          .limit(1)
+          .get();
+
+      // Check if any documents were found
+      if (querySnapshot.docs.isNotEmpty) {
+        Notify(context, 'Courier found', Colors.green);
+        // Create a CourierModel from the document data
+        var doc = querySnapshot.docs.first;
+        CourierModel courier = CourierModel.fromMap(doc.data() as Map<String, dynamic>, doc.id);
+        return courier;
+      } else {
+        Notify(context, 'Courier not found', Colors.red);
+        return null;
+      }
+    } catch (e) {
+      Notify(context, 'Error retrieving courier details', Colors.red);
+      print('Error retrieving courier details: $e');
+      return null;
     }
   }
 
@@ -156,8 +188,6 @@ class _TrackOrderState extends State<TrackOrder> {
 
                   ///VENDOR CONTACT
                   ///
-
-
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
@@ -239,78 +269,23 @@ class _TrackOrderState extends State<TrackOrder> {
                   Padding(padding: EdgeInsets.all(8),
                     child: Column(
                       children: [
-                        Builder(
-                            builder: (context) {
-                              return FutureBuilder(future: getCourierDetails(context, Order.CourierId.toString()),
-                                  builder: (context,snapshot){
-                                    if(snapshot.connectionState == ConnectionState.waiting){
-                                      return CustomLoGoLoading();
-                                    }
-                                    if(snapshot.hasError){
-                                      return Text('Error: ${snapshot.error}');
-                                    }
-                                    if(snapshot.hasData){
-                                      CourierModel courier = snapshot.data as CourierModel;
-                                      return Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(10),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey,
-                                                offset: Offset(0.0, 1.0), //(x,y)
-                                                blurRadius: 2.0,
-                                              ),
-                                            ],
-                                          ),
-                                          child: Badge(
-                                            backgroundColor: Colors.red,
-                                            label: Text('Courier On his way...', style: TextStyle(color: Colors.white, fontSize: 10.sp, fontWeight: FontWeight.bold),),
-                                            alignment: Alignment.topCenter,
-                                            child: Column(
-                                              children: [
-                                                ListTile(
-                                                  leading: CircleAvatar(radius: 30.r,backgroundImage: NetworkImage(courier.CourierGhanaCardPictureUrl),),
-                                                  title: Text(courier.CourierName,style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 15.sp,fontFamily: 'Righteous'),),
-                                                  subtitle: Text(courier.CourierEmail,style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 10.sp, fontFamily: 'Poppins'),),
-                                                  trailing: courier.isCourierOnline ? LottieBuilder.asset('assets/Icon/online.json', height: 50.h, width: 30.w,): Icon(Icons.offline_bolt, color: Colors.red),
-
-                                                ),
-                                                InkWell(
-                                                  onTap: (){
-                                                    //call the courier
-                                                    EasyLauncher.call(number: courier.CourierContact.toString());
-                                                  },
-                                                  child: ListTile(
-                                                    leading: Icon(Icons.call, color: Colors.green,),
-                                                    title: Text('+233' + courier.CourierContact.toString(),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 15.sp,fontFamily: 'Poppins'),),
-                                                    subtitle: Text('Tap  to call courier',style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.bold,fontSize: 12.sp, fontFamily: 'Poppins'),),
-
-                                                  ),
-                                                ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ImageIcon(AssetImage(('assets/Icon/courier.png'),), size: 30,color:Order.courier?Colors.green: Colors.grey,),
+                            Order.courier ? TextButton(onPressed: (){
 
 
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                    return Column(
-                                      children: [
-                                        ImageIcon(AssetImage(('assets/Icon/courier.png'),), size: 30,color:Order.courier?Colors.green: Colors.grey,),
-                                        Text('Courier details will be displayed soon ...', style: TextStyle(color: Colors.grey,fontSize: 10,fontFamily: 'Poppins'),),
-                                      ],
-                                    );
-                                  });
-                            }
+                            }, child: Image(image: AssetImage('assets/Icon/map.png',))): TextButton(onPressed: (){
+                              Notify(context, "Waiting to track Courier", Colors.red);
+                            }, child: Text('Track Courier', style: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold),)),
+                          ],
                         ),
+                        Text('Courier details will be displayed soon ...', style: TextStyle(color: Colors.grey,fontSize: 10,fontFamily: 'Poppins'),),
                       ],
                     ),
                   ),
-                  Text(' Courier almost at your location', style: TextStyle(color: Order.courier?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
+                  Text(' Courier will get to your location soon...', style: TextStyle(color: Order.courier?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
                   SizedBox(height: 10.h,),
                   Icon(Icons.arrow_downward, color: Order.courier?Colors.green: Colors.grey,),
                   //SizedBox(height: 10.h,),
@@ -386,8 +361,9 @@ class _TrackOrderState extends State<TrackOrder> {
             }),
           ],
         ),
-      )
-      ,
+      ),
+
+
     );
   }
 }

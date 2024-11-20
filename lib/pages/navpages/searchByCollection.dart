@@ -206,13 +206,21 @@ class _SearchState extends State<Search> {
                       } else if (locationSnapshot.hasError) {
                         return Center(child: Text('Error: ${locationSnapshot.error}'));
                       } else if (!locationSnapshot.hasData) {
-                        return Center(child: Text('Unable to determine location'));
+                        return Center(child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              NewSearchLoadingOutLook(),
+                              NewSearchLoadingOutLook(),
+                              NewSearchLoadingOutLook(),
+                            ],
+                          ),
+                        ),);
                       } else {
                         LatLng userLocation = locationSnapshot.data!;
                         List<FoodItem> nearbyRestaurants = snapshot.data!.where((foodItem) {
                           double distance = Provider.of<LocationProvider>(context, listen: false)
                               .calculateDistance(userLocation, LatLng(foodItem.latitude, foodItem.longitude));
-                          return distance <= 10; // Check if the restaurant is within 10 km
+                          return distance <= 50; // Check if the restaurant is within 10 km
                         }).toList();
                         return MasonryGridView.count(
                           itemCount: nearbyRestaurants.length,
@@ -228,7 +236,10 @@ class _SearchState extends State<Search> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => DetailedCard(
-                                      imgUrl: data.imageUrl,
+                                      paymentKey: data.paymentKey,
+                                      hasCourier: data.hasCourier,
+                                     productImageUrl: data.ProductImageUrl,
+                                      shopImageUrl: data.shopImageUrl,
                                       restaurant: data.restaurant,
                                       foodName: data.foodName,
                                       price: data.price,
@@ -249,7 +260,7 @@ class _SearchState extends State<Search> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: NewVerticalCard(
-                                  data.imageUrl,
+                                  data.ProductImageUrl,
                                   data.restaurant,
                                   data.foodName,
                                   data.price,

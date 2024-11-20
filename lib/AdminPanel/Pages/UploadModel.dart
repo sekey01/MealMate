@@ -1,8 +1,10 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class UploadModel {
-  final String imageUrl;
+  final String ProductImageUrl;
+  final String shopImageUrl;
   final String restaurant;
+  final String paymentKey;
   final String foodName;
   final double price;
   final String location;
@@ -14,9 +16,13 @@ class UploadModel {
   final String adminEmail;
   final int adminContact;
   final int maxDistance;
+  final bool hasCourier;
+
 
   UploadModel({
-    required this.imageUrl,
+  required this.ProductImageUrl,
+    required this.shopImageUrl,
+    required this.paymentKey,
     required this.restaurant,
     required this.foodName,
     required this.price,
@@ -28,14 +34,17 @@ class UploadModel {
     required this.longitude,
     required this.adminEmail,
     required this.adminContact,
-    required this.maxDistance
+    required this.maxDistance,
+    required this.hasCourier,
 
 
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'imageUrl': imageUrl,
+      'ProductImageUrl': ProductImageUrl,
+      'shopImageUrl': shopImageUrl,
+      'paymentKey': paymentKey,
       'restaurant': restaurant,
       'foodName': foodName,
       'price': price,
@@ -47,7 +56,8 @@ class UploadModel {
       'longitude': longitude?? 0,
       'adminEmail': adminEmail ?? '',
       'adminContact': adminContact?? '',
-      'maxDistance': maxDistance?? 0
+      'maxDistance': maxDistance?? 0,
+      'hasCourier': hasCourier?? false,
     };
   }
 }

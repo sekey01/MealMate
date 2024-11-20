@@ -52,11 +52,14 @@ class _OrderListState extends State<OrderList> {
               height: 10.h,
             ),
             Builder(builder: (context) {
-              return MatePayCard(
-                'Coming Soon',
-                ' XXXX - 0123',
-                Provider.of<LocalStorageProvider>(context, listen: true).userName,
-                Provider.of<LocalStorageProvider>(context, listen: true).phoneNumber.toString(),
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: MatePayCard(
+                  'Coming Soon',
+                  ' XXXX - 0123',
+                  Provider.of<LocalStorageProvider>(context, listen: true).userName,
+                  Provider.of<LocalStorageProvider>(context, listen: true).phoneNumber.toString(),
+                ),
               );
             }),
             SizedBox(height: 40),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/NoFoodFound.dart';
-import 'package:mealmate/components/mainCards/horizontalCard.dart';
 import 'package:mealmate/components/mainCards/verticalCard.dart';
 import 'package:provider/provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -196,7 +195,10 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => DetailedCard(
-                                          imgUrl: foodItem.imageUrl,
+                                          paymentKey: foodItem.paymentKey,
+                                          hasCourier: foodItem.hasCourier,
+                                          productImageUrl: foodItem.ProductImageUrl,
+                                          shopImageUrl: foodItem.shopImageUrl,
                                           restaurant: foodItem.restaurant,
                                           foodName: foodItem.foodName,
                                           price: foodItem.price,
@@ -214,7 +216,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                                     );
                                   },
                                   child: NewVerticalCard(
-                                      foodItem.imageUrl,
+                                      foodItem.ProductImageUrl,
                                       foodItem.restaurant,
                                       foodItem.foodName,
                                       foodItem.price,

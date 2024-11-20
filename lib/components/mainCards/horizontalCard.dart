@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../pages/detail&checkout/detail.dart';
 
 Column horizontalCard(
-  String imgUrl,
+    String paymentKey,
+  bool hasCourier,
+  String productImageUrl,
   String restaurant,
   String foodName,
   double price,
@@ -28,7 +30,10 @@ Column horizontalCard(
                   context,
                   MaterialPageRoute(
                       builder: (context) => DetailedCard(
-                          imgUrl: imgUrl,
+                        paymentKey: paymentKey,
+                        hasCourier: hasCourier,
+                         productImageUrl: productImageUrl,
+                          shopImageUrl: productImageUrl,
                           restaurant: restaurant,
                           foodName: foodName,
                           price: price,
@@ -57,7 +62,7 @@ Column horizontalCard(
                         Container(
                           margin: EdgeInsets.all(2),
                           color: Colors.white,
-                          child: imgUrl.isEmpty
+                          child: productImageUrl.isEmpty
                               ? Center(
                                   child: Icon(
                                     ///NO IMAGE ICON WHEN THE IMAGE URL IS EMPTY
@@ -71,7 +76,7 @@ Column horizontalCard(
                                   borderRadius: BorderRadius.circular(13),
                                   child: Image(
                                     fit: BoxFit.fill,
-                                    image: NetworkImage(imgUrl),
+                                    image: NetworkImage(productImageUrl),
                                     height: 90.sp,
                                     width: 120.sp,
                                   ),

@@ -13,11 +13,13 @@ import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/components/NoFoodFound.dart';
+import 'package:mealmate/components/mainCards/custom_carousel.dart';
 import 'package:mealmate/pages/detail&checkout/payment_unsuccessful.dart';
 import 'package:mealmate/pages/searchfooditem/searchFoodItem.dart';
 import 'package:mealmate/theme/styles.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import '../../AdminPanel/OtherDetails/incomingOrderProvider.dart';
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../PaymentProvider/paystack_payment.dart';
 import '../../components/Notify.dart';
@@ -29,8 +31,11 @@ import '../../models&ReadCollectionModel/sendOrderFunctionProvider.dart';
 import 'orderSent.dart';
 
 class DetailedCard extends StatefulWidget {
-  final String imgUrl;
+  final String productImageUrl;
+  final String shopImageUrl;
   final String restaurant;
+  final String paymentKey;
+  final bool hasCourier;
   final String foodName;
   final double price;
   final String location;
@@ -46,7 +51,10 @@ class DetailedCard extends StatefulWidget {
 
 
   DetailedCard({
-    required this.imgUrl,
+    required this.productImageUrl,
+    required this.shopImageUrl,
+    required this.paymentKey,
+    required this.hasCourier,
     required this.restaurant,
     required this.foodName,
     required this.price,
@@ -178,7 +186,7 @@ bool checkOutInitiated = false;
                   ),
                   height: 195.h,
                   width: double.infinity,
-                  child: widget.imgUrl.isEmpty
+                  child: widget.productImageUrl.isEmpty
                       ? Center(
                           child: Icon(
                             Icons.image_not_supported_outlined,
@@ -191,12 +199,13 @@ bool checkOutInitiated = false;
                             bottomLeft: Radius.circular(20.r),
                             bottomRight: Radius.circular(20.r),
                           ),
-                          child: Image(
+                          child: CustomCarousel(shopImageUrl: widget.shopImageUrl, productImageUrl: widget.productImageUrl)
+                    /*Image(
                             fit: BoxFit.fill,
-                            image: NetworkImage(widget.imgUrl),
+                            image: NetworkImage(widget.productImageUrl),
                             height: 90.h,
                             width: 120.w,
-                          ),
+                          )*/,
                         ),
                 ),
                 ///BACK ICON
@@ -681,41 +690,41 @@ bool checkOutInitiated = false;
                                 final foodItem = snapshot.data![index];
                                 return Padding(
                                     padding: const EdgeInsets.all(4.0),
-                                    child: Material(
-                                      elevation: 2,
-                                      child: GestureDetector(
-                                        onTap: () {
+                                    child: GestureDetector(
+                                      onTap: () {
 
-                                          foodItem.isAvailable?Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      DetailedCard(
+                                        foodItem.isAvailable?Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetailedCard(
+                                                      paymentKey: foodItem.paymentKey,
+                                                      hasCourier: foodItem.hasCourier,
 
-                                                        imgUrl:
-                                                        foodItem.imageUrl,
-                                                        restaurant:
-                                                        foodItem.restaurant,
-                                                        foodName:
-                                                        foodItem.foodName,
-                                                        price: foodItem.price,
-                                                        location:
-                                                        foodItem.location,
-                                                        vendorid:
-                                                        foodItem.vendorId,
-                                                        time: foodItem.time,
-                                                        latitude: foodItem.latitude,
-                                                        longitude: foodItem.longitude,
-                                                        adminEmail: foodItem.adminEmail,
-                                                        adminContact: foodItem.adminContact,
-                                                        maxDistance: foodItem.maxDistance,
-                                                        vendorAccount: foodItem.vendorAccount,
-                                                      ))):Notify(context, 'This item is not Available now', Colors.red);
-                                        },
-                                        child: NewVerticalCard(foodItem.imageUrl, foodItem.restaurant, foodItem.foodName,
-                                            foodItem.price, foodItem.location, foodItem.time, foodItem.vendorId,
-                                            foodItem.isAvailable, foodItem.adminEmail,foodItem.adminContact, foodItem.maxDistance),
-                                      ),
+                                                      productImageUrl:
+                                                      foodItem.ProductImageUrl,
+                                                      shopImageUrl: foodItem.shopImageUrl,
+                                                      restaurant:
+                                                      foodItem.restaurant,
+                                                      foodName:
+                                                      foodItem.foodName,
+                                                      price: foodItem.price,
+                                                      location:
+                                                      foodItem.location,
+                                                      vendorid:
+                                                      foodItem.vendorId,
+                                                      time: foodItem.time,
+                                                      latitude: foodItem.latitude,
+                                                      longitude: foodItem.longitude,
+                                                      adminEmail: foodItem.adminEmail,
+                                                      adminContact: foodItem.adminContact,
+                                                      maxDistance: foodItem.maxDistance,
+                                                      vendorAccount: foodItem.vendorAccount,
+                                                    ))):Notify(context, 'This item is not Available now', Colors.red);
+                                      },
+                                      child: NewVerticalCard(foodItem.ProductImageUrl, foodItem.restaurant, foodItem.foodName,
+                                          foodItem.price, foodItem.location, foodItem.time, foodItem.vendorId,
+                                          foodItem.isAvailable, foodItem.adminEmail,foodItem.adminContact, foodItem.maxDistance),
                                     ));
                               },
                               scrollDirection: Axis.horizontal,
@@ -917,7 +926,7 @@ bool checkOutInitiated = false;
                             ),
                             onPressed: () {
                               value.add(CartFood(
-                                imgUrl: widget.imgUrl,
+                                imgUrl: widget.productImageUrl,
                                 restaurant: widget.restaurant,
                                 foodName: widget.foodName,
                                 price: widget.price,
@@ -1253,281 +1262,342 @@ else if (snapshot.hasData) {
                               ),
 
                               SizedBox(height: 15.h),
-                             /* ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 3,
-                                  backgroundColor: Colors.redAccent,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                onPressed: () {
 
-                                  ///Get the Time
-                                  DateTime time = DateTime.now();
-
-                                  if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
-                                  {
-                                    final paymentProvider = Provider.of<PaystackPaymentProvider>(context, listen: false).
-                                    startPayment(context, widget.vendorid, overAllPrice.toInt()).then((result){
-                                       if(result.success){
-                                           Provider.of<SendOrderProvider>(context, listen: false).sendOrder(OrderInfo(
-                                          time: time,
-                                          foodName: widget.foodName,
-                                          quantity: Provider.of<CartModel>(context,
-                                              listen: false)
-                                              .getQuantity,
-                                          price: widget.price,
-                                          message: messageController.text.toString(),
-                                          Latitude: Provider.of<LocationProvider>(
-                                              context,
-                                              listen: false)
-                                              .Lat,
-                                          Longitude: Provider.of<LocationProvider>(
-                                              context,
-                                              listen: false)
-                                              .Long,
-                                          phoneNumber:
-                                          Provider.of<LocalStorageProvider>(
-                                              context,
-                                              listen: false)
-                                              .phoneNumber,
-                                          vendorId: widget.vendorid,
-                                          served: false,
-                                          courier: false,
-                                          delivered: false,
-                                          adminEmail: widget.adminEmail,
-                                          adminContact: widget.adminContact,
-                                          CourierContact: '',
-                                          CourierId: '',
-                                          CourierName: '',
-                                        )).then((_){
-                                             Navigator.push(
-                                               context,
-                                               MaterialPageRoute(
-                                                 builder: (context) => OrderSent(
-                                                     vendorId: widget.vendorid,
-                                                     time: time,
-                                                     restaurant: widget.restaurant,
-                                                     adminEmail: widget.adminEmail,
-                                                     adminContact: widget.adminContact),
-                                               ),
-                                             );
-                                           });
-                                       }
-                                       else{
-                                         Notify(context, 'Payment Failed', Colors.red);
-                                         Navigator.push(context, MaterialPageRoute(builder: (context)=> PaymentUnsuccessful()));
-                                       }
-
-                                    });
-
-
-
-
-
-                                  }
-                                  else {
-                                    Notify(context, 'Please add Telephone number',
-                                        Colors.red);
-                                  }
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    'CheckOut',
-                                    style:
-                                    TextStyle(color: Colors.white, fontSize: 20.spMin , fontWeight: FontWeight.bold, fontFamily: 'Righteous'),
-                                  ),
-                                ),
-                              ),*/
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text('Swipe to Checkout', style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold, fontFamily: 'Righteous'),),
+        child: Text('Swipe to Checkout', style: TextStyle(color: Colors.green, fontSize: 20.sp, fontWeight: FontWeight.bold, fontFamily: 'Righteous'),),
       ),
                              Padding(
                                padding: const EdgeInsets.all(8.0),
-                               child: Text('make sure paymen is done within 30 seconds after swipe', style: TextStyle(color: Colors.red, fontSize: 10.sp, fontWeight: FontWeight.bold, fontFamily: 'Righteous'),),
+                               child: Text(!widget.hasCourier?'make sure paymen is done within 30 seconds after swipe': 'Pay to the Courier when he arrives',
+                                 style: TextStyle(color: Colors.red, fontSize: 15.sp, fontWeight: FontWeight.bold, fontFamily: 'Righteous'),),
                              ),
-                              LiteRollingSwitch(
-                                //initial value
-                                value: checkOutInitiated,
-                                width: 220.sp,
-                                textOn: 'CheckOut',
-                                textOnColor: Colors.white,
-                                textOff: 'CheckOut',
-                                textOffColor: Colors.white,
-                                colorOn: CupertinoColors.activeGreen,
-                                colorOff: Colors.redAccent,
-                                iconOn: Icons.done,
-                                iconOff: Icons.shopping_cart_checkout_outlined,
-                                textSize: 20.0,
-                                onChanged: (bool state) {
 
-                                },
-                                onTap: ()  {
+                              Padding(padding: EdgeInsets.all(8),
+                                child: !widget.hasCourier?LiteRollingSwitch(
+                                  //initial value
+                                  value: checkOutInitiated,
+                                  width: 220.sp,
+                                  textOn: 'CheckOut',
+                                  textOnColor: Colors.white,
+                                  textOff: 'CheckOut',
+                                  textOffColor: Colors.white,
+                                  colorOn: CupertinoColors.activeGreen,
+                                  colorOff: Colors.redAccent,
+                                  iconOn: Icons.done,
+                                  iconOff: Icons.shopping_cart_checkout_outlined,
+                                  textSize: 20.0,
+                                  onChanged: (bool state) {
 
-                                  ///Get the Time
-                                  DateTime time = DateTime.now();
+                                  },
+                                  onTap: ()  {
 
-                                  if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
-                                  {
+                                    ///Get the Time
+                                    DateTime time = DateTime.now();
+
+                                    if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
+                                    {
+
+                                      Alert(context: context,
+                                        style: AlertStyle(
+                                          backgroundColor: Colors.white,
+                                        ),
+                                        content: WaitingPayment(),
+                                      ).show();
+                                      final paymentProvider = Provider.of<PaystackPaymentProvider>(context, listen: false).
+                                      startPayment(context, widget.vendorAccount, overAllPrice.toInt()).then((result){
+                                        if(result.success){
+                                          Provider.of<SendOrderProvider>(context, listen: false).sendOrder(OrderInfo(
+                                            time: time,
+                                            foodName: widget.foodName,
+                                            quantity: Provider.of<CartModel>(context,
+                                                listen: false)
+                                                .getQuantity,
+                                            price: widget.price,
+                                            message: messageController.text.toString(),
+                                            Latitude: Provider.of<LocationProvider>(
+                                                context,
+                                                listen: false)
+                                                .Lat,
+                                            Longitude: Provider.of<LocationProvider>(
+                                                context,
+                                                listen: false)
+                                                .Long,
+                                            phoneNumber:
+                                            Provider.of<LocalStorageProvider>(
+                                                context,
+                                                listen: false)
+                                                .phoneNumber,
+                                            vendorId: widget.vendorid,
+                                            served: false,
+                                            courier: false,
+                                            delivered: false,
+                                            adminEmail: widget.adminEmail,
+                                            adminContact: widget.adminContact,
+                                            CourierContact: '',
+                                            CourierId: 0,
+                                            CourierName: '',
+                                            VendorAccount: widget.paymentKey,
+                                          )).then((_){
+                                            ///END EMAIL TO ALERT VENDOR FUNCTION
+                                            Provider.of<IncomingOrdersProvider>(context, listen: false).sendEmail(widget.adminEmail, widget.foodName);
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => OrderSent(
+
+                                                    vendorId: widget.vendorid,
+                                                    time: time,
+                                                    restaurant: widget.restaurant,
+                                                    adminEmail: widget.adminEmail,
+                                                    adminContact: widget.adminContact),
+                                              ),
+                                            );
+                                          });
+                                        }
+                                        else{
+                                          Notify(context, 'Payment Failed', Colors.red);
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> PaymentUnsuccessful()));
+                                        }
+
+                                      });
+
+
+
+
+
+                                    }
+                                    else {
+                                      Notify(context, 'Please add Telephone number',
+                                          Colors.red);
+                                      checkOutInitiated = false;
+                                    }
+                                  },
+                                  onDoubleTap: () {},
+                                  onSwipe: ()   {
                                     Alert(context: context,
                                       style: AlertStyle(
                                         backgroundColor: Colors.white,
                                       ),
                                       content: WaitingPayment(),
                                     ).show();
-                                    final paymentProvider = Provider.of<PaystackPaymentProvider>(context, listen: false).
-                                    startPayment(context, widget.vendorAccount, overAllPrice.toInt()).then((result){
-                                      if(result.success){
-                                        Provider.of<SendOrderProvider>(context, listen: false).sendOrder(OrderInfo(
-                                          time: time,
-                                          foodName: widget.foodName,
-                                          quantity: Provider.of<CartModel>(context,
-                                              listen: false)
-                                              .getQuantity,
-                                          price: widget.price,
-                                          message: messageController.text.toString(),
-                                          Latitude: Provider.of<LocationProvider>(
-                                              context,
-                                              listen: false)
-                                              .Lat,
-                                          Longitude: Provider.of<LocationProvider>(
-                                              context,
-                                              listen: false)
-                                              .Long,
-                                          phoneNumber:
-                                          Provider.of<LocalStorageProvider>(
-                                              context,
-                                              listen: false)
-                                              .phoneNumber,
-                                          vendorId: widget.vendorid,
-                                          served: false,
-                                          courier: false,
-                                          delivered: false,
-                                          adminEmail: widget.adminEmail,
-                                          adminContact: widget.adminContact,
-                                          CourierContact: '',
-                                          CourierId: 0,
-                                          CourierName: '',
-                                          VendorAccount: '',
-                                        )).then((_){
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => OrderSent(
 
-                                                  vendorId: widget.vendorid,
-                                                  time: time,
-                                                  restaurant: widget.restaurant,
-                                                  adminEmail: widget.adminEmail,
-                                                  adminContact: widget.adminContact),
-                                            ),
-                                          );
-                                        });
-                                      }
-                                      else{
-                                        Notify(context, 'Payment Failed', Colors.red);
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> PaymentUnsuccessful()));
-                                      }
-
-                                    });
-
-
-
-
-
-                                  }
-                                  else {
-                                    Notify(context, 'Please add Telephone number',
-                                        Colors.red);
+                                    ///Get the Time
+                                    DateTime time = DateTime.now();
                                     checkOutInitiated = false;
-                                  }
-                                },
-                                onDoubleTap: () {},
-                                onSwipe: ()   {
-                                  Alert(context: context,
-                                    style: AlertStyle(
-                                      backgroundColor: Colors.white,
-                                    ),
-                                    content: WaitingPayment(),
-                                  ).show();
 
-                                  ///Get the Time
-                                  DateTime time = DateTime.now();
-                                  checkOutInitiated = false;
+                                    if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
+                                    {
+                                      final paymentProvider = Provider.of<PaystackPaymentProvider>(context, listen: false).
+                                      startPayment(context, widget.vendorAccount, overAllPrice.toInt()).then((result){
+                                        if(result.success){
+                                          Provider.of<SendOrderProvider>(context, listen: false).sendOrder(OrderInfo(
+                                            time: time,
+                                            foodName: widget.foodName,
+                                            quantity: Provider.of<CartModel>(context,
+                                                listen: false)
+                                                .getQuantity,
+                                            price: widget.price,
+                                            message: messageController.text.toString(),
+                                            Latitude: Provider.of<LocationProvider>(
+                                                context,
+                                                listen: false)
+                                                .Lat,
+                                            Longitude: Provider.of<LocationProvider>(
+                                                context,
+                                                listen: false)
+                                                .Long,
+                                            phoneNumber:
+                                            Provider.of<LocalStorageProvider>(
+                                                context,
+                                                listen: false)
+                                                .phoneNumber,
+                                            vendorId: widget.vendorid,
+                                            served: false,
+                                            courier: false,
+                                            delivered: false,
+                                            adminEmail: widget.adminEmail,
+                                            adminContact: widget.adminContact,
+                                            CourierContact: '',
+                                            CourierId: 0,
+                                            CourierName: '',
+                                            VendorAccount: '',
+                                          )).then((_){
+                                            ///END EMAIL TO ALERT VENDOR FUNCTION
+                                            Provider.of<IncomingOrdersProvider>(context, listen: false).sendEmail(widget.adminEmail, widget.foodName);
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => OrderSent(
+                                                    vendorId: widget.vendorid,
 
-                                  if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
-                                  {
-                                    final paymentProvider = Provider.of<PaystackPaymentProvider>(context, listen: false).
-                                    startPayment(context, widget.vendorAccount, overAllPrice.toInt()).then((result){
-                                      if(result.success){
-                                        Provider.of<SendOrderProvider>(context, listen: false).sendOrder(OrderInfo(
-                                          time: time,
-                                          foodName: widget.foodName,
-                                          quantity: Provider.of<CartModel>(context,
-                                              listen: false)
-                                              .getQuantity,
-                                          price: widget.price,
-                                          message: messageController.text.toString(),
-                                          Latitude: Provider.of<LocationProvider>(
-                                              context,
-                                              listen: false)
-                                              .Lat,
-                                          Longitude: Provider.of<LocationProvider>(
-                                              context,
-                                              listen: false)
-                                              .Long,
-                                          phoneNumber:
-                                          Provider.of<LocalStorageProvider>(
-                                              context,
-                                              listen: false)
-                                              .phoneNumber,
-                                          vendorId: widget.vendorid,
-                                          served: false,
-                                          courier: false,
-                                          delivered: false,
-                                          adminEmail: widget.adminEmail,
-                                          adminContact: widget.adminContact,
-                                          CourierContact: '',
-                                          CourierId: 0,
-                                          CourierName: '',
-                                          VendorAccount: '',
-                                        )).then((_){
-                                          Navigator.push(
+                                                    time: time,
+                                                    restaurant: widget.restaurant,
+                                                    adminEmail: widget.adminEmail,
+                                                    adminContact: widget.adminContact),
+                                              ),
+                                            );
+                                          });
+                                        }
+                                        else{
+                                          Notify(context, 'Payment Failed', Colors.red);
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> PaymentUnsuccessful()));
+                                        }
+
+                                      });
+
+
+
+
+
+                                    }
+                                    else {
+                                      Notify(context, 'Please add Telephone number',
+                                          Colors.red);
+                                      checkOutInitiated = false;
+                                    }
+                                  },
+                                ):LiteRollingSwitch(
+                                  //initial value
+                                  value: checkOutInitiated,
+                                  width: 250.sp,
+                                  textOn: 'Cash On Delivery',
+                                  textOnColor: Colors.white,
+                                  textOff: 'Cash On Delivery',
+                                  textOffColor: Colors.white,
+                                  colorOn: CupertinoColors.activeGreen,
+                                  colorOff: Colors.redAccent,
+                                  iconOn: Icons.done,
+                                  iconOff: Icons.shopping_cart_checkout_outlined,
+                                  textSize: 20.0,
+                                  onChanged: (bool state) {
+
+                                  },
+                                  onTap: ()  {
+                                    ///Get the Time
+                                    DateTime time = DateTime.now();
+
+                                    if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
+                                    {
+                                      Provider.of<SendOrderProvider>(context, listen: false).sendOrder(OrderInfo(
+                                        time: time,
+                                        foodName: widget.foodName,
+                                        quantity: Provider.of<CartModel>(context,
+                                            listen: false)
+                                            .getQuantity,
+                                        price: widget.price,
+                                        message: messageController.text.toString(),
+                                        Latitude: Provider.of<LocationProvider>(
                                             context,
-                                            MaterialPageRoute(
-                                              builder: (context) => OrderSent(
-                                                  vendorId: widget.vendorid,
+                                            listen: false)
+                                            .Lat,
+                                        Longitude: Provider.of<LocationProvider>(
+                                            context,
+                                            listen: false)
+                                            .Long,
+                                        phoneNumber:
+                                        Provider.of<LocalStorageProvider>(
+                                            context,
+                                            listen: false)
+                                            .phoneNumber,
+                                        vendorId: widget.vendorid,
+                                        served: false,
+                                        courier: false,
+                                        delivered: false,
+                                        adminEmail: widget.adminEmail,
+                                        adminContact: widget.adminContact,
+                                        CourierContact: '',
+                                        CourierId: 0,
+                                        CourierName: '',
+                                        VendorAccount: '',
+                                      )).then((_){
+                                        ///END EMAIL TO ALERT VENDOR FUNCTION
+                                        Provider.of<IncomingOrdersProvider>(context, listen: false).sendEmail(widget.adminEmail, widget.foodName);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => OrderSent(
 
-                                                  time: time,
-                                                  restaurant: widget.restaurant,
-                                                  adminEmail: widget.adminEmail,
-                                                  adminContact: widget.adminContact),
-                                            ),
-                                          );
-                                        });
-                                      }
-                                      else{
-                                        Notify(context, 'Payment Failed', Colors.red);
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> PaymentUnsuccessful()));
-                                      }
+                                                vendorId: widget.vendorid,
+                                                time: time,
+                                                restaurant: widget.restaurant,
+                                                adminEmail: widget.adminEmail,
+                                                adminContact: widget.adminContact),
+                                          ),
+                                        );
+                                      });
 
-                                    });
+                                    }
+                                    else {
+                                      Notify(context, 'Please add Telephone number',
+                                          Colors.red);
+                                      checkOutInitiated = false;
+                                    }
+                                  },
+                                  onDoubleTap: () {},
+                                  onSwipe: (){
+                                    ///Get the Time
+                                    DateTime time = DateTime.now();
 
+                                    if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
+                                    {
+                                      Provider.of<SendOrderProvider>(context, listen: false).sendOrder(OrderInfo(
+                                        time: time,
+                                        foodName: widget.foodName,
+                                        quantity: Provider.of<CartModel>(context,
+                                            listen: false)
+                                            .getQuantity,
+                                        price: widget.price,
+                                        message: messageController.text.toString(),
+                                        Latitude: Provider.of<LocationProvider>(
+                                            context,
+                                            listen: false)
+                                            .Lat,
+                                        Longitude: Provider.of<LocationProvider>(
+                                            context,
+                                            listen: false)
+                                            .Long,
+                                        phoneNumber:
+                                        Provider.of<LocalStorageProvider>(
+                                            context,
+                                            listen: false)
+                                            .phoneNumber,
+                                        vendorId: widget.vendorid,
+                                        served: false,
+                                        courier: false,
+                                        delivered: false,
+                                        adminEmail: widget.adminEmail,
+                                        adminContact: widget.adminContact,
+                                        CourierContact: '',
+                                        CourierId: 0,
+                                        CourierName: '',
+                                        VendorAccount: '',
+                                      )).then((_){
+                                        ///END EMAIL TO ALERT VENDOR FUNCTION
+                                        Provider.of<IncomingOrdersProvider>(context, listen: false).sendEmail(widget.adminEmail, widget.foodName);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => OrderSent(
 
+                                                vendorId: widget.vendorid,
+                                                time: time,
+                                                restaurant: widget.restaurant,
+                                                adminEmail: widget.adminEmail,
+                                                adminContact: widget.adminContact),
+                                          ),
+                                        );
+                                      });
 
+                                    }
+                                    else {
+                                      Notify(context, 'Please add Telephone number',
+                                          Colors.red);
+                                      checkOutInitiated = false;
+                                    }
+                                  },
+                                ),),
 
-
-                                  }
-                                  else {
-                                    Notify(context, 'Please add Telephone number',
-                                        Colors.red);
-                                    checkOutInitiated = false;
-                                  }
-                                },
-                              ),
 
 
 

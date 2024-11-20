@@ -19,6 +19,8 @@ Widget MatePayCard(
         Premium,
       ),
       child: Container(
+        height: 130.h,
+        width: 290.w,
         decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -36,23 +38,27 @@ Widget MatePayCard(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-                height: 150.h,
-                width: 110.w,
+                height: 120.h,
+                width: 50.w,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(70)),
-                      child: Image(
-                        image: AssetImage('assets/Icon/chip.png'),
-                        height: 60.h,
-                        width: 50.w,
+
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(70)),
+                        child: Image(
+                          image: AssetImage('assets/Icon/chip.png'),
+                          height: 40.h,
+                          width: 40.w,
+                        ),
                       ),
                     ),
                     SizedBox(
                       height: 10.h,
                     ),
-                   ImageIcon(AssetImage('assets/Icon/radio-waves.png',), size: 50, color: Colors.red,),
+                   ImageIcon(AssetImage('assets/Icon/radio-waves.png',), size: 40, color: Colors.red,),
                   ],
                 )),
             Column(
@@ -65,8 +71,8 @@ Widget MatePayCard(
                   style: TextStyle(
                     overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.w600,
-                      fontSize: 15.sp,
-                      letterSpacing: 2,
+                      fontSize: 10.sp,
+                      letterSpacing: 1,
                       color: Colors.white),
                 ),
                 SizedBox(
@@ -77,11 +83,11 @@ Widget MatePayCard(
                       'P-Code :'+"$CardNumber",
                   style: TextStyle(
                       //fontWeight: FontWeight.bold,
-                      fontSize: 15.sp,
+                      fontSize: 10.sp,
                       color: Colors.white),
                 ),
                 SizedBox(
-                  height: 20.h,
+                  height: 10.h,
                 ),
                 Text(
                   'VALID THRU ',
@@ -94,7 +100,7 @@ Widget MatePayCard(
                   ' 12/25',
                   style: TextStyle(
                       //fontWeight: FontWeight.bold,
-                      fontSize: 18.sp,
+                      fontSize: 10.sp,
                       color: Colors.white),
                 ),
                 SizedBox(
@@ -104,11 +110,11 @@ Widget MatePayCard(
                   "ACC ID : $ID",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 12.sp,
+                      fontSize: 10.sp,
                       color: Colors.white),
                 ),
                 SizedBox(
-                  height: 15.h,
+                  height: 10.h,
                 )
               ],
             ),

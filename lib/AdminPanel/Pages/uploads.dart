@@ -126,7 +126,7 @@ class _UploadedState extends State<Uploaded> {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: adminHorizontalCard(
-                              upload.imageUrl,
+                              upload.ProductImageUrl,
                               upload.restaurant,
                               upload.location,
                               upload.foodName,

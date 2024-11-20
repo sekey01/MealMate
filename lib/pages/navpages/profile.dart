@@ -81,8 +81,8 @@ class _ProfileState extends State<Profile> {
                         }else{
                           return   Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: CircleAvatar(radius: 60.r,
-                        backgroundColor: Colors.deepOrangeAccent,
+                      child: CircleAvatar(radius: 50.r,
+                        backgroundColor: Colors.black,
                         child: ImageIcon(
                           color: Colors.white,
                           size: 100.sp,

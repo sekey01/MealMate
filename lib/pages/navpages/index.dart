@@ -167,7 +167,7 @@ checkInternet();
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Icon(Icons.location_on_outlined, size: 20.sp,color: Colors.blueGrey,),
+                          Icon(Icons.location_on_outlined, size: 20.spMin,color: Colors.blueGrey,),
                           FutureBuilder(
                               future:
                               Provider.of<LocationProvider>(context, listen: false).determinePosition(),
@@ -181,7 +181,7 @@ checkInternet();
                                             overflow: TextOverflow.ellipsis,
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 12.sp)),
+                                            fontSize: 12.spMin)),
                                   );
                                 }
                                 return Text(
@@ -200,7 +200,7 @@ checkInternet();
                   child: Padding(
                     padding: const EdgeInsets.only(left: 0,right: 0),
                     child: Container(
-                      //height: 80.h,
+                     width: 350.w,
                       decoration: BoxDecoration(
                         color: Colors.grey.shade100,
                         borderRadius: BorderRadius.circular(10)
@@ -213,7 +213,7 @@ checkInternet();
                           children: [
                             InkWell(
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> InitRowSearch(searchItem: 'chilzy')));
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> InitRowSearch(searchItem: 'jollof')));
                             },
                                 child: InitRow(imageUrl: 'assets/images/jollof.png',name: 'Jollof',)),
                             InkWell(
@@ -358,7 +358,7 @@ checkInternet();
                                         style: TextStyle(
                                           fontFamily: 'Righteous',
                                             color: Colors.black,
-                                            fontSize: 35.sp,
+                                            fontSize: 35.spMin,
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
@@ -371,7 +371,7 @@ checkInternet();
                                           wordSpacing: 2,
                                             fontFamily: 'Poppins',
                                             color: Colors.blueGrey,
-                                            fontSize: 13.sp,
+                                            fontSize: 13.spMin,
 
                                         ),
                                       ),
@@ -415,7 +415,7 @@ checkInternet();
                                               style: TextStyle(
                                                   fontFamily: 'Righteous',
                                                   color: Colors.black,
-                                                  fontSize: 18.sp,
+                                                  fontSize: 18.spMin,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           ),
@@ -428,7 +428,7 @@ checkInternet();
                                                                     style: TextStyle(
                                      // fontFamily: 'Popins',
                                       color: Colors.blueGrey,
-                                      fontSize: 15.sp,
+                                      fontSize: 15.spMin,
                                       //fontWeight: FontWeight.bold
                                                                     ),
                                                                   ),),
@@ -458,35 +458,38 @@ checkInternet();
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Expanded(child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                               Padding(
-                                                 padding: const EdgeInsets.only(left: 8,top: 8),
-                                                 child: Text('Shops', style: TextStyle(
-                                                     fontFamily: 'Righteous',
-                                                     color: Colors.black,
-                                                     fontSize: 17.sp,
-                                                     fontWeight: FontWeight.bold),),
-                                               ),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(left: 8.0),
-                                                  child: Text('This and more available in shops around you...',
-                                                    style: TextStyle(
-                                                        color: Colors.blueGrey,
-                                                        fontSize: 9.sp,
-                                                        fontFamily: 'Poppins',
-                                                        //fontWeight: FontWeight.bold
-                                                    ),),
-                                                ),
+                                          Expanded(child: SingleChildScrollView(
+                                            scrollDirection: Axis.vertical,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                 Padding(
+                                                   padding: const EdgeInsets.only(left: 8,),
+                                                   child: Text('Shops', style: TextStyle(
+                                                       fontFamily: 'Righteous',
+                                                       color: Colors.black,
+                                                       fontSize: 15.spMin,
+                                                       fontWeight: FontWeight.bold),),
+                                                 ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(left: 8.0),
+                                                    child: Text('Visit shops around you...',
+                                                      style: TextStyle(
+                                                          color: Colors.blueGrey,
+                                                          fontSize: 10.spMin,
+                                                          fontFamily: 'Poppins',
+                                                          //fontWeight: FontWeight.bold
+                                                      ),),
+                                                  ),
 
-                                              ],
+                                                ],
+                                            ),
                                           )),
-                                          Expanded(child: Image(image: AssetImage('assets/images/shops.jpg'), height: 80.h, width: 150.w,)),
+                                          Expanded(child: Image(image: AssetImage('assets/images/shops.jpg'), height: 60.h, width: 130.w,)),
                                         ],
                                       ),
                                     ),
@@ -549,7 +552,7 @@ SizedBox(height: 30.h,),
                           style: TextStyle(
                             fontFamily: 'Righteous',
                               color: Colors.blueGrey,
-                              fontSize: 12.sp,
+                              fontSize: 12.spMin,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -568,7 +571,7 @@ SizedBox(height: 30.h,),
                               Text(
                                 'View All',
                                 style: TextStyle(
-                                    fontSize: 15.sp, color: Colors.deepOrangeAccent),
+                                    fontSize: 15.spMin, color: Colors.deepOrangeAccent),
                               ),
                               Icon(
                                 Icons.arrow_forward_ios,
@@ -655,7 +658,10 @@ SizedBox(height: 30.h,),
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => DetailedCard(
-                                        imgUrl: foodItem.imageUrl,
+                                        paymentKey: foodItem.paymentKey,
+                                        hasCourier: foodItem.hasCourier,
+                                        productImageUrl: foodItem.ProductImageUrl,
+                                        shopImageUrl: foodItem.shopImageUrl,
                                         restaurant: foodItem.restaurant,
                                         foodName: foodItem.foodName,
                                         price: foodItem.price,
@@ -674,7 +680,7 @@ SizedBox(height: 30.h,),
                                       : Notify(context, 'This item is not available now', Colors.red);
                                 },
                                 child: NewVerticalCard(
-                                  foodItem.imageUrl,
+                                  foodItem.ProductImageUrl,
                                   foodItem.restaurant,
                                   foodItem.foodName,
                                   foodItem.price,
@@ -774,7 +780,10 @@ SizedBox(height: 30.h,),
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) => DetailedCard(
-                                                imgUrl: foodItem.imageUrl,
+                                                paymentKey: foodItem.paymentKey,
+                                                hasCourier: foodItem.hasCourier,
+                                                productImageUrl: foodItem.ProductImageUrl,
+                                                shopImageUrl: foodItem.shopImageUrl,
                                                 restaurant: foodItem.restaurant,
                                                 foodName: foodItem.foodName,
                                                 price: foodItem.price,
@@ -793,7 +802,7 @@ SizedBox(height: 30.h,),
                                               : Notify(context, 'This item is not available now', Colors.red);
                                         },
                                         child: NewVerticalCard(
-                                          foodItem.imageUrl,
+                                          foodItem.ProductImageUrl,
                                           foodItem.restaurant,
                                           foodItem.foodName,
                                           foodItem.price,
@@ -848,7 +857,7 @@ SizedBox(height: 30.h,),
                           style: TextStyle(
                             fontFamily: 'Righteous',
                               color: Colors.blueGrey,
-                              fontSize: 12.sp,
+                              fontSize: 12.spMin,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -866,7 +875,7 @@ SizedBox(height: 30.h,),
                               Text(
                                 'View All',
                                 style: TextStyle(
-                                    fontSize: 12.sp, color: Colors.deepOrangeAccent,fontWeight: FontWeight.bold),
+                                    fontSize: 12.spMin, color: Colors.deepOrangeAccent,fontWeight: FontWeight.bold),
                               ),
                               Icon(
                                 Icons.arrow_forward_ios,
@@ -938,9 +947,11 @@ SizedBox(height: 30.h,),
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     DetailedCard(
+                                                      paymentKey: foodItem.paymentKey,
+                                                      hasCourier: foodItem.hasCourier,
+                                                      productImageUrl: foodItem.ProductImageUrl,
+                                                      shopImageUrl: foodItem.shopImageUrl,
 
-                                                        imgUrl:
-                                                            foodItem.imageUrl,
                                                         restaurant:
                                                             foodItem.restaurant,
                                                         foodName:
@@ -960,7 +971,7 @@ SizedBox(height: 30.h,),
                                                     ))):Notify(context, 'This item is not Available now', Colors.red);
                                       },
                                       child: verticalCard(
-                                        foodItem.imageUrl,
+                                        foodItem.ProductImageUrl,
                                         foodItem.restaurant,
                                         foodItem.foodName,
                                         foodItem.price,
@@ -1006,7 +1017,7 @@ SizedBox(height: 30.h,),
                           style: TextStyle(
                               fontFamily: 'Righteous',
                               color: Colors.blueGrey,
-                              fontSize: 12.sp,
+                              fontSize: 12.spMin,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -1024,7 +1035,7 @@ SizedBox(height: 30.h,),
                               Text(
                                 'View All',
                                 style: TextStyle(
-                                    fontSize: 12.sp, color: Colors.deepOrangeAccent,fontWeight: FontWeight.bold),
+                                    fontSize: 12.spMin, color: Colors.deepOrangeAccent,fontWeight: FontWeight.bold),
                               ),
                               Icon(
                                 Icons.arrow_forward_ios,
@@ -1088,9 +1099,11 @@ SizedBox(height: 30.h,),
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     DetailedCard(
+                                                      paymentKey: foodItem.paymentKey,
+                                                      hasCourier: foodItem.hasCourier,
+                                                      productImageUrl: foodItem.ProductImageUrl,
+                                                      shopImageUrl: foodItem.shopImageUrl,
 
-                                                        imgUrl:
-                                                        foodItem.imageUrl,
                                                         restaurant:
                                                         foodItem.restaurant,
                                                         foodName:
@@ -1110,7 +1123,7 @@ SizedBox(height: 30.h,),
                                                     ))):Notify(context, 'This item is not Available now', Colors.red);
                                       },
                                       child: verticalCard(
-                                          foodItem.imageUrl,
+                                          foodItem.ProductImageUrl,
                                           foodItem.restaurant,
                                           foodItem.foodName,
                                           foodItem.price,

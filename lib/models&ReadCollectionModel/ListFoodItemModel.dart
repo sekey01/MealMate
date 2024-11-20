@@ -1,6 +1,9 @@
 class FoodItem {
-  final String imageUrl;
+  final String ProductImageUrl;
+  final String shopImageUrl;
   final String restaurant;
+  final String paymentKey;
+  final bool hasCourier;
   final String foodName;
   final double price;
   final String location;
@@ -17,11 +20,14 @@ class FoodItem {
   FoodItem({
     required this.vendorId,
     required this.restaurant,
+    required this.paymentKey,
+    required this.hasCourier,
     required this.foodName,
     required this.price,
     required this.location,
     required this.time,
-    required this.imageUrl,
+    required this.ProductImageUrl,
+    required this.shopImageUrl,
     this.isAvailable = true,
     required this.latitude,
     required this.longitude,
@@ -33,7 +39,8 @@ class FoodItem {
 
   factory FoodItem.fromMap(Map<String, dynamic> data, String documentId) {
     return FoodItem(
-      imageUrl: data['imageUrl'] ?? '',
+      ProductImageUrl: data['ProductImageUrl'] ?? '',
+      shopImageUrl: data['shopImageUrl'] ?? '',
       time: data['time'] ?? '',
       restaurant: data['restaurant'] ?? '',
       foodName: data['foodName'] ?? '',
@@ -47,6 +54,8 @@ class FoodItem {
       adminContact: int.tryParse(data['adminContact'].toString()) ?? 0,
       maxDistance: int.tryParse(data['maxDistance'].toString()) ?? 0,
       vendorAccount: data['vendorAccount'] ?? '',
+      paymentKey: data['paymentKey'] ?? '',
+      hasCourier: data['hasCourier'] ?? false,
     );
   }
 }
