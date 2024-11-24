@@ -42,7 +42,7 @@ class _AdminNoticeState extends State<AdminNotice> {
                 itemBuilder: (context, index) {
                   final notice = snapshot.data![index];
                   return ListTile(
-                    leading: Text(notice.time, style: TextStyle(color: Colors.black, fontSize: 10.spMin,fontWeight: FontWeight.bold)),
+                    leading: Text(notice.route, style: TextStyle(color: Colors.black, fontSize: 10.spMin,fontWeight: FontWeight.bold)),
                     title: RichText(text: TextSpan(
                         children: [
                           TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 15.spMin, fontWeight: FontWeight.bold)),

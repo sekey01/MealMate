@@ -16,6 +16,8 @@ import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:mealmate/firebase_options.dart';
 import 'package:mealmate/models&ReadCollectionModel/sendOrderFunctionProvider.dart';
 import 'package:mealmate/pages/init_pages/splashscreen.dart';
+import 'package:mealmate/pages/navpages/home.dart';
+import 'package:mealmate/pages/searchfooditem/init_row_search.dart';
 import 'package:mealmate/searchFoodItemProvider/searchFoodItemFunctionProvider.dart';
 import 'package:mealmate/theme/themedata.dart';
 import 'package:provider/provider.dart';
@@ -47,6 +49,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return ScreenUtilInit(
       child: MultiProvider(
         providers: [
@@ -65,6 +68,11 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => PaystackPaymentProvider())
         ],
         child: MaterialApp(
+          //define routes
+          routes:{
+            '/clothings': (context) => Home()
+
+          } ,
             navigatorObservers: [
               FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
             ],

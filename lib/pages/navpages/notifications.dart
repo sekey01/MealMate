@@ -42,23 +42,38 @@ class _NoticeState extends State<Notice> {
                 itemBuilder: (context, index) {
                   final notice = snapshot.data![index];
 
-                  return ListTile(
-                    leading:CircleAvatar(
-                      radius: 20.sp,
-                      backgroundColor: Colors.deepOrangeAccent,
-                      child: Icon(Icons.notifications_active, color: Colors.white,size: 20.sp,),
-                    ),
-                    title: RichText(text: TextSpan(
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      leading:CircleAvatar(
+                        radius: 20.sp,
+                        backgroundColor: Colors.deepOrangeAccent,
+                        child: Icon(Icons.notifications_active, color: Colors.white,size: 20.sp,),
+                      ),
+                      title: RichText(text: TextSpan(
+                          children: [
+                            TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+                            TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+                            TextSpan(text: "      ${notice.time}", style: TextStyle(color: Colors.grey, fontSize: 10.sp,fontFamily: 'Poppins')),
+
+
+                          ]
+                      )),
+                      subtitle: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
-                          TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
-                          TextSpan(text: "      ${notice.time}", style: TextStyle(color: Colors.black, fontSize: 10.sp,fontFamily: 'Poppins')),
+                          Text(notice.notification, style: TextStyle(color: Colors.black, fontSize: 12.sp)),
+                          if(notice.notificationImgUrl.isNotEmpty)
+                            ClipRRect(borderRadius: BorderRadius.all(Radius.circular(10)),child: Image.network(notice.notificationImgUrl, height: 100.sp, width: 250.sp, fit: BoxFit.cover,)),
+                           SizedBox(height: 0.sp,),
+                        ],
+                      ),
+                      tileColor: Colors.grey[200],
 
-
-                        ]
-                    )),
-                    subtitle: Text(notice.notification, style: TextStyle(color: Colors.black, fontSize: 12.sp)),
-
+                    ),
                   );
                 },
               );

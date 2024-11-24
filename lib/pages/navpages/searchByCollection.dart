@@ -4,16 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:mealmate/AdminPanel/components/adminHorizontalCard.dart';
 import 'package:mealmate/components/CustomLoading.dart';
-import 'package:mealmate/components/NoFoodFound.dart';
 import 'package:mealmate/components/NoInternet.dart';
 import 'package:mealmate/components/mainCards/verticalCard.dart';
 import 'package:mealmate/pages/detail&checkout/detail.dart';
 import 'package:mealmate/pages/navpages/order.dart';
 import 'package:mealmate/pages/searchfooditem/searchFoodItem.dart';
 import 'package:provider/provider.dart';
-
 import '../../UserLocation/LocationProvider.dart';
 import '../../components/Notify.dart';
 import '../../components/userCollectionshow.dart';

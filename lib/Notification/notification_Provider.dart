@@ -1,22 +1,41 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
-
 class Notification {
+  final notificationId;
   final String notification;
   final String time;
+  final String route;
+  final String notificationImgUrl;
+
 
   Notification({
+    required this.notificationId,
     required this.notification,
-    required this.time
+    required this.time,
+    required this.route,
+    required this.notificationImgUrl,
   });
 
   // Factory method to create a Notification from a Map
   factory Notification.fromFactory(Map<String, dynamic> data) {
     return Notification(
-      notification: data['notification'] ?? '', // Ensure 'message' key matches your data source
-      time: data['time'] ?? '' ,
+      notificationId: data['notificationId'] ?? '',
+      notification: data['notification'] ?? '',
+      time: data['time'] ??'',
+      route: data['route'] ?? '',
+      notificationImgUrl: data['notificationImgUrl'] ?? '',
     );
+  }
+
+  // Method to convert a Notification to a Map
+  Map<String, dynamic> toMap() {
+    return {
+      'notificationId': notificationId,
+      'notification': notification,
+      'time': time,
+      'route': route,
+    };
   }
 }
 
@@ -27,7 +46,6 @@ class NotificationProvider extends ChangeNotifier{
 
 
   Future<List<Notification>> getUserNotifications() async {
-
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('Notifications')
@@ -43,7 +61,6 @@ class NotificationProvider extends ChangeNotifier{
       return [];
     }
   }
-
 
   Future<List<Notification>> getAdminNotifications() async {
     try {
