@@ -88,7 +88,7 @@ class IncomingOrdersProvider extends ChangeNotifier {
 
   void _startFetchingOrders(String id) async {
     int retryCount = 0;
-    const maxRetries = 3;
+    const maxRetries = 2;
     const retryDelay = Duration(seconds: 60);
 
     while (true) {
@@ -123,7 +123,7 @@ class IncomingOrdersProvider extends ChangeNotifier {
         _ordersController.add(orders);
 
         retryCount = 0;
-        await Future.delayed(Duration(seconds: 15));
+        await Future.delayed(Duration(seconds: 60));
       } catch (e) {
         if (e is SocketException || e is FirebaseException || e is FormatException) {
           retryCount++;
@@ -139,35 +139,33 @@ class IncomingOrdersProvider extends ChangeNotifier {
       }
     }
   }
+  Stream<List<OrderInfo>> fetchCompleteOrders(String id) async* {
+    const int maxRetries = 3;
+    const Duration retryDelay = Duration(seconds: 45);
 
-
-  Stream<List<OrderInfo>> fetchCompleteOrders(String id) {
-    _startFetchingCompleteOrders(id);
-    return _CompletedordersController.stream;
-  }
-
-  void _startFetchingCompleteOrders(String id) async {
     int retryCount = 0;
-    const maxRetries = 3;
-    const retryDelay = Duration(seconds: 45);
 
-    while (true) {
+    while (retryCount < maxRetries) {
       try {
+        // Check for internet connectivity
         if (!await _checkConnectivity()) {
           throw SocketException('No internet connection');
         }
 
+        // Fetch data from Firestore
         QuerySnapshot snapshot = await FirebaseFirestore.instance
             .collection('OrdersCollection')
             .where('vendorId', isEqualTo: id)
             .where('delivered', isEqualTo: true)
             .get();
 
+        // Map Firestore documents to OrderInfo objects
         List<OrderInfo> orders = snapshot.docs
             .map((doc) {
           try {
             return OrderInfo.fromMap(doc.data() as Map<String, dynamic>, doc.id);
           } catch (e) {
+            // Handle mapping errors gracefully
             return null;
           }
         })
@@ -175,25 +173,34 @@ class IncomingOrdersProvider extends ChangeNotifier {
             .cast<OrderInfo>()
             .toList();
 
-        OrderedIndex = orders.length;
-        _CompletedordersController.add(orders);
+        // Emit the orders to the stream
+        yield orders;
+
+        // Reset retry count after successful fetch
         retryCount = 0;
+
+        // Wait before fetching again (e.g., polling every 60 seconds)
         await Future.delayed(Duration(seconds: 60));
       } catch (e) {
+        // Handle specific retriable exceptions
         if (e is SocketException || e is FirebaseException || e is FormatException) {
           retryCount++;
           if (retryCount >= maxRetries) {
-            _CompletedordersController.addError('Failed to fetch orders after $maxRetries attempts');
+            // Emit an error if max retries are reached
+            yield* Stream.error('Failed to fetch orders after $maxRetries attempts: $e');
             return;
           }
           await Future.delayed(retryDelay);
         } else {
-          _CompletedordersController.addError('An unexpected error occurred: $e');
+          // Emit an error for unexpected exceptions and terminate
+          yield* Stream.error('An unexpected error occurred: $e');
           return;
         }
       }
     }
   }
+
+
 
   @override
   void dispose() {

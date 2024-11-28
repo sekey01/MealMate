@@ -5,13 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
-import 'package:mealmate/Local_Storage/Locall_Storage_Provider/storeOrderModel.dart';
-import 'package:mealmate/components/CustomLoading.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../Courier/courierInit.dart';
 import '../../Courier/courier_model.dart';
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import '../../Local_Storage/Locall_Storage_Provider/storeOrderModel.dart';
+import '../../components/CustomLoading.dart';
 import '../../components/Notify.dart';
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as gmaps;
@@ -23,7 +23,14 @@ class TrackOrder extends StatefulWidget {
   final String restaurant;
   final adminEmail;
   final adminContact;
-  const TrackOrder({super.key,required this.vendorId,required this.time, required this.restaurant, required this.adminEmail,required this.adminContact} );
+  final deliveryFee;
+  const TrackOrder({super.key,required this.vendorId,
+    required this.time,
+    required this.restaurant,
+    required this.adminEmail,
+    required this.adminContact,
+    required this.deliveryFee,
+  } );
 
   @override
   State<TrackOrder> createState() => _TrackOrderState();
@@ -33,7 +40,7 @@ class _TrackOrderState extends State<TrackOrder> {
 
   Stream<int> countdownTimer(int start) async* {
     for (int i = start; i >= 0; i--) {
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
       yield i;
     }
   }
@@ -73,7 +80,7 @@ class _TrackOrderState extends State<TrackOrder> {
         .collection('OrdersCollection')
         .where('vendorId', isEqualTo: id)
         .where('phoneNumber', isEqualTo: phoneNumber)
-        .where('time', isEqualTo: time )
+        .where('delivered', isEqualTo: false )
     ///token id is the Id given to every user when he or she signs up or logs in
     ///
         //.Where('tokenid',isEqualTo: tokenid)
@@ -97,7 +104,7 @@ class _TrackOrderState extends State<TrackOrder> {
 
 /// THIS CHANGES TOGGLES THE BOOL OF DELIVERED TO TRUE AND CHANGES THE INCOMPLETE ORDER FROM THE ADMIN TO TRUE AND ALERTS THE ADMIN THAT THE BUYER HAS RECEIVED
   /// THE FOOD OR ITEM 😊😊😊😊😊😊😊😊😊
-  Future<void> switchDelivered(BuildContext context, String id, String phoneNumber, bool isDelivered,DateTime time ) async {
+  Future<void> switchDelivered(BuildContext context, String id, String phoneNumber, ) async {
     final CollectionReference collectionRef = FirebaseFirestore.instance.collection('OrdersCollection');
 
     try {
@@ -105,7 +112,7 @@ class _TrackOrderState extends State<TrackOrder> {
       QuerySnapshot querySnapshot = await collectionRef
           .where('vendorId', isEqualTo: id)
           .where('phoneNumber', isEqualTo: phoneNumber)
-      .where('time', isEqualTo:time )
+      .where('delivered', isEqualTo:false )
           .get();
 
       // Check if any documents were found
@@ -116,7 +123,7 @@ class _TrackOrderState extends State<TrackOrder> {
 
       // Update each matching document
       for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-        await doc.reference.update({'delivered': isDelivered});
+        await doc.reference.update({'delivered': true});
       }
 
       print('isDelivered updated successfully');
@@ -136,7 +143,7 @@ class _TrackOrderState extends State<TrackOrder> {
 
 
           ]
-      )),centerTitle: true,backgroundColor: Colors.white,titleTextStyle: TextStyle(color: Colors.blueGrey, fontSize: 20, fontWeight: FontWeight.bold),),
+      )),centerTitle: true,backgroundColor: Colors.white,titleTextStyle: const TextStyle(color: Colors.blueGrey, fontSize: 20, fontWeight: FontWeight.bold),),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -156,12 +163,12 @@ class _TrackOrderState extends State<TrackOrder> {
                     .phoneNumber, widget.time),
                 builder: (context, snapshot){
               if(snapshot.connectionState == ConnectionState.waiting )
-              { return Center(child: Text('Collecting Updates...', style: TextStyle(color: Colors.deepOrangeAccent, fontWeight: FontWeight.bold, fontSize: 20),));
+              { return const Center(child: Text('Collecting Updates...', style: TextStyle(color: Colors.deepOrangeAccent, fontWeight: FontWeight.bold, fontSize: 20),));
               }
-              else if (snapshot.hasError){return Center(child: Text('Please wait while we connect you...'),);
+              else if (snapshot.hasError){return const Center(child: Text('Please wait while we connect you...'),);
               }
               else if (!snapshot.hasData ) {
-                return Center(
+                return const Center(
                   child: Text('Can not Track Order, call the restaurant ...'),
                 );
               } else {
@@ -179,8 +186,8 @@ class _TrackOrderState extends State<TrackOrder> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        ImageIcon(AssetImage('assets/Icon/cedi.png'),size: 20.sp,color: Colors.deepOrangeAccent,),
-                        Text( '${Order?.price.toString()}''0', style: TextStyle(color: Colors.black, fontSize: 15.spMin, fontWeight: FontWeight.bold)),
+                        ImageIcon(const AssetImage('assets/Icon/cedi.png'),size: 20.sp,color: Colors.deepOrangeAccent,),
+                        Text( widget.deliveryFee.toString(), style: TextStyle(color: Colors.black, fontSize: 15.spMin, fontWeight: FontWeight.bold, fontFamily: 'Righteous'),),
 
                       ],
                     ),
@@ -202,22 +209,22 @@ class _TrackOrderState extends State<TrackOrder> {
                           children: [
 
                             Text('Tap here to Call Vendor ', style:TextStyle(color: Colors.blueGrey, fontSize: 15.sp, fontFamily: 'Poppins') ,),
-                            ImageIcon(AssetImage('assets/Icon/customer-service.png'),size: 25.sp,color: Colors.green,)
+                            ImageIcon(const AssetImage('assets/Icon/customer-service.png'),size: 25.sp,color: Colors.green,)
                           ],
                         ),
                       ),
                     ),
                   ),
-            Text('Order In progress...', style: TextStyle(color: Colors.blueGrey, fontSize: 25, fontWeight: FontWeight.bold,fontFamily: 'Righteous'),),
+            const Text('Order In progress...', style: TextStyle(color: Colors.blueGrey, fontSize: 25, fontWeight: FontWeight.bold,fontFamily: 'Righteous'),),
 
-                  ///TIMER
-                  Padding(padding: EdgeInsets.all(16), child: CustomLoGoLoading(),),
+                  ///LOADER
+                  const Padding(padding: EdgeInsets.all(16), child: CustomLoGoLoading(),),
 
                   StreamBuilder<int>(
                     stream: countdownTimer(90), // Countdown from 60 seconds
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Text(
+                        return const Text(
                           'Starting...',
                           style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
                         );
@@ -237,10 +244,10 @@ class _TrackOrderState extends State<TrackOrder> {
                       } else if (snapshot.hasError) {
                         return Text(
                           'Error: ${snapshot.error}',
-                          style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
                         );
                       } else {
-                        return Text(
+                        return const Text(
                           'Done!',
                           style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
                         );
@@ -248,17 +255,17 @@ class _TrackOrderState extends State<TrackOrder> {
                     },
                   ),
                   /// ORDER RECEIVED
-                  Padding(padding: EdgeInsets.all(8),
+                  const Padding(padding: EdgeInsets.all(8),
                   child: ImageIcon(AssetImage(('assets/Icon/orderReceived.png'),), size: 80,color: Colors.green,),
                   ),
                   Text('Order Sent', style: TextStyle(color: Colors.green, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
              SizedBox(height: 10.h,),
-                  Icon(Icons.arrow_downward, color: Colors.green,),
+                  const Icon(Icons.arrow_downward, color: Colors.green,),
                   //SizedBox(height: 10.h,),
 
                   ///ORDER SERVED
-                  Padding(padding: EdgeInsets.all(8),
-                    child: ImageIcon(AssetImage(('assets/Icon/orderServed.png'),), size: Order!.served?80:30,color:Order.served?Colors.green: Colors.grey,),
+                  Padding(padding: const EdgeInsets.all(8),
+                    child: ImageIcon(const AssetImage(('assets/Icon/orderServed.png'),), size: Order!.served?80:30,color:Order.served?Colors.green: Colors.grey,),
                   ),
                   Text('Order Served', style: TextStyle(color: Order.served?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
                   SizedBox(height: 10.h,),
@@ -266,33 +273,66 @@ class _TrackOrderState extends State<TrackOrder> {
                  // SizedBox(height: 10.h,),
 
                  /// ORDER GIVEN TO COURIER
-                  Padding(padding: EdgeInsets.all(8),
+                  Padding(padding: const EdgeInsets.all(8),
                     child: Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            ImageIcon(AssetImage(('assets/Icon/courier.png'),), size: 30,color:Order.courier?Colors.green: Colors.grey,),
+                            ImageIcon(const AssetImage(('assets/Icon/courier.png'),), size: 30,color:Order.courier?Colors.green: Colors.grey,),
                             Order.courier ? TextButton(onPressed: (){
 
 
-                            }, child: Image(image: AssetImage('assets/Icon/map.png',))): TextButton(onPressed: (){
+                            }, child: const Image(image: AssetImage('assets/Icon/map.png',))): TextButton(onPressed: (){
                               Notify(context, "Waiting to track Courier", Colors.red);
-                            }, child: Text('Track Courier', style: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold),)),
+                            }, child: const Text('Track Courier', style: TextStyle(color: Colors.grey,fontWeight: FontWeight.bold),)),
                           ],
                         ),
-                        Text('Courier details will be displayed soon ...', style: TextStyle(color: Colors.grey,fontSize: 10,fontFamily: 'Poppins'),),
+                        const Text('Courier details will be displayed soon ...', style: TextStyle(color: Colors.grey,fontSize: 10,fontFamily: 'Poppins'),),
                       ],
                     ),
                   ),
-                  Text(' Courier will get to your location soon...', style: TextStyle(color: Order.courier?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
+                  !Order.courier?Text(' Courier will get to your location soon...', style: TextStyle(color: Order.courier?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),):
+                  FutureBuilder(future: getCourierDetails(context, Order.CourierId.toString()),
+                      builder: (context, snapshot){
+                        if(snapshot.connectionState == ConnectionState.waiting){
+                          return const Text('Loading Courier Details...', style: TextStyle(color: Colors.grey,fontSize: 10,fontFamily: 'Poppins'),);
+                        } else if (snapshot.hasError){
+                          return const Text('Error Loading Courier Details...', style: TextStyle(color: Colors.red,fontSize: 10,fontFamily: 'Poppins'),);
+                        } else if (!snapshot.hasData){
+                          return const Text('Courier Will Call you soon...', style: TextStyle(color: Colors.red,fontSize: 10,fontFamily: 'Poppins'),);
+                        } else {
+                          final courier = snapshot.data as CourierModel;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(courier.CourierPictureUrl),
+                                  onBackgroundImageError: (exception, stackTrace) {
+                                     const CircleAvatar(
+                                      backgroundImage: AssetImage('assets/Icon/courier.png'),
+                                    );
+                                  },
+                                ),
+                                title: Text('Name: ${courier.CourierName}', style: const TextStyle(color: Colors.black, fontSize: 10, fontWeight: FontWeight.bold),),
+                                subtitle: Text('No: ${courier.CourierVehicleNumber}', style: const TextStyle(color: Colors.black, fontSize: 10, fontWeight: FontWeight.bold),),
+                                trailing: TextButton(onPressed: () async{
+                                  EasyLauncher.call(number: courier.CourierContact.toString());
+                                }, child: const Text('Call Now', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),)),
+                              )
+                            ],
+                          );
+                        }
+                      }),
                   SizedBox(height: 10.h,),
                   Icon(Icons.arrow_downward, color: Order.courier?Colors.green: Colors.grey,),
                   //SizedBox(height: 10.h,),
 
                   /// ORDER COMPLETE
-                  Padding(padding: EdgeInsets.all(8),
-                    child: ImageIcon(AssetImage(('assets/Icon/orderComplete.png'),), size: Order.delivered?80:30,color: Order.delivered?Colors.green: Colors.grey,),
+                  Padding(padding: const EdgeInsets.all(8),
+                    child: ImageIcon(const AssetImage(('assets/Icon/orderComplete.png'),), size: Order.delivered?80:30,color: Order.delivered?Colors.green: Colors.grey,),
                   ),
                   Text(' Order Delivered ', style: TextStyle(color: Order.delivered?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
                   SizedBox(height: 20.h,),
@@ -306,38 +346,38 @@ class _TrackOrderState extends State<TrackOrder> {
                   if(
                   Order.courier && Order.served
                   ){
-                    switchDelivered(context, widget.vendorId,Provider.of<LocalStorageProvider>(context, listen: false)
-                        .phoneNumber,true,widget.time);
-                    Alert(
-                      context: context,
-                      style: AlertStyle(
-                        backgroundColor: Colors.deepOrangeAccent,
-                        alertPadding: EdgeInsets.all(88),
-                        isButtonVisible: true,
-                        descStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 15.sp,
+                    switchDelivered(context, widget.vendorId,Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber,).then((value) {
+
+                      Alert(
+                        context: context,
+                        style: AlertStyle(
+                          backgroundColor: Colors.deepOrangeAccent,
+                          alertPadding: const EdgeInsets.all(88),
+                          isButtonVisible: true,
+                          descStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 15.sp,
+                          ),
                         ),
-                      ),
-                      desc: "Do you want to store order ? ",
-                      buttons: [
-                        DialogButton(
-                          child: Text('Yes', style: TextStyle(color: Colors.deepOrangeAccent,fontWeight: FontWeight.bold),),
-                          onPressed: () {
-                            // print(DateTime.timestamp());
-                            Provider.of<LocalStorageProvider>(context,listen: false).addOrder( StoreOrderLocally(id:widget.restaurant , item: Order.foodName, price: Order.price,time: DateTime.timestamp().toString()));
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                            Navigator.pop(context);
+                        desc: "Do you want to store order ? ",
+                        buttons: [
+                          DialogButton(
+                            onPressed: () {
+                              Provider.of<LocalStorageProvider>(context,listen: false).addOrder( StoreOrderLocally(id:widget.restaurant , item: Order.foodName, price: Order.price,time: DateTime.timestamp().toString()));
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
 
 
-                            // print('DATA STORED');
-                          },
-                          width: 100.w,
-                        ),
-                      ],
-                    ).show();
+                              // print('DATA STORED');
+                            },
+                            width: 100.w,
+                            child: const Text('Yes', style: TextStyle(color: Colors.deepOrangeAccent,fontWeight: FontWeight.bold),),
+                          ),
+                        ],
+                      ).show();
+                    });
                     Notify(context, 'Thanks for Using MealMate 😊', Colors.green);
 
 
@@ -348,7 +388,7 @@ class _TrackOrderState extends State<TrackOrder> {
 
 
 
-                }, child: Text('Order Received', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,letterSpacing: 1,fontFamily: 'Righteous'),))),
+                }, child: const Text('Order Received', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,letterSpacing: 1,fontFamily: 'Righteous'),))),
 
 
             SizedBox(height: 30.h,)

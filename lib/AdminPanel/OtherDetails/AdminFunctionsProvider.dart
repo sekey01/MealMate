@@ -76,7 +76,7 @@ class AdminFunctions extends ChangeNotifier {
 
   /// THIS FUNCTION SWITCH THE SERVED TO TRUE
 
-  Future<void> switchServedFood(BuildContext context, String id, String phoneNumber, bool isServed, DateTime time) async {
+  Future<void> switchServedFood(BuildContext context, String id, String phoneNumber, bool isServed) async {
     final CollectionReference collectionRef = FirebaseFirestore.instance.collection('OrdersCollection');
 
     try {
@@ -84,7 +84,7 @@ class AdminFunctions extends ChangeNotifier {
       QuerySnapshot querySnapshot = await collectionRef
           .where('vendorId', isEqualTo: id)
           .where('phoneNumber', isEqualTo: phoneNumber)
-           .where('time', isEqualTo: time)
+          .where('delivered',isEqualTo: false)
           .get();
 
       // Check if any documents were found
@@ -105,7 +105,7 @@ class AdminFunctions extends ChangeNotifier {
     }
   }
 
-  Future<void> UpdateCourier(BuildContext context, String id, String phoneNumber, int CourierId, DateTime time) async {
+  Future<void> UpdateCourier(BuildContext context, String id, String phoneNumber, int CourierId,) async {
     final CollectionReference collectionRef = FirebaseFirestore.instance.collection('OrdersCollection');
 
     try {
@@ -113,7 +113,7 @@ class AdminFunctions extends ChangeNotifier {
       QuerySnapshot querySnapshot = await collectionRef
           .where('vendorId', isEqualTo: id)
           .where('phoneNumber', isEqualTo: phoneNumber)
-          .where('time', isEqualTo: time)
+          .where('delivered', isEqualTo: false)
           .get();
 
       // Check if any documents were found
@@ -143,7 +143,7 @@ class AdminFunctions extends ChangeNotifier {
       QuerySnapshot querySnapshot = await collectionRef
           .where('vendorId', isEqualTo: id)
           .where('phoneNumber', isEqualTo: phoneNumber)
-          .where('time', isEqualTo: time)
+          .where('delivered',isEqualTo: false)
           .get();
 
       // Check if any documents were found

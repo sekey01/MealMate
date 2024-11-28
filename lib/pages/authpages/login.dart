@@ -1,3 +1,4 @@
+import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -118,7 +119,7 @@ class _LoginState extends State<Login> {
                       RichText(text: TextSpan(
                           children: [
                             TextSpan(text: "Wel", style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
-                            TextSpan(text: "come !", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+                            TextSpan(text: "Come !", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
 
 
                           ]
@@ -127,7 +128,7 @@ class _LoginState extends State<Login> {
                         height: 20.h,
                       ),
                       Text(
-                        'Discover new amazing recipies',
+                        'Building the Ecosystem',
                         style: TextStyle(
                             fontSize: 15.sp, color: Colors.black),
                       ),
@@ -147,7 +148,7 @@ class _LoginState extends State<Login> {
                         height: 50.h,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.deepOrange.shade50,),
+                              backgroundColor: Colors.black,),
     onPressed: ()  {
 
 
@@ -159,17 +160,62 @@ class _LoginState extends State<Login> {
                               Text(
                                 "Continue with Google ",
                                 style: TextStyle(
-                                  letterSpacing: 2,
-                                  color: Colors.black,
+                                  fontFamily: 'Poppins',
+                                  letterSpacing: 1,
+                                  color: Colors.white,
 
                                   fontSize: 15.spMin,
                                 ),
                               ),
+
  Image(image: AssetImage('assets/Icon/google.png'),height: 50.sp,width: 40.spMin,)
                               //ImageIcon(AssetImage('assets/Icon/google.png'), size: 30.sp,color: Colors.blue,)
 
                             ],
                           ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap:() async{
+                           EasyLauncher.url(url: 'www.google.com',mode: Mode.inAppBrowser);
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              " By Continuing you agree to the ",
+                              style: TextStyle(
+                                  color: Colors.black, fontStyle: FontStyle.italic, fontSize: 10.sp),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: ((context) => AdminsplashScreen())));
+                              },
+                              child: Text(
+                                'Terms  & ',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.deepOrangeAccent,
+                                ),
+
+                              ),
+                            ),
+
+                            Text(
+                              'Conditions ',
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.deepOrangeAccent,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(
@@ -179,9 +225,9 @@ class _LoginState extends State<Login> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            " Are you an  ",
+                            " Login as  ",
                             style: TextStyle(
-                                color: Colors.black, fontStyle: FontStyle.italic, fontSize: 10.sp),
+                                color: Colors.black, fontSize: 10.sp),
                           ),
                           GestureDetector(
                             onTap: () {

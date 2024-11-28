@@ -10,24 +10,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
-import 'package:mealmate/UserLocation/LocationProvider.dart';
-import 'package:mealmate/components/CustomLoading.dart';
-import 'package:mealmate/components/NoFoodFound.dart';
-import 'package:mealmate/components/mainCards/custom_carousel.dart';
 import 'package:mealmate/pages/detail&checkout/payment_unsuccessful.dart';
-import 'package:mealmate/pages/searchfooditem/searchFoodItem.dart';
-import 'package:mealmate/theme/styles.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../AdminPanel/OtherDetails/incomingOrderProvider.dart';
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../PaymentProvider/paystack_payment.dart';
+import '../../UserLocation/LocationProvider.dart';
+import '../../components/CustomLoading.dart';
+import '../../components/NoFoodFound.dart';
 import '../../components/Notify.dart';
+import '../../components/mainCards/custom_carousel.dart';
 import '../../components/mainCards/verticalCard.dart';
 import '../../models&ReadCollectionModel/ListFoodItemModel.dart';
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
 import '../../models&ReadCollectionModel/cartmodel.dart';
 import '../../models&ReadCollectionModel/sendOrderFunctionProvider.dart';
+import '../../theme/styles.dart';
+import '../searchfooditem/searchFoodItem.dart';
 import 'orderSent.dart';
 
 class DetailedCard extends StatefulWidget {
@@ -102,9 +102,9 @@ class _DetailedCardState extends State<DetailedCard> {
 
 
   //CUSTOM ICON FOR VENDOR LOCATION
-   late final customMapIcon;
+  late BitmapDescriptor customMapIcon;
   Future<BitmapDescriptor> _loadCustomIcon(BuildContext context) async {
-    final ImageConfiguration configuration = createLocalImageConfiguration(context, size: Size(40, 40));
+    final ImageConfiguration configuration = createLocalImageConfiguration(context, size: const Size(40, 40));
     setState(() async {
       customMapIcon =  await BitmapDescriptor.asset(configuration, 'assets/Icon/VendorLocation.png');
     });
@@ -223,7 +223,7 @@ bool checkOutInitiated = false;
                         child: Center(
                           child: IconButton(onPressed: (){
                             Navigator.pop(context);
-                          }, icon: Icon(Icons.arrow_back_outlined, color: Colors.black,)),
+                          }, icon: const Icon(Icons.arrow_back_outlined, color: Colors.black,)),
                         ))),
                 ///SEARCH ICON
                 Positioned(
@@ -243,11 +243,11 @@ bool checkOutInitiated = false;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => SearchFoodItem(),
+                                  builder: (context) => const SearchFoodItem(),
                                 ),
                               );
                             },
-                            icon: ImageIcon(
+                            icon: const ImageIcon(
                               AssetImage('assets/Icon/Search.png'),
                               color: Colors.black,
                             ),
@@ -271,11 +271,11 @@ bool checkOutInitiated = false;
                       label: Consumer<CartModel>(
                           builder: (context, value, child) => Text(
                             value.cart.length.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           )),
-                      child: ImageIcon(
+                      child: const ImageIcon(
                         AssetImage('assets/Icon/favourite.png'),
                         size: 20,
                         color: Colors.blueGrey,
@@ -308,7 +308,7 @@ bool checkOutInitiated = false;
 
                             },
                             icon: Image(
-                              image: AssetImage('assets/Icon/gmail.png'),
+                              image: const AssetImage('assets/Icon/gmail.png'),
                               height: 30.h,
                               width: 30.w,
                             ),
@@ -330,7 +330,7 @@ bool checkOutInitiated = false;
                         scrollDirection: Axis.horizontal,
                         child: Row(mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                           ImageIcon(AssetImage('assets/Icon/discount.png'), color: Colors.red, size: 20.sp,),
+                           ImageIcon(const AssetImage('assets/Icon/discount.png'), color: Colors.red, size: 20.sp,),
                             RichText(text: TextSpan(
                             children: [
                               TextSpan(text: " - ${(widget.price*0.1).toStringAsFixed(2)}%", style: TextStyle( fontFamily: 'Righteous',color: Colors.red, fontSize:12.sp,fontWeight: FontWeight.bold)),
@@ -407,7 +407,7 @@ bool checkOutInitiated = false;
                     ),
 
                    // SizedBox(height: 10.h),
-                    Divider(
+                    const Divider(
                       color: Colors.grey,
                       thickness: 1,
 
@@ -437,7 +437,7 @@ bool checkOutInitiated = false;
 
                                 children: [
                                   ImageIcon(
-                                    AssetImage('assets/Icon/delivery.png'),
+                                    const AssetImage('assets/Icon/delivery.png'),
                                     color: Colors.black,
                                     size: 30.sp,
                                   ),
@@ -445,7 +445,7 @@ bool checkOutInitiated = false;
                                 ],
                               ),
                               ImageIcon(
-                                AssetImage('assets/Icon/cedi.png'),
+                                const AssetImage('assets/Icon/cedi.png'),
                                 color: Colors.red,
                                 size: 15.sp,
                               ),
@@ -501,7 +501,7 @@ bool checkOutInitiated = false;
 
                                 children: [
                                   ImageIcon(
-                                    AssetImage('assets/Icon/food.png'),
+                                    const AssetImage('assets/Icon/food.png'),
                                     color: Colors.black,
                                     size: 25.sp,
                                   ),
@@ -510,7 +510,7 @@ bool checkOutInitiated = false;
                               ),
 
                               ImageIcon(
-                                AssetImage('assets/Icon/cedi.png'),
+                                const AssetImage('assets/Icon/cedi.png'),
                                 color: Colors.red,
                                 size: 15.sp,
                               ),
@@ -548,7 +548,7 @@ bool checkOutInitiated = false;
                         children: [
                           SizedBox(width: 10.sp,),
 
-                          ImageIcon(AssetImage('assets/Icon/restaurant.png'), color: Colors.black, size: 20.sp,),
+                          ImageIcon(const AssetImage('assets/Icon/restaurant.png'), color: Colors.black, size: 20.sp,),
 
                           SizedBox(width: 10.sp,),
                           Text(
@@ -589,7 +589,7 @@ bool checkOutInitiated = false;
 
 
 
-                           ImageIcon(AssetImage('assets/Icon/VendorLocation.png'), color: Colors.black, size: 25.sp,),
+                           ImageIcon(const AssetImage('assets/Icon/VendorLocation.png'), color: Colors.black, size: 25.sp,),
 
                             SizedBox(width: 10.h),
                             Column(
@@ -642,7 +642,7 @@ bool checkOutInitiated = false;
 
                     /// SIMILAR PRODUCTS BY THIS VENDOR
                     /// SIMILAR PRODUCTS BY THIS VENDOR
-                    Padding(padding: EdgeInsets.only(left: 5, right: 5,top: 15),
+                    Padding(padding: const EdgeInsets.only(left: 5, right: 5,top: 15),
                       child: Text('Similar Products by this Vendor', style: TextStyle(
                           fontSize: 15.sp,
                           color: Colors.black,
@@ -652,7 +652,7 @@ bool checkOutInitiated = false;
                      // color: Colors.white,
                       width: double.infinity,
                       height: 170.h,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                       ),
                       child: FutureBuilder<List<FoodItem>>(
@@ -663,8 +663,8 @@ bool checkOutInitiated = false;
                             return ListView.builder(
                               itemCount: 5,
                               itemBuilder: (context, index) {
-                                return Padding(
-                                    padding: const EdgeInsets.all(4.0),
+                                return const Padding(
+                                    padding: EdgeInsets.all(4.0),
                                     child: NewSearchLoadingOutLook());
                               },
                               scrollDirection: Axis.horizontal,
@@ -720,7 +720,7 @@ bool checkOutInitiated = false;
                                                       adminContact: foodItem.adminContact,
                                                       maxDistance: foodItem.maxDistance,
                                                       vendorAccount: foodItem.vendorAccount,
-                                                    ))):Notify(context, 'This item is not Available now', Colors.red);
+                                                    ))):Notify(context, 'UnAvailable now', Colors.red);
                                       },
                                       child: NewVerticalCard(foodItem.ProductImageUrl, foodItem.restaurant, foodItem.foodName,
                                           foodItem.price, foodItem.location, foodItem.time, foodItem.vendorId,
@@ -739,14 +739,14 @@ bool checkOutInitiated = false;
                     /// CALL BUTTON, SMS MESSAGE FUNCTIONALITY, WHATSAPP FUNCTIONALITY
                     Column(
                       children: [
-                        Padding(padding: EdgeInsets.only(left: 5, right: 5,top: 15),
+                        Padding(padding: const EdgeInsets.only(left: 5, right: 5,top: 15),
                           child: Text('Take Note: ', style: TextStyle(
                               fontSize: 15.sp,
                               color: Colors.black,
                               fontWeight: FontWeight.bold
                           ),),),
                         ///TEXT TO ALERT USER TO CALL VENDOR IF ANY ALLERGIES
-                        Padding(padding: EdgeInsets.only(left: 5, right: 5),
+                        Padding(padding: const EdgeInsets.only(left: 5, right: 5),
                           child: Text(' Do you have any allergies ? '
                               'Or would you like to give specification to what you\'re Ordering ?...\n'
                               'Please call us now Or Leave a message in the Comment box.',
@@ -772,7 +772,7 @@ bool checkOutInitiated = false;
                               },
                               child: Column(
                                 children: [
-                                  Image(image: AssetImage('assets/Icon/whatsapp.png'), height: 30.h, width: 30.w,),
+                                  Image(image: const AssetImage('assets/Icon/whatsapp.png'), height: 30.h, width: 30.w,),
                                   Text('Whatsapp', style: TextStyle(color: Colors.black, fontSize: 10.sp, fontWeight: FontWeight.bold),),
                                 ],
                               ),
@@ -810,7 +810,7 @@ bool checkOutInitiated = false;
                               },
                               child: Column(
                                 children: [
-                                  Image(image: AssetImage('assets/Icon/sms.png'), height: 30.h, width: 30.w,),
+                                  Image(image: const AssetImage('assets/Icon/sms.png'), height: 30.h, width: 30.w,),
                                   Text('SMS', style: TextStyle(color: Colors.black, fontSize: 10.sp, fontWeight: FontWeight.bold),),
                                 ],
                               ),
@@ -835,7 +835,7 @@ bool checkOutInitiated = false;
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ImageIcon(
-                              AssetImage('assets/Icon/clock.png'),
+                              const AssetImage('assets/Icon/clock.png'),
                               color: Colors.redAccent,
                               size: 30.sp,
                             ),
@@ -849,7 +849,7 @@ bool checkOutInitiated = false;
 
                                 ]
                             )),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                           ],
                         ),
                         SizedBox(width: 15.w),
@@ -864,7 +864,7 @@ bool checkOutInitiated = false;
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ImageIcon(
-                                AssetImage('assets/Icon/call.png'), size: 26.sp,color: Colors.red,
+                                const AssetImage('assets/Icon/call.png'), size: 26.sp,color: Colors.red,
                               ),
                               SizedBox(width: 10.w),
                               RichText(text: TextSpan(
@@ -888,15 +888,15 @@ bool checkOutInitiated = false;
                     ///
                     Row(mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Total: GH',style: TextStyle(color: Colors.black,fontFamily: 'Popins',fontWeight: FontWeight.bold,fontSize: 20),),
-                        ImageIcon(AssetImage('assets/Icon/cedi.png'),
+                        const Text('Total: GH',style: TextStyle(color: Colors.black,fontFamily: 'Popins',fontWeight: FontWeight.bold,fontSize: 20),),
+                        ImageIcon(const AssetImage('assets/Icon/cedi.png'),
                   color: Colors.black,
                   size: 20.sp,
                 ),
 
                         Consumer<CartModel>(
                           builder: (context, CartModel, child) {
-                            overAllPrice = CartModel.getQuantity * widget.price + deliveryFee;
+                            overAllPrice = CartModel.getQuantity * widget.price;
                             return Text(
                                overAllPrice.toStringAsFixed(2),
                               style: TextStyle(
@@ -910,7 +910,7 @@ bool checkOutInitiated = false;
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ///ADD TO FAVOURITE BUTTON
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -945,7 +945,7 @@ bool checkOutInitiated = false;
 
                               Alert(
                                 context: context,
-                                style: AlertStyle(
+                                style: const AlertStyle(
                                   backgroundColor: Colors.transparent,
                                   alertPadding: EdgeInsets.all(88),
                                   isButtonVisible: true,
@@ -957,7 +957,7 @@ bool checkOutInitiated = false;
                                 desc: "Food added to Favourites",
                                 buttons: [
                                   DialogButton(
-                                    child: CardLoading(
+                                    child: const CardLoading(
                                       height: 25,
                                       child: Text(
                                         '  Okay  ',
@@ -971,7 +971,7 @@ bool checkOutInitiated = false;
                                 ],
                               ).show();
                             },
-                            child: Text(
+                            child: const Text(
                               'Add to Favourite',
                               style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
                             ),
@@ -982,13 +982,13 @@ bool checkOutInitiated = false;
                     SizedBox(height: 20.h),
                     Consumer<CartModel>(
                       builder: (context, value, child) => Container(
-                        margin: EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(10),
                        // height: 700.h,
                         width: double.infinity,
                         child: Center(
                           child: Column(
                             children: [
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
 
                               ///INCREMENT AND DECREEMENT BUTTONS
                               ///
@@ -1060,14 +1060,14 @@ bool checkOutInitiated = false;
     future: _loadCustomIcon(context),
     builder: (context, snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
-    return Center(child: CircularProgressIndicator());
+    return const Center(child: CircularProgressIndicator());
     } else if (snapshot.hasError) {
-    return Center(child: Text('Error loading icon'));
+    return const Center(child: Text('Error loading icon'));
     }
 else if (snapshot.hasData) {
       customMapIcon = snapshot.data!;
     }
-    return Text('...', style: TextStyle(
+    return const Text('...', style: TextStyle(
     color: Colors.black,
     ),);
     }),
@@ -1117,7 +1117,7 @@ else if (snapshot.hasData) {
                                                   markers: {
                                                     ///MARKER FOR VEENDOR LOCATION ON THE MAP
                                                     Marker(
-                                                        markerId: MarkerId('Vendor'),
+                                                        markerId: const MarkerId('Vendor'),
                                                         visible: true,
                                                         icon: customMapIcon,
                                                         infoWindow: InfoWindow(
@@ -1129,7 +1129,7 @@ else if (snapshot.hasData) {
                                                             widget.longitude)),
                                                     ///MARKER FOR USER LOCATION ON THE MAP
                                                     Marker(
-                                                        markerId: MarkerId('User'),
+                                                        markerId: const MarkerId('User'),
                                                         visible: true,
                                                         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue.sp),
                                                         infoWindow: InfoWindow(
@@ -1142,7 +1142,7 @@ else if (snapshot.hasData) {
                                                   circles: Set(),
                                                   polylines:  Set<Polyline>.of(<Polyline>{
                                                     Polyline(
-                                                      polylineId: PolylineId('polyline_id'),
+                                                      polylineId: const PolylineId('polyline_id'),
                                                       points: _routes,
                                                       color: Colors.red,
                                                       // Set your desired color
@@ -1150,7 +1150,7 @@ else if (snapshot.hasData) {
                                                     ),
                                                   }),
                                                   mapToolbarEnabled: true,
-                                                  padding: EdgeInsets.all(12),
+                                                  padding: const EdgeInsets.all(12),
                                                   scrollGesturesEnabled: true,
                                                   zoomControlsEnabled: true,
                                                   myLocationEnabled: true,
@@ -1179,7 +1179,7 @@ else if (snapshot.hasData) {
                                                   ),
                                                 );
                                               }
-                                              return Center(child: CustomLoGoLoading());
+                                              return const Center(child: CustomLoGoLoading());
                                             }),
                                       ),
 
@@ -1208,7 +1208,7 @@ else if (snapshot.hasData) {
                               ///
                               ///
                               ///
-                              Padding(padding: EdgeInsets.all(8),
+                              Padding(padding: const EdgeInsets.all(8),
                                 child: Text(' Make sure your number below is correct and Active '
                                     'Vendor can call you to confirm your order... ',
                                   textAlign: TextAlign.center,
@@ -1224,9 +1224,9 @@ else if (snapshot.hasData) {
                                 child: TextField(
                                   maxLines: 3,
                                   enableSuggestions: true,
-                                  scrollPadding: EdgeInsets.all(8),
-                                  scrollPhysics: BouncingScrollPhysics(),
-                                  style: TextStyle(color: Colors.black),
+                                  scrollPadding: const EdgeInsets.all(8),
+                                  scrollPhysics: const BouncingScrollPhysics(),
+                                  style: const TextStyle(color: Colors.black),
                                   decoration: InputDecoration(
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
@@ -1240,20 +1240,22 @@ else if (snapshot.hasData) {
                                         style: BorderStyle.solid,
                                       ),
                                     ),
-                                    label: Text('Leave a message for Vendor/Courier ...'),
+                                    label: const Text('Leave a message for Vendor/Courier ... \n - Landmark\n - Delivery Instructions\n - etc',),
                                     labelStyle: TextStyle(
                                       color: Colors.blueGrey,
                                       fontSize: 12.sp,
                                     ),
                                     filled: true,
                                     fillColor: Colors.grey.shade100,
-                                    hintText: ' - Leave a message for Us  or other details here...\n - Landmark\n - Delivery Instructions\n - etc',
+                                    hintText: ' - Leave a message for Us  or other details here...\n - Landmark\n - Delivery Instructions\n - etc'
+                                               '\n - Make sure your number is correct and active',
                                     hintStyle: TextStyle(
-                                      color: Colors.blueGrey.shade200,
+
+                                      color: Colors.blueGrey.shade300,
                                       fontSize: 11.sp,
                                     ),
 
-                                    border: OutlineInputBorder(
+                                    border: const OutlineInputBorder(
                                       borderSide: BorderSide( color: Colors.black, style: BorderStyle.solid),
                                     ),
                                   ),
@@ -1269,13 +1271,20 @@ else if (snapshot.hasData) {
       ),
                              Padding(
                                padding: const EdgeInsets.all(8.0),
-                               child: Text(!widget.hasCourier?'make sure paymen is done within 30 seconds after swipe': 'Pay to the Courier when he arrives',
-                                 style: TextStyle(color: Colors.red, fontSize: 15.sp, fontWeight: FontWeight.bold, fontFamily: 'Righteous'),),
+                               child: Text(!widget.hasCourier?'make sure payment is done within 45 seconds after swipe': 'Pay Delivery Fee GHS ${deliveryFee.toStringAsFixed(2)} the Courier when he arrives',
+                                 textAlign: TextAlign.center,
+                                 style: TextStyle(color: Colors.red, fontSize: 12.spMin, fontWeight: FontWeight.bold, fontFamily: 'Poppins'),),
                              ),
 
-                              Padding(padding: EdgeInsets.all(8),
+                              /// SINCE VENDDOR HAS NO COURIER ,
+                              /// THEN FOOD/PRODUCT PRICE IS SENT TO MEALMATE(which will be sent to the vendor by mealmate later...)
+                              /// AND THE DELIVERY FEE IS GIVEN TO THE COURIER WHEN HE ARRIVES
+
+                              Padding(padding: const EdgeInsets.all(8),
                                 child: !widget.hasCourier?LiteRollingSwitch(
-                                  //initial value
+                                  /// SINCE VENDDOR HAS NO COURIER ,
+                                  /// THEN FOOD/PRODUCT PRICE IS SENT TO MEALMATE(which will be sent to the vendor by mealmate later...)
+                                  /// AND THE DELIVERY FEE IS GIVEN TO THE COURIER WHEN HE ARRIVES
                                   value: checkOutInitiated,
                                   width: 220.sp,
                                   textOn: 'CheckOut',
@@ -1295,17 +1304,17 @@ else if (snapshot.hasData) {
                                     ///Get the Time
                                     DateTime time = DateTime.now();
 
-                                    if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
+                                    if (Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isNotEmpty && Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isNotEmpty)
                                     {
 
                                       Alert(context: context,
-                                        style: AlertStyle(
+                                        style: const AlertStyle(
                                           backgroundColor: Colors.white,
                                         ),
                                         content: WaitingPayment(),
                                       ).show();
-                                      final paymentProvider = Provider.of<PaystackPaymentProvider>(context, listen: false).
-                                      startPayment(context, widget.vendorAccount, overAllPrice.toInt()).then((result){
+                                       Provider.of<PaystackPaymentProvider>(context, listen: false).
+                                      startPayment(context,  overAllPrice.toInt(), widget.vendorid).then((result){
                                         if(result.success){
                                           Provider.of<SendOrderProvider>(context, listen: false).sendOrder(OrderInfo(
                                             time: time,
@@ -1339,13 +1348,14 @@ else if (snapshot.hasData) {
                                             CourierName: '',
                                             VendorAccount: widget.paymentKey,
                                           )).then((_){
-                                            ///END EMAIL TO ALERT VENDOR FUNCTION
+                                            ///END EMAIL TO ALERT VENDOR FUNCTION OF NEW ORDER
+                                            ///SEND EMAIL TO VENDOR
                                             Provider.of<IncomingOrdersProvider>(context, listen: false).sendEmail(widget.adminEmail, widget.foodName);
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) => OrderSent(
-
+                                                  deliveryFee: deliveryFee,
                                                     vendorId: widget.vendorid,
                                                     time: time,
                                                     restaurant: widget.restaurant,
@@ -1357,7 +1367,7 @@ else if (snapshot.hasData) {
                                         }
                                         else{
                                           Notify(context, 'Payment Failed', Colors.red);
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> PaymentUnsuccessful()));
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> const PaymentUnsuccessful()));
                                         }
 
                                       });
@@ -1376,7 +1386,7 @@ else if (snapshot.hasData) {
                                   onDoubleTap: () {},
                                   onSwipe: ()   {
                                     Alert(context: context,
-                                      style: AlertStyle(
+                                      style: const AlertStyle(
                                         backgroundColor: Colors.white,
                                       ),
                                       content: WaitingPayment(),
@@ -1386,10 +1396,10 @@ else if (snapshot.hasData) {
                                     DateTime time = DateTime.now();
                                     checkOutInitiated = false;
 
-                                    if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
+                                    if (Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isNotEmpty && Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isNotEmpty)
                                     {
-                                      final paymentProvider = Provider.of<PaystackPaymentProvider>(context, listen: false).
-                                      startPayment(context, widget.vendorAccount, overAllPrice.toInt()).then((result){
+                                       Provider.of<PaystackPaymentProvider>(context, listen: false).
+                                      startPayment(context,overAllPrice.toInt(),widget.vendorid).then((result){
                                         if(result.success){
                                           Provider.of<SendOrderProvider>(context, listen: false).sendOrder(OrderInfo(
                                             time: time,
@@ -1429,8 +1439,8 @@ else if (snapshot.hasData) {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) => OrderSent(
+                                                    deliveryFee: deliveryFee,
                                                     vendorId: widget.vendorid,
-
                                                     time: time,
                                                     restaurant: widget.restaurant,
                                                     adminEmail: widget.adminEmail,
@@ -1441,7 +1451,7 @@ else if (snapshot.hasData) {
                                         }
                                         else{
                                           Notify(context, 'Payment Failed', Colors.red);
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> PaymentUnsuccessful()));
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> const PaymentUnsuccessful()));
                                         }
 
                                       });
@@ -1457,7 +1467,11 @@ else if (snapshot.hasData) {
                                       checkOutInitiated = false;
                                     }
                                   },
-                                ):LiteRollingSwitch(
+                                ):
+                                ///SINCE VENDOR HAS COURIER
+                                ///THEN FOOD/PRODUCT PRICE + DELIVERY FEE IS GIVEN TO THE COURIER WHEN HE ARRIVES
+                                ///
+                                LiteRollingSwitch(
                                   //initial value
                                   value: checkOutInitiated,
                                   width: 250.sp,
@@ -1474,10 +1488,10 @@ else if (snapshot.hasData) {
 
                                   },
                                   onTap: ()  {
-                                    ///Get the Time
+                                    ///Get the Time on ios
                                     DateTime time = DateTime.now();
 
-                                    if (!Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isEmpty || Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isEmpty)
+                                    if (Provider.of<LocalStorageProvider>(context,listen: false).phoneNumber.isNotEmpty && Provider.of<LocationProvider>(context, listen: false).determinePosition().toString().isNotEmpty)
                                     {
                                       Provider.of<SendOrderProvider>(context, listen: false).sendOrder(OrderInfo(
                                         time: time,
@@ -1517,7 +1531,7 @@ else if (snapshot.hasData) {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => OrderSent(
-
+                                                deliveryFee: '0.00',
                                                 vendorId: widget.vendorid,
                                                 time: time,
                                                 restaurant: widget.restaurant,
@@ -1579,7 +1593,7 @@ else if (snapshot.hasData) {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => OrderSent(
-
+                                                deliveryFee: '0.00',
                                                 vendorId: widget.vendorid,
                                                 time: time,
                                                 restaurant: widget.restaurant,
