@@ -27,7 +27,7 @@ class _TrackBuyerState extends State<TrackBuyer> {
 
   final Completer<GoogleMapController> _controller =
   Completer<GoogleMapController>();
-
+ late BitmapDescriptor customMapIcon;
   //CREATE POLYLINE
   List<LatLng> _routes = [];
   Future<List<LatLng>> _getRoutes () async{
@@ -40,14 +40,27 @@ class _TrackBuyerState extends State<TrackBuyer> {
     return points;
 
   }
+
+  //CUSTOM ICON FOR VENDOR LOCATION
+  Future<BitmapDescriptor> _loadCustomIcon(BuildContext context) async {
+    final ImageConfiguration configuration = createLocalImageConfiguration(context, size: const Size(40, 40));
+    setState(() async {
+      customMapIcon =  await BitmapDescriptor.asset(configuration, 'assets/Icon/courier.png');
+    });
+    return await BitmapDescriptor.asset(configuration, 'assets/Icon/courier.png');
+  }
 @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _getRoutes();
+    _loadCustomIcon(context);
   }
   @override
   Widget build(BuildContext context) {
+    _getRoutes();
+    _loadCustomIcon(context);
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -94,6 +107,8 @@ class _TrackBuyerState extends State<TrackBuyer> {
                        },
                        markers: {
                          Marker(
+
+                           icon: customMapIcon,
                              markerId: MarkerId('User'),
                              visible: true,
                              position: LatLng(
