@@ -6,26 +6,23 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mealmate/AdminPanel/OtherDetails/AdminFunctionsProvider.dart';
-import 'package:mealmate/AdminPanel/OtherDetails/ID.dart';
-import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
-import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
-import 'package:mealmate/Notification/notification_Provider.dart';
-import 'package:mealmate/PaymentProvider/paystack_payment.dart';
-import 'package:mealmate/UserLocation/LocationProvider.dart';
-import 'package:mealmate/firebase_options.dart';
-import 'package:mealmate/models&ReadCollectionModel/sendOrderFunctionProvider.dart';
 import 'package:mealmate/pages/init_pages/splashscreen.dart';
-import 'package:mealmate/pages/navpages/home.dart';
-import 'package:mealmate/pages/searchfooditem/init_row_search.dart';
 import 'package:mealmate/searchFoodItemProvider/searchFoodItemFunctionProvider.dart';
 import 'package:mealmate/theme/themedata.dart';
 import 'package:provider/provider.dart';
+import 'AdminPanel/OtherDetails/AdminFunctionsProvider.dart';
+import 'AdminPanel/OtherDetails/ID.dart';
+import 'AdminPanel/OtherDetails/incomingOrderProvider.dart';
 import 'AdminPanel/collectionUploadModelProvider/collectionProvider.dart';
+import 'Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import 'Notification/notification_Provider.dart';
 import 'Other_Providers/Network_Images.dart';
+import 'PaymentProvider/paystack_payment.dart';
+import 'UserLocation/LocationProvider.dart';
+import 'firebase_options.dart';
 import 'models&ReadCollectionModel/cartmodel.dart';
+import 'models&ReadCollectionModel/sendOrderFunctionProvider.dart';
 import 'models&ReadCollectionModel/userReadwithCollection.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -33,6 +30,7 @@ void main() async {
   );
   FirebaseFirestore.instance.settings = Settings(persistenceEnabled: true);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  //
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     runApp(MyApp());
@@ -41,15 +39,13 @@ void main() async {
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print("Handling a background message: ${message.messageId}");
+  print("Handling a background message : ${message.messageId}");
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return ScreenUtilInit(
       child: MultiProvider(
         providers: [
@@ -68,11 +64,6 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => PaystackPaymentProvider())
         ],
         child: MaterialApp(
-          //define routes
-          routes:{
-            '/clothings': (context) => Home()
-
-          } ,
             navigatorObservers: [
               FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
             ],

@@ -753,24 +753,41 @@ SizedBox(height: 30.h,),
                   : NoInternetConnection(),
 
                   SizedBox(
-                    height: 30.h,
+                    height: 20.h,
                   ),
 
 
+                  ////PROMOTION ADS
 
-                  ///PROMOTIONAL ADS
-                  Padding(padding: EdgeInsets.all(1),
-                      child: PromotionAdsCard(
-                        image: 'assets/adsimages/ads1.png',
-                        heading:'Grab Your Favorite Burger',
-                        content: 'Fast & fresh on MealMate foods: click to order',
-                        contentColor: Colors.white70,
-                        headingColor: Colors.white,
-                        backgroundColor: Colors.pinkAccent.shade200,
-
-                      )),
                   SizedBox(
-                    height: 30.h,
+                    width: double.infinity,
+                    height: 110.h,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: const [
+                        PromotionAdsCard(
+                          image: 'assets/adsimages/ads2.png',
+                          heading: 'Eat what you desire',
+                          content: 'Order your favorite food and get Lucky.. yh get lucky 🍀☺️',
+                          contentColor: Colors.white70,
+                          headingColor: Colors.white,
+                          backgroundColor: Colors.black,
+                        ),
+
+                        PromotionAdsCard(
+                          image: 'assets/adsimages/ads3.png',
+                          heading: 'Order Pizza and get a free drink',
+                          content: 'Embrace the Ecosystem... Let love lead',
+                          contentColor: Colors.white70,
+                          headingColor: Colors.white,
+                          backgroundColor: Colors.pinkAccent,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: 20.h,
                   ),
 
                   Row(
@@ -914,17 +931,51 @@ SizedBox(height: 30.h,),
                   )
                       : NoInternetConnection(),
 SizedBox(height: 30.h,),
-                  Padding(padding: EdgeInsets.all(1),
-                      child: PromotionAdsCard(
-                        image: 'assets/images/jollof.png',
-                        heading:'Satisfy Your cravings With MealMate',
-                        content: 'Order your favorite food from your favorite restaurant',
-                        contentColor: Colors.white,
-                        headingColor: Colors.white,
-                        backgroundColor: Colors.redAccent.shade200,
 
-                      )),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 110.h,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.all(4.0),
+                          child: PromotionAdsCard(
+                            image: 'assets/images/jollof.png',
+                            heading:'Satisfy Your cravings With MealMate',
+                            content: 'Favorite food from your favorite restaurant',
+                            contentColor: Colors.white,
+                            headingColor: Colors.white,
+                            backgroundColor: Colors.redAccent,
 
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(4.0),
+                          child: PromotionAdsCard(
+                            image: 'assets/adsimages/ads2.png',
+                            heading: 'Eat what you desire',
+                            content: 'Order your favorite food and get Lucky.. yh get lucky 🍀☺️',
+                            contentColor: Colors.white70,
+                            headingColor: Colors.white,
+                            backgroundColor: Colors.black,
+                          ),
+                        ),
+
+                        Padding(
+                          padding: EdgeInsets.all(4.0),
+                          child: PromotionAdsCard(
+                            image: 'assets/images/burger.png',
+                            heading: 'Order Burger and get a free delivery',
+                            content: 'Embrace the Ecosystem... Let love lead 🍀 ',
+                            contentColor: Colors.white70,
+                            headingColor: Colors.white,
+                            backgroundColor: Colors.pinkAccent,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
 
 SizedBox(height: 30.h,),
