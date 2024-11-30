@@ -45,9 +45,9 @@ class _TrackBuyerState extends State<TrackBuyer> {
   Future<BitmapDescriptor> _loadCustomIcon(BuildContext context) async {
     final ImageConfiguration configuration = createLocalImageConfiguration(context, size: const Size(40, 40));
     setState(() async {
-      customMapIcon =  await BitmapDescriptor.asset(configuration, 'assets/Icon/courier.png');
+      customMapIcon =  await BitmapDescriptor.asset(configuration, 'assets/Icon/profile.png');
     });
-    return await BitmapDescriptor.asset(configuration, 'assets/Icon/courier.png');
+    return await BitmapDescriptor.asset(configuration, 'assets/Icon/profile.png');
   }
 @override
   void initState() {

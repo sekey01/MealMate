@@ -1,18 +1,19 @@
 import 'package:card_loading/card_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:mealmate/AdminPanel/OtherDetails/AdminFunctionsProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-ListView adminHorizontalCard(String imgUrl, String restaurant, String location,
+ListView adminHorizontalCard(String ProductImageUrl, String restaurant, String location,
     String foodName, double price, String id, String time, bool isAvailable) {
   return ListView.builder(
     itemBuilder: (context, index) {
       return Padding(
           padding: const EdgeInsets.all(4.0),
           child: Container(
-            height: 120.h,
+            height: 160.h,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -34,7 +35,7 @@ ListView adminHorizontalCard(String imgUrl, String restaurant, String location,
                       ///I CHECKED WHETHERE THE IMAGE URL IS EMPTY AND INDICATE THE UPLOADER
                       ///
                       ///
-                      child: imgUrl.isEmpty
+                      child: ProductImageUrl.isEmpty
                           ? Center(
                               child: Icon(
                                 ///NO IMAGE ICON WHEN THE IMAGE URL IS EMPTY
@@ -48,7 +49,7 @@ ListView adminHorizontalCard(String imgUrl, String restaurant, String location,
                               borderRadius: BorderRadius.circular(13),
                               child: Image(
                                 fit: BoxFit.fill,
-                                image: NetworkImage(imgUrl),
+                                image: NetworkImage(ProductImageUrl),
                                 height: 100.h,
                                 width: 150.w,
                               ),
@@ -171,7 +172,7 @@ ListView adminHorizontalCard(String imgUrl, String restaurant, String location,
                                                   TextButton(
                                                       onPressed: () {
                                                         value.deleteItem(
-                                                            context, imgUrl);
+                                                            context, ProductImageUrl);
                                                         Navigator.pop(context);
                                                       },
                                                       child: Text('Yes',style: TextStyle(
@@ -195,7 +196,23 @@ ListView adminHorizontalCard(String imgUrl, String restaurant, String location,
                                   fontFamily: 'Righteous',
                                   fontWeight: FontWeight.bold,
                                   color: Colors.deepOrangeAccent),
-                            ))
+                            )),
+                        LiteRollingSwitch(
+
+                          textOn: 'Online',
+                          textOff: 'Offline',
+                          colorOn: (isAvailable) ? Colors.green : Colors.red,
+                             value: isAvailable,
+                             onTap: (){},
+                             onSwipe: (){},
+                            onChanged: (value){
+
+                              Provider.of<AdminFunctions>(context, listen: false).SwitchSingleFoodItem(context, id, ProductImageUrl,value );
+                              print(value);
+
+                          },
+                           onDoubleTap: (){},
+                        )
                       ],
                     ),
                   ),
