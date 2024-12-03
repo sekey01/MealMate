@@ -19,6 +19,56 @@ class LocalStorageProvider extends ChangeNotifier {
   String courierId = '';
 
 
+  Future<void>storeToken(String newValue) async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final filepath = '${directory.path}/storeToken.txt';
+      final file = File(filepath);
+
+      // Check if the file exists
+      if (!await file.exists()) {
+        await file.create(
+            recursive: true); // Create the file if it doesn't exist
+      }
+
+      // Write the new value to the file
+      await file.writeAsString(newValue);
+
+      // Notify listeners of the change
+      notifyListeners();
+    } catch (e) {
+      // Handle any exceptions
+      print("Error Adding Token: $e");
+      // You can throw the error or handle it as needed
+    }
+  }
+
+  Future<void>retrieveToken() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final filepath = '${directory.path}/storeToken.txt';
+      final file = File(filepath);
+
+      // Check if the file exists
+      if (await file.exists()) {
+        // Read the contents of the file
+        String contents = await file.readAsString();
+        print(contents);
+        // Parse the contents to an integer
+        notifyListeners();
+      } else {
+        print('No token found');
+      }
+
+      // Notify listeners of the change
+    } catch (e) {
+      // Handle any exceptions
+      print("Error loading Token: $e");
+      // You can throw the error or handle it as needed
+    }
+  }
+
+
  Future<void> storePhoneNumber(String newValue) async {
     try {
       final directory = await getApplicationDocumentsDirectory();

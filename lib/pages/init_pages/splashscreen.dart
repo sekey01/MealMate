@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import 'package:mealmate/Notification/notification_Provider.dart';
+import 'package:provider/provider.dart';
 import '../authpages/login.dart';
 import '../navpages/home.dart';
 
@@ -29,13 +32,21 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
+  /// Get the token, save it to the database for current user
+  void _getToken() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    String? token = await messaging.getToken();
+   // print("FCM Token: $token");
+    await Provider.of<LocalStorageProvider>(context, listen: false).storeToken(token!);
+  }
+
   @override
   initState() {
     super.initState();
     CheckSignedIn();
-
-    _requestNotificationPermissions();
+    _getToken();
     _configureFirebaseListeners();
+    _requestNotificationPermissions();
   }
 
   void _requestNotificationPermissions() async {
