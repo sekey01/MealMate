@@ -172,9 +172,16 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                             ),
                           ));
                         } else if (locationSnapshot.hasError) {
-                          return Center(child: Text('Error: ${locationSnapshot.error}'));
+                          return Center(child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image(image: AssetImage('assets/Icon/route.png'),height: 50.h,width: 70.w,),
+                              Text(' ${locationSnapshot.error}', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
+                              Text('Enable Location in your Settings',style: TextStyle(color: Colors.black, fontFamily: 'Poppins'),)
+                            ],
+                          ));
                         } else if (!locationSnapshot.hasData) {
-                          return Center(child: Text('Unable to determine location'));
+                          return Center(child: Text('Unable to determine location', style: TextStyle(color: Colors.black,fontFamily: 'Poppins'),));
                         } else {
                           LatLng userLocation = locationSnapshot.data!;
                           List<FoodItem> nearbyRestaurants = foodItems.where((foodItem) {

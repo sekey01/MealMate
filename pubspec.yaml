@@ -151,6 +151,7 @@ flutter:
      - assets/Icon/sms.png
      - assets/Icon/gmail.png
      - assets/Icon/favourite.png
+     - assets/Icon/route.png
      - assets/Icon/orderComplete.png
      - assets/Icon/orderReceived.png
      - assets/Icon/orderServed.png

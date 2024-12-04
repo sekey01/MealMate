@@ -204,7 +204,7 @@ checkInternet();
                                   );
                                 }
                                 return Text(
-                                  'locating you...',
+                                  'wait while we locate you...',
                                   style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.normal,fontSize: 10.spMin),
                                 );
                               }),
@@ -522,7 +522,7 @@ checkInternet();
                       ),
                     ),
                   ),
-SizedBox(height: 30.h,),
+                  SizedBox(height: 30.h,),
 
                   Padding(padding: EdgeInsets.all(1),
                       child: PromotionAdsCard(
@@ -681,7 +681,14 @@ SizedBox(height: 30.h,),
                         scrollDirection: Axis.horizontal,
                       );
                     } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
+                      return Center(child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(image: AssetImage('assets/Icon/route.png'),height: 50.h,width: 70.w,),
+                          Text(' ${snapshot.error}', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
+                          Text('Enable Location in your Settings',style: TextStyle(color: Colors.black, fontFamily: 'Poppins'),)
+                        ],
+                      ));
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                       return ListView.builder(
                         itemCount: 5,
@@ -860,7 +867,14 @@ SizedBox(height: 30.h,),
                             scrollDirection: Axis.horizontal,
                           );
                         } else if (snapshot.hasError) {
-                          return Center(child: Text('Error: ${snapshot.error}'));
+                          return Center(child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image(image: AssetImage('assets/Icon/route.png'),height: 50.h,width: 70.w,),
+                              Text(' ${snapshot.error}', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
+                              Text('Enable Location in your Settings',style: TextStyle(color: Colors.black, fontFamily: 'Poppins'),)
+                            ],
+                          ));
                         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                           return ListView.builder(
                             itemCount: 5,
@@ -1042,7 +1056,14 @@ SizedBox(height: 30.h,),
                             scrollDirection: Axis.horizontal,
                           );
                         } else if (snapshot.hasError) {
-                          return Center(child: Text('Error: ${snapshot.error}'));
+                          return Center(child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image(image: AssetImage('assets/Icon/route.png'),height: 50.h,width: 70.w,),
+                              Text(' ${snapshot.error}', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
+                              Text('Enable Location in your Settings',style: TextStyle(color: Colors.black, fontFamily: 'Poppins'),)
+                            ],
+                          ));
                         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                           return ListView.builder(
                             itemCount: 5,

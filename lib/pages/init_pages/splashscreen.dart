@@ -9,6 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import 'package:mealmate/Notification/notification_Provider.dart';
+import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:provider/provider.dart';
 import '../authpages/login.dart';
 import '../navpages/home.dart';
@@ -39,7 +40,6 @@ class _SplashScreenState extends State<SplashScreen> {
    // print("FCM Token: $token");
     await Provider.of<LocalStorageProvider>(context, listen: false).storeToken(token!);
   }
-
   @override
   initState() {
     super.initState();
@@ -47,7 +47,9 @@ class _SplashScreenState extends State<SplashScreen> {
     _getToken();
     _configureFirebaseListeners();
     _requestNotificationPermissions();
+    Provider.of<LocationProvider>(context,listen: false).enableLocation();
   }
+
 
   void _requestNotificationPermissions() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;

@@ -8,6 +8,7 @@ class SearchProvider extends ChangeNotifier {
   String _foodCollection = 'Food 🍔';
   String _drinksCollection = 'Drinks 🍷';
   String _groceryCollection = 'Grocery 🛒';
+
   // Default collection name
 
   set searchItem(String value) {

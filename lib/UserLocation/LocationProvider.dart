@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
 
 class LocationProvider extends ChangeNotifier {
   final String googleMapsApiKey = 'AIzaSyCO2v58cOsSM5IKXwyGa172U_YHrmRK9ks';
@@ -81,7 +82,7 @@ class LocationProvider extends ChangeNotifier {
     }
   }
 
-
+//f
 
 
 
@@ -152,7 +153,26 @@ class LocationProvider extends ChangeNotifier {
 
 
 
+  Future<void> enableLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
 
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      await openAppSettings();
+      return;
+    }
+
+    if (permission == LocationPermission.always || permission == LocationPermission.whileInUse) {
+      bool isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+
+      if (!isLocationServiceEnabled) {
+        await Geolocator.openLocationSettings();
+      }
+    }
+  }
 
 
 }
