@@ -37,17 +37,18 @@ class _SplashScreenState extends State<SplashScreen> {
   void _getToken() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     String? token = await messaging.getToken();
-   // print("FCM Token: $token");
+   print("FCM Token: $token");
     await Provider.of<LocalStorageProvider>(context, listen: false).storeToken(token!);
   }
   @override
   initState() {
     super.initState();
     CheckSignedIn();
-    _getToken();
+   // _getToken();
     _configureFirebaseListeners();
     _requestNotificationPermissions();
     Provider.of<LocationProvider>(context,listen: false).enableLocation();
+    Provider.of<NotificationProvider>(context,listen: false).subscribeToTopic('all_users');
   }
 
 

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mealmate/AdminPanel/Pages/adminHome.dart';
+import 'package:mealmate/Notification/notification_Provider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:provider/provider.dart';
 
@@ -88,6 +89,7 @@ class _AdminLoginState extends State<AdminLogin> {
     // TODO: implement initState
     super.initState();
     //_checkLoginStatus();
+    Provider.of<NotificationProvider>(context, listen: false).subscribeToTopic('vendors');
   }
 
   @override

@@ -8,6 +8,7 @@ import 'package:mealmate/Courier/courier_model.dart';
 import 'package:mealmate/Courier/trackbuyer.dart';
 import 'package:mealmate/Courier/update_details.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import 'package:mealmate/Notification/notification_Provider.dart';
 import 'package:mealmate/components/CustomLoading.dart';
 import 'package:provider/provider.dart';
 
@@ -140,6 +141,7 @@ class _CourierInitState extends State<CourierInit> {
         context,
         listen: false).determinePosition();
     Provider.of<LocalStorageProvider>(context, listen: false).getCourierID();
+    Provider.of<NotificationProvider>(context, listen: false).subscribeToTopic('couriers');
 
 }
 
