@@ -47,22 +47,6 @@ class _IndexState extends State<Index> {
     }
   }
 
-/*  ///SIMPLE FETCH FOOD FROM DB TO INDEX PAGE METHOD THAT REQUIRES ONLY COLLECTION NAME
-  ///
-  /// THIS IS THE FUTURE METHOD THAT FETCHES FOOD FROM DB
-  Future<List<FoodItem>> fetchFoodItems(String Collection) async {
-    try {
-      QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection(Collection).get();
-      return snapshot.docs
-          .map((doc) =>
-              FoodItem.fromMap(doc.data() as Map<String, dynamic>, doc.id))
-          .toList();
-    } catch (e) {
-      print("Error fetching food items: $e");
-      return [];
-    }
-  }*/
 
   final textController = TextEditingController();
   bool _hasInternet = true;
@@ -232,25 +216,25 @@ checkInternet();
                           children: [
                             InkWell(
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> InitRowSearch(searchItem: 'jollof')));
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> InitRowSearch(searchItem: 'grocery')));
                             },
-                                child: InitRow(imageUrl: 'assets/images/jollof.png',name: 'Jollof',)),
+                                child: InitRow(imageUrl: 'assets/adsimages/Grocery.png',name: 'Grocery',)),
                             InkWell(
                               onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=> InitRowSearch(searchItem: 'Pizza')));
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=> InitRowSearch(searchItem: 'snacks')));
                               }
                             ,child: InitRow(imageUrl: 'assets/images/burger.png',name: 'Snacks',)),
 
                             InkWell(onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> InitRowSearch(searchItem: 'groceries')));
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> InitRowSearch(searchItem: 'pizza')));
                             }
-                            ,child: InitRow(imageUrl: 'assets/images/shops.jpg',name: 'Grocery',)),
+                            ,child: InitRow(imageUrl: 'assets/adsimages/pizza.png',name: 'Pizza',)),
 
                             InkWell(
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> InitRowSearch(searchItem: 'Drinks')));
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> InitRowSearch(searchItem: 'drinks')));
                             },
-                            child: InitRow(imageUrl: 'assets/images/burger.png',name: 'Drinks',)),
+                            child: InitRow(imageUrl: 'assets/adsimages/drinks.png',name: 'Drinks',)),
 
                           ],
                         ),
@@ -772,22 +756,28 @@ checkInternet();
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: const [
-                        PromotionAdsCard(
-                          image: 'assets/adsimages/ads2.png',
-                          heading: 'Eat what you desire',
-                          content: 'Order your favorite food and get Lucky.. yh get lucky 🍀☺️',
-                          contentColor: Colors.white70,
-                          headingColor: Colors.white,
-                          backgroundColor: Colors.black,
+                        Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: PromotionAdsCard(
+                            image: 'assets/adsimages/fufu.png',
+                            heading: 'Eat what you desire',
+                            content: 'Order your favorite food and get Lucky.. yh get lucky 🍀☺️',
+                            contentColor: Colors.white70,
+                            headingColor: Colors.white,
+                            backgroundColor: Colors.black,
+                          ),
                         ),
 
-                        PromotionAdsCard(
-                          image: 'assets/adsimages/ads3.png',
-                          heading: 'Order Pizza and get a free drink',
-                          content: 'Embrace the Ecosystem... Let love lead',
-                          contentColor: Colors.white70,
-                          headingColor: Colors.white,
-                          backgroundColor: Colors.pinkAccent,
+                        Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: PromotionAdsCard(
+                            image: 'assets/adsimages/local.png',
+                            heading: 'Order Pizza and get a free drink',
+                            content: 'Embrace the Ecosystem... Let love lead',
+                            contentColor: Colors.white70,
+                            headingColor: Colors.white,
+                            backgroundColor: Colors.black,
+                          ),
                         ),
                       ],
                     ),
@@ -967,9 +957,9 @@ SizedBox(height: 30.h,),
                         Padding(
                           padding: EdgeInsets.all(4.0),
                           child: PromotionAdsCard(
-                            image: 'assets/adsimages/ads2.png',
+                            image: 'assets/adsimages/shawama.png',
                             heading: 'Eat what you desire',
-                            content: 'Order your favorite food and get Lucky.. yh get lucky 🍀☺️',
+                            content: 'How about a shawama... mmm☺️',
                             contentColor: Colors.white70,
                             headingColor: Colors.white,
                             backgroundColor: Colors.black,
@@ -979,8 +969,8 @@ SizedBox(height: 30.h,),
                         Padding(
                           padding: EdgeInsets.all(4.0),
                           child: PromotionAdsCard(
-                            image: 'assets/images/burger.png',
-                            heading: 'Order Burger and get a free delivery',
+                            image: 'assets/adsimages/drinks.png',
+                            heading: 'Order Local meals & get a free drink',
                             content: 'Embrace the Ecosystem... Let love lead 🍀 ',
                             contentColor: Colors.white70,
                             headingColor: Colors.white,

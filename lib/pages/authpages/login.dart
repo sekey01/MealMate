@@ -2,15 +2,12 @@ import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mealmate/AdminPanel/Pages/adminSplashScreen.dart';
-import 'package:mealmate/AdminPanel/Pages/adminlogin.dart';
-import 'package:mealmate/Courier/courierLogin.dart';
-import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
-import 'package:mealmate/components/CustomLoading.dart';
 import 'package:mealmate/pages/authpages/take_phonenumber.dart';
-import 'package:mealmate/pages/navpages/home.dart';
 import 'package:provider/provider.dart';
-
+import '../../AdminPanel/Pages/adminSplashScreen.dart';
+import '../../Courier/courierLogin.dart';
+import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import '../../components/CustomLoading.dart';
 import '../../components/Notify.dart';
 
 class Login extends StatefulWidget {
@@ -38,8 +35,8 @@ class _LoginState extends State<Login> {
 
       });
     });
-  //  CheckSignedIn();
-   // _googleSignIn.signInSilently(); // Auto sign-in if the user is already signed in
+    //  CheckSignedIn();
+    // _googleSignIn.signInSilently(); // Auto sign-in if the user is already signed in
   }
 /*  Future CheckSignedIn() async{
     if( await _googleSignIn.isSignedIn()){
@@ -47,9 +44,9 @@ class _LoginState extends State<Login> {
     }
   }*/
   Future<void> _handleSignIn() async {
-  setState(() {
-    signInLoading = true;
-  });
+    setState(() {
+      signInLoading = true;
+    });
     try {
 
       final userCredential = await _googleSignIn.signIn();
@@ -62,11 +59,6 @@ class _LoginState extends State<Login> {
         Provider.of<LocalStorageProvider>(context,listen: false).storeUsername(user.displayName.toString());
         Provider.of<LocalStorageProvider>(context,listen: false).storeImageUrl(user.photoUrl.toString());
 
-
-
-        /* print('${user.email} uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu');
-        print(user.photoUrl);
-        print(user.displayName);*/// Print user email for debugging
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => TakePhoneNumber()),
@@ -93,7 +85,6 @@ class _LoginState extends State<Login> {
   }
 
 
-
   Widget build(BuildContext context) {
 
     return Scaffold(
@@ -118,19 +109,21 @@ class _LoginState extends State<Login> {
                       ),
                       RichText(text: TextSpan(
                           children: [
-                            TextSpan(text: "Wel", style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
-                            TextSpan(text: "Come !", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+                            TextSpan(text: "Wel", style: TextStyle(color: Colors.black, fontSize: 25.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+                            TextSpan(text: "Come !", style: TextStyle(color: Colors.redAccent, fontSize: 25.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
 
 
                           ]
                       )),
                       SizedBox(
-                        height: 20.h,
+                        height: 10.h,
                       ),
                       Text(
-                        'Building the Ecosystem',
+                        'Building the Ecosystem with the Meal',
                         style: TextStyle(
-                            fontSize: 15.sp, color: Colors.black),
+                            fontFamily: 'Poppins',
+                            fontSize: 13.sp,
+                            color: Colors.blueGrey),
                       ),
                       SizedBox(
                         height: 20.h,
@@ -148,75 +141,46 @@ class _LoginState extends State<Login> {
                         height: 50.h,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,),
-    onPressed: ()  {
-
-
-        _handleSignIn();
-
+                            backgroundColor: Colors.black,),
+                          onPressed: ()  {
+                            _handleSignIn();
                           },
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                "Continue with Google ",
+                                "Continue with Google",
                                 style: TextStyle(
-                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.bold,
                                   letterSpacing: 1,
                                   color: Colors.white,
-
-                                  fontSize: 15.spMin,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 15.sp,
                                 ),
                               ),
-
- Image(image: AssetImage('assets/Icon/google.png'),height: 50.sp,width: 40.spMin,)
-                              //ImageIcon(AssetImage('assets/Icon/google.png'), size: 30.sp,color: Colors.blue,)
-
+                              Image(
+                                image: AssetImage('assets/Icon/google.png'),
+                                height: 50.sp,width: 40.spMin,
+                              )
                             ],
                           ),
                         ),
                       ),
-                      InkWell(
-                        onTap:() async{
-                           EasyLauncher.url(url: 'www.google.com',mode: Mode.inAppBrowser);
+                      GestureDetector(
+
+                        onTap: () async{
+                          await EasyLauncher.url(url: 'https://meal-mate-v8ps.vercel.app/', mode: Mode.platformDefault);
                         },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              " By Continuing you agree to the ",
-                              style: TextStyle(
-                                  color: Colors.black, fontStyle: FontStyle.italic, fontSize: 10.sp),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: ((context) => AdminsplashScreen())));
-                              },
-                              child: Text(
-                                'Terms  & ',
-                                style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.deepOrangeAccent,
-                                ),
+                        child: RichText(text: TextSpan(
+                            children: [
+                              TextSpan(text: "By Continuing you agree to the ",
+                                  style: TextStyle(color: Colors.black, fontSize: 10.spMin,fontFamily: 'Poppins',)),
+                              TextSpan(text: "Terms & Conditions",
+                                  style: TextStyle(color: Colors.redAccent, fontSize: 10.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
 
-                              ),
-                            ),
 
-                            Text(
-                              'Conditions ',
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.deepOrangeAccent,
-                              ),
-                            ),
-                          ],
-                        ),
+                            ]
+                        )),
                       ),
                       SizedBox(
                         height: 150.h,
@@ -225,9 +189,11 @@ class _LoginState extends State<Login> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            " Login as  ",
+                            " Login as ",
                             style: TextStyle(
-                                color: Colors.black, fontSize: 10.sp),
+                                color: Colors.black,
+                                fontFamily: 'Poppins',
+                                fontSize: 10.sp),
                           ),
                           GestureDetector(
                             onTap: () {
@@ -237,17 +203,17 @@ class _LoginState extends State<Login> {
                                       builder: ((context) => AdminsplashScreen())));
                             },
                             child: Text(
-                              ' Admin   /',
+                              ' Vendor  /',
                               style: TextStyle(
                                 fontFamily: 'Righteous',
                                 fontSize: 10.sp,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.deepOrangeAccent,
+                                color: Colors.redAccent,
                               ),
 
                             ),
                           ),
-SizedBox(width: 10.w,),
+                          SizedBox(width: 10.w,),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -261,7 +227,7 @@ SizedBox(width: 10.w,),
                                 fontFamily: 'Righteous',
                                 fontSize: 10.sp,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.deepOrangeAccent,
+                                color: Colors.redAccent,
                               ),
                             ),
                           ),
@@ -279,5 +245,4 @@ SizedBox(width: 10.w,),
     );
   }
 }
-
 

@@ -69,7 +69,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: NewSearchLoadingOutLook(),
+                child: CustomLoGoLoading(),
               );
             } else if (snapshot.hasError) {
               return Center(child: Center(child: Text('Error: Try again later')));
@@ -185,13 +185,20 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                       color: Colors.black, fontSize: 10.spMin),
                                 ),
                                 trailing: Text(
-                                  'Total Price: GHC${Orders.price}',
+                                  'Total Price: GHC${Orders.price.toInt()}.00',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 10.spMin,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
+
+                              ///
+
+
+
+
+
                               ///GOOGLE MAP HERE 
                               ///
                               Padding(

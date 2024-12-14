@@ -291,12 +291,12 @@ class _ProfileState extends State<Profile> {
 
                             }, child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.deepOrangeAccent,
+                                color: Colors.redAccent,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text('Logout', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20.sp, fontFamily: 'Righteous',letterSpacing: 2),),
+                                child: Text('Logout', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20.sp, fontFamily: 'Poppins',letterSpacing: 2),),
                               ),
                             )),
                           )

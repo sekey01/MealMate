@@ -4,6 +4,7 @@ import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lottie/lottie.dart';
@@ -36,51 +37,20 @@ class _SplashScreenState extends State<SplashScreen> {
   /// Get the token, save it to the database for current user
   void _getToken() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
-    String? token = await messaging.getToken();
+    String? token = await messaging.getToken();;
    print("FCM Token: $token");
     await Provider.of<LocalStorageProvider>(context, listen: false).storeToken(token!);
   }
   @override
   initState() {
-    super.initState();
+
     CheckSignedIn();
-   // _getToken();
-    _configureFirebaseListeners();
-    _requestNotificationPermissions();
+    //_getToken();
+    Provider.of<NotificationProvider>(context,listen: false).configureFirebaseListeners();
+    Provider.of<NotificationProvider>(context,listen: false).requestNotificationPermissions();
     Provider.of<LocationProvider>(context,listen: false).enableLocation();
-    Provider.of<NotificationProvider>(context,listen: false).subscribeToTopic('all_users');
   }
 
-
-  void _requestNotificationPermissions() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('User granted permission to receive notifications');
-    } else {
-      print('User declined or has not accepted permission');
-    }
-  }
-
-  void _configureFirebaseListeners() {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Received a message while in the foreground!');
-      print('Message data: ${message.data}');
-
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
-      }
-    });
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('Message clicked!');
-    });
-  }
 
 
 
@@ -89,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return another.FlutterSplashScreen(
       duration: const Duration(seconds: 10),
       nextScreen: isLoggedIn ? const Home() : const Login(),
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.redAccent,
       splashScreenBody: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -99,13 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Center(
-                      child: Image(
-                        image: const AssetImage('assets/Announcements/OrderNow.png'),
-                        height: 250.h,
-                        width: double.infinity.w,
-                      ),
-                    ),
+
                     RichText(
                       text: const TextSpan(
                         children: [
@@ -121,7 +85,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           TextSpan(
                             text: "Mate",
                             style: TextStyle(
-                              color: Colors.deepOrangeAccent,
+                              color: Colors.white,
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Righteous',

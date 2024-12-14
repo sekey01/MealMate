@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../AdminPanel/OtherDetails/incomingOrderProvider.dart';
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import '../../Notification/notification_Provider.dart';
 import '../../PaymentProvider/paystack_payment.dart';
 import '../../UserLocation/LocationProvider.dart';
 import '../../components/CustomLoading.dart';
@@ -133,8 +134,8 @@ class _DetailedCardState extends State<DetailedCard> {
   bool checkOutInitiated = false;
 
 
-  double overAllPrice = 0.00;
-  late double deliveryFee;
+  int overAllPrice = 0;
+  late int deliveryFee;
 
   TextEditingController messageController = TextEditingController();
 
@@ -456,7 +457,7 @@ class _DetailedCardState extends State<DetailedCard> {
                                         ///Delivery fee is GHC 5.00  per km, so i multiplied it by the distance between the vendor and buyer
                                         ///
 
-                                        deliveryFee = Provider.of<LocationProvider>(context, listen: false).Distance * 5;
+                                        deliveryFee = (Provider.of<LocationProvider>(context, listen: false).Distance * 5).toInt();
                                         return Text(
                                           deliveryFee.toStringAsFixed(2),
                                           style: TextStyle(
@@ -896,7 +897,7 @@ class _DetailedCardState extends State<DetailedCard> {
 
                             Consumer<CartModel>(
                               builder: (context, CartModel, child) {
-                                overAllPrice = ((CartModel.getQuantity * widget.price) + deliveryFee).toDouble();
+                                overAllPrice = ((CartModel.getQuantity * widget.price) + deliveryFee).toInt();
                                 return Text(
                                   overAllPrice.toStringAsFixed(2),
                                   style: TextStyle(
@@ -1376,10 +1377,13 @@ class _DetailedCardState extends State<DetailedCard> {
                                                   CourierName: '',
                                                   VendorAccount: widget.paymentKey,
                                                   isCashOnDelivery: false,
+                                                  isCourierDelivered: false,
                                                 )).then((_){
-                                                  ///END EMAIL TO ALERT VENDOR FUNCTION OF NEW ORDER
-                                                  ///SEND EMAIL TO VENDOR
-                                                  Provider.of<IncomingOrdersProvider>(context, listen: false).sendEmail(widget.adminEmail, widget.foodName);
+                                                  ///END SMS TO ALERT VENDOR FUNCTION OF NEW ORDER
+                                                  ///SEND SMS TO VENDOR
+                                                  Provider.of<NotificationProvider>(context,listen: false).sendSms(
+                                                      widget.adminContact.toString(), 'You have a new order from ${Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber} for ${widget.foodName}'
+                                                  );
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -1450,7 +1454,7 @@ class _DetailedCardState extends State<DetailedCard> {
                                               quantity: Provider.of<CartModel>(context,
                                                   listen: false)
                                                   .getQuantity,
-                                              price: overAllPrice,
+                                              price: overAllPrice.toDouble(),
                                               message: messageController.text.toString(),
                                               Latitude: Provider.of<LocationProvider>(
                                                   context,
@@ -1476,14 +1480,18 @@ class _DetailedCardState extends State<DetailedCard> {
                                               CourierName: '',
                                               VendorAccount: '',
                                               isCashOnDelivery: true,
+                                              isCourierDelivered: false,
                                             )).then((_){
-                                              ///END EMAIL TO ALERT VENDOR FUNCTION
-                                              Provider.of<IncomingOrdersProvider>(context, listen: false).sendEmail(widget.adminEmail, widget.foodName);
+                                              ///SEND SMS TO ALERT VENDOR FUNCTION
+                                              Provider.of<NotificationProvider>(context,listen: false).sendSms(
+                                                  widget.adminContact.toString(), 'You have a new order from ${Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber} for ${widget.foodName}'
+                                              );
+
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) => OrderSent(
-                                                      deliveryFee: overAllPrice,
+                                                      deliveryFee: overAllPrice.toString(),
                                                       vendorId: widget.vendorid,
                                                       time: time,
                                                       restaurant: widget.restaurant,

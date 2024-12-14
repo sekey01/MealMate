@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mealmate/Notification/notification_Provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
@@ -16,6 +17,13 @@ final _formKey = GlobalKey<FormState>();
 TextEditingController phoneNumberController = TextEditingController();
 
 class _TakePhoneNumberState extends State<TakePhoneNumber> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //subscribe to the topic 'users'
+    Provider.of<NotificationProvider>(context,listen: false).subscribeToTopic('users');
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

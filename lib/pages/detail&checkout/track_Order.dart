@@ -140,7 +140,7 @@ class _TrackOrderState extends State<TrackOrder> {
     return  Scaffold(
       appBar: AppBar(title: RichText(text: TextSpan(
           children: [
-            TextSpan(text: "Tracking ", style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+            TextSpan(text: "Tracking", style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
             TextSpan(text: "Order ...", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous') ,),
 
 
@@ -196,7 +196,7 @@ class _TrackOrderState extends State<TrackOrder> {
                                     Row(
                                       children: [
                                         ImageIcon(const AssetImage('assets/Icon/cedi.png'),size: 20.sp,color: Colors.deepOrangeAccent,),
-                                        Text( widget.deliveryFee.toString(), style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold, fontFamily: 'Righteous'),),
+                                        Text( '${widget.deliveryFee}.00', style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold, fontFamily: 'Righteous'),),
                                       ],
                                     ),
                                   ],

@@ -565,7 +565,7 @@ final String name;
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 1,right: 1),
+              padding: const EdgeInsets.only(left: 1,right: 1,top: 5),
               child: ClipRRect(borderRadius:BorderRadius.circular(10) ,child: Image(image: AssetImage(imageUrl),height: 60,width: 50,)),
             ),
             RichText(text: TextSpan(

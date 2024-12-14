@@ -35,7 +35,7 @@ class IncomingOrdersProvider extends ChangeNotifier {
       //print('Received a message while in the foreground!');
      // print('Message data: ${message.data}');
       if (message.notification != null) {
-       _firebaseMessaging.subscribeToTopic('new_order');
+       _firebaseMessaging.subscribeToTopic('all users');
         print('Message also contained a notification: ${message.notification}');
       }
     });
@@ -46,35 +46,6 @@ class IncomingOrdersProvider extends ChangeNotifier {
   }
 
 
-  void sendEmail(String VendorEmail, String Content) async {
-    try {
-      await emailjs.send(
-        'service_x7yk07n',
-        'template_duflkkc',
-        {
-          'to_email': '$VendorEmail',
-          'from_name': 'MealMate',
-          'message': 'There is a new Order...',
-          'to_name': 'Admin',
-        },
-        const emailjs.Options(
-            publicKey: 'o59sVSZoIT_TM0LMr',
-            privateKey: 'KkaL6qxaFA5k_058CBTVp',
-            limitRate: const emailjs.LimitRate(
-              //id: 'app',
-              throttle: 10000,
-
-            )),
-      );
-   //   print('SUCCESS!');
-    } catch (error) {
-      if (error is emailjs.EmailJSResponseStatus) {
-        ///print('1111111111111111111111111111111111111111111111111111111111111111111111111111');
-       // print('ERROR... $error');
-      }
-      print(error.toString());
-    }
-  }
 
 
   Future<bool> _checkConnectivity() async {

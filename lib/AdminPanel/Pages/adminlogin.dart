@@ -1,14 +1,14 @@
+import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mealmate/AdminPanel/Pages/adminHome.dart';
-import 'package:mealmate/Notification/notification_Provider.dart';
-import 'package:mealmate/components/CustomLoading.dart';
 import 'package:provider/provider.dart';
 
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
+import '../../components/CustomLoading.dart';
 import '../../components/Notify.dart';
 import '../OtherDetails/ID.dart';
+import 'adminHome.dart';
 
 class AdminLogin extends StatefulWidget {
   const AdminLogin({super.key});
@@ -20,6 +20,8 @@ class AdminLogin extends StatefulWidget {
 class _AdminLoginState extends State<AdminLogin> {
   bool isLoading = false;
   bool waiting = false;
+
+
 
   Future<void> adminSignIn() async {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
@@ -70,7 +72,7 @@ class _AdminLoginState extends State<AdminLogin> {
       });
     }
   }
-/*  Future<void> _checkLoginStatus() async {
+  Future<void> _checkLoginStatus() async {
     bool isLoggedIn = await Provider.of<LocalStorageProvider>(context, listen: false).getAdminLoginState();
 
     if (isLoggedIn) {
@@ -79,17 +81,25 @@ class _AdminLoginState extends State<AdminLogin> {
         MaterialPageRoute(builder: (context) => adminHome()),
       );
     }
-  }*/
+  }
+  Future<void> _sendPasswordResetLink(String _email) async{
+    if (_emailController.text.isEmpty) {
+      Notify(context, 'Please enter your email', Colors.red);
+    }
+    FirebaseAuth.instance.sendPasswordResetEmail(email: _email)
+        .then((value) => Notify(context, 'Password reset link sent to your email', Colors.green))
+        .catchError((error) => Notify(context, 'Failed to send password reset link', Colors.red));
+  }
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    //_checkLoginStatus();
-    Provider.of<NotificationProvider>(context, listen: false).subscribeToTopic('vendors');
+    _checkLoginStatus();
   }
 
   @override
@@ -113,10 +123,10 @@ class _AdminLoginState extends State<AdminLogin> {
                         child: isLoading
                             ? CustomLoGoLoading()
                             : Image(
-                                image: AssetImage("assets/images/logo.png"),
-                                height: 150,
-                                width: 150,
-                              ),
+                          image: AssetImage("assets/images/logo.png"),
+                          height: 150,
+                          width: 150,
+                        ),
                       ),
                       SizedBox(
                         height: 10,
@@ -126,21 +136,21 @@ class _AdminLoginState extends State<AdminLogin> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: "Admin",
+                                text: "Vendor",
                                 style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 27.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Righteous'
+                                    color: Colors.black,
+                                    fontSize: 27.sp,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Righteous'
                                 ),
                               ),
                               TextSpan(
                                 text: "Login",
                                 style: TextStyle(
-                                  color: Colors.deepOrangeAccent,
-                                  fontSize: 27.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Righteous'
+                                    color: Colors.redAccent,
+                                    fontSize: 27.sp,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Righteous'
                                 ),
                               ),
                             ],
@@ -159,31 +169,31 @@ class _AdminLoginState extends State<AdminLogin> {
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide:
-                                    BorderSide(color: Colors.deepOrangeAccent
+                                BorderSide(color: Colors.black
 
 
-            ),
+                                ),
                               ),
                               prefixIcon: Icon(
-                                  Icons.supervised_user_circle_rounded,
+                                  Icons.email_outlined,
                                   color: Colors.deepOrangeAccent
 
 
-            ),
+                              ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide:
-                                    BorderSide(color: Colors.deepOrangeAccent
+                                BorderSide(color: Colors.black
 
 
-            ),
+                                ),
                               ),
                               hintText: "Restaurant ID / Email",
                               hintStyle:
-                                  TextStyle(color: Colors.blueGrey
+                              TextStyle(color: Colors.blueGrey
 
 
-            )),
+                              )),
                         ),
                       ),
                       Padding(
@@ -196,31 +206,31 @@ class _AdminLoginState extends State<AdminLogin> {
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide:
-                                    BorderSide(color: Colors.deepOrangeAccent
+                                BorderSide(color: Colors.black
 
 
-            ),
+                                ),
                               ),
                               prefixIcon: Icon(
                                   Icons.password_sharp,
                                   color: Colors.deepOrangeAccent
 
 
-            ),
+                              ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide:
-                                    BorderSide(color: Colors.deepOrangeAccent
+                                BorderSide(color: Colors.black
 
 
-            ),
+                                ),
                               ),
                               hintText: "Restaurant Key / Password",
                               hintStyle:
-                                  TextStyle(color: Colors.blueGrey
+                              TextStyle(color: Colors.blueGrey
 
 
-            )),
+                              )),
                         ),
                       ),
                       SizedBox(height: 20.h,),
@@ -232,7 +242,7 @@ class _AdminLoginState extends State<AdminLogin> {
                               backgroundColor: Colors.black
 
 
-            ),
+                          ),
                           onPressed: () {
                             Provider.of<AdminId>(context, listen: false).loadId();
                             adminSignIn();
@@ -240,11 +250,11 @@ class _AdminLoginState extends State<AdminLogin> {
                           child: Text(
                             "Login",
                             style: TextStyle(
-                              letterSpacing: 2,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20.sp,
-                              fontFamily: 'Righteous'
+                                letterSpacing: 2,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20.sp,
+                                fontFamily: 'Righteous'
                             ),
                           ),
                         ),
@@ -262,20 +272,42 @@ class _AdminLoginState extends State<AdminLogin> {
                           ),
                           TextButton(
                             onPressed: () {
+                              if(_emailController.text.isNotEmpty) {
+                                _sendPasswordResetLink(_emailController.text);
+                              }else{
+                                Notify(context, 'Please enter your email', Colors.red);
+                              }
 
                             },
                             child: Text(
-                              ' Call Us for Verification...',
+                              ' Reset Pssword',
                               style: TextStyle(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.deepOrangeAccent
+                                color: Colors.redAccent
 
 
-            ,
+                                ,
                               ),
                             ),
                           ),
+                          GestureDetector(
+
+                            onTap: () async{
+                              await EasyLauncher.url(url: 'https://meal-mate-v8ps.vercel.app/', mode: Mode.platformDefault);
+                            },
+                            child: RichText(text: TextSpan(
+                                children: [
+                                  TextSpan(text: "By Continuing you agree to the ",
+                                      style: TextStyle(color: Colors.black, fontSize: 10.spMin,fontFamily: 'Poppins',)),
+                                  TextSpan(text: "Terms & Conditions",
+                                      style: TextStyle(color: Colors.redAccent, fontSize: 10.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+
+
+                                ]
+                            )),
+                          ),
+
                         ],
                       ),
                     ],
