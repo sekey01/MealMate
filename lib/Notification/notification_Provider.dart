@@ -31,6 +31,7 @@ class Notification {
       notification: data['notification'] ?? '',
       time: data['time'] ??'',
       route: data['route'] ?? '',
+
       notificationImgUrl: data['notificationImgUrl'] ?? '',
     );
   }
