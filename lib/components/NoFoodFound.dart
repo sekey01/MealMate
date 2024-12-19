@@ -39,7 +39,7 @@ Container EmptyHistory() {
         RichText(text: TextSpan(
             children: [
               TextSpan(text: " Empty", style: TextStyle(color: Colors.black, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
-              TextSpan(text: " History", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+              TextSpan(text: " History", style: TextStyle(color: Colors.redAccent, fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
             ]
         )),      ],
     ),

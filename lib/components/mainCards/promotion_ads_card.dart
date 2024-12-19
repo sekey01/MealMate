@@ -39,7 +39,7 @@ class _PromotionAdsCardState extends State<PromotionAdsCard> {
                     '${widget.heading}',
                     style: TextStyle(
                       fontFamily: 'Righteous',
-                      fontSize: 15.sp,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w800,
                       //letterSpacing: 2,
                       color: widget.headingColor,
@@ -53,7 +53,7 @@ class _PromotionAdsCardState extends State<PromotionAdsCard> {
                     softWrap: true,
                     style: TextStyle(
                       fontFamily: 'Poppins',
-                      fontSize: 11.sp,
+                      fontSize: 8.sp,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1,
                       color: widget.contentColor,

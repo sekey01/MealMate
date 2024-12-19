@@ -87,7 +87,13 @@ class _DetailedCardState extends State<DetailedCard> {
         QuerySnapshot snapshot = await FirebaseFirestore.instance
             .collection(collection)
             .where('vendorId', isEqualTo: vendorId)
-            .get();
+            .get(GetOptions(source: Source.cache));
+        if(snapshot.docs.isEmpty){
+          snapshot = await FirebaseFirestore.instance
+              .collection(collection)
+              .where('vendorId', isEqualTo: vendorId)
+              .get( GetOptions(source: Source.server));
+        }
         List<FoodItem> foodItems = snapshot.docs
             .map((doc) => FoodItem.fromMap(doc.data() as Map<String, dynamic>, doc.id))
             .toList();

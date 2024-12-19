@@ -50,7 +50,7 @@ class _OrderListState extends State<OrderList> {
               height: 25.h,
               width: 80.w,
               decoration: BoxDecoration(
-                color: Colors.deepOrangeAccent,
+                color: Colors.redAccent,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextButton(
@@ -111,7 +111,7 @@ class _OrderListState extends State<OrderList> {
                       TextSpan(
                         text: "Mate",
                         style: TextStyle(
-                          color: Colors.deepOrangeAccent,
+                          color: Colors.redAccent,
                           fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Righteous',
@@ -126,7 +126,7 @@ class _OrderListState extends State<OrderList> {
                   height: 30.h,
                   width: 100.w,
                   decoration: BoxDecoration(
-                    color: Colors.deepOrangeAccent,
+                    color: Colors.redAccent,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextButton(
@@ -161,102 +161,106 @@ class _OrderListState extends State<OrderList> {
 
           ),
         ),
-        child: Expanded(
-          child: FutureBuilder<List<StoreOrderLocally>>(
-            future: Provider.of<LocalStorageProvider>(context, listen: true).loadOrders(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    final storedOrder = snapshot.data![index];
-                    final storedOrderNumber = index + 1;
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ExpansionTile(
-                          collapsedShape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          iconColor: Colors.black,
-                          collapsedBackgroundColor: Colors.grey.shade200,
-                          leading: Text(
-                            'Order : $storedOrderNumber',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15.spMin,
-                            ),
-                          ),
-                          title: RichText(
-                            text: TextSpan(
+        child: Column(
+          children: [
+            Expanded(
+              child: FutureBuilder<List<StoreOrderLocally>>(
+                future: Provider.of<LocalStorageProvider>(context, listen: true).loadOrders(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        final storedOrder = snapshot.data![index];
+                        final storedOrderNumber = index + 1;
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ExpansionTile(
+                              collapsedShape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              iconColor: Colors.black,
+                              collapsedBackgroundColor: Colors.grey.shade200,
+                              leading: Text(
+                                'Order : $storedOrderNumber',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15.spMin,
+                                ),
+                              ),
+                              title: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "Meal",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 12.spMin,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Righteous',
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: "Mate",
+                                      style: TextStyle(
+                                        color: Colors.redAccent,
+                                        fontSize: 12.spMin,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Righteous',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               children: [
-                                TextSpan(
-                                  text: "Meal",
+                                Text(
+                                  storedOrder.item,
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 12.spMin,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Righteous',
+                                    fontSize: 15.spMin,
                                   ),
                                 ),
-                                TextSpan(
-                                  text: "Mate",
+                                Text(
+                                  storedOrder.id,
                                   style: TextStyle(
-                                    color: Colors.deepOrangeAccent,
-                                    fontSize: 12.spMin,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Righteous',
+                                    color: Colors.black,
+                                    fontSize: 15.spMin,
+                                  ),
+                                ),
+                                Text(
+                                  'GHC ${storedOrder.price.toString()}0',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15.spMin,
+                                  ),
+                                ),
+                                Text(
+                                  storedOrder.time.toString(),
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15.spMin,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          children: [
-                            Text(
-                              storedOrder.item,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15.spMin,
-                              ),
-                            ),
-                            Text(
-                              storedOrder.id,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15.spMin,
-                              ),
-                            ),
-                            Text(
-                              'GHC ${storedOrder.price.toString()}0',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15.spMin,
-                              ),
-                            ),
-                            Text(
-                              storedOrder.time.toString(),
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15.spMin,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                        );
+                      },
                     );
-                  },
-                );
-              } else {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: EmptyHistory(),
-                );
-              }
-            },
-          ),
+                  } else {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: EmptyHistory(),
+                    );
+                  }
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

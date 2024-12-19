@@ -35,7 +35,9 @@ class _SearchState extends State<Search> {
 
   Future<List<FoodItem>> fetchFoodItems(String collection) async {
     try {
-      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection(collection).get();
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection(collection).get(
+        GetOptions(source: Source.serverAndCache),
+      );
       return snapshot.docs.map((doc) => FoodItem.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
     } catch (e) {
       print("Error fetching food items: $e");

@@ -280,7 +280,7 @@ class _ProfileState extends State<Profile> {
                         //leading:Icon(Icons.login_outlined, color: Colors.deepOrangeAccent, size: 30,),
                         children: [
                           ListTile(
-                            title: Text('MealMate is the bet food Ordering App', style: TextStyle(color: Colors.blueGrey,fontSize: 10.spMin),),
+                            title: Text('MealMate is the best food Ordering App', style: TextStyle(color: Colors.blueGrey,fontSize: 10.spMin),),
                             subtitle: TextButton(onPressed: () async{
                               final GoogleSignIn _googleSignIn = GoogleSignIn();
                               await _googleSignIn.signOut();

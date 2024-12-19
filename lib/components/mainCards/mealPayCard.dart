@@ -21,7 +21,7 @@ Widget MatePayCard(
       ),
       child: Container(
         height: 140.h,
-        width: 290.w,
+        width: 300.w,
         decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -83,10 +83,8 @@ Widget MatePayCard(
                         ),
                       ),
                     ),*/
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    ImageIcon(AssetImage('assets/images/logo.png',), size: 70, color: Colors.red,),
+
+                    ImageIcon(AssetImage('assets/images/logo.png'), size: 80, color: Colors.white,),
                   ],
                 )),
             Column(
@@ -103,9 +101,7 @@ Widget MatePayCard(
                       letterSpacing: 1,
                       color: Colors.white),
                 ),
-                SizedBox(
-                  height: 5.h,
-                ),
+
                 Text(
                   'P'
                       'P-Code :'+"$CardNumber",
@@ -114,9 +110,7 @@ Widget MatePayCard(
                       fontSize: 10.sp,
                       color: Colors.white),
                 ),
-                SizedBox(
-                  height: 10.h,
-                ),
+
                 Text(
                   'VALID THRU ',
                   style: TextStyle(

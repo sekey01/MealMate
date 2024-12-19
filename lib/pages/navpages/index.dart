@@ -32,7 +32,13 @@ class _IndexState extends State<Index> {
 
   /// THIS IS STREAM METHOD FETCHES NEARBY RESTAURANTS
   Stream<List<FoodItem>> getNearbyProducts(String collection) async* {
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection(collection).get();
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection(collection).get(GetOptions(source: Source.cache));
+    if(snapshot.docs.isEmpty){
+      print('No data in cache');
+      snapshot = await FirebaseFirestore.instance.collection(collection).get(
+        GetOptions(source: Source.server),
+      );
+    }
     LatLng userLocation = await Provider.of<LocationProvider>(context, listen: false).getPoints();
 
     List<FoodItem> nearbyRestaurants = [];
@@ -140,7 +146,7 @@ checkInternet();
         title: RichText(text: TextSpan(
           children: [
             TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 20.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
-            TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+            TextSpan(text: "Mate", style: TextStyle(color: Colors.redAccent, fontSize: 20.spMin, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
 
 
           ]

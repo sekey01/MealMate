@@ -31,7 +31,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseFirestore.instance.settings = Settings(persistenceEnabled: true);
+
+  ///This is to enable offline persistence(Caching of data from firestore)
+     FirebaseFirestore.instance.settings = Settings(persistenceEnabled: true);
+
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   //
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
