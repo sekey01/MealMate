@@ -236,7 +236,7 @@ class _adminHomeState extends State<adminHome> {
                       return Center(
                           child: Center(
                               child: Text(
-                                '🔃',
+                                '0',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -308,7 +308,7 @@ class _adminHomeState extends State<adminHome> {
                           return Center(
                               child: Center(
                                   child: Text(
-                                    '🔃',
+                                    '0',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -337,7 +337,7 @@ class _adminHomeState extends State<adminHome> {
                           );
                         }
                       }),
-                  child: Image(image: AssetImage('assets/Icon/Orders.png'),
+                  child: Image(image: AssetImage('assets/Icon/Orders.jpg'),
                     height: 25.h,width: 25.w,
                   ),
                 ),

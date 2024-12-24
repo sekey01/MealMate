@@ -46,7 +46,7 @@ class _IndexState extends State<Index> {
       FoodItem foodItem = FoodItem.fromMap(doc.data() as Map<String, dynamic>, doc.id);
       double distance = Provider.of<LocationProvider>(context, listen: false)
           .calculateDistance(userLocation, LatLng(foodItem.latitude, foodItem.longitude));
-      if (distance <= 10) {
+      if (distance <= Provider.of<LocationProvider>(context,listen: false).distanceRaneeToSearch) {
         nearbyRestaurants.add(foodItem);
         yield nearbyRestaurants; // Emit the current list of nearby restaurants
       }
@@ -531,124 +531,6 @@ checkInternet();
                   ),
 
 
-
-/*
-                  _hasInternet? SizedBox(
-                    width: double.infinity,
-                    height: 200.h,
-                    child: FutureBuilder<List<FoodItem>>(
-                    future: fetchFoodItems('Food 🍔'),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                  return ListView.builder(
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: NewSearchLoadingOutLook(),
-                      );
-                    },
-                    scrollDirection: Axis.horizontal,
-                  );
-                                  } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return ListView.builder(
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: EmptyCollection(),
-                      );
-                    },
-                    scrollDirection: Axis.horizontal,
-                  );
-                                  } else {
-                  return FutureBuilder<LatLng>(
-                    future: Provider.of<LocationProvider>(context, listen: false).getPoints(),
-                    builder: (context, locationSnapshot) {
-                      if (locationSnapshot.connectionState == ConnectionState.waiting) {
-                        return ListView.builder(
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: NewSearchLoadingOutLook(),
-                            );
-                          },
-                          scrollDirection: Axis.horizontal,
-                        );
-                      } else if (locationSnapshot.hasError) {
-                        return Center(child: Text('Error: ${locationSnapshot.error}'));
-                      } else if (!locationSnapshot.hasData) {
-                        return Center(child: Text('Unable to determine location'));
-                      } else {
-                        LatLng userLocation = locationSnapshot.data!;
-                        List<FoodItem> nearbyRestaurants = snapshot.data!.where((foodItem) {
-                          double distance = Provider.of<LocationProvider>(context, listen: false)
-                              .calculateDistance(userLocation, LatLng(foodItem.latitude, foodItem.longitude));
-                          return distance <= 10; // Check if the restaurant is within 10 km
-                        }).toList();
-
-                        return ListView.builder(
-                          itemCount: nearbyRestaurants.length,
-                          itemBuilder: (context, index) {
-                            final foodItem = nearbyRestaurants[index];
-                            return Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  foodItem.isAvailable
-                                      ? Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DetailedCard(
-                                        paymentKey: foodItem.paymentKey,
-                                        hasCourier: foodItem.hasCourier,
-                                        productImageUrl: foodItem.ProductImageUrl,
-                                        shopImageUrl: foodItem.shopImageUrl,
-                                        restaurant: foodItem.restaurant,
-                                        foodName: foodItem.foodName,
-                                        price: foodItem.price,
-                                        location: foodItem.location,
-                                        vendorid: foodItem.vendorId,
-                                        time: foodItem.time,
-                                        latitude: foodItem.latitude,
-                                        longitude: foodItem.longitude,
-                                        adminEmail: foodItem.adminEmail,
-                                        adminContact: foodItem.adminContact,
-                                        maxDistance: foodItem.maxDistance,
-                                        vendorAccount: foodItem.vendorAccount,
-                                      ),
-                                    ),
-                                  )
-                                      : Notify(context, 'This item is not available now', Colors.red);
-                                },
-                                child: NewVerticalCard(
-                                  foodItem.ProductImageUrl,
-                                  foodItem.restaurant,
-                                  foodItem.foodName,
-                                  foodItem.price,
-                                  foodItem.location,
-                                  foodItem.time,
-                                  foodItem.vendorId.toString(),
-                                  foodItem.isAvailable,
-                                  foodItem.adminEmail,
-                                  foodItem.adminContact,
-                                  foodItem.maxDistance,
-                                ),
-                              ),
-                            );
-                          },
-                          scrollDirection: Axis.horizontal,
-                        );
-                      }
-                    },
-                  );
-                                  }
-                                },
-                              ),
-                  ): NoInternetConnection(),*/
                   ///CONTAINER OF HRORINZAOL LIST OF FOODS
                   ///
                   ///
@@ -675,7 +557,6 @@ checkInternet();
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(image: AssetImage('assets/Icon/route.png'),height: 50.h,width: 70.w,),
-                          Text(' ${snapshot.error}', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
                           Text('Enable Location in your Settings',style: TextStyle(color: Colors.black, fontFamily: 'Poppins'),)
                         ],
                       ));
@@ -867,7 +748,6 @@ checkInternet();
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image(image: AssetImage('assets/Icon/route.png'),height: 50.h,width: 70.w,),
-                              Text(' ${snapshot.error}', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
                               Text('Enable Location in your Settings',style: TextStyle(color: Colors.black, fontFamily: 'Poppins'),)
                             ],
                           ));
@@ -1056,7 +936,6 @@ SizedBox(height: 30.h,),
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image(image: AssetImage('assets/Icon/route.png'),height: 50.h,width: 70.w,),
-                              Text(' ${snapshot.error}', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
                               Text('Enable Location in your Settings',style: TextStyle(color: Colors.black, fontFamily: 'Poppins'),)
                             ],
                           ));

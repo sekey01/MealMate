@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
-import 'package:mealmate/AdminPanel/OtherDetails/AdminFunctionsProvider.dart';
-import 'package:mealmate/AdminPanel/OtherDetails/ID.dart';
-import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
-import 'package:mealmate/UserLocation/LocationProvider.dart';
-import 'package:mealmate/components/CustomLoading.dart';
-import 'package:mealmate/components/NoFoodFound.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_url_launcher/easy_url_launcher.dart';
+import '../../UserLocation/LocationProvider.dart';
+import '../../components/CustomLoading.dart';
+import '../../components/NoFoodFound.dart';
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
+import '../OtherDetails/AdminFunctionsProvider.dart';
+import '../OtherDetails/ID.dart';
+import '../OtherDetails/incomingOrderProvider.dart';
 
 class IncomingOrders extends StatefulWidget {
   const IncomingOrders({super.key});
@@ -69,7 +69,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: CustomLoGoLoading(),
+                child: NewSearchLoadingOutLook(),
               );
             } else if (snapshot.hasError) {
               return Center(child: Center(child: Text('Error: Try again later')));
@@ -132,19 +132,19 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                               ListTile(
                                 title: FutureBuilder(
                                     future: Provider.of<LocationProvider>(context,
-                                            listen: false)
+                                        listen: false)
                                         .getAddressFromLatLng(Orders.Latitude, Orders.Longitude),
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
-                    
+
                                         return Text(snapshot.data.toString(),
                                             style: TextStyle(
                                                 overflow: TextOverflow.ellipsis,
                                                 color: Colors.deepOrangeAccent,
-                      fontWeight: FontWeight.bold
+                                                fontWeight: FontWeight.bold
 
 
-                      ,
+                                                ,
                                                 fontSize: 10.sp));
                                       }
                                       return Text(
@@ -161,7 +161,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 10.sp,
                                       color: Colors.black,
-                                  fontStyle: FontStyle.italic),
+                                      fontStyle: FontStyle.italic),
                                 ),
                                 title: Text('Latitude : '' ${Orders.Latitude.toString()}' ,style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold)),
                                 subtitle: Text('Longitude  : ''${Orders.Longitude.toString()}', style: TextStyle(color: Colors.black, fontSize: 15.sp,fontWeight: FontWeight.bold)),
@@ -169,7 +169,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                               ),
                               ListTile(
                                 titleTextStyle:
-                                    TextStyle(fontWeight: FontWeight.bold),
+                                TextStyle(fontWeight: FontWeight.bold),
                                 title: GestureDetector(
                                   onTap: () async{
                                     /// This function will take the Buyer's phone number and call the buyer
@@ -185,21 +185,14 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                       color: Colors.black, fontSize: 10.spMin),
                                 ),
                                 trailing: Text(
-                                  'Total Price: GHC${Orders.price.toInt()}.00',
+                                  'Total Price: GHC${Orders.price}',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 10.spMin,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
-
-                              ///
-
-
-
-
-
-                              ///GOOGLE MAP HERE 
+                              ///GOOGLE MAP HERE
                               ///
                               Padding(
                                 padding: const EdgeInsets.all(4.0),
@@ -213,7 +206,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                             visible: true,
                                             position: LatLng(
                                                 Orders.Latitude, Orders.Longitude
-                                                ))
+                                            ))
                                       },
                                       //liteModeEnabled: true,
                                       compassEnabled: true,
@@ -226,7 +219,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                       mapType: MapType.normal,
                                       onMapCreated: (GoogleMapController controller) {
                                         _Usercontroller.complete(_Usercontroller
-                                            as FutureOr<GoogleMapController>?);
+                                        as FutureOr<GoogleMapController>?);
                                       },
                                       gestureRecognizers: Set(),
                                       initialCameraPosition: CameraPosition(
@@ -240,9 +233,9 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                       ),
                                     )),
                               ),
-                    SizedBox(height: 10,),
+                              SizedBox(height: 10,),
 
-                    //TEXTFIEILD TO TAKE COURIER ID
+                              //TEXTFIEILD TO TAKE COURIER ID
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Form(
@@ -290,10 +283,16 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                       ),
                                     ),
                                     keyboardType: TextInputType.number,
+
+                                    onChanged: (value){
+                                      if (formKey.currentState!.validate()) {
+                                        Provider.of<AdminFunctions>(context, listen: false).UpdateCourier(context, Orders.vendorId, Orders.phoneNumber,int.parse(value));
+                                      }
+                                    },
                                     onFieldSubmitted: (value) {
                                       if (formKey.currentState!.validate()) {
-                                        Provider.of<AdminFunctions>(context, listen: false).UpdateCourier(context, Orders.vendorId, Orders.phoneNumber,int.parse(value) );
-                                                }
+                                        Provider.of<AdminFunctions>(context, listen: false).UpdateCourier(context, Orders.vendorId, Orders.phoneNumber,int.parse(value));
+                                      }
                                     },
 
                                   ),
@@ -303,73 +302,77 @@ class _IncomingOrdersState extends State<IncomingOrders> {
 
 
 
-                    /// ROW FOR SERVED AND COURIER
+                              /// ROW FOR SERVED AND COURIER
                               ///
-                    
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                    
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                        LiteRollingSwitch(
-                          //initial value
-                          value: Orders.served,
-                          width: 120.spMin,
-                          textOn: 'Served',
-                          textOnColor: Colors.white,
-                          textOff: 'Not-Served',
-                          textOffColor: Colors.white,
-                          colorOn: CupertinoColors.activeGreen,
-                          colorOff: Colors.redAccent,
-                          iconOn: Icons.done,
-                          iconOff: Icons.remove_circle_outline,
-                          textSize: 8.0,
-                          onChanged: (bool state) {
-                            print('Served');
-                            Provider.of<AdminFunctions>(context, listen: false).switchServedFood(context,Orders.vendorId , Orders.phoneNumber, state);
-                 //   print(Orders.vendorId);
-                 //   print(Orders.phoneNumber);
-                            ///Use it to manage the different states
-                            //print('Current State of SWITCH IS: $state');
-                          },
-                          onTap: () {
-                          },
-                          onDoubleTap: () {},
-                          onSwipe: () {},
-                        ), LiteRollingSwitch(
-                          //initial value
-                          value: Orders.courier,
-                          width: 120.spMin,
-                          textOn: 'Courier',
-                          textOnColor: Colors.white,
-                          textOff: 'N-Courier',
-                          textOffColor: Colors.white,
-                          colorOn: CupertinoColors.activeGreen,
-                          colorOff: Colors.redAccent,
-                          iconOn: Icons.done,
-                          iconOff: Icons.remove_circle_outline,
-                          textSize: 8.0,
-                          onChanged: (bool state) {
 
-                            if(formKey.currentState!.validate()){
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
 
-                              Provider.of<AdminFunctions>(context, listen: false).switchCourier(context,Orders.vendorId , Orders.phoneNumber, state, Orders.time);
-                              print('Given to Courier');                            }
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    LiteRollingSwitch(
+                                      //initial value
+                                      value: Orders.served,
+                                      width: 120.spMin,
+                                      textOn: 'Served',
+                                      textOnColor: Colors.white,
+                                      textOff: 'Not-Served',
+                                      textOffColor: Colors.white,
+                                      colorOn: CupertinoColors.activeGreen,
+                                      colorOff: Colors.redAccent,
+                                      iconOn: Icons.done,
+                                      iconOff: Icons.remove_circle_outline,
+                                      textSize: 8.0,
+                                      onChanged: (bool state) {
+                                        //print('Served');
+                                        Provider.of<AdminFunctions>(context, listen: false).switchServedFood(context,Orders.vendorId , Orders.phoneNumber, state,);
+                                        //   print(Orders.vendorId);
+                                        //   print(Orders.phoneNumber);
+                                        ///Use it to manage the different states
+                                        //print('Current State of SWITCH IS: $state');
+                                      },
+                                      onTap: () {
+                                      },
+                                      onDoubleTap: () {},
+                                      onSwipe: () {},
+                                    ), LiteRollingSwitch(
+                                      //initial value
+                                      value: Orders.courier,
+                                      width: 120.spMin,
+                                      textOn: 'Courier',
+                                      textOnColor: Colors.white,
+                                      textOff: 'N-Courier',
+                                      textOffColor: Colors.white,
+                                      colorOn: CupertinoColors.activeGreen,
+                                      colorOff: Colors.redAccent,
+                                      iconOn: Icons.done,
+                                      iconOff: Icons.remove_circle_outline,
+                                      textSize: 8.0,
+                                      onChanged: (bool state) {
+
+                                        if(formKey.currentState!.validate()){
+
+                                          Provider.of<AdminFunctions>(context, listen: false).switchIsGivenToCourierState(context,Orders.vendorId , Orders.phoneNumber, state, Orders.time).then((_){
+                                            Provider.of<AdminFunctions>(context, listen: false).UpdateCourier(context, Orders.vendorId, Orders.phoneNumber,int.parse(courierIdController.text));
+                                          });
+                                          print('Given to Courier');
+                                          courierIdController.clear();
+                                        }
 
 
 
-                            ///Use it to manage the different states
-                            //print('Current State of SWITCH IS: $state');
-                          },
-                          onTap: () {
-                          },
-                          onDoubleTap: () {},
-                          onSwipe: () {},
-                        ),
-                      ],),
-                    ),
-                    
+                                        ///Use it to manage the different states
+                                        //print('Current State of SWITCH IS: $state');
+                                      },
+                                      onTap: () {
+                                      },
+                                      onDoubleTap: () {},
+                                      onSwipe: () {},
+                                    ),
+                                  ],),
+                              ),
+
                             ],
                           ),
                         ),

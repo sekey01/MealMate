@@ -128,7 +128,7 @@ class _InitRowSearchState extends State<InitRowSearch> {
                           List<FoodItem> nearbyRestaurants = foodItems.where((foodItem) {
                             double distance = Provider.of<LocationProvider>(context, listen: false)
                                 .calculateDistance(userLocation, LatLng(foodItem.latitude, foodItem.longitude));
-                            return distance <= Provider.of<LocationProvider>(context,listen: true).Distance; // Check if the restaurant is within 10 km
+                            return distance <= Provider.of<LocationProvider>(context,listen: true).distanceRaneeToSearch; // Check if the restaurant is within 10 km
                           }).toList();
 
                           return ListView.builder(

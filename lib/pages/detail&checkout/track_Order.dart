@@ -10,12 +10,12 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../Courier/courier_model.dart';
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../Local_Storage/Locall_Storage_Provider/storeOrderModel.dart';
+import '../../Notification/notification_Provider.dart';
 import '../../UserLocation/LocationProvider.dart';
 import '../../components/CustomLoading.dart';
 import '../../components/Notify.dart';
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as gmaps;
-
 import 'map_track_courier.dart';
 
 
@@ -39,7 +39,7 @@ class TrackOrder extends StatefulWidget {
 }
 
 class _TrackOrderState extends State<TrackOrder> {
-
+String courierContact = '';
   Stream<int> countdownTimer(int start) async* {
     for (int i = start; i >= 0; i--) {
       await Future.delayed(const Duration(seconds: 1));
@@ -307,41 +307,7 @@ class _TrackOrderState extends State<TrackOrder> {
                             ),
                           ),
                           !Order.courier?Text(' Courier will get to your location soon...', style: TextStyle(color: Order.courier?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),):
-                          ///COURIER DETAILS IS DISPLAYED HERE WHEB THE COURIER IS ASSIGNED
-                          /// AND A BUTTON IS DISPLAYED TO TRACK THE COURIER ON THE MAP
-                          /// Center(
-                          //                             child: ExpansionTile(title: Text("Courier Details",style: TextStyle(color: Colors.blueGrey, fontFamily: 'Poppins'),),
-                          //                             children: [
-                          //                               ListTile(
-                          //                                 leading: CircleAvatar(
-                          //                                   backgroundImage: NetworkImage(courier.CourierPictureUrl),
-                          //                                   onBackgroundImageError: (exception, stackTrace) {
-                          //                                     const CircleAvatar(
-                          //                                       backgroundImage: AssetImage('assets/Icon/courier.png'),
-                          //                                     );
-                          //                                   },
-                          //                                 ),
-                          //                                 title: Text('Name: ${courier.CourierName}', style: const TextStyle(color: Colors.black, fontSize: 10, fontWeight: FontWeight.bold),),
-                          //                                 subtitle: Text('No: ${courier.CourierVehicleNumber}', style: const TextStyle(color: Colors.black, fontSize: 10, fontWeight: FontWeight.bold),),
-                          //
-                          //                                 ///CALL BUTTON
-                          //                                 ///WHEN PRESSED CALLS THE COURIER
-                          //                                 ///THE COURIER NUMBER IS STORED IN THE COURIER MODEL
-                          //                                 trailing: TextButton(onPressed: () async{
-                          //                                   EasyLauncher.call(number: courier.CourierContact.toString());
-                          //                                 }, child: const Text('Call Now', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),)),
-                          //                               ),
-                          //                               IconButton(onPressed: (){
-                          //                                 Navigator.push(context, MaterialPageRoute(builder: (context)=> TrackCourierMap(
-                          //                                   courierLatitude: courier.CourierLatitude,
-                          //                                   courierLongitude: courier.CourierLongitude,
-                          //                                 )));
-                          //                               }, icon: const Icon(Icons.map, color: Colors.green,)),
-                          //                             ],),
-                          //                           );
-                          ///
-                          ///
-                          ///
+
                           FutureBuilder(future: getCourierDetails(context, Order.CourierId.toString()),
                               builder: (context, snapshot){
                                 //generate time to display the current time and wherether ids m or pm
@@ -355,6 +321,7 @@ class _TrackOrderState extends State<TrackOrder> {
                                   return const Text('Courier Will Call you soon...', style: TextStyle(color: Colors.red,fontSize: 10,fontFamily: 'Poppins'),);
                                 } else {
                                   final courier = snapshot.data as CourierModel;
+                                  courierContact = courier.CourierContact.toString();
                                   return  GestureDetector(
                                     onTap: (){
                                       showBottomSheet(context: (context),showDragHandle: true,enableDrag: true,backgroundColor: Colors.blueGrey.shade100, builder: (context){
@@ -366,6 +333,7 @@ class _TrackOrderState extends State<TrackOrder> {
                                             scrollDirection: Axis.vertical,
                                             child: Column(
                                               children: [
+                                                
                                                 Container(
                                                   height: 50.h,
                                                   decoration: BoxDecoration(
@@ -544,6 +512,7 @@ class _TrackOrderState extends State<TrackOrder> {
                                 if(
                                 Order.courier && Order.served
                                 ){
+
                                   switchDelivered(context, widget.vendorId,Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber,).then((value) {
 
                                     Alert(
@@ -562,6 +531,9 @@ class _TrackOrderState extends State<TrackOrder> {
                                       buttons: [
                                         DialogButton(
                                           onPressed: () {
+                                            Provider.of<NotificationProvider>(context,listen:false).sendSms(courierContact, 'Your Order has been received by the buyer,\n'
+                                                'amount to be paid is GHC ${widget.deliveryFee}.00\n'
+                                                ' Thank you for using MealMate 😊');
                                             Provider.of<LocalStorageProvider>(context,listen: false).addOrder( StoreOrderLocally(id:widget.restaurant , item: Order.foodName, price: Order.price,time: DateTime.timestamp().toString()));
                                             Navigator.pop(context);
                                             Navigator.pop(context);
@@ -576,6 +548,8 @@ class _TrackOrderState extends State<TrackOrder> {
                                       ],
                                     ).show();
                                   });
+
+
                                   Notify(context, 'Thanks for Using MealMate 😊', Colors.green);
 
 

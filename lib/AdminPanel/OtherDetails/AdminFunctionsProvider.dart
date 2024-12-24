@@ -173,7 +173,7 @@ class AdminFunctions extends ChangeNotifier {
   }
 
 
-  Future<void> switchCourier(BuildContext context, String id, String phoneNumber, bool isCourier, DateTime time) async {
+  Future<void> switchIsGivenToCourierState(BuildContext context, String id, String phoneNumber, bool isCourier, DateTime time) async {
     final CollectionReference collectionRef = FirebaseFirestore.instance.collection('OrdersCollection');
 
     try {

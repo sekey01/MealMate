@@ -6,6 +6,8 @@ import 'package:card_loading/card_loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -1120,6 +1122,17 @@ class _DetailedCardState extends State<DetailedCard> {
                                                       });
                                                     },
 
+                                                    gestureRecognizers: Set.from(
+                                                      [
+                                                        Factory<PanGestureRecognizer>(() => PanGestureRecognizer()),
+                                                        Factory<VerticalDragGestureRecognizer>(() => VerticalDragGestureRecognizer()),
+                                                        Factory<HorizontalDragGestureRecognizer>(() => HorizontalDragGestureRecognizer()),
+                                                        Factory<ScaleGestureRecognizer>(() => ScaleGestureRecognizer()),
+                                                        Factory<TapGestureRecognizer>(() => TapGestureRecognizer()),
+                                                        Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
+                                                      ],
+                                                    ),
+
 
                                                     markers: {
                                                       ///MARKER FOR VEENDOR LOCATION ON THE MAP
@@ -1134,6 +1147,8 @@ class _DetailedCardState extends State<DetailedCard> {
                                                           position: LatLng(
                                                               widget.latitude,
                                                               widget.longitude)),
+
+
                                                       ///MARKER FOR USER LOCATION ON THE MAP
                                                       Marker(
                                                           markerId: const MarkerId('User'),
@@ -1388,7 +1403,10 @@ class _DetailedCardState extends State<DetailedCard> {
                                                   ///END SMS TO ALERT VENDOR FUNCTION OF NEW ORDER
                                                   ///SEND SMS TO VENDOR
                                                   Provider.of<NotificationProvider>(context,listen: false).sendSms(
-                                                      widget.adminContact.toString(), 'You have a new order from ${Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber} for ${widget.foodName}'
+                                                      widget.adminContact.toString(), ' ${widget.restaurant},'
+                                                      ' you have a new order from'
+                                                      ' ${Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber} for ${widget.foodName}'
+                                                      '\n please check MealMate App for more details'
                                                   );
                                                   Navigator.push(
                                                     context,
@@ -1490,7 +1508,10 @@ class _DetailedCardState extends State<DetailedCard> {
                                             )).then((_){
                                               ///SEND SMS TO ALERT VENDOR FUNCTION
                                               Provider.of<NotificationProvider>(context,listen: false).sendSms(
-                                                  widget.adminContact.toString(), 'You have a new order from ${Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber} for ${widget.foodName}'
+                                                  widget.adminContact.toString(), ' ${widget.restaurant},'
+                                                  ' you have a new order from'
+                                                  ' ${Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber} for ${widget.foodName}'
+                                                  '\n please check MealMate App for more details'
                                               );
 
                                               Navigator.push(

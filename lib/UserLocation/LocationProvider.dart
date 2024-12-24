@@ -4,13 +4,19 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 
 class LocationProvider extends ChangeNotifier {
-  final String googleMapsApiKey = 'AIzaSyCO2v58cOsSM5IKXwyGa172U_YHrmRK9ks';
+  //radius to search for vendors,couriers and customers
+  final int distanceRaneeToSearch = 10000000;
+
+  //Google Maps API Key
+  final String googleMapsApiKey =  '${dotenv.env['GOOGLE_MAPS_API_KEY']}';
+
    double Lat = 0.0 ;
    double Long = 0.0;
 

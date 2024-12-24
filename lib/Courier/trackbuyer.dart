@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -105,6 +107,16 @@ class _TrackBuyerState extends State<TrackBuyer> {
                              color: Colors.blue,
                              width: 4),
                        },
+                       gestureRecognizers: Set.from(
+                         [
+                           Factory<PanGestureRecognizer>(() => PanGestureRecognizer()),
+                           Factory<VerticalDragGestureRecognizer>(() => VerticalDragGestureRecognizer()),
+                           Factory<HorizontalDragGestureRecognizer>(() => HorizontalDragGestureRecognizer()),
+                           Factory<ScaleGestureRecognizer>(() => ScaleGestureRecognizer()),
+                           Factory<TapGestureRecognizer>(() => TapGestureRecognizer()),
+                           Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
+                         ],
+                       ),
                        markers: {
                          Marker(
 

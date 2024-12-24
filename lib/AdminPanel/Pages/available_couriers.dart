@@ -1,15 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as gmaps;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
-import 'package:mealmate/components/CustomLoading.dart';
 import 'package:provider/provider.dart';
 import '../../Courier/courier_model.dart';
 import '../../UserLocation/LocationProvider.dart';
+import '../../components/CustomLoading.dart';
 import '../../components/Notify.dart';
 import '../../components/mainCards/verticalCard.dart';
 
@@ -40,8 +42,8 @@ Future<List<CourierModel>> getNearbyCouriers(BuildContext context, double maxDis
       LatLng courierLocation = LatLng(courier.CourierLatitude, courier.CourierLongitude);
       double distance = Provider.of<LocationProvider>(context, listen: false).calculateDistance(currentLocation, courierLocation);
 
-      if (distance <= maxDistance) {
-print(courier.CourierLatitude);
+      if (distance <= Provider.of<LocationProvider>(context, listen: false).distanceRaneeToSearch) {
+        print(courier.CourierLatitude);
         nearbyCouriers.add(courier);
 
       }
@@ -63,9 +65,9 @@ class _CouriersAvailableState extends State<CouriersAvailable> {
   late final customMapIcon;
   Future<BitmapDescriptor> _loadCustomIcon(BuildContext context) async {
     final ImageConfiguration configuration = createLocalImageConfiguration(context, size: Size(40, 40));
-  //  setState(() async {
-     // customMapIcon =  await BitmapDescriptor.asset(configuration, 'assets/Icon/courier.png');
-   // });
+    //  setState(() async {
+    // customMapIcon =  await BitmapDescriptor.asset(configuration, 'assets/Icon/courier.png');
+    // });
     return await BitmapDescriptor.asset(configuration, 'assets/Icon/courier.png', imagePixelRatio: 3.5);
   }
   @override
@@ -80,6 +82,17 @@ class _CouriersAvailableState extends State<CouriersAvailable> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+
+              });
+            },
+            icon: Icon(Icons.refresh_outlined),
+            color: Colors.blueGrey,
+          ),
+        ],
         automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () {
@@ -151,138 +164,199 @@ class _CouriersAvailableState extends State<CouriersAvailable> {
               itemCount: couriers.length,
               itemBuilder: (context, index) {
                 CourierModel courier = couriers[index];
-                return Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(0.0, 1.0), //(x,y)
-                        blurRadius: 6.0,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: CircleAvatar(
-                          radius: 30.r,
-                          backgroundImage: NetworkImage(courier.CourierPictureUrl),
-                        ),
-                        title: Text(
-                          courier.CourierName,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.sp,
-                            fontFamily: 'Righteous',
-                          ),
-                        ),
-                        subtitle: Text(
-                          courier.CourierEmail,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12.sp,
-                            fontFamily: 'Poppins',
-                          ),
-                        ),
-                        trailing: Lottie.asset('assets/Icon/online.json', height: 50.h, width: 50.w),
-                      ),
-                      Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              'Call Or Text the courier if he is on his way to deliver another order or ready to pick up your order',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap: () async {
-                                  EasyLauncher.sendToWhatsApp(
-                                    phone: '+233${courier.CourierContact}',
-                                    message: 'Hello, Can you deliver my order to a buyer?',
-                                  );
-                                },
-                                child: Column(
-                                  children: [
-                                    Image(
-                                      image: AssetImage('assets/Icon/whatsapp.png'),
-                                      height: 30.h,
-                                      width: 30.w,
-                                    ),
-                                    Text(
-                                      'Whatsapp',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 10.sp,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 30.w),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 3,
-                                  backgroundColor: Colors.redAccent,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  EasyLauncher.call(number: courier.CourierContact.toString());
-                                },
-                                child: Text(
-                                  'Call Courier',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Righteous',
-                                    fontSize: 15.sp,
-                                    letterSpacing: 2,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 30.w),
-                              GestureDetector(
-                                onTap: () async {
-                                  EasyLauncher.sms(number: courier.CourierContact.toString());
-                                },
-                                child: Column(
-                                  children: [
-                                    Image(
-                                      image: AssetImage('assets/Icon/sms.png'),
-                                      height: 30.h,
-                                      width: 30.w,
-                                    ),
-                                    Text(
-                                      'SMS',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 10.sp,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.blueGrey.shade100,
+                          Colors.white,
+
                         ],
                       ),
-                    ],
+                      color: Colors.deepOrange.shade100,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(0.0, 1.0), //(x,y)
+                          blurRadius: 6.0,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: CircleAvatar(
+                            radius: 30.r,
+                            backgroundImage: NetworkImage(courier.CourierPictureUrl),
+                          ),
+                          title: Text(
+                            courier.CourierName,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14.sp,
+                              fontFamily: 'Righteous',
+                            ),
+                          ),
+                          subtitle: Text(
+                            courier.CourierEmail,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10.sp,
+                              fontFamily: 'Poppins',
+                            ),
+                          ),
+                          trailing: Lottie.asset('assets/Icon/online.json', height: 50.h, width: 50.w),
+                        ),
+                        Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                'Call Or Text the courier if he is on his way to deliver another order or ready to pick up your order',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: Colors.grey.shade600,
+                                ),
+                              ),
+                            ),
+                            ///COURIER VEHICLE
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Text(
+                                    'Vehicle: ',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Righteous',
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  courier.CourierVehicle,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            ///COURIER VEHICLE NUMBER
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Text(
+                                    'Vehicle No: ',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Righteous',
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  courier.CourierVehicleNumber,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            ///COURIER CONTACT
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    EasyLauncher.sendToWhatsApp(
+                                      phone: '+233${courier.CourierContact}',
+                                      message: 'Hello, Can you deliver my order to a buyer?',
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Image(
+                                        image: AssetImage('assets/Icon/whatsapp.png'),
+                                        height: 30.h,
+                                        width: 30.w,
+                                      ),
+                                      Text(
+                                        'Whatsapp',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(width: 30.w),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 3,
+                                    backgroundColor: Colors.redAccent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    EasyLauncher.call(number: courier.CourierContact.toString());
+                                  },
+                                  child: Text(
+                                    'Call Courier',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Righteous',
+                                      fontSize: 15.sp,
+                                      letterSpacing: 2,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 30.w),
+                                GestureDetector(
+                                  onTap: () async {
+                                    EasyLauncher.sms(number: courier.CourierContact.toString());
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Image(
+                                        image: AssetImage('assets/Icon/sms.png'),
+                                        height: 30.h,
+                                        width: 30.w,
+                                      ),
+                                      Text(
+                                        'SMS',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -304,7 +378,7 @@ class _CouriersAvailableState extends State<CouriersAvailable> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
-          showDragHandle: true, isScrollControlled: true, enableDrag: true, isDismissible: true, shape: RoundedRectangleBorder(
+              showDragHandle: true, isScrollControlled: true, enableDrag: true, isDismissible: true, shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30),
               topRight: Radius.circular(30),
@@ -312,22 +386,22 @@ class _CouriersAvailableState extends State<CouriersAvailable> {
           ),
               context: context, builder: (context){
             return Container(
-              height: 500.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey,
-                    offset: Offset(0.0, 1.0), //(x,y)
-                    blurRadius: 6.0,
+                height: 500.h,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
                   ),
-                ],
-              ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(0.0, 1.0), //(x,y)
+                      blurRadius: 6.0,
+                    ),
+                  ],
+                ),
                 child: FutureBuilder<List<CourierModel>>(future: getNearbyCouriers(context, 10),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -358,13 +432,24 @@ class _CouriersAvailableState extends State<CouriersAvailable> {
 
                           mapType: gmaps.MapType.normal,
                           initialCameraPosition: gmaps.CameraPosition(
-                            target: gmaps.LatLng(5.6037, -0.1870),
+                            target: gmaps.LatLng(Provider.of<LocationProvider>(context,listen: false).Lat, Provider.of<LocationProvider>(context,listen: false).Long),
                             zoom: 11.5,
                           ),
                           myLocationButtonEnabled: true,
                           compassEnabled: true,
                           myLocationEnabled: true,
-
+                          rotateGesturesEnabled: true,
+                          buildingsEnabled: true,
+                            gestureRecognizers: Set.from(
+                              [
+                                Factory<PanGestureRecognizer>(() => PanGestureRecognizer()),
+                                Factory<VerticalDragGestureRecognizer>(() => VerticalDragGestureRecognizer()),
+                                Factory<HorizontalDragGestureRecognizer>(() => HorizontalDragGestureRecognizer()),
+                                Factory<ScaleGestureRecognizer>(() => ScaleGestureRecognizer()),
+                                Factory<TapGestureRecognizer>(() => TapGestureRecognizer()),
+                                Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
+                              ],
+                            ),
                           markers: nearbyCouriers
                               .map(
                                 (courier) => gmaps.Marker(
@@ -407,8 +492,16 @@ class _CouriersAvailableState extends State<CouriersAvailable> {
             );
           });
         },
-        child: Icon(Icons.location_on_outlined, color: Colors.black,),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
+        child: Container(
+          height: 50.h,
+          width: 50.w,
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(50),
+          ),
+          child: Icon(Icons.map_outlined, color: Colors.white, size: 30.sp,),
+        ),
       ),
 
     );
