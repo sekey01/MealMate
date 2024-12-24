@@ -486,7 +486,7 @@ String courierContact = '';
                                           color: Colors.black,
                                           borderRadius: BorderRadius.circular(30),
                                         ),
-                                        child: Center(child: Text('Show Courier Details', style: TextStyle(color: Colors.white,fontSize: 10,fontFamily: 'Poppins'),)),
+                                        child: Center(child: Text('Show Courier  Details', style: TextStyle(color: Colors.white,fontSize: 10,fontFamily: 'Poppins'),)),
                                       ),
                                     ),
                                   );
