@@ -46,7 +46,7 @@ class _IndexState extends State<Index> {
       FoodItem foodItem = FoodItem.fromMap(doc.data() as Map<String, dynamic>, doc.id);
       double distance = Provider.of<LocationProvider>(context, listen: false)
           .calculateDistance(userLocation, LatLng(foodItem.latitude, foodItem.longitude));
-      if (distance <= Provider.of<LocationProvider>(context,listen: false).distanceRaneeToSearch) {
+      if (distance <= Provider.of<LocationProvider>(context,listen: false).distanceRangeToSearch) {
         nearbyRestaurants.add(foodItem);
         yield nearbyRestaurants; // Emit the current list of nearby restaurants
       }
@@ -349,7 +349,7 @@ checkInternet();
                             flex: 2,
                             child: GestureDetector(
                               onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=> InitPageSearch(searchCollection: 'Food 🍔', Title: 'Food Delivery',)));
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=> InitPageSearch(searchCollection: 'Food ', Title: 'Food Delivery',)));
 
                               },
                               child: Container(
@@ -406,7 +406,7 @@ checkInternet();
                                   ///
                                   GestureDetector(
                                     onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(builder: (context)=> InitPageSearch(searchCollection: 'Grocery 🛒', Title: 'Supermarket',)));
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=> InitPageSearch(searchCollection: 'Grocery ', Title: 'Supermarket',)));
 
                                     },
                                     child: Container(
@@ -458,7 +458,7 @@ checkInternet();
                                   ///
                                   GestureDetector(
                                     onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(builder: (context)=> InitPageSearch(searchCollection: 'Clothing 👗', Title: ' Other Shops',)));
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=> InitPageSearch(searchCollection: 'Others', Title: ' Other Shops',)));
 
                                     },
                                     child: Container(
@@ -514,16 +514,48 @@ checkInternet();
                   ),
                   SizedBox(height: 30.h,),
 
-                  Padding(padding: EdgeInsets.all(1),
-                      child: PromotionAdsCard(
-                        image: 'assets/images/MealmateDress.png',
-                        heading:'Get Rewarded With MealMate Shirt',
-                        content: 'Order your favorite food and get Lucky..',
-                        contentColor: Colors.white70,
-                        headingColor: Colors.white,
-                        backgroundColor: Colors.black,
 
-                      )),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 110.h,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: const [
+                        Padding(padding: EdgeInsets.all(1),
+                            child: PromotionAdsCard(
+                              image: 'assets/images/MealmateDress.png',
+                              heading:'Get Rewarded With MealMate Shirt',
+                              content: 'Order your favorite food and get Lucky..',
+                              contentColor: Colors.white70,
+                              headingColor: Colors.white,
+                              backgroundColor: Colors.black,
+
+                            )),
+                        Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: PromotionAdsCard(
+                            image: 'assets/adsimages/fufu.png',
+                            heading: 'Eat what you desire',
+                            content: 'Order your favorite food and get Lucky.. yh get lucky 🍀☺️',
+                            contentColor: Colors.white70,
+                            headingColor: Colors.white,
+                            backgroundColor: Colors.black,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: PromotionAdsCard(
+                            image: 'assets/adsimages/local.png',
+                            heading: 'Order Pizza and get a free drink',
+                            content: 'Embrace the Ecosystem... Let love lead',
+                            contentColor: Colors.white70,
+                            headingColor: Colors.white,
+                            backgroundColor: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
 
                   SizedBox(
@@ -539,7 +571,7 @@ checkInternet();
                 width: double.infinity,
                 height: 200.h,
                 child: StreamBuilder<List<FoodItem>>(
-                  stream: getNearbyProducts('Food 🍔'),
+                  stream: getNearbyProducts('Food'),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return ListView.builder(
@@ -730,7 +762,7 @@ checkInternet();
                     width: double.infinity,
                     height: 200.h,
                     child: StreamBuilder<List<FoodItem>>(
-                      stream: getNearbyProducts('Drinks 🍷'),
+                      stream: getNearbyProducts('Drinks'),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return ListView.builder(
@@ -918,7 +950,7 @@ SizedBox(height: 30.h,),
                     width: double.infinity,
                     height: 200.h,
                     child: StreamBuilder<List<FoodItem>>(
-                      stream: getNearbyProducts('Grocery 🛒'),
+                      stream: getNearbyProducts('Grocery'),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return ListView.builder(

@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/Notify.dart';
 import '../collectionUploadModelProvider/collectionProvider.dart';
 
 class AdminFunctions extends ChangeNotifier {
+  ///THIS FUNCTION DELETES THE ITEM FROM THE COLLECTION
   Future<void> deleteItem(BuildContext context, String imgUrl) async {
     final CollectionReference collectionRef = FirebaseFirestore.instance.collection(
         '${Provider.of<AdminCollectionProvider>(context, listen: false).collectionToUpload}');
@@ -13,14 +15,14 @@ class AdminFunctions extends ChangeNotifier {
     try {
       // Query the collection for documents where 'imageUrl' field matches imgUrl
       final QuerySnapshot snapshot =
-          await collectionRef.where('imageUrl', isEqualTo: imgUrl).get();
+      await collectionRef.where('imageUrl', isEqualTo: imgUrl).get();
 
       // Iterate through each document and delete it
       for (var doc in snapshot.docs) {
         await doc.reference.delete();
       }
 
-    //  print('isOnline Updated successfully');
+      //  print('isOnline Updated successfully');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         elevation: 20,
         content: Center(
@@ -33,12 +35,45 @@ class AdminFunctions extends ChangeNotifier {
         backgroundColor: Colors.red,
       ));
     } catch (e) {
-     // print('Error deleting document(s): $e');
+      // print('Error deleting document(s): $e');
+    }
+  }
+
+  ///SWITCH ALL FOOD ITEMS WITH THE SAME VENDOR ID TO ONLINE OR OFFLINE
+  List<String> collections = ['Food', 'Drinks', 'Grocery', 'Snacks', 'Electronics', 'Others'];
+
+  Future<void> SwitchAllState(BuildContext context, String id, bool isActive) async {
+    for (String collection in collections) {
+      final CollectionReference collectionRef = FirebaseFirestore.instance.collection(collection);
+
+      try {
+        // Query the collection for documents where 'vendorId' field matches id
+        final QuerySnapshot snapshot = await collectionRef.where('vendorId', isEqualTo: id).get();
+
+        // Iterate through each document and update it
+        for (var doc in snapshot.docs) {
+          await doc.reference.update({'isActive': isActive});
+        }
+
+      } catch (e) {
+        print('Error deleting document(s): $e');
+      }
     }
   }
 
 
-  ///THIS FUNCTION TOGGLES THE ADMINS ALL PRODUCTS ONLINE AND OFFLINE
+
+
+
+
+
+
+
+
+
+
+  ///THIS FUNCTION TOGGLES THE ADMINS ALL PRODUCTS ONLINE AND OFFLINE STATE
+  ///BASE ON THE SELECTED COLLECTION
 
   Future<void> SwitchOnline(BuildContext context, String id, bool isActive) async {
     final CollectionReference collectionRef = FirebaseFirestore.instance.collection(
@@ -47,7 +82,7 @@ class AdminFunctions extends ChangeNotifier {
     try {
       // Query the collection for documents where 'imageUrl' field matches imgUrl
       final QuerySnapshot snapshot =
-          await collectionRef.where('vendorId', isEqualTo: id).get();
+      await collectionRef.where('vendorId', isEqualTo: id).get();
 
       // Iterate through each document and update it
       for (var doc in snapshot.docs) {
@@ -127,7 +162,7 @@ class AdminFunctions extends ChangeNotifier {
 
       // Check if any documents were found
       if (querySnapshot.docs.isEmpty) {
-        print('No matching documents found');
+        // print('No matching documents found');
         return;
       }
 
@@ -136,13 +171,19 @@ class AdminFunctions extends ChangeNotifier {
         await doc.reference.update({'served': isServed});
       }
 
-      print('isServed updated successfully');
+      // print('isServed updated successfully');
     } catch (e) {
-      print('Error updating document(s): $e');
+      // print('Error updating document(s): $e');
       // You might want to show an error message to the user here
     }
   }
 
+
+
+  /// THIS FUNCTION FINDS THE RIGHT ORDER IN THE ORDERS COLLECTION AND
+  /// UPDATE  THE COURIER ID,
+  /// IN THE USER PAGE , A FUNCTION IS THERE TO GET THE COURIER ID AND USE THE THE ID TO GET THE COURIER DETAILS
+  /// IN THE COURIERS COLLECTION
   Future<void> UpdateCourier(BuildContext context, String id, String phoneNumber, int CourierId,) async {
     final CollectionReference collectionRef = FirebaseFirestore.instance.collection('OrdersCollection');
 
@@ -156,7 +197,7 @@ class AdminFunctions extends ChangeNotifier {
 
       // Check if any documents were found
       if (querySnapshot.docs.isEmpty) {
-        print('No matching documents found');
+        // print('No matching documents found');
         return;
       }
 
@@ -165,9 +206,9 @@ class AdminFunctions extends ChangeNotifier {
         await doc.reference.update({'CourierId': CourierId});
       }
 
-      print('isCourier updated successfully');
+      // print('isCourier updated successfully');
     } catch (e) {
-      print('Error updating document(s): $e');
+      //  print('Error updating document(s): $e');
       // You might want to show an error message to the user here
     }
   }
@@ -202,30 +243,36 @@ class AdminFunctions extends ChangeNotifier {
     }
   }
 
-  /*///BELLOW IS THE FUNCTION TO FREQUENTLY UPDATE THE ADMIN ON INCOMING ORDERS
-///
-  Future<List<OrderInfo>> IncomingOrders(String collection) async {
-    int retryCount = 3;
-    int attempt = 0;
-    while (attempt < retryCount) {
-      try {
-        QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection(collection).get();
-        return snapshot.docs.map((doc) => OrderInfo.fromMap(doc.data() as Map<String, dynamic>, doc.id))
-            .toList();
-      } on SocketException catch (e) {
-        attempt++;
-        if (attempt >= retryCount) {
-          print("Internet Problem: $e");
-          return [];
-        }
-        await Future.delayed(Duration(seconds: 2)); // wait before retrying
-      } catch (e) {
-        print("Error fetching food items: $e");
-        return [];
+  Future<void>RejectOrder(BuildContext context, String id, String phoneNumber) async {
+    final CollectionReference collectionRef = FirebaseFirestore.instance.collection('OrdersCollection');
+
+    try {
+      // First, get the documents that match the criteria
+      QuerySnapshot querySnapshot = await collectionRef
+          .where('vendorId', isEqualTo: id)
+          .where('phoneNumber', isEqualTo: phoneNumber)
+          .where('delivered',isEqualTo: false)
+
+          .get();
+
+      // Check if any documents were found
+      if (querySnapshot.docs.isEmpty) {
+        print('No matching documents found');
+        return;
       }
+
+      // Update each matching document
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        await doc.reference.update({'isRejected': true});
+      }
+      Notify(context, 'Order Rejected', Colors.red);
+
+      print('isRejected updated successfully');
+    } catch (e) {
+      print('Error updating document(s): $e');
+      // You might want to show an error message to the user here
     }
-    return [];
   }
-  */
+
+
 }

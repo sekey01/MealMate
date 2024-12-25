@@ -42,7 +42,7 @@ Future<List<CourierModel>> getNearbyCouriers(BuildContext context, double maxDis
       LatLng courierLocation = LatLng(courier.CourierLatitude, courier.CourierLongitude);
       double distance = Provider.of<LocationProvider>(context, listen: false).calculateDistance(currentLocation, courierLocation);
 
-      if (distance <= Provider.of<LocationProvider>(context, listen: false).distanceRaneeToSearch) {
+      if (distance <= Provider.of<LocationProvider>(context, listen: false).distanceRangeToSearch) {
         print(courier.CourierLatitude);
         nearbyCouriers.add(courier);
 

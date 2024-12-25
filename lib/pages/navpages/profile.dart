@@ -243,13 +243,13 @@ class _ProfileState extends State<Profile> {
                         children: [
                           ListTile(
                             onTap: () async{
-                              await EasyLauncher.url(url: 'https://www.google.com/', mode: Mode.platformDefault);
+                              await EasyLauncher.url(url: 'https://meal-mate-v8ps.vercel.app/', mode: Mode.platformDefault);
                             },
                             title: Text(' Read Terms & Conditions ', style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontFamily: "Righteous",),),
                           ),
                           ListTile(
                             onTap: () async{
-                              await EasyLauncher.url(url: 'https://www.google.com/', mode: Mode.platformDefault);
+                              await EasyLauncher.url(url: 'https://meal-mate-v8ps.vercel.app/', mode: Mode.platformDefault);
                             },
                             title: Text(' FAQ\'s ', style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontFamily: "Righteous",),),
                           )
@@ -262,13 +262,13 @@ class _ProfileState extends State<Profile> {
                         children: [
                           ListTile(
                             onTap: () async{
-                              await EasyLauncher.url(url: 'https://www.fda.gov.gh/', mode: Mode.platformDefault);
+                              await EasyLauncher.url(url: 'https://meal-mate-v8ps.vercel.app/', mode: Mode.platformDefault);
                             },
                             title: Text(' Foods And Drugs Authority ( FDA )', style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontFamily: "Righteous",),),
                           ),
                           ListTile(
                             onTap: () async{
-                              await EasyLauncher.url(url: 'https://www.google.com/', mode: Mode.platformDefault);
+                              await EasyLauncher.url(url: 'https://meal-mate-v8ps.vercel.app/', mode: Mode.platformDefault);
                             },
                             title: Text(' MealMate Geo ', style: TextStyle(color: Colors.blueGrey,fontSize: 15.sp,fontFamily: "Righteous",),),
                           )
@@ -306,7 +306,7 @@ class _ProfileState extends State<Profile> {
 
                       GestureDetector(
                         onTap: () async{
-                          await EasyLauncher.url(url: 'https://www.google.com/', mode: Mode.platformDefault);
+                          await EasyLauncher.url(url: 'https://meal-mate-v8ps.vercel.app/', mode: Mode.platformDefault);
                         },
                         child: PromotionAdsCard(
                             heading: 'Want to Become a Courier?',

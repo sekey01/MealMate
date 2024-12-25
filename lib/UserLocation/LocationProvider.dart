@@ -12,7 +12,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class LocationProvider extends ChangeNotifier {
   //radius to search for vendors,couriers and customers
-  final int distanceRaneeToSearch = 10000000;
+  final int distanceRangeToSearch = 10000000;
 
   //Google Maps API Key
   final String googleMapsApiKey =  '${dotenv.env['GOOGLE_MAPS_API_KEY']}';

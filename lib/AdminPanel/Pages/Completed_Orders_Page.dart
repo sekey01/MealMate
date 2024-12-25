@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mealmate/AdminPanel/OtherDetails/ID.dart';
-import 'package:mealmate/AdminPanel/OtherDetails/incomingOrderProvider.dart';
-import 'package:mealmate/UserLocation/LocationProvider.dart';
-import 'package:mealmate/components/CustomLoading.dart';
-import 'package:mealmate/components/NoFoodFound.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_url_launcher/easy_url_launcher.dart';
+import '../../UserLocation/LocationProvider.dart';
+import '../../components/CustomLoading.dart';
+import '../../components/NoFoodFound.dart';
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
+import '../OtherDetails/ID.dart';
+import '../OtherDetails/incomingOrderProvider.dart';
 
 
 class CompletedOrders extends StatefulWidget {
@@ -25,7 +25,7 @@ class _CompletedOrdersState extends State<CompletedOrders> {
   Widget build(BuildContext context) {
 
     final  adminId = Provider.of<AdminId>(context, listen: false).id;
-     String TotalPrice = Provider.of<IncomingOrdersProvider>(context, listen: false).TotalPrice;
+    String TotalPrice = Provider.of<IncomingOrdersProvider>(context, listen: false).TotalPrice;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -43,7 +43,7 @@ class _CompletedOrdersState extends State<CompletedOrders> {
         title:  RichText(text: TextSpan(
             children: [
               TextSpan(text: "Completed", style: TextStyle(color: Colors.black, fontSize: 18.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
-              TextSpan(text: "Orders", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 17.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
+              TextSpan(text: "Orders", style: TextStyle(color: Colors.redAccent, fontSize: 17.sp,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
 
 
             ]
@@ -100,7 +100,7 @@ class _CompletedOrdersState extends State<CompletedOrders> {
                           child: ExpansionTile(leading: RichText(text: TextSpan(
                               children: [
                                 TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 15.spMin,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
-                                TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.spMin,fontWeight: FontWeight.bold, fontFamily: 'Righteous',)),
+                                TextSpan(text: "Mate", style: TextStyle(color: Colors.redAccent, fontSize: 15.spMin,fontWeight: FontWeight.bold, fontFamily: 'Righteous',)),
 
 
                               ]
@@ -113,8 +113,8 @@ class _CompletedOrdersState extends State<CompletedOrders> {
                             trailing: Text(
                               "Quantity: ${Orders.quantity}",
                               style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
                                 fontFamily: 'Righteous',
                               ),
                             ),

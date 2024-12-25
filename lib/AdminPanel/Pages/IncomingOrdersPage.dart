@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_url_launcher/easy_url_launcher.dart';
+import '../../Notification/notification_Provider.dart';
 import '../../UserLocation/LocationProvider.dart';
 import '../../components/CustomLoading.dart';
 import '../../components/NoFoodFound.dart';
@@ -84,7 +87,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                   final Orders = snapshot.data![index];
                   return Badge(
                     alignment: Alignment.topCenter,
-                    backgroundColor: Orders.delivered?Colors.green:Colors.red,
+                    backgroundColor: Orders.delivered?Colors.green:Colors.redAccent,
                     label: Text(Orders.delivered?' Order Completed': 'Incomplete Order', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontFamily: 'Righteous',),),
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
@@ -98,7 +101,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                           child: ExpansionTile(leading: RichText(text: TextSpan(
                               children: [
                                 TextSpan(text: "Meal", style: TextStyle(color: Colors.black, fontSize: 15.spMin,fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
-                                TextSpan(text: "Mate", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 15.spMin,fontWeight: FontWeight.bold, fontFamily: 'Righteous',)),
+                                TextSpan(text: "Mate", style: TextStyle(color: Colors.redAccent, fontSize: 15.spMin,fontWeight: FontWeight.bold, fontFamily: 'Righteous',)),
 
 
                               ]
@@ -155,13 +158,34 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                               ),
                               ListTile(
 
-                                trailing: Text(
-                                  '${Orders.vendorId}',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10.sp,
-                                      color: Colors.black,
-                                      fontStyle: FontStyle.italic),
+                                trailing: InkWell(
+                                  onTap: () {
+                                    Provider.of<AdminFunctions>(context, listen: false).RejectOrder(context, Orders.vendorId, Orders.phoneNumber).then((_){
+                                      Provider.of<NotificationProvider>(context,listen: false).sendSms(Orders.phoneNumber, 'Your Order \n '
+                                          '${Orders.foodName} X ${Orders.quantity} '
+                                          ' has been Rejected'
+                                          ' Thank you for choosing MealMate '
+                                      );
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Reject Order',
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10.spMin,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                                 title: Text('Latitude : '' ${Orders.Latitude.toString()}' ,style: TextStyle(color: Colors.black, fontSize: 15.sp, fontWeight: FontWeight.bold)),
                                 subtitle: Text('Longitude  : ''${Orders.Longitude.toString()}', style: TextStyle(color: Colors.black, fontSize: 15.sp,fontWeight: FontWeight.bold)),
@@ -221,7 +245,22 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                         _Usercontroller.complete(_Usercontroller
                                         as FutureOr<GoogleMapController>?);
                                       },
-                                      gestureRecognizers: Set(),
+                                      gestureRecognizers: Set.from(
+                                          [
+                                            Factory<OneSequenceGestureRecognizer>(
+                                                    () => EagerGestureRecognizer()),
+                                            Factory<VerticalDragGestureRecognizer>(
+                                                    () => VerticalDragGestureRecognizer()),
+                                            Factory<ScaleGestureRecognizer>(
+                                                    () => ScaleGestureRecognizer()),
+                                            Factory<PanGestureRecognizer>(
+                                                    () => PanGestureRecognizer()),
+                                            Factory<HorizontalDragGestureRecognizer>(
+                                                    () => HorizontalDragGestureRecognizer()),
+                                            Factory<TapGestureRecognizer>(
+                                                    () => TapGestureRecognizer()),
+                                          ]
+                                      ),
                                       initialCameraPosition: CameraPosition(
                                         bearing: 192.8334901395799,
                                         target: LatLng(
@@ -323,10 +362,17 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                       colorOff: Colors.redAccent,
                                       iconOn: Icons.done,
                                       iconOff: Icons.remove_circle_outline,
-                                      textSize: 8.0,
+                                      textSize: 12.0,
                                       onChanged: (bool state) {
                                         //print('Served');
-                                        Provider.of<AdminFunctions>(context, listen: false).switchServedFood(context,Orders.vendorId , Orders.phoneNumber, state,);
+                                        Provider.of<AdminFunctions>(context, listen: false).switchServedFood(context,Orders.vendorId , Orders.phoneNumber, state,).then((_){
+                                          Provider.of<NotificationProvider>(context,listen: false).sendSms(Orders.phoneNumber, 'Your Order \n '
+                                              '${Orders.foodName} X ${Orders.quantity} '
+                                              ' has been Confirmed and being prepared'
+                                              ' Thank you for choosing MealMate '
+
+                                          );
+                                        });
                                         //   print(Orders.vendorId);
                                         //   print(Orders.phoneNumber);
                                         ///Use it to manage the different states
@@ -348,7 +394,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                       colorOff: Colors.redAccent,
                                       iconOn: Icons.done,
                                       iconOff: Icons.remove_circle_outline,
-                                      textSize: 8.0,
+                                      textSize: 12.0,
                                       onChanged: (bool state) {
 
                                         if(formKey.currentState!.validate()){
@@ -356,7 +402,7 @@ class _IncomingOrdersState extends State<IncomingOrders> {
                                           Provider.of<AdminFunctions>(context, listen: false).switchIsGivenToCourierState(context,Orders.vendorId , Orders.phoneNumber, state, Orders.time).then((_){
                                             Provider.of<AdminFunctions>(context, listen: false).UpdateCourier(context, Orders.vendorId, Orders.phoneNumber,int.parse(courierIdController.text));
                                           });
-                                          print('Given to Courier');
+                                          //print('Given to Courier');
                                           courierIdController.clear();
                                         }
 

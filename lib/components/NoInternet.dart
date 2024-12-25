@@ -14,7 +14,7 @@ Widget NoInternetConnection() {
           SizedBox(height: 20.h,),
   Text( "Unstable Internet Connection ", style: TextStyle(color: Colors.red, fontSize: 15.sp, fontWeight: FontWeight.normal, fontFamily: 'Righteous'),),
           SizedBox(height: 10.h,),
-          Text( "Please check your internet connection and try again", style: TextStyle(color: Colors.black, fontSize: 10.sp, fontWeight: FontWeight.normal, fontFamily: 'Poppins'),)
+          Text( "Please check your internet connection and try again", style: TextStyle(color: Colors.black, fontSize: 10.sp, fontWeight: FontWeight.normal, fontFamily: 'Poppins'),textAlign: TextAlign.center, )
   ,
         ],
       ),

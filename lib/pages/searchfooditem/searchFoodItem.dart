@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mealmate/components/CustomLoading.dart';
-import 'package:mealmate/components/NoFoodFound.dart';
-import 'package:mealmate/components/mainCards/verticalCard.dart';
 import 'package:provider/provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../../components/CustomLoading.dart';
+import '../../components/NoFoodFound.dart';
+import '../../components/mainCards/verticalCard.dart';
 import '../../models&ReadCollectionModel/ListFoodItemModel.dart';
 import '../../searchFoodItemProvider/searchFoodItemFunctionProvider.dart';
 import '../../UserLocation/LocationProvider.dart';
@@ -39,13 +39,13 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
         ),
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text('search'),
+        title: const Text('search'),
         titleTextStyle: TextStyle(
-          fontFamily: 'Righteous',
+            fontFamily: 'Righteous',
             color: Colors.blueGrey,
             fontWeight: FontWeight.normal,
             letterSpacing: 2,
-            fontSize: 20.sp),
+            fontSize: 20.spMin),
         backgroundColor: Colors.white,
       ),
       body: Padding(
@@ -62,7 +62,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                     color: Colors.grey.shade200,
                     spreadRadius: 2,
                     blurRadius: 5,
-                    offset: Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3), // changes position of shadow
                   ),
                 ],
               ),
@@ -70,32 +70,32 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                 padding: const EdgeInsets.only(top: 5),
                 child: TextField(
                   controller: searchitemController,
-                  style: TextStyle(color: Colors.deepOrange),
+                  style: const TextStyle(color: Colors.deepOrange),
                   decoration: InputDecoration(
-                    hintText: 'Search : foodName / restaurant / location',
+                    hintText: 'Search : foodName / restaurant ',
                     fillColor: Colors.grey.shade100,
                     filled: true,
                     prefixIcon:  Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: InkWell(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchByFilters()));
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>const SearchByFilters()));
 
-                      }
-                      ,child: ImageIcon(AssetImage('assets/Icon/filter.png'), color: Colors.blueGrey,size: 20,)),
+                          }
+                          ,child: const ImageIcon(AssetImage('assets/Icon/filter.png'), color: Colors.blueGrey,size: 20,)),
                     ),
 
-                suffixIcon: IconButton(
+                    suffixIcon: IconButton(
                       onPressed: () {
                         searchitemController.clear();
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.clear,
                         color: Colors.black,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.deepOrangeAccent,
                         style: BorderStyle.none,
                       ),
@@ -107,12 +107,12 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.deepOrangeAccent,
                         style: BorderStyle.solid,
                       ),
                     ),
-                    label: Text('foodName / restaurant / location'),
+                    label: const Text('foodName / restaurant '),
                     labelStyle: TextStyle(color: Colors.grey, fontSize: 10.spMin),
                   ),
                   onChanged: (value) {
@@ -130,7 +130,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                 future: searchProvider.searchFoodItems(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
+                    return const Center(
                       child: NewSearchLoadingOutLook(),
                     );
                   } else if (snapshot.hasError) {
@@ -147,7 +147,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                             RichText(text: TextSpan(
                                 children: [
                                   TextSpan(text: "Search for : ", style: TextStyle(color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous',)),
-                                  TextSpan(text: " \" FoodName, Restaurant or location \"", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 12.sp, fontWeight: FontWeight.bold,fontFamily: 'Poppins',)),
+                                  TextSpan(text: " \" FoodName, Restaurant  \"", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 12.sp, fontWeight: FontWeight.bold,fontFamily: 'Poppins',)),
                                 ]
                             )),
                             noFoodFound(),
@@ -161,7 +161,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                       future: Provider.of<LocationProvider>(context, listen: false).getPoints(),
                       builder: (context, locationSnapshot) {
                         if (locationSnapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: SingleChildScrollView(
+                          return const Center(child: SingleChildScrollView(
                             child: Column(
                               children: [
                                 NewSearchLoadingOutLook(),
@@ -172,22 +172,15 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                             ),
                           ));
                         } else if (locationSnapshot.hasError) {
-                          return Center(child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image(image: AssetImage('assets/Icon/route.png'),height: 50.h,width: 70.w,),
-                              Text(' ${locationSnapshot.error}', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
-                              Text('Enable Location in your Settings',style: TextStyle(color: Colors.black, fontFamily: 'Poppins'),)
-                            ],
-                          ));
+                          return Center(child: Text('Turn On your Location in settings'));
                         } else if (!locationSnapshot.hasData) {
-                          return Center(child: Text('Unable to determine location', style: TextStyle(color: Colors.black,fontFamily: 'Poppins'),));
+                          return const Center(child: Text('Unable to detect your location'));
                         } else {
                           LatLng userLocation = locationSnapshot.data!;
                           List<FoodItem> nearbyRestaurants = foodItems.where((foodItem) {
                             double distance = Provider.of<LocationProvider>(context, listen: false)
                                 .calculateDistance(userLocation, LatLng(foodItem.latitude, foodItem.longitude));
-                            return distance <= 10; // Check if the restaurant is within 10 km
+                            return distance <= Provider.of<LocationProvider>(context,listen: false).distanceRangeToSearch; // Check if the restaurant is within 10 km
                           }).toList();
 
                           return ListView.builder(
@@ -223,13 +216,13 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
                                     );
                                   },
                                   child: NewVerticalCard(
-                                      foodItem.ProductImageUrl,
-                                      foodItem.restaurant,
-                                      foodItem.foodName,
-                                      foodItem.price,
-                                      foodItem.location,
-                                      foodItem.time,
-                                      foodItem.vendorId.toString(),
+                                    foodItem.ProductImageUrl,
+                                    foodItem.restaurant,
+                                    foodItem.foodName,
+                                    foodItem.price,
+                                    foodItem.location,
+                                    foodItem.time,
+                                    foodItem.vendorId.toString(),
                                     foodItem.isAvailable,
                                     foodItem.adminEmail,
                                     foodItem.adminContact,
@@ -237,7 +230,7 @@ class _SearchFoodItemState extends State<SearchFoodItem> {
 
 
 
-                                      ),
+                                  ),
                                 ),
                               );
                             },

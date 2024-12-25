@@ -219,7 +219,7 @@ class _SearchState extends State<Search> {
                         List<FoodItem> nearbyRestaurants = snapshot.data!.where((foodItem) {
                           double distance = Provider.of<LocationProvider>(context, listen: false)
                               .calculateDistance(userLocation, LatLng(foodItem.latitude, foodItem.longitude));
-                          return distance <= Provider.of<LocationProvider>(context,listen: false).distanceRaneeToSearch; // Check if the restaurant is within 10 km
+                          return distance <= Provider.of<LocationProvider>(context,listen: false).distanceRangeToSearch; // Check if the restaurant is within 10 km
                         }).toList();
                         return MasonryGridView.count(
                           itemCount: nearbyRestaurants.length,

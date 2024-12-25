@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import '../../models&ReadCollectionModel/SendOrderModel.dart';
@@ -33,9 +33,9 @@ class IncomingOrdersProvider extends ChangeNotifier {
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       //print('Received a message while in the foreground!');
-     // print('Message data: ${message.data}');
+      // print('Message data: ${message.data}');
       if (message.notification != null) {
-       _firebaseMessaging.subscribeToTopic('all users');
+        _firebaseMessaging.subscribeToTopic('new_order');
         print('Message also contained a notification: ${message.notification}');
       }
     });
@@ -46,6 +46,35 @@ class IncomingOrdersProvider extends ChangeNotifier {
   }
 
 
+  void sendEmail(String VendorEmail, String Content) async {
+    try {
+      await emailjs.send(
+        'service_x7yk07n',
+        'template_duflkkc',
+        {
+          'to_email': '$VendorEmail',
+          'from_name': 'MealMate',
+          'message': 'There is a new Order...',
+          'to_name': 'Vendor',
+        },
+        const emailjs.Options(
+            publicKey: 'o59sVSZoIT_TM0LMr',
+            privateKey: 'KkaL6qxaFA5k_058CBTVp',
+            limitRate: const emailjs.LimitRate(
+              //id: 'app',
+              throttle: 10000,
+
+
+            )),
+      );
+      print('SUCCESS!');
+    } catch (error) {
+      if (error is emailjs.EmailJSResponseStatus) {
+        print('ERROR... $error');
+      }
+      print(error.toString());
+    }
+  }
 
 
   Future<bool> _checkConnectivity() async {
@@ -60,7 +89,7 @@ class IncomingOrdersProvider extends ChangeNotifier {
 
   void _startFetchingOrders(String id) async {
     int retryCount = 0;
-    const maxRetries = 2;
+    const maxRetries = 1;
     const retryDelay = Duration(seconds: 60);
 
     while (true) {
@@ -73,12 +102,14 @@ class IncomingOrdersProvider extends ChangeNotifier {
             .collection('OrdersCollection')
             .where('vendorId', isEqualTo: id)
             .where('delivered', isEqualTo: false)
+            .where('isRejected', isEqualTo: false)
             .get();
 
         List<OrderInfo> orders = snapshot.docs
             .map((doc) {
           try {
             return OrderInfo.fromMap(doc.data() as Map<String, dynamic>, doc.id);
+
           } catch (e) {
             return null;
           }
@@ -89,13 +120,20 @@ class IncomingOrdersProvider extends ChangeNotifier {
 
         if (orders.length > InCompleteOrderedIndex) {
           _firebaseMessaging.subscribeToTopic('new_order');
+          //send firebase notification
+          _firebaseMessaging.getToken().then((token) {
+            //send notification to this token
+
+            print("FCM Token: $token");
+            // Save the token to your server or use it as needed
+          });
         }
 
         InCompleteOrderedIndex = orders.length;
         _ordersController.add(orders);
 
         retryCount = 0;
-        await Future.delayed(Duration(seconds: 60));
+        await Future.delayed(Duration(seconds: 45));
       } catch (e) {
         if (e is SocketException || e is FirebaseException || e is FormatException) {
           retryCount++;
@@ -111,33 +149,35 @@ class IncomingOrdersProvider extends ChangeNotifier {
       }
     }
   }
-  Stream<List<OrderInfo>> fetchCompleteOrders(String id) async* {
-    const int maxRetries = 3;
-    const Duration retryDelay = Duration(seconds: 45);
 
+
+  Stream<List<OrderInfo>> fetchCompleteOrders(String id) {
+    _startFetchingCompleteOrders(id);
+    return _CompletedordersController.stream;
+  }
+
+  void _startFetchingCompleteOrders(String id) async {
     int retryCount = 0;
+    const maxRetries = 3;
+    const retryDelay = Duration(seconds: 45);
 
-    while (retryCount < maxRetries) {
+    while (true) {
       try {
-        // Check for internet connectivity
         if (!await _checkConnectivity()) {
           throw SocketException('No internet connection');
         }
 
-        // Fetch data from Firestore
         QuerySnapshot snapshot = await FirebaseFirestore.instance
             .collection('OrdersCollection')
             .where('vendorId', isEqualTo: id)
             .where('delivered', isEqualTo: true)
             .get();
 
-        // Map Firestore documents to OrderInfo objects
         List<OrderInfo> orders = snapshot.docs
             .map((doc) {
           try {
             return OrderInfo.fromMap(doc.data() as Map<String, dynamic>, doc.id);
           } catch (e) {
-            // Handle mapping errors gracefully
             return null;
           }
         })
@@ -145,34 +185,25 @@ class IncomingOrdersProvider extends ChangeNotifier {
             .cast<OrderInfo>()
             .toList();
 
-        // Emit the orders to the stream
-        yield orders;
-
-        // Reset retry count after successful fetch
+        OrderedIndex = orders.length;
+        _CompletedordersController.add(orders);
         retryCount = 0;
-
-        // Wait before fetching again (e.g., polling every 60 seconds)
         await Future.delayed(Duration(seconds: 60));
       } catch (e) {
-        // Handle specific retriable exceptions
         if (e is SocketException || e is FirebaseException || e is FormatException) {
           retryCount++;
           if (retryCount >= maxRetries) {
-            // Emit an error if max retries are reached
-            yield* Stream.error('Failed to fetch orders after $maxRetries attempts: $e');
+            _CompletedordersController.addError('Failed to fetch orders after $maxRetries attempts');
             return;
           }
           await Future.delayed(retryDelay);
         } else {
-          // Emit an error for unexpected exceptions and terminate
-          yield* Stream.error('An unexpected error occurred: $e');
+          _CompletedordersController.addError('An unexpected error occurred: $e');
           return;
         }
       }
     }
   }
-
-
 
   @override
   void dispose() {
