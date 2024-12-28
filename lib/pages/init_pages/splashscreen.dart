@@ -10,6 +10,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mealmate/Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import 'package:mealmate/Notification/notification_Provider.dart';
+import 'package:mealmate/PaymentProvider/payment_provider.dart';
 import 'package:mealmate/UserLocation/LocationProvider.dart';
 import 'package:provider/provider.dart';
 import '../authpages/login.dart';

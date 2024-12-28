@@ -44,8 +44,8 @@ class TrackOrder extends StatefulWidget {
 
 class _TrackOrderState extends State<TrackOrder> {
 
-  bool isLoading = false;
-
+ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
+  TextEditingController _feedbackController = TextEditingController();
   String courierContact = '';
   String courierId = '';
   Stream<int> countdownTimer(int start) async* {
@@ -159,7 +159,6 @@ class _TrackOrderState extends State<TrackOrder> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RepaintBoundary(
-
               child: StreamBuilder<OrderInfo>(
                 ///
                 ///
@@ -177,11 +176,76 @@ class _TrackOrderState extends State<TrackOrder> {
                     if(snapshot.connectionState == ConnectionState.waiting )
                     { return const Center(child: Text('Collecting Updates...', style: TextStyle(color: Colors.deepOrangeAccent, fontWeight: FontWeight.bold, fontSize: 20),));
                     }
-                    else if (snapshot.hasError){return const Center(child: Text('Please wait while we connect you...'),);
+                    else if (snapshot.hasError){
+                      print('Error: ${snapshot.error}');
+                      return Center(child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(' please refresh page or Call vendor now...',style: TextStyle(color: Colors.black),textAlign: TextAlign.center,),
+                       SizedBox(height: 20.h,),
+                          RichText(text: TextSpan(
+                              children: [
+                                TextSpan(text: 'Feed', style: TextStyle(color: Colors.black, fontSize: 16.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+                                TextSpan(text:'Back', style: TextStyle(color: Colors.redAccent, fontSize: 16.sp, fontWeight: FontWeight.bold,fontFamily: 'Righteous')),
+                              ]
+                          )),
+
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: TextField(
+                              controller: _feedbackController ,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Poppins',
+                                fontSize: 12.sp
+                              ),
+                              maxLines: 5,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                                hintText: 'FeedBack info',
+                                labelText: 'type here ...',
+                                labelStyle: TextStyle(color: Colors.black),
+                                hintStyle: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(10)
+                            ),
+                            child: TextButton(onPressed: () async {
+                             await Provider.of<NotificationProvider>(context,listen: false).sendSms('0553767177', _feedbackController.text.toString());
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            
+                            }, child:Text('Send FeedBack',style: TextStyle(color: Colors.white),)),
+                          ),
+
+                          SizedBox(
+                            height: 30.h,
+                          ),
+
+                          ElevatedButton(onPressed: (){
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+
+                          }, child: const Text('Go Back', style: TextStyle(color: Colors.white, fontFamily: 'Righteous'),),
+
+                          )],
+                      ),);
                     }
                     else if (!snapshot.hasData ) {
                       return const Center(
-                        child: Text('Can not Track Order, call the restaurant ...'),
+                        child: Text('Can not Track Order, call the restaurant ...',style: TextStyle(color: Colors.black),textAlign: TextAlign.center,),
                       );
                     } else {
                       final Order = snapshot.data;
@@ -511,38 +575,44 @@ class _TrackOrderState extends State<TrackOrder> {
                              Text(' Order Delivered ', style: TextStyle(color: Order.delivered?Colors.green: Colors.grey, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
                             SizedBox(height: 20.h,),
 
+                            ValueListenableBuilder(
+                              valueListenable: isLoading,
+                              builder: (context, value, child) {
+                                return  value ? Column(
+                                  children: [
+                                    CustomLoGoLoading(),
+                                    Text('Please Wait ...', style: TextStyle(color: Colors.green, fontSize: 10.spMin, fontWeight: FontWeight.bold),),
+                                  ],
+                                ) : Material(  borderRadius: BorderRadius.circular(10),
+                                    color: Colors.green,
+                                    elevation: 3,
+                                    child: TextButton(onPressed: ()  async{
+                                      if(
+                                      Order.courier && Order.served
+                                      ){
+                                        isLoading.value = true ;
+                                        await Provider.of<PaymentProvider>(context,listen: false).addMoneyToCourierAccount(context, courierId, widget.deliveryFee.truncateToDouble() , courierContact).then((_)  async {
+                                          await Provider.of<LocalStorageProvider>(context,listen: false).addOrder( StoreOrderLocally(id:widget.restaurant , item: Order.foodName, price: Order.price,time: DateTime.timestamp().toString()));
+                                          await switchDelivered(context, widget.vendorId,Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber);
+
+                                        });
+
+                                          Notify(context, 'Thanks for Using MealMate 😊', Colors.green);
 
 
-                            !isLoading ? Material(  borderRadius: BorderRadius.circular(10),
-                                color: Colors.green,
-                                elevation: 3,
-                                child: TextButton(onPressed: ()  async{
-                                  if(
-                                  Order.courier && Order.served
-                                  ){
-                                    Provider.of<PaymentProvider>(context,listen: false).addMoneyToCourierAccount(context, courierId, widget.deliveryFee.truncateToDouble() , courierContact).then((_)  {
-                                      switchDelivered(context, widget.vendorId,Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber);
-                                    });
-                                    setState(() {
-                                      isLoading = true;
-                                    });
-
-                                    await Future.delayed(const Duration(seconds: 10)).then((_){
-                                      Provider.of<LocalStorageProvider>(context,listen: false).addOrder( StoreOrderLocally(id:widget.restaurant , item: Order.foodName, price: Order.price,time: DateTime.timestamp().toString()));
-                                      Navigator.pop(context);
-                                      Navigator.pop(context);
-                                      Navigator.pop(context);
-                                      Notify(context, 'Thanks for Using MealMate 😊', Colors.green);
-                                    });
-
-                                  } else{
-                                    Notify(context, 'Order Not received yet', Colors.red);
-                                  }
+                                      } else{
+                                        Notify(context, 'Order Not received yet', Colors.red);
+                                      }
 
 
 
 
-                                }, child: const Text('Order Received', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,letterSpacing: 1,fontFamily: 'Righteous'),))) : CustomLoGoLoading(),
+                                    }, child: const Text('Order Received', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,letterSpacing: 1,fontFamily: 'Righteous'),)));
+                              }
+                            ),
+
+
+
 
 
                             SizedBox(height: 30.h,)
@@ -554,6 +624,7 @@ class _TrackOrderState extends State<TrackOrder> {
                       );}
                   }),
             ),
+
           ],
         ),
       ),

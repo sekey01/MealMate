@@ -1,6 +1,9 @@
 import 'package:card_loading/card_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
+import 'package:mealmate/AdminPanel/OtherDetails/AdminFunctionsProvider.dart';
+import 'package:mealmate/components/CustomLoading.dart';
 import 'package:provider/provider.dart';
 
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
@@ -105,52 +108,43 @@ class _ChangeAdminCredentialsState extends State<ChangeAdminCredentials> {
                   padding: const EdgeInsets.all(28.0),
                   child: Column(
                     children: [
-                      /// GET ADMIN EMAIL
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Image(
-                              image: AssetImage('assets/Icon/gmail.png'),
-                              height: 20.h,
-                              width: 20.h,
-                            ),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: FutureBuilder(
-                                  future: Provider.of<LocalStorageProvider>(context,
-                                      listen: false)
-                                      .getAdminEmail(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      return Text(
-                                        snapshot.data.toString(),
-                                        style: TextStyle(
-                                            letterSpacing: 1,
-                                            color: Colors.black,
-                                            fontSize: 15.sp,
-                                            fontFamily: 'Poppins'),
-                                      );
-                                    } else {
-                                      return Text(
-                                        'adminemail@gmail.com ',
-                                        style: TextStyle(
-                                          letterSpacing: 1,
-                                          color: Colors.black,
-                                          fontSize: 15.spMin,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      );
-                                    }
-                                  }),
-                            ),
-                          ],
-                        ),
+                      /// GET VENDOR DETAILS HERE
+
+                      FutureBuilder(future: Provider.of<AdminFunctions>(context,listen: false).getVendorDetails(
+                        Provider.of<AdminId>(context,listen: false).id
                       ),
+                          builder: (context, snapshot) {
+                            if(snapshot.connectionState == ConnectionState.waiting){
+                              return Center(child: CustomLoGoLoading());
+                            }else if(snapshot.hasError){
+                              return Center(child: Text('Poor Internet Connection, Try Again later', style: TextStyle(color: Colors.deepOrangeAccent),textAlign: TextAlign.center,));
+                            }else if(!snapshot.hasData){
+                              return Center(child: Text('Please Update your ID ', style: TextStyle(color: Colors.deepOrangeAccent),textAlign: TextAlign.center,));
+                            }else{
+                              final restaurant = snapshot.data!;
+
+                              return Center(
+                                child: Container(
+                                  child:Column(
+                                    children: [
+                                      ListTile(
+                                        leading: CircleAvatar(radius: 30.r,backgroundImage: NetworkImage(restaurant.shopImageUrl),),
+                                        title: Text(restaurant.shopName,style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 15.sp,fontFamily: 'Poppins'),),
+                                        subtitle: Text(restaurant.vendorEmail,style: TextStyle(color: Colors.black,fontSize: 8.sp, fontFamily: 'Poppins'),),
+                                        trailing:  LottieBuilder.asset('assets/Icon/online.json', height: 50.h, width: 30.w,),
+                                      ),
+
+                                      Text('Account Balance ', style: TextStyle(color: Colors.black, fontFamily: 'Righteous',fontWeight: FontWeight.bold, fontSize: 16.sp),),
+
+                                      Text('GHC ' + restaurant.vendorAccountBalance.toStringAsFixed(2),style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold,fontSize: 20.sp,fontFamily: 'Poppins'),)
+
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                          }),
+
                       SizedBox(
                         height: 30.h,
                       ),

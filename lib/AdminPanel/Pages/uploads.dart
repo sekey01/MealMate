@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../../models&ReadCollectionModel/ListFoodItemModel.dart';
 import '../collectionUploadModelProvider/collectionProvider.dart';
+import '../components/adminCollectionRow.dart';
 
 class Uploaded extends StatefulWidget {
   const Uploaded({super.key});
@@ -98,15 +99,36 @@ class _UploadedState extends State<Uploaded> {
               ))
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: SafeArea(
-              child: Center(
-            child: Container(
-                color: Colors.white,
+      body: SafeArea(
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey.shade100,
+                ),
+                height: 50,
                 width: double.infinity,
-                height: 19900,
+                child: Consumer<AdminCollectionProvider>(
+                    builder: (context, value, child) {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: value.collectionList.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  value.changeIndex(index);
+                                });
+                              },
+                              child: adminCollectionItemsRow(
+                                  value.collectionList[index]));
+                        },
+                      );
+                    }),
+              ),
+              Expanded(
+                flex: 10,
                 child: FutureBuilder<List<FoodItem>>(
                   future: fetchFoodItems(
                     Provider.of<AdminCollectionProvider>(context)
@@ -114,7 +136,7 @@ class _UploadedState extends State<Uploaded> {
                   ),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: NewSearchLoadingOutLook());
+                      return Center(child: CustomLoGoLoading());
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: Try Again later', style: TextStyle(color: Colors.deepOrangeAccent),));
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -141,10 +163,10 @@ class _UploadedState extends State<Uploaded> {
                       );
                     }
                   },
-                )),
+                ),
+              ),
+            ],
           )),
-        ),
-      ),
     );
   }
 }

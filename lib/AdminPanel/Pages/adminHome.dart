@@ -145,20 +145,22 @@ class _adminHomeState extends State<adminHome> {
   }
 
   /// UPLOAD FOOD ITEMS FUNCTION HERE
-  Future<void> uploadFood(UploadModel food) async {
+  Future<void> uploadFood(UploadModel food, String id) async {
     try {
-      _isLoading = true;
+      setState(() {
+        _isLoading = true;
+      });
 
       final db = FirebaseFirestore.instance.collection(
-          '${Provider.of<AdminCollectionProvider>(context, listen: false).collectionToUpload}');
-      await db.add(food.toMap());
+          Provider.of<AdminCollectionProvider>(context, listen: false).collectionToUpload);
+      await db.doc(id).set(food.toMap()..['id'] = id);
       Notify(context, 'Item Uploaded Successfully', Colors.green);
+    } catch (e) {
+      Notify(context, 'Upload Unsuccessful', Colors.red);
+    } finally {
       setState(() {
         _isLoading = false;
       });
-    } catch (e) {
-      ///print(e.toString());
-      Notify(context, 'Upload Unsuccessful', Colors.red);
     }
   }
 
@@ -374,7 +376,7 @@ class _adminHomeState extends State<adminHome> {
                 },
                 icon: Icon(
                   Icons.edit_note,
-                  color: Colors.blueGrey,
+                  color: Colors.red,
                   size: 30.sp,
                 ),
               ),
@@ -459,7 +461,7 @@ class _adminHomeState extends State<adminHome> {
                           onChanged: (bool state) {
                             /// print(Provider.of<AdminId>(context, listen: false).id);
 
-                            setState(() {
+
                               //  Provider.of<IncomingOrdersProvider>(context, listen: false).fetchOrders(Provider.of<AdminId>(context).id);
 
                               Provider.of<AdminFunctions>(context, listen: false)
@@ -468,7 +470,7 @@ class _adminHomeState extends State<adminHome> {
                                   Provider.of<AdminId>(context, listen: false)
                                       .id,
                                   state);
-                            });
+
 
                             ///Use it to manage the different states
                             //print('Current State of SWITCH IS: $state');
@@ -1088,10 +1090,10 @@ class _adminHomeState extends State<adminHome> {
                   width: 200.w,
                   height: 50.h,
                   child: _isLoading
-                      ? NewSearchLoadingOutLook()
+                      ? CustomLoGoLoading()
                       : ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepOrangeAccent),
+                        backgroundColor: Colors.redAccent),
                     onPressed: () {
                       if (_formkey.currentState!.validate() &&
                           _shopImage?.path != null &&
@@ -1131,7 +1133,7 @@ class _adminHomeState extends State<adminHome> {
                           int.parse(adminContactController.text),
                           maxDistance: maxDistance,
                           paymentKey: paymentKeyController.text.trim(),
-                        )).then((_) {
+                        ), idController.text).then((_) {
                           ///clearing the text fields
                           idController.clear();
                           restaurantController.clear();
