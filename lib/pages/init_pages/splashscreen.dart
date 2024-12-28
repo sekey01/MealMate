@@ -46,9 +46,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
     CheckSignedIn();
     //_getToken();
+    Provider.of<LocationProvider>(context,listen: false).enableLocation();
+    Provider.of<LocationProvider>(context,listen: false).determinePosition();
     Provider.of<NotificationProvider>(context,listen: false).configureFirebaseListeners();
     Provider.of<NotificationProvider>(context,listen: false).requestNotificationPermissions();
-    Provider.of<LocationProvider>(context,listen: false).enableLocation();
   }
 
 

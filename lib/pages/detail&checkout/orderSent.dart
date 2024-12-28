@@ -10,13 +10,15 @@ class OrderSent extends StatefulWidget {
   final adminEmail;
   final adminContact;
   final deliveryFee;
-  const OrderSent({super.key, 
-    required this.vendorId, 
+  final isCashOnDelivery;
+  const OrderSent({super.key,
+    required this.vendorId,
     required this.time,
     required this.restaurant,
     required this.adminEmail,
     required this.adminContact,
     required this.deliveryFee,
+    required this.isCashOnDelivery,
   } );
 
   @override
@@ -35,10 +37,10 @@ class _OrderSentState extends State<OrderSent> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
 
-               // Image(image: AssetImage('assets/images/logo.png'), height: 250,width: 150,),
+                // Image(image: AssetImage('assets/images/logo.png'), height: 250,width: 150,),
 
                 SizedBox(height: 30,),
-              LottieBuilder.asset('assets/Icon/success.json', height: 200, width: 200),
+                LottieBuilder.asset('assets/Icon/success.json', height: 200, width: 200),
 
                 Padding(
                   padding: EdgeInsets.all(10),
@@ -64,12 +66,19 @@ class _OrderSentState extends State<OrderSent> {
                   elevation: 3,
                   child: TextButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> TrackOrder(vendorId: widget.vendorId,time: widget.time, restaurant: widget.restaurant,adminEmail: widget.adminEmail,adminContact: widget.adminContact, deliveryFee: widget.deliveryFee,)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> TrackOrder(
+                          isCashOnDelivery:widget.isCashOnDelivery,
+                          vendorId: widget.vendorId,
+                          time: widget.time,
+                          restaurant: widget.restaurant,
+                          adminEmail: widget.adminEmail,
+                          adminContact: widget.adminContact,
+                          deliveryFee: widget.deliveryFee,)));
                       },
                       child: Text(
                         'Track Order Now',
                         style: TextStyle(
-                          fontFamily: 'Righteous',
+                            fontFamily: 'Righteous',
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 15.sp),

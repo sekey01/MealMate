@@ -187,7 +187,6 @@ class _SearchState extends State<Search> {
                             return Padding(
                               padding: const EdgeInsets.all(4.0),
                               child: SizedBox(
-
                                 height: 1000,
                                 child: SingleChildScrollView(
                                   child: Column(
@@ -203,7 +202,7 @@ class _SearchState extends State<Search> {
                           },
                         );
                       } else if (locationSnapshot.hasError) {
-                        return Center(child: Text('Error: ${locationSnapshot.error}'));
+                        return Center(child: Text('Error: Enable Location in your Settings'));
                       } else if (!locationSnapshot.hasData) {
                         return Center(child: SingleChildScrollView(
                           child: Column(

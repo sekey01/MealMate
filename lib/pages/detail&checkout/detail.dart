@@ -15,7 +15,6 @@ import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:mealmate/pages/detail&checkout/payment_unsuccessful.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import '../../AdminPanel/OtherDetails/incomingOrderProvider.dart';
 import '../../Local_Storage/Locall_Storage_Provider/StoreCredentials.dart';
 import '../../Notification/notification_Provider.dart';
 import '../../PaymentProvider/paystack_payment.dart';
@@ -142,8 +141,8 @@ class _DetailedCardState extends State<DetailedCard> {
   bool checkOutInitiated = false;
 
 
-  int overAllPrice = 0;
-  late int deliveryFee;
+  double overAllPrice = 0.0;
+  late double deliveryFee;
 
   TextEditingController messageController = TextEditingController();
 
@@ -438,105 +437,108 @@ class _DetailedCardState extends State<DetailedCard> {
 
                             ),
                             child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
 
-                                    children: [
-                                      ImageIcon(
-                                        const AssetImage('assets/Icon/delivery.png'),
-                                        color: Colors.black,
-                                        size: 30.sp,
-                                      ),
-                                      Text('Delivery fee',style: TextStyle(color: Colors.grey,fontSize: 10.sp,fontWeight: FontWeight.bold),)
-                                    ],
-                                  ),
-                                  ImageIcon(
-                                    const AssetImage('assets/Icon/cedi.png'),
-                                    color: Colors.red,
-                                    size: 15.sp,
-                                  ),
-                                  Builder(
-                                      builder: (context) {
+                                      children: [
+                                        ImageIcon(
+                                          const AssetImage('assets/Icon/delivery.png'),
+                                          color: Colors.black,
+                                          size: 30.sp,
+                                        ),
+                                        Text('Delivery fee',style: TextStyle(color: Colors.grey,fontSize: 10.sp,fontWeight: FontWeight.bold),)
+                                      ],
+                                    ),
+                                    ImageIcon(
+                                      const AssetImage('assets/Icon/cedi.png'),
+                                      color: Colors.red,
+                                      size: 15.sp,
+                                    ),
+                                    Builder(
+                                        builder: (context) {
 
-                                        ///Delivery fee is GHC 5.00  per km, so i multiplied it by the distance between the vendor and buyer
-                                        ///
+                                          ///Delivery fee is GHC 5.00  per km, so i multiplied it by the distance between the vendor and buyer
+                                          ///
 
-                                        deliveryFee = (Provider.of<LocationProvider>(context, listen: false).Distance * 5).toInt();
-                                        return Text(
-                                          deliveryFee.toStringAsFixed(2),
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                            // fontWeight: FontWeight.bold,
-                                            overflow: TextOverflow.ellipsis,
-                                            fontSize: 15.sp,
-                                            //decoration: TextDecoration.lineThrough,
-                                            decorationColor: Colors.black,
-                                            //letterSpacing: 2,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                          deliveryFee = (Provider.of<LocationProvider>(context, listen: false).Distance * 5).toDouble();
+                                          return Text(
+                                            deliveryFee.toStringAsFixed(2),
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                              // fontWeight: FontWeight.bold,
+                                              overflow: TextOverflow.ellipsis,
+                                              fontSize: 15.sp,
+                                              //decoration: TextDecoration.lineThrough,
+                                              decorationColor: Colors.black,
+                                              //letterSpacing: 2,
+                                              fontWeight: FontWeight.w600,
+                                            ),
 
-                                        );
-                                      }
-                                  ),
-                                  SizedBox(width: 10.sp,),
-                                  ///DELIVERY TIME
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                          );
+                                        }
+                                    ),
+                                    SizedBox(width: 10.sp,),
+                                    ///DELIVERY TIME
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
 
-                                    children: [
-                                      RichText(text: TextSpan(
-                                          children: [
-                                            TextSpan(text: widget.time, style: TextStyle(fontFamily: 'Popins',color: Colors.black, fontSize: 16.sp, )),
-                                            TextSpan(text: " mins", style: TextStyle(fontFamily: 'Righteous',color: Colors.deepOrangeAccent, fontSize: 15.sp,)),
-                                          ]
-                                      )),
-                                      Text('Avg delivery time',style: TextStyle(color: Colors.grey,fontSize: 10.sp,fontFamily: 'Popins',fontWeight: FontWeight.bold),)
-                                    ],
-                                  ),
-                                  SizedBox(width: 10.sp,),
+                                      children: [
+                                        RichText(text: TextSpan(
+                                            children: [
+                                              TextSpan(text: widget.time, style: TextStyle(fontFamily: 'Popins',color: Colors.black, fontSize: 16.sp, )),
+                                              TextSpan(text: " mins", style: TextStyle(fontFamily: 'Righteous',color: Colors.deepOrangeAccent, fontSize: 15.sp,)),
+                                            ]
+                                        )),
+                                        Text('Avg delivery time',style: TextStyle(color: Colors.grey,fontSize: 10.sp,fontFamily: 'Popins',fontWeight: FontWeight.bold),)
+                                      ],
+                                    ),
+                                    SizedBox(width: 10.sp,),
 
 
-                                  ///PRICE OF FOOD HERE
-                                  ///
-                                  ///
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    ///PRICE OF FOOD HERE
+                                    ///
+                                    ///
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
 
-                                    children: [
-                                      ImageIcon(
-                                        const AssetImage('assets/Icon/food.png'),
-                                        color: Colors.black,
-                                        size: 25.sp,
-                                      ),
-                                      Text('Price..',style: TextStyle(color: Colors.grey,fontSize: 10.sp,fontWeight: FontWeight.bold/*fontFamily: 'Popins'*/),)
-                                    ],
-                                  ),
+                                      children: [
+                                        ImageIcon(
+                                          const AssetImage('assets/Icon/food.png'),
+                                          color: Colors.black,
+                                          size: 25.sp,
+                                        ),
+                                        Text('Price..',style: TextStyle(color: Colors.grey,fontSize: 10.sp,fontWeight: FontWeight.bold/*fontFamily: 'Popins'*/),)
+                                      ],
+                                    ),
 
-                                  ImageIcon(
-                                    const AssetImage('assets/Icon/cedi.png'),
-                                    color: Colors.red,
-                                    size: 15.sp,
-                                  ),
-                                  Text(widget.price.toStringAsFixed(2),
-                                    style: TextStyle(
-                                      // fontWeight: FontWeight.bold,
-                                        overflow: TextOverflow.ellipsis,
-                                        fontSize: 15.sp,
-                                        //decoration: TextDecoration.lineThrough,
-                                        decorationColor: Colors.black,
-                                        //letterSpacing: 2,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.red),
+                                    ImageIcon(
+                                      const AssetImage('assets/Icon/cedi.png'),
+                                      color: Colors.red,
+                                      size: 15.sp,
+                                    ),
+                                    Text(widget.price.toStringAsFixed(2),
+                                      style: TextStyle(
+                                        // fontWeight: FontWeight.bold,
+                                          overflow: TextOverflow.ellipsis,
+                                          fontSize: 15.sp,
+                                          //decoration: TextDecoration.lineThrough,
+                                          decorationColor: Colors.black,
+                                          //letterSpacing: 2,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.red),
 
-                                  )
+                                    )
 
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -665,7 +667,7 @@ class _DetailedCardState extends State<DetailedCard> {
                             color: Colors.white,
                           ),
                           child: FutureBuilder<List<FoodItem>>(
-                            future: fetchSimilarFoodItems( ["Food 🍔", "Drinks 🍷", "Clothing 👗"], widget.vendorid),
+                            future: fetchSimilarFoodItems( ["Food ", "Drinks ", "Others ", "Snacks", "Breakfast"], widget.vendorid),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
@@ -905,7 +907,7 @@ class _DetailedCardState extends State<DetailedCard> {
 
                             Consumer<CartModel>(
                               builder: (context, CartModel, child) {
-                                overAllPrice = ((CartModel.getQuantity * widget.price) + deliveryFee).toInt();
+                                overAllPrice = ((CartModel.getQuantity * widget.price) + deliveryFee).toDouble();
                                 return Text(
                                   overAllPrice.toStringAsFixed(2),
                                   style: TextStyle(
@@ -1400,12 +1402,13 @@ class _DetailedCardState extends State<DetailedCard> {
                                                   isCashOnDelivery: false,
                                                   isCourierDelivered: false,
                                                   isRejected: false,
+
                                                 )).then((_){
                                                   ///END SMS TO ALERT VENDOR FUNCTION OF NEW ORDER
                                                   ///SEND SMS TO VENDOR
                                                   Provider.of<NotificationProvider>(context,listen: false).sendSms(
                                                       widget.adminContact.toString(), ' ${widget.restaurant},'
-                                                      ' you have a new order from'
+                                                      'you have a new order from'
                                                       ' ${Provider.of<LocalStorageProvider>(context, listen: false).phoneNumber} for ${widget.foodName}'
                                                       '\n please check MealMate App for more details'
                                                   );
@@ -1413,6 +1416,7 @@ class _DetailedCardState extends State<DetailedCard> {
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) => OrderSent(
+                                                          isCashOnDelivery: widget.hasCourier,
                                                           deliveryFee: deliveryFee,
                                                           vendorId: widget.vendorid,
                                                           time: time,
@@ -1520,7 +1524,8 @@ class _DetailedCardState extends State<DetailedCard> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) => OrderSent(
-                                                      deliveryFee: overAllPrice.toString(),
+                                                      isCashOnDelivery: widget.hasCourier,
+                                                      deliveryFee: overAllPrice,
                                                       vendorId: widget.vendorid,
                                                       time: time,
                                                       restaurant: widget.restaurant,

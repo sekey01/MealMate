@@ -463,7 +463,7 @@ class _adminHomeState extends State<adminHome> {
                               //  Provider.of<IncomingOrdersProvider>(context, listen: false).fetchOrders(Provider.of<AdminId>(context).id);
 
                               Provider.of<AdminFunctions>(context, listen: false)
-                                  .SwitchOnline(
+                                  .SwitchAllState(
                                   context,
                                   Provider.of<AdminId>(context, listen: false)
                                       .id,

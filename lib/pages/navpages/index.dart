@@ -31,26 +31,34 @@ class Index extends StatefulWidget {
 class _IndexState extends State<Index> {
 
   /// THIS IS STREAM METHOD FETCHES NEARBY RESTAURANTS
+  ///
   Stream<List<FoodItem>> getNearbyProducts(String collection) async* {
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection(collection).get(GetOptions(source: Source.cache));
-    if(snapshot.docs.isEmpty){
-      print('No data in cache');
-      snapshot = await FirebaseFirestore.instance.collection(collection).get(
-        GetOptions(source: Source.server),
-      );
-    }
-    LatLng userLocation = await Provider.of<LocationProvider>(context, listen: false).getPoints();
+   try{
+     QuerySnapshot snapshot = await FirebaseFirestore.instance.collection(collection).get(GetOptions(source: Source.cache));
+     if(snapshot.docs.isEmpty){
+       print('No data in cache');
+       snapshot = await FirebaseFirestore.instance.collection(collection).get(
+         GetOptions(source: Source.server),
+       );
+       print(snapshot.docs.length);
 
-    List<FoodItem> nearbyRestaurants = [];
-    for (var doc in snapshot.docs) {
-      FoodItem foodItem = FoodItem.fromMap(doc.data() as Map<String, dynamic>, doc.id);
-      double distance = Provider.of<LocationProvider>(context, listen: false)
-          .calculateDistance(userLocation, LatLng(foodItem.latitude, foodItem.longitude));
-      if (distance <= Provider.of<LocationProvider>(context,listen: false).distanceRangeToSearch) {
-        nearbyRestaurants.add(foodItem);
-        yield nearbyRestaurants; // Emit the current list of nearby restaurants
-      }
-    }
+     }
+     LatLng userLocation = await Provider.of<LocationProvider>(context, listen: false).getPoints();
+
+     List<FoodItem> nearbyRestaurants = [];
+     for (var doc in snapshot.docs) {
+       FoodItem foodItem = FoodItem.fromMap(doc.data() as Map<String, dynamic>, doc.id);
+       double distance = Provider.of<LocationProvider>(context, listen: false)
+           .calculateDistance(userLocation, LatLng(foodItem.latitude, foodItem.longitude));
+       if (distance <= Provider.of<LocationProvider>(context,listen: false).distanceRangeToSearch) {
+         nearbyRestaurants.add(foodItem);
+         yield nearbyRestaurants; // Emit the current list of nearby restaurants
+       }
+     }
+
+   }catch(e){
+     print(e);
+   }
   }
 
 
@@ -593,6 +601,7 @@ checkInternet();
                         ],
                       ));
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      print('No data');
                       return ListView.builder(
                         itemCount: 5,
                         itemBuilder: (context, index) {
@@ -712,7 +721,7 @@ checkInternet();
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          '   Drinks 🍹🍷 ',
+                          '  Grocery  ',
                           style: TextStyle(
                             fontFamily: 'Righteous',
                               color: Colors.blueGrey,
@@ -762,7 +771,7 @@ checkInternet();
                     width: double.infinity,
                     height: 200.h,
                     child: StreamBuilder<List<FoodItem>>(
-                      stream: getNearbyProducts('Drinks'),
+                      stream: getNearbyProducts('Grocery'),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return ListView.builder(
@@ -908,7 +917,7 @@ SizedBox(height: 30.h,),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          '   Grocery 🛒 ',
+                          '   Others ',
                           style: TextStyle(
                               fontFamily: 'Righteous',
                               color: Colors.blueGrey,
@@ -950,7 +959,7 @@ SizedBox(height: 30.h,),
                     width: double.infinity,
                     height: 200.h,
                     child: StreamBuilder<List<FoodItem>>(
-                      stream: getNearbyProducts('Grocery'),
+                      stream: getNearbyProducts('Others'),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return ListView.builder(
